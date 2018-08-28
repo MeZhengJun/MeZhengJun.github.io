@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="学习Java springMVC的系列文章，在这里整合spring,springMVC,mybatis，就是传说中的SSM框架。 视频发布在youtube上面了https://youtu.be/CzaJsOGVOLI优酷上面的链接http://v.youku.com/v_show/id_XMjc4NzU5ODU3Ng==.html?f=49760672">
+<meta name="keywords" content="springMVC,mybatis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="004 整合spring, springMVC, mybatis(重构)">
+<meta property="og:url" content="http://zhengjunblog.top/2017/05/19/语言相关/Java/springMVC系列/004-整合spring-springMVC-mybatis-重构/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="学习Java springMVC的系列文章，在这里整合spring,springMVC,mybatis，就是传说中的SSM框架。 视频发布在youtube上面了https://youtu.be/CzaJsOGVOLI优酷上面的链接http://v.youku.com/v_show/id_XMjc4NzU5ODU3Ng==.html?f=49760672">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-24T05:16:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="004 整合spring, springMVC, mybatis(重构)">
+<meta name="twitter:description" content="学习Java springMVC的系列文章，在这里整合spring,springMVC,mybatis，就是传说中的SSM框架。 视频发布在youtube上面了https://youtu.be/CzaJsOGVOLI优酷上面的链接http://v.youku.com/v_show/id_XMjc4NzU5ODU3Ng==.html?f=49760672">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="http://zhengjunblog.top/2017/05/19/语言相关/Java/springMVC系列/004-整合spring-springMVC-mybatis-重构/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>004 整合spring, springMVC, mybatis(重构) | 郑君的学习笔记</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">郑君的学习笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">要比昨天进步一点点</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">63</span>
+      </a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">519</span>
+      </a>
+</li>
+
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/05/19/语言相关/Java/springMVC系列/004-整合spring-springMVC-mybatis-重构/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">004 整合spring, springMVC, mybatis(重构)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-19T22:35:54+08:00">2017-05-19</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端/" itemprop="url" rel="index"><span itemprop="name">后端</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端/springMVC实践系列/" itemprop="url" rel="index"><span itemprop="name">springMVC实践系列</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>学习Java springMVC的系列文章，在这里整合spring,springMVC,mybatis，就是传说中的SSM框架。</p>
+<p>视频发布在youtube上面了<br><a href="https://youtu.be/CzaJsOGVOLI" target="_blank" rel="noopener">https://youtu.be/CzaJsOGVOLI</a><br>优酷上面的链接<br><a href="http://v.youku.com/v_show/id_XMjc4NzU5ODU3Ng==.html?f=49760672" target="_blank" rel="noopener">http://v.youku.com/v_show/id_XMjc4NzU5ODU3Ng==.html?f=49760672</a></p>
+<a id="more"></a>
+<h3 id="004-整合spring-springMVC-mybatis（重构）"><a href="#004-整合spring-springMVC-mybatis（重构）" class="headerlink" title="004 整合spring,springMVC,mybatis（重构）"></a>004 整合spring,springMVC,mybatis（重构）</h3><p>这里数据库使用MySql版本是5.6.36</p>
+<p>接着003的项目操作。</p>
+<p>先启动一下MySql，看看要连接的数据库，名字test。<br>这里提供一下创建表和数据的脚本user.sql可以直接导入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> Navicat Premium Data Transfer</span><br><span class="line"></span><br><span class="line"> Source Server         : mysql</span><br><span class="line"> Source Server Type    : MySQL</span><br><span class="line"> Source Server Version : 50636</span><br><span class="line"> Source Host           : localhost</span><br><span class="line"> Source Database       : test</span><br><span class="line"></span><br><span class="line"> Target Server Type    : MySQL</span><br><span class="line"> Target Server Version : 50636</span><br><span class="line"> File Encoding         : utf-8</span><br><span class="line"></span><br><span class="line"> Date: 05/22/2017 21:45:38 PM</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">SET NAMES utf8mb4;</span><br><span class="line">SET FOREIGN_KEY_CHECKS = 0;</span><br><span class="line"></span><br><span class="line">-- ----------------------------</span><br><span class="line">--  Table structure for `user`</span><br><span class="line">-- ----------------------------</span><br><span class="line">DROP TABLE IF EXISTS `user`;</span><br><span class="line">CREATE TABLE `user` (</span><br><span class="line">  `id` bigint(20) NOT NULL DEFAULT &apos;0&apos; COMMENT &apos;主键id&apos;,</span><br><span class="line">  `name` varchar(40) NOT NULL DEFAULT &apos;&apos; COMMENT &apos;名称&apos;,</span><br><span class="line">  `age` smallint(6) NOT NULL DEFAULT &apos;0&apos; COMMENT &apos;年龄&apos;,</span><br><span class="line">  `email` varchar(20) DEFAULT NULL,</span><br><span class="line">  `creatTime` datetime DEFAULT CURRENT_TIMESTAMP COMMENT &apos;创建时间&apos;,</span><br><span class="line">  `loginTime` datetime DEFAULT CURRENT_TIMESTAMP COMMENT &apos;登录时间&apos;,</span><br><span class="line">  `teacherId` bigint(20) DEFAULT &apos;1&apos; COMMENT &apos;教师外键&apos;,</span><br><span class="line">  `gender` varchar(10) CHARACTER SET utf8 NOT NULL DEFAULT &apos;&apos; COMMENT &apos;性别&apos;,</span><br><span class="line">  PRIMARY KEY (`id`),</span><br><span class="line">  KEY `teacherIdx` (`teacherId`),</span><br><span class="line">  CONSTRAINT `teacherExt` FOREIGN KEY (`teacherId`) REFERENCES `teacher` (`id`) ON DELETE SET NULL ON UPDATE CASCADE</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT=&apos;学生表&apos;;</span><br><span class="line"></span><br><span class="line">-- ----------------------------</span><br><span class="line">--  Records of `user`</span><br><span class="line">-- ----------------------------</span><br><span class="line">BEGIN;</span><br><span class="line">INSERT INTO `user` VALUES (&apos;1&apos;, &apos;student1&apos;, &apos;11&apos;, &apos;student1@126.com&apos;, &apos;2017-05-20 10:40:34&apos;, &apos;2017-05-21 15:40:34&apos;, &apos;1&apos;, &apos;Male&apos;), (&apos;2&apos;, &apos;student2&apos;, &apos;22&apos;, &apos;student2@126.com&apos;, &apos;2017-05-12 18:43:32&apos;, &apos;2017-05-21 15:40:34&apos;, &apos;2&apos;, &apos;Female&apos;), (&apos;3&apos;, &apos;student3&apos;, &apos;33&apos;, &apos;student3@126.com&apos;, &apos;2017-05-21 08:40:34&apos;, &apos;2017-05-21 15:40:34&apos;, &apos;1&apos;, &apos;Male&apos;);</span><br><span class="line">COMMIT;</span><br><span class="line"></span><br><span class="line">SET FOREIGN_KEY_CHECKS = 1;</span><br></pre></td></tr></table></figure>
+<p>这个网址可以很方便的用来查找maven依赖包的相关信息<br><a href="https://mvnrepository.com/" target="_blank" rel="noopener">https://mvnrepository.com/</a><br>添加spring-test依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;junit&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;junit&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;4.12&lt;/version&gt;</span><br><span class="line">	&lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-test&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;</span><br><span class="line">    &lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>需要添加一个依赖包，否则会报错</p>
+<p><code>java.lang.NoClassDefFoundError: org/springframework/dao/support/DaoSupport</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;spring-tx&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>使用mybatis有几种方式，在这里我尝试了安装eclipse插件，发现不知道为什么生成映射的时候有时找不到属性文件，所以不用插件生成，使用maven来生成映射文件，插件也是有用的可以用来生成配置文件。</p>
+<p>在Eclipse marketplace里面安装MyBatis Generator插件目前版本是1.3.5</p>
+<p>现在使用maven的方式来使用mybatis，官方说明网址如下：<br><a href="http://www.mybatis.org/generator/running/runningWithMaven.html" target="_blank" rel="noopener">http://www.mybatis.org/generator/running/runningWithMaven.html</a></p>
+<p>添加spring，MyBatis和MySql相关依赖包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;!-- mybatis数据库相关依赖 --&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.mybatis&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;mybatis&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;3.4.4&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.mybatis&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;mybatis-spring&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;1.3.1&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;!-- mysql依赖 --&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;mysql&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;5.1.39&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;!-- 数据源 --&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;com.alibaba&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;druid&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;1.0.29&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>创建generatorConfig.xml文件，<br>在src/main/resources路径下File-New-Other 如果安装了插件搜索mybatis会看到MyBatis Generator Configuration File默认文件名是generatorConfig.xml</p>
+<p>参考下面官方链接<br><a href="http://www.mybatis.org/generator/configreference/xmlconfig.html" target="_blank" rel="noopener">http://www.mybatis.org/generator/configreference/xmlconfig.html</a><br>这里使用了变量，相关定义信息在jdbc.properties中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE generatorConfiguration PUBLIC &quot;-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN&quot; &quot;http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd&quot;&gt;</span><br><span class="line">&lt;generatorConfiguration&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!-- 引入配置文件 --&gt;</span><br><span class="line">	&lt;properties resource=&quot;jdbc.properties&quot; /&gt;</span><br><span class="line">	&lt;!-- 指定数据连接驱动jar地址 --&gt;</span><br><span class="line">	&lt;classPathEntry location=&quot;$&#123;classPath&#125;&quot; /&gt;</span><br><span class="line">	&lt;context id=&quot;context1&quot; targetRuntime=&quot;MyBatis3&quot;&gt;</span><br><span class="line">		&lt;jdbcConnection connectionURL=&quot;$&#123;jdbc_url&#125;&quot;</span><br><span class="line">			driverClass=&quot;$&#123;jdbc_driver&#125;&quot; password=&quot;$&#123;jdbc_password&#125;&quot; userId=&quot;$&#123;jdbc_user&#125;&quot; /&gt;</span><br><span class="line">		&lt;javaTypeResolver&gt;</span><br><span class="line">			&lt;property name=&quot;forceBigDecimals&quot; value=&quot;false&quot; /&gt;</span><br><span class="line">		&lt;/javaTypeResolver&gt;</span><br><span class="line">		&lt;javaModelGenerator targetPackage=&quot;$&#123;package.model&#125;&quot;</span><br><span class="line">			targetProject=&quot;$&#123;targetProject&#125;&quot;&gt;</span><br><span class="line">			&lt;property name=&quot;enableSubPackages&quot; value=&quot;true&quot; /&gt;</span><br><span class="line">			&lt;property name=&quot;trimStrings&quot; value=&quot;true&quot; /&gt;</span><br><span class="line">		&lt;/javaModelGenerator&gt;</span><br><span class="line">		&lt;sqlMapGenerator targetPackage=&quot;$&#123;package.mapping&#125;&quot;</span><br><span class="line">			targetProject=&quot;$&#123;targetProject&#125;&quot;&gt;</span><br><span class="line">			&lt;property name=&quot;enableSubPackages&quot; value=&quot;true&quot; /&gt;</span><br><span class="line">		&lt;/sqlMapGenerator&gt;</span><br><span class="line">		&lt;javaClientGenerator targetPackage=&quot;$&#123;package.dao&#125;&quot;</span><br><span class="line">			targetProject=&quot;$&#123;targetProject&#125;&quot; type=&quot;XMLMAPPER&quot;&gt;</span><br><span class="line">			&lt;property name=&quot;enableSubPackages&quot; value=&quot;true&quot; /&gt;</span><br><span class="line">		&lt;/javaClientGenerator&gt;</span><br><span class="line">		&lt;!-- schema是数据库名 domainObjectName要生成的实体类名 --&gt;</span><br><span class="line">		&lt;table schema=&quot;$&#123;dbName&#125;&quot; tableName=&quot;teacher&quot; domainObjectName=&quot;Teacher&quot;</span><br><span class="line">			enableCountByExample=&quot;false&quot; enableUpdateByExample=&quot;false&quot;</span><br><span class="line">			enableDeleteByExample=&quot;false&quot; enableSelectByExample=&quot;false&quot;</span><br><span class="line">			selectByExampleQueryId=&quot;false&quot;&gt;</span><br><span class="line">			&lt;!-- 这里使用表字段实际的名称生成属性字段 --&gt;</span><br><span class="line">			&lt;property name=&quot;useActualColumnNames&quot; value=&quot;true&quot; /&gt;</span><br><span class="line">		&lt;/table&gt;</span><br><span class="line">		&lt;table schema=&quot;$&#123;dbName&#125;&quot; tableName=&quot;user&quot; domainObjectName=&quot;User&quot;</span><br><span class="line">			enableCountByExample=&quot;false&quot; enableUpdateByExample=&quot;false&quot;</span><br><span class="line">			enableDeleteByExample=&quot;false&quot; enableSelectByExample=&quot;false&quot;</span><br><span class="line">			selectByExampleQueryId=&quot;false&quot;&gt;</span><br><span class="line">			&lt;property name=&quot;useActualColumnNames&quot; value=&quot;true&quot; /&gt;</span><br><span class="line">		&lt;/table&gt;</span><br><span class="line">		&lt;!-- 解决MySql无符号数值类型的字段 --&gt;</span><br><span class="line">		&lt;!-- &lt;columnOverride column=&quot;???&quot; property=&quot;???&quot; /&gt; --&gt;</span><br><span class="line">		&lt;!-- &lt;/table&gt; --&gt;</span><br><span class="line">	&lt;/context&gt;</span><br><span class="line">&lt;/generatorConfiguration&gt;</span><br></pre></td></tr></table></figure>
+<p>除了使用和表字段一致的设置外，还有一种方式就是表字段使用下划线分割单词，那么生成的属性字段就是驼峰表示了比如:teacher_id 属性字段是teacherId</p>
+<p>jdbc.properties</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#Mybatis Generator configuration  </span><br><span class="line"></span><br><span class="line">project=test</span><br><span class="line">dbName=test</span><br><span class="line">targetProject=src/main/java</span><br><span class="line">package.dao=com.study.dao</span><br><span class="line">package.model=com.study.model</span><br><span class="line">package.mapping=com.study.mapping</span><br><span class="line">classPath=/Users/zhengjun/Documents/java_library/mysql-connector-java-5.1.39.jar</span><br><span class="line"></span><br><span class="line">jdbc_driver=com.mysql.jdbc.Driver</span><br><span class="line">jdbc_url=jdbc:mysql://127.0.0.1:3306/$&#123;dbName&#125;?useUnicode=true&amp;characterEncoding=UTF-8&amp;allowMultiQueries=true&amp;serverTimezone=UTC</span><br><span class="line">jdbc_user=root</span><br><span class="line">jdbc_password=</span><br></pre></td></tr></table></figure>
+<p>正常情况应该在generatorConfig.xml文件上面右键单击选择Run As&gt;Run MyBatis Generator会自动生成相应的文件。但是不知道为什么会有找不到jdbc.properties的情况。<br>这里使用maven，先要配置插件在POM.xml里面添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 这里要添加mybatis插件 --&gt;</span><br><span class="line">&lt;plugin&gt;</span><br><span class="line">	&lt;groupId&gt;org.mybatis.generator&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;mybatis-generator-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;1.3.5&lt;/version&gt;</span><br><span class="line">	&lt;configuration&gt;</span><br><span class="line">		&lt;verbose&gt;true&lt;/verbose&gt;</span><br><span class="line">		&lt;overwrite&gt;false&lt;/overwrite&gt;</span><br><span class="line">	&lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+<p>然后使用maven创建一个配置，然后run as就会自动生成映射文件<br>Goals：mybatis-generator:generate -e</p>
+<p>注意：默认不会覆盖已有的同名文件，mapper除外，每次都会自动更新。</p>
+<p>MySql 使用注意事项<br>无符号类型<br>MySql支持有符号，无符号，数字类型字段。这些不是JDBC类型，因此MyBatis 生成器不能自动转换这种类型的字段。JAVA数据类型都是有符号的， 当使用无符号类型时这就会导致缺失精度。可以使用 <columnoverride> 解决MySql无符号数值类型的字段。下面是一个如何处理无符号bigint字段类型例子:</columnoverride></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;table tableName=&quot;ALLTYPES&quot; &gt;</span><br><span class="line">  &lt;columnOverride column=&quot;UNSIGNED_BIGINT_FIELD&quot; javaType=&quot;java.lang.Object&quot; jdbcType=&quot;LONG&quot; /&gt;</span><br><span class="line">&lt;/table&gt;</span><br></pre></td></tr></table></figure>
+<p>您还必须自己强制将返回值转换为适当的类型(在上面这种情况下，需要转换为 java.math.BigInteger)。</p>
+<p>要连接数据库，还需要编辑springmvc.xml添加数据源等信息,<br>这里用到变量参数，所以还要引入属性文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 引入属性文件 --&gt;</span><br><span class="line">&lt;context:property-placeholder location=&quot;classpath:jdbc.properties&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 数据源 org.apache.commons.dbcp.BasicDataSource com.alibaba.druid.pool.DruidDataSource --&gt;</span><br><span class="line">&lt;bean id=&quot;dataSource&quot; class=&quot;com.alibaba.druid.pool.DruidDataSource&quot; init-method=&quot;init&quot; destroy-method=&quot;close&quot;&gt;</span><br><span class="line"></span><br><span class="line">	&lt;property name=&quot;driverClassName&quot; value=&quot;$&#123;jdbc_driver&#125;&quot; /&gt;</span><br><span class="line">	&lt;property name=&quot;url&quot; value=&quot;$&#123;jdbc_url&#125;&quot; /&gt;</span><br><span class="line">	&lt;property name=&quot;username&quot; value=&quot;$&#123;jdbc_user&#125;&quot; /&gt;</span><br><span class="line">	&lt;property name=&quot;password&quot; value=&quot;$&#123;jdbc_password&#125;&quot; /&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!-- 初始化连接大小 --&gt;</span><br><span class="line">	&lt;property name=&quot;initialSize&quot; value=&quot;0&quot; /&gt;</span><br><span class="line">	&lt;!-- 连接池最大使用连接数量 --&gt;</span><br><span class="line">	&lt;property name=&quot;maxActive&quot; value=&quot;20&quot; /&gt;</span><br><span class="line">	&lt;!-- 连接池最小空闲 --&gt;</span><br><span class="line">	&lt;property name=&quot;minIdle&quot; value=&quot;0&quot; /&gt;</span><br><span class="line">	&lt;!-- 获取连接最大等待时间 --&gt;</span><br><span class="line">	&lt;property name=&quot;maxWait&quot; value=&quot;60000&quot; /&gt;</span><br><span class="line"></span><br><span class="line">	&lt;property name=&quot;validationQuery&quot;&gt;</span><br><span class="line">		&lt;value&gt;SELECT 1&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;property name=&quot;testOnBorrow&quot; value=&quot;false&quot; /&gt;</span><br><span class="line">	&lt;property name=&quot;testOnReturn&quot; value=&quot;false&quot; /&gt;</span><br><span class="line">	&lt;property name=&quot;testWhileIdle&quot; value=&quot;true&quot; /&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 --&gt;</span><br><span class="line">	&lt;property name=&quot;timeBetweenEvictionRunsMillis&quot; value=&quot;60000&quot; /&gt;</span><br><span class="line">	&lt;!-- 配置一个连接在池中最小生存的时间，单位是毫秒 --&gt;</span><br><span class="line">	&lt;property name=&quot;minEvictableIdleTimeMillis&quot; value=&quot;25200000&quot; /&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!-- 打开removeAbandoned功能 --&gt;</span><br><span class="line">	&lt;property name=&quot;removeAbandoned&quot; value=&quot;true&quot; /&gt;</span><br><span class="line">	&lt;!-- 1800秒，也就是30分钟 --&gt;</span><br><span class="line">	&lt;property name=&quot;removeAbandonedTimeout&quot; value=&quot;1800&quot; /&gt;</span><br><span class="line">	&lt;!-- 关闭abanded连接时输出错误日志 --&gt;</span><br><span class="line">	&lt;property name=&quot;logAbandoned&quot; value=&quot;true&quot; /&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!-- 监控数据库 --&gt;</span><br><span class="line">	&lt;!-- &lt;property name=&quot;filters&quot; value=&quot;stat&quot; /&gt; --&gt;</span><br><span class="line">	&lt;property name=&quot;filters&quot; value=&quot;mergeStat&quot; /&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 配置druid监控spring jdbc --&gt;</span><br><span class="line">&lt;bean id=&quot;druid-stat-interceptor&quot;</span><br><span class="line">	class=&quot;com.alibaba.druid.support.spring.stat.DruidStatInterceptor&quot;&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line">&lt;bean id=&quot;druid-stat-pointcut&quot; class=&quot;org.springframework.aop.support.JdkRegexpMethodPointcut&quot;</span><br><span class="line">	scope=&quot;prototype&quot;&gt;</span><br><span class="line">	&lt;property name=&quot;patterns&quot;&gt;</span><br><span class="line">		&lt;list&gt;</span><br><span class="line">			&lt;value&gt;com.study.service.*&lt;/value&gt;</span><br><span class="line">		&lt;/list&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean id=&quot;sqlSessionFactory&quot; class=&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;&gt;</span><br><span class="line">	&lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;&gt;&lt;/property&gt;</span><br><span class="line">	&lt;property name=&quot;mapperLocations&quot; value=&quot;classpath:com/study/mapping/*.xml&quot;&gt;&lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean class=&quot;org.mybatis.spring.mapper.MapperScannerConfigurer&quot;&gt;</span><br><span class="line">	&lt;property name=&quot;basePackage&quot; value=&quot;com.study.dao&quot;&gt;&lt;/property&gt;</span><br><span class="line">	&lt;property name=&quot;sqlSessionFactoryBeanName&quot; value=&quot;sqlSessionFactory&quot;&gt;&lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 事务管理器 --&gt;</span><br><span class="line">&lt;bean id=&quot;transactionManager&quot;</span><br><span class="line">class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;</span><br><span class="line">	&lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;&gt;&lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line">&lt;!-- 支持事务注解 @Transactional --&gt;</span><br><span class="line">&lt;tx:annotation-driven/&gt;</span><br></pre></td></tr></table></figure>
+<p>这里不添加annotation-driven会造成事务不生效<br><code>org.mybatis.spring.SqlSessionUtils - Closing non transactional SqlSession</code></p>
+<p>编写测试文件，测试数据库操作</p>
+<p>新建一个service包 com.study.mybatis.service<br>然后新建一个接口IUserService</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public interface IUserService &#123;</span><br><span class="line"></span><br><span class="line">	public User getUserById(String id);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在新建一个实现类IUserServiceImpl,声明为service，支持事务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@Service(&quot;userService&quot;)</span><br><span class="line">@Transactional</span><br><span class="line">public class IUserServiceImpl implements IUserService &#123;</span><br><span class="line"></span><br><span class="line">	@Autowired</span><br><span class="line">	UserMapper userMapper;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public User getUserById(String id) &#123;</span><br><span class="line">		return userMapper.selectByPrimaryKey(Long.parseLong(id));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>写完注解之后，还需要在springMVC.xml里面配置到自动扫描的里面，否则会提示找不到bean</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 配置自动扫描的包 --&gt;</span><br><span class="line">&lt;context:component-scan base-package=&quot;com.study.controller, com.study.service&quot;&gt;&lt;/context:component-scan&gt;</span><br></pre></td></tr></table></figure>
+<p>然后写UserTest里面的测试代码<br>现在类上面写上注解。使用spring-test，指定配置文件路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@RunWith(SpringJUnit4ClassRunner.class)</span><br><span class="line">@ContextConfiguration(locations = &quot;classpath:springmvc.xml&quot;)</span><br><span class="line">public class TestUser &#123;</span><br><span class="line"></span><br><span class="line">	@Autowired</span><br><span class="line">	IUserService userService;</span><br><span class="line"></span><br><span class="line">	@Test</span><br><span class="line">	public void TestGetUser()</span><br><span class="line">	&#123;</span><br><span class="line">		User user = userService.getUserById(&quot;1&quot;);</span><br><span class="line">		assertTrue(user.getName().equals(&quot;student1&quot;));</span><br><span class="line">		System.out.println(user.getName());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在TestGetUser上面右键单击Run as-JUnit Test，正常应该可以看到控制台输出用户的名字</p>
+<p>把template项目做个模板，版本0.0.3，这里在执行mvn install之前，修改下面路径的pom文件即可。<br>在这里还可以把打包方式从jar改成war，这样从模板生成的项目就是war包形式了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/template/target/generated-sources/archetype/target/classes/archetype-resources/pom.xml</span><br><span class="line">&lt;finalName&gt;$&#123;artifactId&#125;&lt;/finalName&gt;：</span><br><span class="line">发布前执行时，生成$&#123;artifactId&#125;.war文件。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">如果有需要交流的，或者有更好的实现方法的同学，欢迎通过电子邮件或者留言来互通有无，共同进步。</span><br><span class="line">ascomtohom@126.com</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatPay.png" alt="郑  君 WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="郑  君 Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/springMVC/" rel="tag"># springMVC</a>
+          
+            <a href="/tags/mybatis/" rel="tag"># mybatis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/19/语言相关/Java/springMVC系列/005-使用log4j2输出日志（重构）/" rel="next" title="005 使用log4j2输出日志（重构）">
+                <i class="fa fa-chevron-left"></i> 005 使用log4j2输出日志（重构）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/20/语言相关/Java/springMVC系列/001-使用maven建立Dynamic-Web-Module-3-1-项目/" rel="prev" title="001 使用maven建立Dynamic Web Module 3.1 项目">
+                001 使用maven建立Dynamic Web Module 3.1 项目 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="郑  君" />
+            
+              <p class="site-author-name" itemprop="name">郑  君</p>
+              <p class="site-description motion-element" itemprop="description">C++，golang，Java，Python，Kotlin，Web，前端，后端，全栈，Nodejs</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">519</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">63</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">159</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/tyler2018" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:zhengjun2018@gmail.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#004-整合spring-springMVC-mybatis（重构）"><span class="nav-number">1.</span> <span class="nav-text">004 整合spring,springMVC,mybatis（重构）</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.0.6</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.6"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content
+                if (!(data.content))
+                {
+                    alert("文章内容不能为空，后面代码没处理这个情况，这里暂时处理一下，可能有隐患。");
+                }else{
+                  content = data.content.trim().replace(/<[^>]+>/g,"");
+                }
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

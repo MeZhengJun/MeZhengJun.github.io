@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="原文 Go 语言的错误处理Go 语言的错误处理是基于明确的目的而设计的。你应该从函数中返回所有可能的错误，并且检查/处理这些返回值。和其他语言相比，这一点可能看起来有些繁琐和不人性化，其实并不是这样的。让我们看一些简单的样例以及一些并不琐碎的方面。">
+<meta name="keywords" content="go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="翻译-Go 语言的错误处理">
+<meta property="og:url" content="http://zhengjunblog.top/2018/02/10/语言相关/go/翻译/翻译-Go-语言的错误处理/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="原文 Go 语言的错误处理Go 语言的错误处理是基于明确的目的而设计的。你应该从函数中返回所有可能的错误，并且检查/处理这些返回值。和其他语言相比，这一点可能看起来有些繁琐和不人性化，其实并不是这样的。让我们看一些简单的样例以及一些并不琐碎的方面。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-02-10T13:38:55.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="翻译-Go 语言的错误处理">
+<meta name="twitter:description" content="原文 Go 语言的错误处理Go 语言的错误处理是基于明确的目的而设计的。你应该从函数中返回所有可能的错误，并且检查/处理这些返回值。和其他语言相比，这一点可能看起来有些繁琐和不人性化，其实并不是这样的。让我们看一些简单的样例以及一些并不琐碎的方面。">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="http://zhengjunblog.top/2018/02/10/语言相关/go/翻译/翻译-Go-语言的错误处理/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>翻译-Go 语言的错误处理 | 郑君的学习笔记</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">郑君的学习笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">要比昨天进步一点点</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">63</span>
+      </a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">519</span>
+      </a>
+</li>
+
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/02/10/语言相关/go/翻译/翻译-Go-语言的错误处理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">翻译-Go 语言的错误处理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-10T21:22:36+08:00">2018-02-10</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://scene-si.org/2017/11/13/error-handling-in-go/" target="_blank" rel="noopener">原文</a></p>
+<h1 id="Go-语言的错误处理"><a href="#Go-语言的错误处理" class="headerlink" title="Go 语言的错误处理"></a>Go 语言的错误处理</h1><p>Go 语言的错误处理是基于明确的目的而设计的。你应该从函数中返回所有可能的错误，并且检查/处理这些返回值。和其他语言相比，这一点可能看起来有些繁琐和不人性化，其实并不是这样的。让我们看一些简单的样例以及一些并不琐碎的方面。</p>
+<a id="more"></a>
+<h2 id="Non错误"><a href="#Non错误" class="headerlink" title="Non错误"></a>Non错误</h2><p>实际上 Go 有个概念 non-error。是语言级别的特性，不能用来在写自己的函数中使用。最明显的例子就是从 map 中通过 key 获取值。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> val, ok := data[<span class="string">"key"</span>]; ok &#123;</span><br><span class="line">	<span class="comment">// key/value 在map中存在</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当尝试获取指定 key 的值的时候，会返回一个可选的第二个值，是一个 boolean 类型表示获取的值是否存在。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>&#123;<span class="string">"key"</span>: <span class="string">"value"</span>&#125;</span><br><span class="line">	b := a[<span class="string">"key"</span>]</span><br><span class="line">	c, ok := a[<span class="string">"key"</span>]</span><br><span class="line">	d := a[<span class="string">"foo"</span>]</span><br><span class="line">	fmt.Printf(<span class="string">"%#v %#v %#v %#v %#v"</span>, a, b, c, d, ok)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行这段<a href="https://play.golang.org/p/CAZSyh9_q3" target="_blank" rel="noopener">程序</a>不会有任何错误。你能看到是否接受第二个返回值是完全可选的。</p>
+<p>另一个例子是从 channel 中成功读取数据。同样的，你可以在读取操作返回时，使用变量来接收第二个返回值。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> j, ok := &lt;-jobs; ok &#123;</span><br><span class="line">	fmt.Println(<span class="string">"received job"</span>, j)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">"received all jobs"</span>)</span><br><span class="line">	done &lt;- <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第二个参数是一个 boolean 类型，表示语言结构层面的成功或失败，并不是一个严格的返回类型。你可以写一个函数声明 <code>func() (interface{}, bool)</code> 同上面的代码语义相同，但是不能够忽略第二个参数 bool 返回值了，你需要为他指定一个接收变量。</p>
+<h2 id="忽略错误"><a href="#忽略错误" class="headerlink" title="忽略错误"></a>忽略错误</h2><p>Go 提供了足够的灵活性可以让你忽略指定的返回错误。例如你想转换一个字符串到数字类型，并且你不在意转换失败时返回 0 。你可以使用 <code>_</code> 字符来忽略指定的返回值，在下面例子中忽略了 error 返回值:  </p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">v := <span class="string">"abc"</span></span><br><span class="line">s, _ := strconv.Atoi(v)</span><br><span class="line">fmt.Printf(<span class="string">"%d\n"</span>, s)</span><br></pre></td></tr></table></figure>
+<p>很明显转换不会成功，在这处理 “invalid syntax” 错误会很繁琐。当然这取决于你的使用场景，有一些场景处理返回错误没什么价值。  </p>
+<p>我近期遇到的一个例子是  <a href="https://github.com/sony/sonyflake" target="_blank" rel="noopener">sony/sonyflake</a> 。 这个项目是一个 ID 生成器，返回 int64 类型的 id 和可能的错误。</p>
+<blockquote>
+<p>想要生成一个新的 id ，你只要调用 NextID 方法即可。<br><code>func (sf *Sonyflake) NextID() (uint64, error)</code><br>NextID 能够连续生成 ID 从开始时间到 174 年左右。当超过这个限制的时候，NextID 会返回一个错误。</p>
+</blockquote>
+<p>我非常确信在看这篇文章的人不会活过174年。在这种情况下，你真的需要处理那个特定的错误么？这里真的需要返回一个错误么？</p>
+<p>我认为这是一个设计缺陷，我们可以使用 Go 的另一个灵活性来处理更好些：<code>panic</code>。参见一篇很棒的文章 <a href="https://gobyexample.com/panic" target="_blank" rel="noopener">go by example</a>:</p>
+<blockquote>
+<p>使用panic的一个通用的场景就是如果一个函数返回了一个错误值，但是我们不知道或者不希望去处理的时候中断执行。</p>
+</blockquote>
+<p>还有一些其他的关于忽略返回错误的例子。可能最常见的忽略返回错误的处理方式是在  <a href="https://gobyexample.com/json" target="_blank" rel="noopener">json.Marshal</a> 中。在明确的理解之后，有些错误在第一次发生时可以不去处理。</p>
+<h2 id="连续的错误处理"><a href="#连续的错误处理" class="headerlink" title="连续的错误处理"></a>连续的错误处理</h2><p>你的目的应该是处理所有的错误，像下面这样结束执行相对比较容易：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">base64decoder := base64.NewDecoder(base64.StdEncoding, r.Body)</span><br><span class="line">gz, err := zlib.NewReader(base64decoder)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> err</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">defer</span> gz.Close()</span><br><span class="line"></span><br><span class="line">decoder := json.NewDecoder(gz)</span><br><span class="line"><span class="keyword">var</span> t SentryV6Notice</span><br><span class="line">err = decoder.Decode(&amp;t)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> err</span><br><span class="line">&#125;</span><br><span class="line">r.Body.Close()</span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+<p>如果能像处理 if 语句一样，独立处理每个返回错误不是更好么？让我们看一些你不知道的情况：<br><code>if func1() || func2() || func3() {</code><br>这个 if 语句会分别测试每个表达式。也就是说如果 <code>func1()</code> 返回了 false，那么 <code>func2</code> 和 <code>func3</code> 函数就不会被调用。if 语句可以中断执行流程，尽管如此也没有方法使用一条语句完成检查返回错误。 至少你可以按照下面的方法来处理：  </p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> gz, err := zlib.NewReader(base64decoder); err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> err</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="keyword">if</span> err := decoder.Decode(&amp;t); err != <span class="literal">nil</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> err</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个例子中，我们在表达式的前面添加了一个简单的语句，这条语句会在测试表达式之前执行。这是 <a href="https://golang.org/ref/spec#If_statements" target="_blank" rel="noopener">Go 语言规范</a>的另一个特性。可惜的是，我们不能使用这个特性来控制程序流程。但是，我们可以考虑创建一个可变参函数来接收 <code>func() error</code> 参数，并且在第一个错误发生时立即返回。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">flow</span><span class="params">(fns ...<span class="keyword">func</span>()</span> <span class="title">error</span>) <span class="title">error</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> _, fn := <span class="keyword">range</span> fns &#123;</span><br><span class="line">		<span class="keyword">if</span> err := fn(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> err</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里例子 <a href="https://play.golang.org/p/AStZiZ_-Ml" target="_blank" rel="noopener">playground example</a> 演示了如何实现一个顺序调用函数的处理，并且所做的修改不会影响到函数结构。基本上只依赖于如何保存函数返回值 除了返回错误之外。</p>
+<p>如果你正在处理 <code>jmoiron/sqlx</code> 你可以<a href="https://play.golang.org/p/W-QEybSQwG" target="_blank" rel="noopener">这么写</a>:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">err := flow(</span><br><span class="line">	<span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">error</span></span> &#123; <span class="keyword">return</span> db.Get(result, <span class="string">"select one row"</span>) &#125;,</span><br><span class="line">	<span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">error</span></span> &#123; <span class="keyword">return</span> db.Select(result, <span class="string">"select multiple rows"</span>) &#125;,</span><br><span class="line">	<span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">error</span></span> &#123; <span class="keyword">return</span> db.Get(result, <span class="string">"select another row"</span>) &#125;,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>一个明显的问题就是过于冗余的部分，把一个局部函数包装到函数签名中，如果编程语言的语义允许在 if 语句中(多次)赋值和测试的话，出错检查可以简化成：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> err error</span><br><span class="line"><span class="keyword">if</span> err = db.Get(result, <span class="string">"select one row"</span>) ||</span><br><span class="line">   err = db.Select(result, <span class="string">"select multiple rows"</span>) ||</span><br><span class="line">   err = db.Get(result, <span class="string">"select another row"</span>) &#123;</span><br><span class="line">	<span class="keyword">return</span> err</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>可惜的是， Go 不会把 errors 作为 boolean 表达式处理， 也不允许在 boolean 表达式中赋值， 会提示错误 ”expected boolean expression, found simple statement (missing parentheses around composite literal?)“ 。对于这一点我并不是很强烈的认为不好，因为还有其他的方法可以做到。如果你在其他语言例如 Node 或者 PHP，尝试使用赋值给一个变量来代替测试一个值的话，你会发现 Go 的处理方式更加优美，注意：有时也非常痛苦。</p>
+<h2 id="改进错误处理"><a href="#改进错误处理" class="headerlink" title="改进错误处理"></a>改进错误处理</h2><p>通常我写的包括输入，输出参数的验证函数，功能函数的函数签名是 <code>func() error</code>。来看一个更复杂些的例子，我创建了一个 response writer 输入参数为 interface{} 把第一个非空值或函数返回值写入 <code>http.ResponseWriter</code>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JSON responds with the first non-nil payload, formats error messages</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">JSON</span><span class="params">(w http.ResponseWriter, responses ...<span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">    respond := <span class="function"><span class="keyword">func</span><span class="params">(payload <span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">            json, err := json.Marshal(payload)</span><br><span class="line">            <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">                    http.Error(w, err.Error(), http.StatusInternalServerError)</span><br><span class="line">                    <span class="keyword">return</span></span><br><span class="line">            &#125;</span><br><span class="line">            w.Header().Set(<span class="string">"Content-Type"</span>, <span class="string">"application/json"</span>)</span><br><span class="line">            w.Write(json)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _, response := <span class="keyword">range</span> responses &#123;</span><br><span class="line">            <span class="keyword">switch</span> value := response.(<span class="keyword">type</span>) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="literal">nil</span>:</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">case</span> <span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">error</span>:</span></span><br><span class="line"><span class="function">                    <span class="title">err</span> := <span class="title">value</span><span class="params">()</span></span></span><br><span class="line"><span class="function">                    <span class="title">if</span> <span class="title">err</span> == <span class="title">nil</span></span> &#123;</span><br><span class="line">                            <span class="keyword">continue</span></span><br><span class="line">                    &#125;</span><br><span class="line">                    respond(Error(err))</span><br><span class="line">            <span class="keyword">case</span> error:</span><br><span class="line">                    respond(Error(value))</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                    respond(<span class="keyword">struct</span> &#123;</span><br><span class="line">                            Response <span class="keyword">interface</span>&#123;&#125; <span class="string">`json:"response"`</span></span><br><span class="line">                    &#125;&#123;response&#125;)</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// Exit on the first output...</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数的好处是提供了基于可变参数的条件执行处理。和传入 <code>...error</code> 和 <code>[]error</code> 不同的是不需要先执行所有的函数。<br>使用这个函数的一个简单的 API 调用样例如下：  </p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">input := RequestInput&#123;&#125;</span><br><span class="line">result := RequestResult&#123;&#125;</span><br><span class="line">validate := <span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	<span class="comment">// write and validate things for input</span></span><br><span class="line">&#125;</span><br><span class="line">process := <span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	<span class="comment">// write things to result, return error if any</span></span><br><span class="line">&#125;</span><br><span class="line">resputil.JSON(w, validate, process, result)</span><br></pre></td></tr></table></figure>
+<p>在后面的语句 <code>resputil.JSON</code> 中可以看出，程序执行流程是显而易见并且明确的，当有任何错误发生时都会中断执行并返回。<br>另一个附带的好处是，无论何时发生错误了，你只要返回错误即可，不需要关心在这里应该返回的其他返回值，因为会在外部的闭包中被处理，并且只处理一次。</p>
+<blockquote>
+<p>注意：语言需要支持函数 <code>return err</code> 而不仅仅只是返回错误信息，当你使用这种处理方法时，所有其他的返回值都是未初始化时的默认值，所以不违反期待函数返回值的规则，在这里也有类似的建议 <a href="https://github.com/golang/go/issues/21161#issuecomment-318350273" target="_blank" rel="noopener">this issue filed for Go2</a></p>
+</blockquote>
+<h2 id="异步错误处理"><a href="#异步错误处理" class="headerlink" title="异步错误处理"></a>异步错误处理</h2><p>几周前在 <a href="https://www.reddit.com/r/golang/comments/77bf8c/function_composition_in_go_with_reflect/dokx20g/" target="_blank" rel="noopener">reddit</a> 上有过一个讨论， @ligustah 推荐看一下 x/sync/errgroup 包，这个包提供了类似 sync.WaitGroup 实现方式的 Group structure ，会返回发生的第一个错误或者在没有错误时返回 nil 。每个函数都可以在 goroutines 中执行。<br>引用至 godoc 中的例子 <a href="https://godoc.org/golang.org/x/sync/errgroup#ex-Group--JustErrors" target="_blank" rel="noopener">JustErrors</a>  </p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> g errgroup.Group</span><br><span class="line"><span class="keyword">var</span> urls = []<span class="keyword">string</span>&#123;</span><br><span class="line">    <span class="string">"http://www.golang.org/"</span>,</span><br><span class="line">    <span class="string">"http://www.google.com/"</span>,</span><br><span class="line">    <span class="string">"http://www.somestupidname.com/"</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> _, url := <span class="keyword">range</span> urls &#123;</span><br><span class="line">    <span class="comment">// Launch a goroutine to fetch the URL.</span></span><br><span class="line">    url := url <span class="comment">// https://golang.org/doc/faq#closures_and_goroutines</span></span><br><span class="line">    g.Go(<span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">error</span></span> &#123;</span><br><span class="line">        <span class="comment">// Fetch the URL.</span></span><br><span class="line">        resp, err := http.Get(url)</span><br><span class="line">        <span class="keyword">if</span> err == <span class="literal">nil</span> &#123;</span><br><span class="line">            resp.Body.Close()</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> err</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Wait for all HTTP fetches to complete.</span></span><br><span class="line"><span class="keyword">if</span> err := g.Wait(); err == <span class="literal">nil</span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">"Successfully fetched all URLs."</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>开始的时候，我觉得这个包还不错，但是里面有一些需要注意的地方。   </p>
+<ol>
+<li>你可能需要返回所有的错误（你只能拿到第一个）  </li>
+<li>在发生错误的时候想要中断执行（必须等到所有的 goroutines 执行完毕）  </li>
+<li>执行的是并行检查（没有提供顺序执行的 API ）</li>
+</ol>
+<p>根据你的使用场景，可以参照这个模型，做一些私有的实现。这个包本身有些繁琐，看了前面的介绍，写一个聪明的错误检查封装函数只需要少数的几行代码即可。</p>
+<h2 id="最后总结"><a href="#最后总结" class="headerlink" title="最后总结"></a>最后总结</h2><p>有些时候看起来 Go 语言检查返回值错误是比较痛苦的事情，特别是当你受到有 try/catch 特性的语言影响的时候，例如： Java，PHP 等。当你第一次看到 Go 的这种处理方式的时候可能并不喜欢，希望检查错误的处理能更好些（更简洁些？），我相信其他的语言有更糟糕的例子，更加繁琐，更多不足的地方。  </p>
+<p>errors 和 panics 有一些不同的地方，实际上 panics 是带有函数调用栈信息的。如果你想在 errors 里面添加调用栈信息，我推荐你使用 Dave Cheney 的 <a href="https://dave.cheney.net/2016/06/12/stack-traces-and-the-errors-package" target="_blank" rel="noopener">pkg/errors</a> 包。文章 <a href="https://dave.cheney.net/2016/04/27/dont-just-check-errors-handle-them-gracefully" target="_blank" rel="noopener">Don’t just check errors, handle them gracefully</a> 对每个人来说都是在必读列表中的。  </p>
+<p>在其他语言中对错误的处理有一些显著的痛点，如果 Go 的处理有一点繁琐的话，那么它带来的是更多的好处。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatPay.png" alt="郑  君 WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="郑  君 Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/go/" rel="tag"># go</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/05/学习笔记/linux/centos/centos7-2-环境搭建/" rel="next" title="centos7.2 环境搭建">
+                <i class="fa fa-chevron-left"></i> centos7.2 环境搭建
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/11/语言相关/javascript/web-网页高宽度/" rel="prev" title="web-网页高宽度">
+                web-网页高宽度 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="郑  君" />
+            
+              <p class="site-author-name" itemprop="name">郑  君</p>
+              <p class="site-description motion-element" itemprop="description">C++，golang，Java，Python，Kotlin，Web，前端，后端，全栈，Nodejs</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">519</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">63</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">159</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/tyler2018" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:zhengjun2018@gmail.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Go-语言的错误处理"><span class="nav-number">1.</span> <span class="nav-text">Go 语言的错误处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Non错误"><span class="nav-number">1.1.</span> <span class="nav-text">Non错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#忽略错误"><span class="nav-number">1.2.</span> <span class="nav-text">忽略错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连续的错误处理"><span class="nav-number">1.3.</span> <span class="nav-text">连续的错误处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#改进错误处理"><span class="nav-number">1.4.</span> <span class="nav-text">改进错误处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异步错误处理"><span class="nav-number">1.5.</span> <span class="nav-text">异步错误处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后总结"><span class="nav-number">1.6.</span> <span class="nav-text">最后总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.0.6</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.6"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content
+                if (!(data.content))
+                {
+                    alert("文章内容不能为空，后面代码没处理这个情况，这里暂时处理一下，可能有隐患。");
+                }else{
+                  content = data.content.trim().replace(/<[^>]+>/g,"");
+                }
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="学习Java springMVC的系列文章，在这里使用MyBatis,easyUI实现CRUD操作样例-R操作。 视频发布在youtube上面了https://youtu.be/F44LqKdADwE优酷上面的链接http://v.youku.com/v_show/id_XMjgwMTQwMzE1Mg==.html?f=49760672">
+<meta name="keywords" content="springMVC,MyBatis,easyUI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="007 使用MyBatis, easyUI实现CRUD操作样例-R操作(重构)">
+<meta property="og:url" content="http://zhengjunblog.top/2017/05/24/语言相关/Java/springMVC系列/007-使用MyBatis-easyUI实现CRUD操作样例-R操作-重构/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="学习Java springMVC的系列文章，在这里使用MyBatis,easyUI实现CRUD操作样例-R操作。 视频发布在youtube上面了https://youtu.be/F44LqKdADwE优酷上面的链接http://v.youku.com/v_show/id_XMjgwMTQwMzE1Mg==.html?f=49760672">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-24T05:18:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="007 使用MyBatis, easyUI实现CRUD操作样例-R操作(重构)">
+<meta name="twitter:description" content="学习Java springMVC的系列文章，在这里使用MyBatis,easyUI实现CRUD操作样例-R操作。 视频发布在youtube上面了https://youtu.be/F44LqKdADwE优酷上面的链接http://v.youku.com/v_show/id_XMjgwMTQwMzE1Mg==.html?f=49760672">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="http://zhengjunblog.top/2017/05/24/语言相关/Java/springMVC系列/007-使用MyBatis-easyUI实现CRUD操作样例-R操作-重构/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>007 使用MyBatis, easyUI实现CRUD操作样例-R操作(重构) | 郑君的学习笔记</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">郑君的学习笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">要比昨天进步一点点</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">63</span>
+      </a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">519</span>
+      </a>
+</li>
+
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/05/24/语言相关/Java/springMVC系列/007-使用MyBatis-easyUI实现CRUD操作样例-R操作-重构/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">007 使用MyBatis, easyUI实现CRUD操作样例-R操作(重构)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-24T22:11:39+08:00">2017-05-24</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端/" itemprop="url" rel="index"><span itemprop="name">后端</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端/springMVC实践系列/" itemprop="url" rel="index"><span itemprop="name">springMVC实践系列</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>学习Java springMVC的系列文章，在这里使用MyBatis,easyUI实现CRUD操作样例-R操作。</p>
+<p>视频发布在youtube上面了<br><a href="https://youtu.be/F44LqKdADwE" target="_blank" rel="noopener">https://youtu.be/F44LqKdADwE</a><br>优酷上面的链接<br><a href="http://v.youku.com/v_show/id_XMjgwMTQwMzE1Mg==.html?f=49760672" target="_blank" rel="noopener">http://v.youku.com/v_show/id_XMjgwMTQwMzE1Mg==.html?f=49760672</a></p>
+<a id="more"></a>
+<h2 id="007-使用MyBatis-easyUI实现CRUD操作样例-R操作-重构"><a href="#007-使用MyBatis-easyUI实现CRUD操作样例-R操作-重构" class="headerlink" title="007 使用MyBatis,easyUI实现CRUD操作样例-R操作(重构)"></a>007 使用MyBatis,easyUI实现CRUD操作样例-R操作(重构)</h2><p>接着006的项目操作。做完007之后，更新了一下模板，当前版本0.0.2</p>
+<p>本次先记录获取用户列表部分。这次更新时间间隔比较久，因为接触了新东西，easyUI，jquery，java script，花了些时间。<br>还有对mybatis的了解更进了一步，学到了更复杂的SQL语句的映射方法。</p>
+<p>提供SQL脚本，使用存储过程生成数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">delete from user</span><br><span class="line"></span><br><span class="line">DROP PROCEDURE dowhile;</span><br><span class="line"></span><br><span class="line">DELIMITER //  </span><br><span class="line">DROP PROCEDURE IF EXISTS dowhile //</span><br><span class="line">CREATE PROCEDURE dowhile()    </span><br><span class="line"> BEGIN   </span><br><span class="line">  DECLARE age INT DEFAULT 25;</span><br><span class="line">  DECLARE i INT DEFAULT 1;  </span><br><span class="line">  DECLARE teacherId INT DEFAULT 1;</span><br><span class="line">   DECLARE gender CHAR(1) charset &apos;utf8&apos;;</span><br><span class="line">   WHILE i&lt;=500000 DO</span><br><span class="line">    SET age = FLOOR(20+RAND()*15);</span><br><span class="line">    SET teacherId = ROUND(RAND()) + 1;</span><br><span class="line">    SET gender = SUBSTRING(&quot;男女&quot;,FLOOR(1+2*RAND()),1);</span><br><span class="line">     INSERT INTO USER(id,name,age,email,gender,createTime,loginTime,teacherId) VALUES (i,CONCAT(&apos;user&apos;,i),age,&apos;user@126.com&apos;,gender,current_timestamp(),current_timestamp(),teacherId);   </span><br><span class="line">    SET i=i+1;   </span><br><span class="line">   END WHILE;  </span><br><span class="line"> END;</span><br><span class="line"> //  </span><br><span class="line"></span><br><span class="line">call dowhile();</span><br></pre></td></tr></table></figure>
+<p>修改完数据库之后，要修改一下测试类里面的断言判断，改成user1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">assertTrue(user.getName().equals(&quot;student1&quot;));</span><br></pre></td></tr></table></figure>
+<p>HTTP GET 请求/users 返回users列表<br>HTTP GET 请求/users/1 返回id=1的user信息<br>HTTP POST 请求/users 带着一个user对象JSON格式创建一个新的user<br>HTTP PUT 请求/users/1 带着一个user对象JSON格式更新id=1的user信息<br>HTTP DELETE 请求/users/1 删除id=1的user</p>
+<p>这里使用fastjson来处理json相关信息，在springmvc.xml里面添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 对于mvc没有映射过的请求，交给容器默认handler来处理，例如：js,css等静态资源 --&gt;</span><br><span class="line">&lt;mvc:default-servlet-handler /&gt;</span><br><span class="line">&lt;mvc:annotation-driven&gt;</span><br><span class="line">  &lt;mvc:message-converters register-defaults=&quot;true&quot;&gt;</span><br><span class="line">    &lt;bean class=&quot;com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter&quot;&gt;  </span><br><span class="line">      &lt;property name=&quot;supportedMediaTypes&quot; value=&quot;application/json&quot;/&gt;</span><br><span class="line">      &lt;!--设置fastjson特性--&gt;</span><br><span class="line">      &lt;property name=&quot;features&quot;&gt;</span><br><span class="line">        &lt;array&gt;</span><br><span class="line">          &lt;!--设置null值也要输出，fastjson默认是关闭的--&gt;</span><br><span class="line">          &lt;value&gt;WriteMapNullValue&lt;/value&gt;</span><br><span class="line">          &lt;!--设置使用文本方式输出日期，fastjson默认是long--&gt;</span><br><span class="line">          &lt;value&gt;WriteDateUseDateFormat&lt;/value&gt;</span><br><span class="line">        &lt;/array&gt;</span><br><span class="line">      &lt;/property&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">  &lt;/mvc:message-converters&gt;  </span><br><span class="line">&lt;/mvc:annotation-driven&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="查询所有信息"><a href="#查询所有信息" class="headerlink" title="查询所有信息"></a>查询所有信息</h3><p>涉及到mybatis 1对1联表查询，多对多的复杂查询后面在做练习。<br>user表中定义的是一个teacherID的外键。<br>修改user实体类，增加教师对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 实现1对1的查询支持</span><br><span class="line">*/</span><br><span class="line">private Teacher teacher;</span><br></pre></td></tr></table></figure>
+<p>修改UserMapper和TeacherMapper增加分页查询接口，获取记录个数的接口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * return seleted users by paginition</span><br><span class="line"> *</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line">List&lt;User&gt; selectUsersPaginition(HashMap&lt;String, Integer&gt; offsetLimit);</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * return records count</span><br><span class="line"> *</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line">long getCount();</span><br></pre></td></tr></table></figure>
+<p>修改对应的mapping里面的UserMapper.xml增加selectUsers等操作，这里的id就是mapper里面新增接口的名字，这里使用了最简单的方式。在学习的过程中了解到还有通用的支持多个数据库的分页插件的方式。暂时先不研究那个了。后期有需要再看。下面是链接<br><a href="https://github.com/pagehelper/Mybatis-PageHelper/blob/master/wikis/zh/HowToUse.md" target="_blank" rel="noopener">https://github.com/pagehelper/Mybatis-PageHelper/blob/master/wikis/zh/HowToUse.md</a><br>这里要说明一下，因为数据库表里面user只有teacherId这个外键，所以要在这里特殊处理一下才能获取到类成员对象的属性值。<br>还遇到一个问题，就是user和teacher表的字段名是相同的，造成映射的时候区分不出来。最好的方法就是建表的时候避免相同的字段名，那么对于已有表可以修改映射文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&lt;resultMap id=&quot;BaseResultMapRename&quot; type=&quot;com.study.model.User&quot;&gt;</span><br><span class="line">	&lt;id column=&quot;uId&quot; jdbcType=&quot;BIGINT&quot; property=&quot;id&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;uName&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;name&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;uAge&quot; jdbcType=&quot;INTEGER&quot; property=&quot;age&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;uEmail&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;email&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;uCreateTime&quot; jdbcType=&quot;TIMESTAMP&quot; property=&quot;createTime&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;uLoginTime&quot; jdbcType=&quot;TIMESTAMP&quot; property=&quot;loginTime&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;uTeacherId&quot; jdbcType=&quot;BIGINT&quot; property=&quot;teacherId&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;uGender&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;gender&quot; /&gt;</span><br><span class="line">&lt;/resultMap&gt;</span><br><span class="line">&lt;sql id=&quot;Base_Column_ListRename&quot;&gt;</span><br><span class="line">	u.id as uId, u.name as uName, u.age as uAge, u.email as uEmail,</span><br><span class="line">	u.createTime as uCreateTime, u.loginTime as uLoginTime, u.teacherId as</span><br><span class="line">	uTeacherId, u.gender as uGender</span><br><span class="line">&lt;/sql&gt;</span><br><span class="line"></span><br><span class="line">&lt;select id=&quot;selectUsers&quot; resultMap=&quot;UnionResultMap&quot;&gt;</span><br><span class="line">	select</span><br><span class="line">	&lt;include refid=&quot;Base_Column_ListRename&quot; /&gt;</span><br><span class="line">	,</span><br><span class="line">	&lt;include refid=&quot;com.study.dao.TeacherMapper.Base_Column_ListRename&quot; /&gt;</span><br><span class="line">	from user u, teacher t</span><br><span class="line">	where u.teacherId = t.id order by u.id</span><br><span class="line">&lt;/select&gt;</span><br><span class="line">&lt;resultMap id=&quot;UnionResultMap&quot; type=&quot;com.study.model.User&quot;</span><br><span class="line">	extends=&quot;BaseResultMapRename&quot;&gt;</span><br><span class="line">	&lt;association property=&quot;teacher&quot; column=&quot;teacherId&quot;</span><br><span class="line">		javaType=&quot;com.study.model.Teacher&quot; resultMap=&quot;com.study.dao.TeacherMapper.BaseResultMapRename&quot;&gt;</span><br><span class="line">	&lt;/association&gt;</span><br><span class="line">&lt;/resultMap&gt;</span><br><span class="line">&lt;select id=&quot;selectUsersPaginition&quot; parameterType=&quot;HashMap&quot;</span><br><span class="line">	resultMap=&quot;UnionResultMap&quot;&gt;</span><br><span class="line">	select</span><br><span class="line">	&lt;include refid=&quot;Base_Column_ListRename&quot; /&gt;</span><br><span class="line">	,</span><br><span class="line">	&lt;include refid=&quot;com.study.dao.TeacherMapper.Base_Column_ListRename&quot; /&gt;</span><br><span class="line">	from user u, teacher t</span><br><span class="line">	where u.teacherId = t.id order by u.id limit #&#123;offset&#125;,#&#123;pagesize&#125;</span><br><span class="line">&lt;/select&gt;</span><br><span class="line">&lt;select id=&quot;getCount&quot; resultType=&quot;long&quot;&gt;</span><br><span class="line">	select count(*) from user</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure>
+<p>teacherMapper.xml里面添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;resultMap id=&quot;BaseResultMapRename&quot; type=&quot;com.study.model.Teacher&quot;&gt;</span><br><span class="line">	&lt;id column=&quot;tId&quot; jdbcType=&quot;BIGINT&quot; property=&quot;id&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;tName&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;name&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;tAge&quot; jdbcType=&quot;INTEGER&quot; property=&quot;age&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;tGender&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;gender&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;tCreateTime&quot; jdbcType=&quot;TIMESTAMP&quot; property=&quot;createTime&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;tLoginTime&quot; jdbcType=&quot;TIMESTAMP&quot; property=&quot;loginTime&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;tEmail&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;email&quot; /&gt;</span><br><span class="line">&lt;/resultMap&gt;</span><br><span class="line">&lt;sql id=&quot;Base_Column_ListRename&quot;&gt;</span><br><span class="line">	t.id as tId, t.name as tName, t.age as tAge, t.gender as tGender, t.createTime as tCreateTime, t.loginTime as tLoginTime, t.email as tEmail</span><br><span class="line">&lt;/sql&gt;</span><br></pre></td></tr></table></figure>
+<p>修改IUserService和IUserServiceImpl增加该接口和实现，Teacher也是一样的操作<br>这里要注意引入的List的包是util里面的<br><code>import java.util.List;</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public List&lt;User&gt; getUsersPagenition(int page, int rows);</span><br><span class="line"></span><br><span class="line">public long getCount();</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public List&lt;User&gt; getUsersPagenition(int page, int rows)</span><br><span class="line">&#123;</span><br><span class="line">	HashMap&lt;String, Integer&gt; offsetLimit = new HashMap&lt;String, Integer&gt;();</span><br><span class="line">	//page mysql start from 0, param page start from 1</span><br><span class="line">    offsetLimit.put(&quot;offset&quot;, (page - 1) * rows);</span><br><span class="line">    offsetLimit.put(&quot;pagesize&quot;, rows);</span><br><span class="line">	return userMapper.selectUsersPaginition(offsetLimit);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public long getCount()</span><br><span class="line">&#123;</span><br><span class="line">	return userMapper.getCount();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在测试类里面添加代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">public void TestGetCount()</span><br><span class="line">&#123;</span><br><span class="line">   long recordCount = userService.getCount();</span><br><span class="line">   logger.info(&quot;TestGetCount: &quot; + recordCount);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Test</span><br><span class="line">public void TestGetUsersPaginition()</span><br><span class="line">&#123;</span><br><span class="line">   List&lt;User&gt; users = userService.getUsersPagenition(1, 13);</span><br><span class="line">   logger.info(&quot;TestGetUsersPaginition: &quot; + JSON.toJSONStringWithDateFormat(users,&quot;yyyy-MM-dd HH:mm:ss&quot;));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行后应该可以看到返回的用户信息列表</p>
+<p>在index.html里面增加一个超链接，获取所有用户信息的Get请求users</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;users&quot;&gt;Get Users&lt;/a&gt;</span><br><span class="line">&lt;br /&gt;</span><br><span class="line">&lt;br /&gt;</span><br></pre></td></tr></table></figure>
+<p>在Controller类里面，因为要访问数据库，所以需要添加service，同时也把日志类加上,创建Controller，返回users，对应view目录下面的users.jsp</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">private static final Logger logger = LogManager.getLogger(UserController.class.getName());</span><br><span class="line"></span><br><span class="line">@Autowired</span><br><span class="line">IUserService userService;</span><br><span class="line"></span><br><span class="line">@RequestMapping(value = &quot;/users&quot;, method = RequestMethod.GET)</span><br><span class="line">public String getUsersProc()</span><br><span class="line">&#123;</span><br><span class="line">	logger.info(&quot;getUsersProc&quot;);</span><br><span class="line">	return &quot;users&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建一个返回json数据的服务接口getUsers，给easyui调用，这里使用分页查询<br>jQuery EasyUI向后台请求datagrid(数据表格)时会传递两个参数：<br>可以根据这两个参数对数据库进行分页查询。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// datagrid请求数据参数：</span><br><span class="line">page：&quot;1&quot;,  //当前页</span><br><span class="line">rows：&quot;10&quot; //数据条数</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@ResponseBody</span><br><span class="line">@RequestMapping(value = &quot;/getUsers&quot;, method = RequestMethod.GET)</span><br><span class="line">public JSONObject users(HttpServletRequest request, HttpServletResponse response)</span><br><span class="line">&#123;</span><br><span class="line">	int page = ServletRequestUtils.getIntParameter(request, &quot;page&quot;, 1);// 默认值为1</span><br><span class="line">	int rows = ServletRequestUtils.getIntParameter(request, &quot;rows&quot;, 0);</span><br><span class="line"></span><br><span class="line">	long rowCount = userService.getCount();</span><br><span class="line">	List&lt;User&gt; users = userService.getUsersPagenition(page, rows);</span><br><span class="line">	JSONObject jsonObject = new JSONObject();</span><br><span class="line">	jsonObject.put(&quot;rows&quot;, users);</span><br><span class="line">	jsonObject.put(&quot;total&quot;, rowCount);</span><br><span class="line"></span><br><span class="line">	logger.info(&quot;getUsers api: page:&quot; + page + &quot; rows:&quot; + rows + &quot;jsonObj:&quot; + jsonObject.toJSONString());</span><br><span class="line">	return jsonObject;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编辑users.jsp，使用easyui显示数据<br>在/src/main/webapp目录下面建立/commons/jsExt目录用来放js外部引用的包<br>把easyui整个目录拷贝过来，然后清理一下不用的目录demo*,src目录，这里使用的是jquery-easyui-1.5.2版本<br>在users.jsp里面添加引用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">&lt;!-- 下面两个必须引用 --&gt;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot;</span><br><span class="line">	src=&quot;commons/jsExt/jquery-easyui-1.5.2/jquery.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot;</span><br><span class="line">	src=&quot;commons/jsExt/jquery-easyui-1.5.2/jquery.easyui.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;!-- 国际化文件 --&gt;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot;</span><br><span class="line">	src=&quot;commons/jsExt/jquery-easyui-1.5.2/locale/easyui-lang-zh_CN.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;!-- 默认样式 --&gt;</span><br><span class="line">&lt;link rel=&quot;stylesheet&quot;</span><br><span class="line">	href=&quot;commons/jsExt/jquery-easyui-1.5.2/themes/default/easyui.css&quot;&gt;</span><br><span class="line">&lt;!-- 图标 --&gt;</span><br><span class="line">&lt;link rel=&quot;stylesheet&quot;</span><br><span class="line">	href=&quot;commons/jsExt/jquery-easyui-1.5.2/themes/icon.css&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;/head&gt;</span><br></pre></td></tr></table></figure>
+<p>body里面添加数据表格控件，这里高度使用100%的时候只有表头显示出来了，不知道为什么，所以使用绝对值定义。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">	&lt;div class=&quot;easyui-layout&quot; style=&quot;margin: 20px 20px 20px 20px;&quot;&gt;</span><br><span class="line">		&lt;table id=&quot;dg&quot; class=&quot;easyui-datagrid&quot; title=&quot;用户列表&quot;</span><br><span class="line">			style=&quot;width: 100%; height: 400px;&quot;</span><br><span class="line">			data-options=&quot;rownumbers:true,striped:true,fitColumns:true,singleSelect:true,autoRowHeight:true,pagination:true,</span><br><span class="line">				pageSize:10,url:&apos;$&#123;pageContext.request.contextPath&#125;/getUsers&apos;,method:&apos;get&apos;,toolbar:&apos;#toolbar&apos;&quot;&gt;</span><br><span class="line">			&lt;thead&gt;</span><br><span class="line">				&lt;tr&gt;</span><br><span class="line">					&lt;th data-options=&quot;field:&apos;id&apos;,width:100&quot;&gt;ID&lt;/th&gt;</span><br><span class="line">					&lt;th data-options=&quot;field:&apos;name&apos;,width:100&quot;&gt;name&lt;/th&gt;</span><br><span class="line">					&lt;th data-options=&quot;field:&apos;age&apos;,width:100&quot;&gt;Age&lt;/th&gt;</span><br><span class="line">					&lt;th data-options=&quot;field:&apos;gender&apos;,width:60&quot;&gt;Gender&lt;/th&gt;</span><br><span class="line">					&lt;th data-options=&quot;field:&apos;email&apos;,width:150&quot;&gt;Email&lt;/th&gt;</span><br><span class="line">					&lt;th data-options=&quot;field:&apos;createTime&apos;,width:150&quot;&gt;Create Time&lt;/th&gt;</span><br><span class="line">					&lt;th data-options=&quot;field:&apos;loginTime&apos;,width:150&quot;&gt;Login Time&lt;/th&gt;</span><br><span class="line">					&lt;th data-options=&quot;field:&apos;teacher&apos;,width:100&quot; formatter=&quot;teacherFormatter&quot;&gt;Teacher Name&lt;/th&gt;</span><br><span class="line">				&lt;/tr&gt;</span><br><span class="line">			&lt;/thead&gt;</span><br><span class="line">		&lt;/table&gt;</span><br><span class="line">		&lt;div id=&quot;toolbar&quot;&gt;</span><br><span class="line">			&lt;a href=&quot;#&quot; class=&quot;easyui-linkbutton&quot;</span><br><span class="line">				data-options=&quot;iconCls:&apos;icon-add&apos;&quot; onclick=&quot;insert()&quot;&gt;添加&lt;/a&gt; &lt;a</span><br><span class="line">				href=&quot;#&quot; class=&quot;easyui-linkbutton&quot;</span><br><span class="line">				data-options=&quot;iconCls:&apos;icon-edit&apos;&quot; onclick=&quot;edit()&quot;&gt;编辑&lt;/a&gt; &lt;a</span><br><span class="line">				href=&quot;#&quot; class=&quot;easyui-linkbutton&quot;</span><br><span class="line">				data-options=&quot;iconCls:&apos;icon-remove&apos;&quot; onclick=&quot;del()&quot;&gt;删除&lt;/a&gt;</span><br><span class="line">		&lt;/div&gt;</span><br><span class="line">	&lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br></pre></td></tr></table></figure>
+<p>这里有个需要注意的地方，就是teacher是一个类对象，使用了formatter来格式化输出teacher的名字。在commons目录下面建立一个js目录，建立teacherFormatter.js文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function teacherFormatter(val,row)</span><br><span class="line">&#123;</span><br><span class="line">	return row.teacher.name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后别忘了要添加刚刚创立的js文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">&lt;!-- 自定义js --&gt;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;commons/js/teacherFormatter.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;/head&gt;</span><br></pre></td></tr></table></figure>
+<p>添加到tomcat之后，打开chrome访问<a href="http://localhost:8190/template/" target="_blank" rel="noopener">http://localhost:8190/template/</a><br>command+alt+i打开开发者工具<br>点击Get Users就会打开用户列表页面。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">如果有需要交流的，或者有更好的实现方法的同学，欢迎通过电子邮件来互通有无，共同进步。</span><br><span class="line">ascomtohom@126.com</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatPay.png" alt="郑  君 WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="郑  君 Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/springMVC/" rel="tag"># springMVC</a>
+          
+            <a href="/tags/MyBatis/" rel="tag"># MyBatis</a>
+          
+            <a href="/tags/easyUI/" rel="tag"># easyUI</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/20/语言相关/Java/springMVC系列/002-制作archetype模板（重构）-2017-05-31Update/" rel="next" title="002 制作archetype模板（重构）(2017.05.31Update)">
+                <i class="fa fa-chevron-left"></i> 002 制作archetype模板（重构）(2017.05.31Update)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/27/语言相关/Java/springMVC系列/009-spring-mvc-controller-unit-test/" rel="prev" title="009 spring mvc controller unit test">
+                009 spring mvc controller unit test <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="郑  君" />
+            
+              <p class="site-author-name" itemprop="name">郑  君</p>
+              <p class="site-description motion-element" itemprop="description">C++，golang，Java，Python，Kotlin，Web，前端，后端，全栈，Nodejs</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">519</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">63</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">159</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/tyler2018" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:zhengjun2018@gmail.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#007-使用MyBatis-easyUI实现CRUD操作样例-R操作-重构"><span class="nav-number">1.</span> <span class="nav-text">007 使用MyBatis,easyUI实现CRUD操作样例-R操作(重构)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查询所有信息"><span class="nav-number">1.1.</span> <span class="nav-text">查询所有信息</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.0.6</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.6"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content
+                if (!(data.content))
+                {
+                    alert("文章内容不能为空，后面代码没处理这个情况，这里暂时处理一下，可能有隐患。");
+                }else{
+                  content = data.content.trim().replace(/<[^>]+>/g,"");
+                }
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="flask email service学习笔记使用flask搭建一个邮件服务。提供RESTFul类型的api接口。接收，返回JSON数据这里没有做更细致的优化配置，只是把路走通。关于nginx等的如何优化配置这里没有描述。视频分享到youtube上了。https://youtu.be/PsCGu52T98I优酷链接http://v.youku.com/v_show/id_XMzAwODM5ODU2">
+<meta name="keywords" content="Python,flask,email">
+<meta property="og:type" content="article">
+<meta property="og:title" content="flask_email_service学习笔记">
+<meta property="og:url" content="http://zhengjunblog.top/2017/12/13/语言相关/python/后端/flask-email-service学习笔记/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="flask email service学习笔记使用flask搭建一个邮件服务。提供RESTFul类型的api接口。接收，返回JSON数据这里没有做更细致的优化配置，只是把路走通。关于nginx等的如何优化配置这里没有描述。视频分享到youtube上了。https://youtu.be/PsCGu52T98I优酷链接http://v.youku.com/v_show/id_XMzAwODM5ODU2">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://zhengjunblog.top/2017/12/13/语言相关/python/后端/flask-email-service学习笔记/24d43a84.png">
+<meta property="og:image" content="http://zhengjunblog.top/2017/12/13/语言相关/python/后端/flask-email-service学习笔记/7ff3af41.png">
+<meta property="og:updated_time" content="2018-02-24T12:26:11.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="flask_email_service学习笔记">
+<meta name="twitter:description" content="flask email service学习笔记使用flask搭建一个邮件服务。提供RESTFul类型的api接口。接收，返回JSON数据这里没有做更细致的优化配置，只是把路走通。关于nginx等的如何优化配置这里没有描述。视频分享到youtube上了。https://youtu.be/PsCGu52T98I优酷链接http://v.youku.com/v_show/id_XMzAwODM5ODU2">
+<meta name="twitter:image" content="http://zhengjunblog.top/2017/12/13/语言相关/python/后端/flask-email-service学习笔记/24d43a84.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="http://zhengjunblog.top/2017/12/13/语言相关/python/后端/flask-email-service学习笔记/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>flask_email_service学习笔记 | 郑君的学习笔记</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">郑君的学习笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">要比昨天进步一点点</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">63</span>
+      </a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">519</span>
+      </a>
+</li>
+
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/12/13/语言相关/python/后端/flask-email-service学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">flask_email_service学习笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-13T20:28:14+08:00">2017-12-13</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端/" itemprop="url" rel="index"><span itemprop="name">后端</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="flask-email-service学习笔记"><a href="#flask-email-service学习笔记" class="headerlink" title="flask email service学习笔记"></a>flask email service学习笔记</h1><p>使用flask搭建一个邮件服务。提供RESTFul类型的api接口。接收，返回JSON数据<br>这里没有做更细致的优化配置，只是把路走通。关于nginx等的如何优化配置这里没有描述。<br>视频分享到youtube上了。<br><a href="https://youtu.be/PsCGu52T98I" target="_blank" rel="noopener">https://youtu.be/PsCGu52T98I</a><br>优酷链接<br><a href="http://v.youku.com/v_show/id_XMzAwODM5ODU2MA==.html?f=50944544" target="_blank" rel="noopener">http://v.youku.com/v_show/id_XMzAwODM5ODU2MA==.html?f=50944544</a><br>GIT地址<br><a href="https://github.com/aslucky/mailService.git" target="_blank" rel="noopener">https://github.com/aslucky/mailService.git</a><br><a id="more"></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">POST 创建新任务-发送邮件</span><br><span class="line">http://[hostname]/api/v1.0/emails</span><br></pre></td></tr></table></figure></p>
+<p>Flask工作流程<br>客户端——web 服务器——WSGI——application<br><img alt="24d43a84.png" src="/2017/12/13/语言相关/python/后端/flask-email-service学习笔记/24d43a84.png" width="" height=""></p>
+<p>WSGI:Web Server Gateway Interface，看图好理解一些，就是个中间件规范<br><img alt="7ff3af41.png" src="/2017/12/13/语言相关/python/后端/flask-email-service学习笔记/7ff3af41.png" width="" height=""></p>
+<p>用到的技术：nginx+gunicorn+celery(RabbitMQ)+flower+Supervisor+python3+logging<br>本次的开发环境是MAC OS 10.12 + 本机环境是python2.7虚拟环境是python3.6.2<br>简要说明一下上面用到的库都是做什么的。<br>nginx：是一个Web服务器，也可以用作反向代理，负载平衡器和HTTP缓存<br>gunicorn(Green Unicorn)：Python WSGI HTTP Server for UNIX，是WSGI的一个实现。<br>celery:是一个异步分布式任务队列，需要RabbitMQ或者Redis来配合使用。<br>它的基本工作就是管理分配任务到不同的服务器，并且取得结果。至于说服务器之间是如何进行通信的？这个Celery本身不能解决。<br>所以，RabbitMQ作为一个消息队列管理工具被引入到和Celery集成，负责处理服务器之间的通信任务。<br>RabbitMQ:一套开源（MPL）的消息队列服务软件<br><a href="http://flower-docs-cn.readthedocs.io/zh/latest/index.html" target="_blank" rel="noopener">flower</a>：Flower是基于web的监控和管理Celery的工具.<br>Supervisor:是一个C/S架构的进程管理工具，可以很方便的用来启动、重启、关闭进程</p>
+<p>实际部署的时候，只需要运行nginx+supervisor就可以了</p>
+<h2 id="搭建开发环境"><a href="#搭建开发环境" class="headerlink" title="搭建开发环境"></a>搭建开发环境</h2><p>这里使用的是anaconda所以使用conda来创建一个python3.6.x的虚拟环境</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">安装nginx，这里没有详细记录步骤，中间可能会遇到问题，网上搜索一下就可以解决了</span><br><span class="line">brew update</span><br><span class="line">brew install nginx</span><br><span class="line"># 安装RabbitMQ</span><br><span class="line">brew install rabbitmq</span><br><span class="line"># 查看一下现有虚拟环境</span><br><span class="line">conda env list</span><br><span class="line"># 创建一个python3的虚拟环境</span><br><span class="line">conda create --name flaskMailPy3 python=3.6.2</span><br><span class="line"># 激活虚拟环境</span><br><span class="line">source activate flaskMailPy3</span><br><span class="line"># 安装flask</span><br><span class="line">pip install flask</span><br><span class="line"># 安装flask-mail扩展</span><br><span class="line">pip install flask-mail</span><br><span class="line"># 安装gunicorn</span><br><span class="line">pip install gunicorn</span><br><span class="line"># 安装celery</span><br><span class="line">pip install celery</span><br><span class="line"># 安装flower</span><br><span class="line">pip install flower</span><br><span class="line"># 安装supervisor</span><br><span class="line">pip install supervisor</span><br></pre></td></tr></table></figure>
+<h3 id="使用nginx"><a href="#使用nginx" class="headerlink" title="使用nginx"></a>使用nginx</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 查看安装信息(经常用到, 比如查看安装目录等)</span><br><span class="line">brew info nginx</span><br><span class="line"># 启动nginx服务</span><br><span class="line">brew services start nginx</span><br><span class="line"># 关闭nginx服务</span><br><span class="line">brew services stop nginx</span><br><span class="line">重新加载nginx</span><br><span class="line">nginx -s reload</span><br><span class="line">nginx</span><br><span class="line">停止</span><br><span class="line">nginx -s stop</span><br><span class="line"># 查看所有进程监听的端口</span><br><span class="line">sudo lsof -i -P | grep -i &quot;listen&quot;</span><br><span class="line"># 查看某个端口是否被占用</span><br><span class="line">lsof -i:8000</span><br></pre></td></tr></table></figure>
+<p>利用<a href="http://localhost:8080进行访问" target="_blank" rel="noopener">http://localhost:8080进行访问</a><br>配置本地映射到gnunicorn</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">        listen       8080;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        #charset koi8-r;</span><br><span class="line"></span><br><span class="line">        # access_log  logs/host.access.log  main;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">            #root   html;</span><br><span class="line">            #index  index.html index.htm;</span><br><span class="line">            proxy_pass http://127.0.0.1:8000;</span><br><span class="line">            proxy_redirect off;</span><br><span class="line">            proxy_set_header Host $host:80;</span><br><span class="line">            proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>启动nginx。以下部分通过配置supervisor启动即可。</p>
+<h3 id="使用gunicorn"><a href="#使用gunicorn" class="headerlink" title="使用gunicorn"></a>使用gunicorn</h3><p>参见gunicorn_cofig.py配置文件<br>启动gunicorn<br><code>gunicorn mailServerStudy:app -p mailServerStudy.pid -c gunicorn_config.py</code><br>停止gunicorn</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat *.pid</span><br><span class="line">kill xxx</span><br></pre></td></tr></table></figure>
+<p>-D 参数可以后台运行，避免关闭控制台后进程退出</p>
+<h3 id="使用Celery-Flower"><a href="#使用Celery-Flower" class="headerlink" title="使用Celery+Flower"></a>使用Celery+Flower</h3><p><a href="http://www.celeryproject.org/" target="_blank" rel="noopener">http://www.celeryproject.org/</a></p>
+<p>正确使用celery的7条建议<br>No.1 不要使用关系型数据库来作为AMQP的代理<br>NO.2 使用多个Queues（队列），不要只是使用默认的那个（default）<br>NO.3 使用优先级wokers<br>No.4 使用Celery’s的错误处理机制<br>No.5 使用Flower<br>No.6 只有真正需要才追踪task的结果<br>No.7 不要通过数据库或者ORM对象的方式来执行任务</p>
+<p>使用flower管理任务：<br>打开浏览器 <a href="http://localhost:5555/" target="_blank" rel="noopener">http://localhost:5555/</a></p>
+<h3 id="使用RabbitMQ"><a href="#使用RabbitMQ" class="headerlink" title="使用RabbitMQ"></a>使用RabbitMQ</h3><p><a href="https://www.rabbitmq.com/" target="_blank" rel="noopener">https://www.rabbitmq.com/</a></p>
+<p>安装路径/usr/local/sbin，不会自动添加到环境变量中，需要自己设置一下。<br>还需要配置一下系统主机名（system host name），因为rabbitmq使用主机名在各端点之间做通讯的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo scutil --set HostName myhost.local</span><br><span class="line"># 然后添加到/etc/hosts</span><br><span class="line">127.0.0.1       localhost myhost myhost.local</span><br></pre></td></tr></table></figure>
+<p>常用命令，注意要给rabbitmq对应目录的写权限，否则运行时会提示错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">前台运行</span><br><span class="line">rabbitmq-server</span><br><span class="line">后台运行</span><br><span class="line">brew services start rabbitmq</span><br><span class="line">停止rabbitmq服务，这里特别说明不要使用kill来停止服务</span><br><span class="line">rabbitmqctl stop</span><br></pre></td></tr></table></figure>
+<h3 id="使用Supervisor"><a href="#使用Supervisor" class="headerlink" title="使用Supervisor"></a>使用Supervisor</h3><p>Supervisor python2 环境。官方还没有出py3的版本，不过不影响管理py3的进程。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># 创建默认的配置文件，默认会到/etc/下面找，如果自定义了路径可以使用-c来指定路径</span><br><span class="line">echo_supervisord_conf &gt; /etc/supervisord.conf</span><br><span class="line"># 要给写权限</span><br><span class="line">sudo chmod -R 777 /var/log/supervisor</span><br><span class="line"># 启动</span><br><span class="line">supervisord -c ~/Documents/java_library/supervisor.conf</span><br><span class="line"># 常用命令</span><br><span class="line"># 停止某一个进程，program_name 为 [program:x] 里的 x</span><br><span class="line">supervisorctl stop program_name</span><br><span class="line"># 启动某个进程</span><br><span class="line">supervisorctl start program_name</span><br><span class="line"># 重启某个进程</span><br><span class="line">supervisorctl restart program_name</span><br><span class="line"># 结束所有属于名为 groupworker 这个分组的进程 (start，restart 同理)</span><br><span class="line">supervisorctl stop groupworker:</span><br><span class="line"># 结束 groupworker:name1 这个进程 (start，restart 同理)</span><br><span class="line">supervisorctl stop groupworker:name1</span><br><span class="line"># 停止全部进程，注：start、restart、stop 都不会载入最新的配置文件</span><br><span class="line">supervisorctl stop all</span><br><span class="line"># 载入最新的配置文件，停止原有进程并按新的配置启动、管理所有进程</span><br><span class="line">supervisorctl reload</span><br><span class="line"># 根据最新的配置文件，启动新配置或有改动的进程，配置没有改动的进程不会受影响而重启</span><br><span class="line">supervisorctl update</span><br></pre></td></tr></table></figure>
+<p>配置文件说明：这里补充一下，视频里面忘了说这个文件了/etc/supervisord.conf<br>配置日志等文件的路径：这里要注意，默认是临时目录，会被系统清理掉，需要修改一下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[unix_http_server]</span><br><span class="line">file=/Users/zhengjun/Documents/java_library/supervisor/supervisor.sock   ; (the path to the socket file)</span><br><span class="line"></span><br><span class="line">[supervisord]</span><br><span class="line">logfile=/Users/zhengjun/Documents/java_library/supervisor//supervisord.log ; (main log file;default $CWD/supervisord.log)</span><br><span class="line">...</span><br><span class="line">pidfile=/Users/zhengjun/Documents/java_library/supervisor//supervisord.pid ; (supervisord pidfile;default supervisord.pid)</span><br></pre></td></tr></table></figure>
+<p>打开web管理支持：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[supervisorctl]</span><br><span class="line">serverurl=unix:///Users/zhengjun/Documents/java_library/supervisor//supervisor.sock ; use a unix:// URL  for a unix socket</span><br><span class="line">serverurl=http://127.0.0.1:9001 ; use an http:// url to specify an inet socket</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>这里引入程序的配置项，视频里面讲解的是这里引入的配置文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[include]</span><br><span class="line">files = /Users/zhengjun/project/PycharmProjects/mailServerStudy/app/*.conf</span><br></pre></td></tr></table></figure>
+<p>开机自动启动 Supervisord，这一步没有实际操作过，这里就是记录一下<br>引用至：<a href="http://www.restran.net/2015/10/04/supervisord-tutorial/" target="_blank" rel="noopener">http://www.restran.net/2015/10/04/supervisord-tutorial/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">添加到/etc/rc.local 里面的脚本中，需要添加在 exit 命令前，使用绝对路径</span><br><span class="line"># 如果是 Ubuntu 添加以下内容</span><br><span class="line">/usr/local/bin/supervisord -c /etc/supervisord.conf</span><br><span class="line"># 如果是 Centos 添加以下内容</span><br><span class="line">/usr/bin/supervisord -c /etc/supervisord.conf</span><br></pre></td></tr></table></figure>
+<p>还有个方法就是使用网友提供的各种系统的运行supervisor的脚本<br><a href="https://github.com/Supervisor/initscripts" target="_blank" rel="noopener">https://github.com/Supervisor/initscripts</a></p>
+<p>使用pycharm创建flask项目，指定flaskMailPy3环境。<br>右键Debug运行之后，点击控制台的链接，可以在浏览器中打开页面。<br>首先要做的是在上面添加utf-8编码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># coding:utf-8</span><br></pre></td></tr></table></figure>
+<p>添加发送邮件接口，直接看代码吧，东西不多。这里就不复制了。会在视频里面详细讲解</p>
+<p>补充说明：后来浏览网页的时候看到了一些开源的邮件库，下面是一个，还没具体查看。<br>envelopes：电子邮件库</p>
+<h1 id="flask-email-service学习笔记-html-图片（补充）"><a href="#flask-email-service学习笔记-html-图片（补充）" class="headerlink" title="flask email service学习笔记-html+图片（补充）"></a>flask email service学习笔记-html+图片（补充）</h1><p>上篇学习笔记的发送邮件中html正文中的图片是采用在html里面使用base64直接编码图片的方式发送的。<br>后来发现网易163的企业邮箱不支持这种内嵌的方式。<br>这里换一种更方便一些的方式。cid:imageName的方式。  </p>
+<p>视频分享:<br><a href="https://youtu.be/dS6UVMQaPCI" target="_blank" rel="noopener">youtube</a><br><a href="http://v.youku.com/v_show/id_XMzAyNTk1MzcwOA==.html?f=50944544" target="_blank" rel="noopener">优酷</a><br><a href="https://github.com/aslucky/mailService.git" target="_blank" rel="noopener">GIT</a></p>
+<p>html模板</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">	&lt;header&gt;&lt;/header&gt;</span><br><span class="line"></span><br><span class="line">	&lt;img height=&quot;120&quot; width=&quot;343&quot; style=&quot;text-align:center;margin-left:8%&quot; src=&quot;cid:invoice&quot; alt=&quot;增值税电子普通发票&quot;/&gt;</span><br><span class="line">	&lt;div&gt;</span><br><span class="line">		&lt;p&gt;尊敬的用户，您好:&lt;/p&gt;</span><br><span class="line">		&lt;p&gt;&lt;strong&gt;您申请的电子发票已投递成功&lt;/strong&gt;,请查收。&lt;br&gt;如您对发票信息有疑问请您联系商家或致电&lt;span&gt;400-xxx-xxxx</span><br><span class="line">&lt;/span&gt;&lt;/p&gt;</span><br><span class="line">		&lt;p&gt;xx电子发票服务&lt;/p&gt;</span><br><span class="line">	&lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br></pre></td></tr></table></figure>
+<p>代码修改</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># add html content png</span><br><span class="line">SITE_ROOT = os.path.realpath(os.path.dirname(__file__))</span><br><span class="line">imgPath = os.path.join(SITE_ROOT, &quot;templates&quot;, &quot;invoice.png&quot;)</span><br><span class="line"></span><br><span class="line">with open(imgPath, &apos;rb&apos;) as fp:</span><br><span class="line"> msg.attach(filename=imgPath, data=fp.read(),</span><br><span class="line">            content_type=&apos;application/octet-stream&apos;, disposition=&apos;inline&apos;,</span><br><span class="line">            headers=[(&apos;Content-ID&apos;, &apos;invoice&apos;)])</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatPay.png" alt="郑  君 WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="郑  君 Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/flask/" rel="tag"># flask</a>
+          
+            <a href="/tags/email/" rel="tag"># email</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/13/学习笔记/windows/MFC/CEdit/" rel="next" title="CEdit">
+                <i class="fa fa-chevron-left"></i> CEdit
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/14/语言相关/CPP/cpp_string/" rel="prev" title="cpp_string">
+                cpp_string <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="郑  君" />
+            
+              <p class="site-author-name" itemprop="name">郑  君</p>
+              <p class="site-description motion-element" itemprop="description">C++，golang，Java，Python，Kotlin，Web，前端，后端，全栈，Nodejs</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">519</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">63</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">159</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/tyler2018" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:zhengjun2018@gmail.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#flask-email-service学习笔记"><span class="nav-number">1.</span> <span class="nav-text">flask email service学习笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建开发环境"><span class="nav-number">1.1.</span> <span class="nav-text">搭建开发环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用nginx"><span class="nav-number">1.1.1.</span> <span class="nav-text">使用nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用gunicorn"><span class="nav-number">1.1.2.</span> <span class="nav-text">使用gunicorn</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Celery-Flower"><span class="nav-number">1.1.3.</span> <span class="nav-text">使用Celery+Flower</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用RabbitMQ"><span class="nav-number">1.1.4.</span> <span class="nav-text">使用RabbitMQ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Supervisor"><span class="nav-number">1.1.5.</span> <span class="nav-text">使用Supervisor</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#flask-email-service学习笔记-html-图片（补充）"><span class="nav-number">2.</span> <span class="nav-text">flask email service学习笔记-html+图片（补充）</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.0.6</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.6"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content
+                if (!(data.content))
+                {
+                    alert("文章内容不能为空，后面代码没处理这个情况，这里暂时处理一下，可能有隐患。");
+                }else{
+                  content = data.content.trim().replace(/<[^>]+>/g,"");
+                }
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
