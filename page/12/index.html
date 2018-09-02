@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">519</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">524</span>
       </a>
 </li>
 
@@ -312,6 +312,910 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/06/04/学习笔记/开源库/序列化/序列化库FlatBuffers/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/04/学习笔记/开源库/序列化/序列化库FlatBuffers/" itemprop="url">序列化库FlatBuffers</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-04T18:40:11+08:00">2018-06-04</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="http://google.github.io/flatbuffers/md__white_paper.html" target="_blank" rel="noopener">white papper</a></p>
+<p>FlatBuffers是一个开源的、跨平台的、高效的、提供了C++/Java接口的序列化工具库。它是Google专门为游戏开发或其他性能敏感的应用程序需求而创建。尤其更适用于移动平台，这些平台上内存大小及带宽相比桌面系统都是受限的，而应用程序比如游戏又有更高的性能要求。它将序列化数据存储在缓存中，这些数据既可以存储在文件中，又可以通过网络原样传输，而不需要任何解析开销。</p>
+<p><a href="https://github.com/google/flatbuffers" target="_blank" rel="noopener">github</a></p>
+<h2 id="为什么要使用Google-FlatBuffers"><a href="#为什么要使用Google-FlatBuffers" class="headerlink" title="为什么要使用Google FlatBuffers"></a>为什么要使用Google FlatBuffers</h2><ul>
+<li>对序列化数据的访问不需要打包和拆包——它将序列化数据存储在缓存中，这些数据既可以存储在文件中，又可以通过网络原样传输，而没有任何解析开销；</li>
+<li>内存效率和速度——访问数据时的唯一内存需求就是缓冲区，不需要额外的内存分配。 这里可查看详细的基准测试；</li>
+<li>扩展性、灵活性——它支持的可选字段意味着不仅能获得很好的前向/后向兼容性（对于长生命周期的游戏来说尤其重要，因为不需要每个新版本都更新所有数据）；</li>
+<li>最小代码依赖——仅仅需要自动生成的少量代码和一个单一的头文件依赖，很容易集成到现有系统中。再次，看基准部分细节；</li>
+<li>强类型设计——尽可能使错误出现在编译期，而不是等到运行期才手动检查和修正；</li>
+<li>使用简单——生成的C++代码提供了简单的访问和构造接口；而且如果需要，通过一个可选功能可以用来在运行时高效解析Schema和类JSON格式的文本；</li>
+<li>跨平台——支持C++11、Java，而不需要任何依赖库；在最新的gcc、clang、vs2010等编译器上工作良好；</li>
+</ul>
+<h2 id="和protocol-buffer，json区别"><a href="#和protocol-buffer，json区别" class="headerlink" title="和protocol buffer，json区别"></a>和protocol buffer，json区别</h2><p>Protocol Buffers的确和FlatBuffers比较类似，但其主要区别在于FlatBuffers在访问数据前不需要解析/拆包这一步。 而且Protocol Buffers既没有可选的文本导入/导出功能，也没有Schemas语法特性（比如union）。</p>
+<p>JSON是非常可读的，而且当和动态类型语言（如JavaScript）一起使用时非常方便。然而在静态类型语言中序列化数据时，JSON不但具有运行效率低的明显缺点，而且会让你写更多的代码来访问数据（这个与直觉相反）。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/06/04/语言相关/CPP/cpp序列化库cereal/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/04/语言相关/CPP/cpp序列化库cereal/" itemprop="url">cpp序列化库cereal</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-04T18:33:29+08:00">2018-06-04</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://github.com/USCiLab/cereal" target="_blank" rel="noopener">cereal github</a></p>
+<p>cereal is a header-only C++11 serialization library.</p>
+<p>碰巧找资料的时候发现的，先记录下来，后面有时间在学习，目前暂时用不上。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/06/03/语言相关/python/centos搭建python-talib环境/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/03/语言相关/python/centos搭建python-talib环境/" itemprop="url">centos搭建python_talib环境</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-03T15:05:15+08:00">2018-06-03</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在 centos 里面搭建 ta-lib 分析环境</p>
+<h2 id="安装-ta-lib"><a href="#安装-ta-lib" class="headerlink" title="安装 ta-lib"></a>安装 ta-lib</h2><p>多平台的市场分析库<br>下载<br>wget <a href="http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz" target="_blank" rel="noopener">http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">untar and cd</span><br><span class="line">./configure --prefix=/usr</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br><span class="line">cd /usr</span><br><span class="line">find -name libta_lib.so.0</span><br><span class="line"></span><br><span class="line">添加 /usr/lib 路径到环境变量中</span><br><span class="line">在 /etc/profile 文件内添加下列行</span><br><span class="line">export LD_LIBRARY_PATH=/usr/lib</span><br><span class="line">激活环境变量</span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure>
+<h2 id="python-ta-lib库"><a href="#python-ta-lib库" class="headerlink" title="python ta-lib库"></a>python ta-lib库</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">创建虚拟环境</span><br><span class="line">py36</span><br><span class="line">pip install TA-Lib</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/05/30/学习笔记/区块链/区块链技术的应用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/30/学习笔记/区块链/区块链技术的应用/" itemprop="url">区块链技术的应用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-30T16:53:05+08:00">2018-05-30</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>区块链能解决这些问题主要是基于4个特点：<br>去中心化<br>不可篡改<br>公开透明<br>可控匿名</p>
+<h2 id="智能合约"><a href="#智能合约" class="headerlink" title="智能合约"></a>智能合约</h2><p>特点应用：公开透明、不可篡改<br>痛点：比如两家公司有业务往来。业务结算之后，可能会牵扯到业务对账，财务对账，老板审批，催款，出纳转账。流程并不复杂，但繁琐重复，还有最另双方头疼的催款环节。<br>解决方案：如果采用智能合约呢？大家事先把规则说清楚并写进程序里，一旦到了付款日期，程序自动转账，整个过程无需任何人参与，但人人对账目清清楚楚，简单而高效。</p>
+<h2 id="防伪溯源"><a href="#防伪溯源" class="headerlink" title="防伪溯源"></a>防伪溯源</h2><p>特点应用：公开透明、不可篡改<br>痛点：大家都网购吗？网购奢侈品，烟酒，或者进口商品时，担心假货吗？连实体店都有几率遭遇假货，谁敢保证快递小哥送来的就绝对是正品呢！<br>解决方案：给每一件“正版商品”都打上唯一的标记，让买家能够查到从工厂到消费者手里的全部流通环节（就好像现在快递能查到所有过程是一样的）。这样是不是可以放心大胆购买了呢？</p>
+<h2 id="金融领域"><a href="#金融领域" class="headerlink" title="金融领域"></a>金融领域</h2><p>特点应用：去中心化、不可篡改<br>痛点：金融领域涉及到很多支付，资产管理的业务。金融机构一旦被黑客攻击损失就很大了。<br>解决方案：区块链去中心化的特点让系统很难被攻击，不可篡改的特点又大大提高了数据的安全性。</p>
+<h2 id="公益"><a href="#公益" class="headerlink" title="公益"></a>公益</h2><p>特点应用：公开透明、不可篡改<br>痛点：“郭美美事件”后，很多人说不敢捐钱了，因为不知道自己的钱会跑去谁的口袋里。<br>解决方案：蚂蚁金服下面的公益项目已经采用了区块链技术，大家的捐款可以清楚查到去向。让大家更加安心的做慈善。</p>
+<h2 id="隐私保护"><a href="#隐私保护" class="headerlink" title="隐私保护"></a>隐私保护</h2><p>特点应用：可控匿名<br>痛点：你网购几次，就有短信广告发给你。你在银行多存点钱，就有人给你推销理财产品。你在医院检查身体，就有人给你推销保健品。我们在必要的情况下留下一点信息，接下来就无法避免被骚扰，被追索更多的信息，被推销，被纠缠。<br>解决方案：银行、医院这些机构无非就是想让你证明“这个叫xx的人就是你本人”。而区块链是可以很好的解决这个问题的。让你即可证明“这个叫xx的人就是我”，还可以保护好你的隐私信息。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/05/29/学习笔记/区块链/区块链钱包/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/29/学习笔记/区块链/区块链钱包/" itemprop="url">区块链钱包</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-29T21:54:56+08:00">2018-05-29</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我们怎么样理解钱包呢？简单讲它是连接区块链的一个入口。目前比较成熟的公链，如比特币、以太坊都有很多钱包可以选择。一般钱包需要完全访问你的用户资产，也就是会要求你输入私钥。钱包的作恶成本极低，这也是笔者建议选择开源钱包的原因之一。</p>
+<p>加密数字货币钱包提供钱包地址的创建、加密数字货币转账、每个钱包地址交易历史的查询等基础金融功能。</p>
+<h2 id="通信协议"><a href="#通信协议" class="headerlink" title="通信协议"></a>通信协议</h2><p>RPC、JSON-RPC 以及 JSON</p>
+<p>JSON-RPC，是一个无状态且轻量级的远程过程调用（RPC）传送协议，其传递内容通过 JSON 为主。相较于一般的 REST 通过网址（如 GET /user）调用远程服务器，JSON-RPC 直接在内容中定义了欲调用的函数名称（如 {“method”: “getUser”}），这也令开发者不会陷于该使用 PUT 或者 PATCH 的问题之中。 本规范主要定义了一些数据结构及其相关的处理规则。它允许运行在基于 Socket、HTTP 等诸多不同消息传输环境的同一进程中。其使用 JSON（RFC 4627）作为数据格式。[2]</p>
+<p>我们以比特币为例，根据 <a href="https://en.bitcoin.it/wiki/Original_Bitcoin_client/API_calls_list" target="_blank" rel="noopener">Original Bitcoin client/API calls list</a> 文档我们可以得到 RPC 接口提供的函数列表。</p>
+<p>以 sendrawtransaction 为例，这个函数列表提供了四列（Command、Parameters、Description、Requires unlocked wallet? ），分别表示函数名、传入参数、描述、是否需要解锁钱包。</p>
+<p>我们把这个函数列表掌握之后，可以选择某一种语言，然后进行区块链钱包相关的开发。<br>当然，你还需要知道怎么样去部署一个比特币的完全节点和测试网络，这样就可以利用 RPC 进行接口调用，来和区块链网络进行交互。</p>
+<h2 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h2><p>通常意义上的数字资产安全其实就是私钥的安全，<br>一个钱包是不是安全主要看它能否安全的管理和使用私钥。<br>助记词是明文私钥的另一种表现形式，其目的是为了帮助用户记忆复杂的私钥。<br>因此能否安全的管理助记词也是区别钱包是否安全的重要条件。</p>
+<p><a href="https://bcsec.360.cn/assets/misc/360DigitalWalletSecurityReport.pdf" target="_blank" rel="noopener">360的安全白皮书</a></p>
+<h2 id="Wallet"><a href="#Wallet" class="headerlink" title="Wallet"></a>Wallet</h2><p>钱包里只含有钥匙,比特币钱包是密钥链。<br>Bitcoin Address + Private key = Bitcoin Wallet</p>
+<p>比特币的所有权是通过数字密钥、比特币地址和数字签名来确立的。数字密钥实际上并不是存储在网络中，而是由用户生成并存储在一个文件或简单的数据库中，称为钱包。存储在用户钱包中的数字密钥完全独立于比特币协议，可由用户的钱包软件生成并管理，而无需区块链或网络连接。</p>
+<p>有两种主要类型的钱包，区别在于它们包含的多个密钥是否相互关联。</p>
+<p>第一种类型是非确定性钱包（nondeterministic wallet），其中每个密钥都是从随机数独立生成的。密钥彼此无关。这种钱包也被称为“Just a Bunch Of Keys（一堆密钥）”，简称JBOK钱包。</p>
+<p>第二种类型是确定性钱包（deterministic wallet），其中所有的密钥都是从一个主密钥派生出来，这个主密钥即为种子（seed）。该类型钱包中所有密钥都相互关联，如果有原始种子，则可以再次生成全部密钥。确定性钱包中使用了许多不同的密钥推导方法。最常用的推导方法是使用树状结构，称为分级确定性钱包或HD钱包。</p>
+<p>根据区块链数据的维护方式，我们可以把钱包分为</p>
+<ol>
+<li>全节点（如 bitcoin-core 核心钱包），维护着全部的区块链数据（当前在50GB以上），完全去中心化，同步所有数据；</li>
+<li>SPV轻钱包（如比太），只维护与自己相关的区块链数据，基本上去中心化（要依赖比特币网络上的其他全节点），仅同步与自己相关的数据；</li>
+<li>中心化钱包，不依赖比特币网络，只依赖自己的中心化服务器，不同步数据，所有的数据均从自己的中心化服务器中获得；</li>
+</ol>
+<p>根据所使用的硬件设备，我们可以把钱包分为：</p>
+<ol>
+<li>电脑钱包，钱包软件运行于桌面操作系统（Windows、MacOS、Linux等）；</li>
+<li>手机钱包，安卓、iOS等；</li>
+<li>在线钱包（如 blockchain.info ），运行与云服务，私钥加密存储于服务器上，通过浏览器访问；</li>
+<li>硬件钱包，运行与专门定制的硬件上，可能需要与电脑或手机配合使用；</li>
+</ol>
+<p>比太钱包<br>HD钱包，可以用种子助记词进行备份</p>
+<h3 id="钱包最佳实践"><a href="#钱包最佳实践" class="headerlink" title="钱包最佳实践"></a>钱包最佳实践</h3><p>助记码，基于BIP-39<br><a href="https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki" target="_blank" rel="noopener">BIP39</a> 标准定义了钱包助记词和种子生成规则<br>HD钱包，基于BIP-32<br>多用途HD钱包结构，基于BIP-43<br>多币种和多帐户钱包，基于BIP-44</p>
+<h3 id="多重签名"><a href="#多重签名" class="headerlink" title="多重签名"></a>多重签名</h3><p>普通钱包：A想转给X一个比特币，A只需要自己的签名（使用私钥）就可以完成交易</p>
+<p>多重签名钱包：A想转给X一个比特币，设置了一个多重签名（ABC3个人需要2个签名才能转账），那么A想给X转账的时候需要B或C也完成签名（使用私钥）。</p>
+<p>如果设置了多重签名，那么任何一个私钥泄露都不会损失你的数字资产。<br>可以大大保证资产的安全性。</p>
+<h3 id="UTXO-代表-Unspent-Transaction-Output，-表示未花费的输出。"><a href="#UTXO-代表-Unspent-Transaction-Output，-表示未花费的输出。" class="headerlink" title="UTXO 代表 Unspent Transaction Output， 表示未花费的输出。"></a>UTXO 代表 Unspent Transaction Output， 表示未花费的输出。</h3><p>特点：</p>
+<ol>
+<li>每个UTXO都是独一无二的，就好像带有编码的钞票一样</li>
+<li>相比钞票来说，UTXO更灵活，并没有固定面额的限制，任意数额都可以</li>
+<li>UTXO是不能分割的，只能被消耗掉</li>
+<li>在交易前后，UTXO的数量可能增多，也可能减少</li>
+<li>每笔交易的输入和输出都是有关系的，可以通过UTXO不停往前追溯，直到挖矿</li>
+</ol>
+<p>优势</p>
+<ol>
+<li>UTXO具备天然的匿名性</li>
+<li>UTXO是独立的数据结构，可以更好的并行处理。</li>
+<li>长期来看，UTXO的数据占用更小，而余额系统会越来越臃肿。</li>
+<li>UTXO的结构更不容易被篡改，每个UTXO都追根溯源，很难伪造。</li>
+</ol>
+<h3 id="HD钱包（Hierarchical-Deterministic）"><a href="#HD钱包（Hierarchical-Deterministic）" class="headerlink" title="HD钱包（Hierarchical Deterministic）"></a>HD钱包（Hierarchical Deterministic）</h3><p><img alt="e4a76de6.png" src="/2018/05/29/学习笔记/区块链/区块链钱包/e4a76de6.png" width="" height=""><br>HD钱包根据“种子”（种子密钥）按顺序导出未来的地址，每个新地址相当于“种子+计数器”。通过这种方式，你只用一个种子就可以恢复所有的私钥和地址。</p>
+<p>目前很多钱包都是HD钱包,只需要备份助记词即可，简化了创建新私钥和备份私钥的方式。</p>
+<p><img alt="f35cad88.png" src="/2018/05/29/学习笔记/区块链/区块链钱包/f35cad88.png" width="" height=""></p>
+<p>大家都知道，一个私钥对应一个地址，每个地址类似你的银行卡，私钥类似你的银行卡密码。</p>
+<p>比特币也是同样的道理，如果比特币数量较大，不建议大家把所有比特币放在一个地址里。这个时候你就有几个痛点：</p>
+<ol>
+<li>每次生成一个新地址都需要备份一遍私钥，操作麻烦</li>
+<li>生成了一堆私钥，管理起来很不方便</li>
+</ol>
+<p><img alt="2a6ed72d.png" src="/2018/05/29/学习笔记/区块链/区块链钱包/2a6ed72d.png" width="" height=""><br>HD钱包可以快速方便的生成多个地址，并且不需要备份对应的私钥。你只需要一个种子密钥就可以把所有的私钥和地址全部恢复。<br>但是也有一个巨大的风险——种子丢了相当于丢了一堆钱包的私钥</p>
+<h4 id="HD钱包的优缺点"><a href="#HD钱包的优缺点" class="headerlink" title="HD钱包的优缺点"></a>HD钱包的优缺点</h4><p><a href="https://www.jianshu.com/p/e6a4150eb729" target="_blank" rel="noopener">参考</a></p>
+<ul>
+<li>优点</li>
+</ul>
+<ol>
+<li>您只需要备份一个种子（种子密钥），不需要备份私钥</li>
+<li>可以快速生成很多地址</li>
+<li>有效保护财务隐私</li>
+</ol>
+<ul>
+<li>缺点</li>
+</ul>
+<ol>
+<li>种子丢失或被盗，种子下生成的所有地址都丢失或被盗</li>
+</ol>
+<p><a href="https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki" target="_blank" rel="noopener">BIP32</a> (Bitcoin Improvement Proposal 32)<br>通过一个共同的种子维护 n 多私钥，种子推导私钥采用不可逆哈希算法，在需要备份钱包私钥时，只备份这个种子即可（大多数情况下的种子是通过 BIP44 生成了助记词，方便抄写），在支持 BIP32, BIP44 标准的钱包只需导入助记词即可导入全部的私钥。</p>
+<p>符合 BIP-32/BIP-44 标准的 HD 钱包</p>
+<p>BIP39 标准就是为了解决助记词的需求，通过随机生成 12 ~ 24 个容易记住的单词，单词序列通过 PBKDF2 与 HMAC-SHA512 函数创建出随机种子作为 BIP32 的种子<br>BIP32 标准的种子是一个随机 16 字节的 16 进制的字符串。如果能够适用英文单词作为助记词无疑会降低种子备份及恢复钱包难度，</p>
+<p><a href="https://github.com/tyler-smith/go-bip39" target="_blank" rel="noopener">BIP39-go</a><br><a href="https://github.com/stretchr/testify" target="_blank" rel="noopener">testify</a></p>
+<p>BIP39 标准定义了钱包助记词和种子生成规则。</p>
+<p>通过九个步骤即可生成钱包助记词和种子：<br>步骤 1~6 生成助记词<br>步骤 7~9 把前六步生成的助记词转化为 BIP32 种子</p>
+<p>生成助记词</p>
+<ol>
+<li>规定熵的位数必须是 32 的整数倍，所以熵的长度取值位 128 到 256 之间取 32 的整数倍的值，分别为 128, 160, 192, 224, 256；</li>
+<li>校验和的长度为熵的长度/32 位, 所以校验和长度可为 4，5，6，7，8 位；</li>
+<li>助记词库有 2048 个词，用 11 位可全部定位词库中所有的词，作为词的索引，故一个词用 11 位表示，助记词的个数可为 (熵+校验和)/11，值为 12，15，18，21，24</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>熵(bits)</th>
+<th>校验和(bits)</th>
+<th>熵 + 校验和 (bits)</th>
+<th>助记词长度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>128</td>
+<td>4</td>
+<td>132</td>
+<td>12</td>
+</tr>
+<tr>
+<td>160</td>
+<td>5</td>
+<td>165</td>
+<td>15</td>
+</tr>
+<tr>
+<td>192</td>
+<td>6</td>
+<td>198</td>
+<td>18</td>
+</tr>
+<tr>
+<td>224</td>
+<td>7</td>
+<td>231</td>
+<td>21</td>
+</tr>
+<tr>
+<td>256</td>
+<td>8</td>
+<td>264</td>
+<td>24</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>生成一个长度为 128~256 位 (bits) 的随机序列(熵)</li>
+<li>取熵哈希后的前 n 位作为校验和 (n= 熵长度/32)</li>
+<li>随机序列 + 校验和</li>
+<li>把步骤三得到的结果每 11 位切割</li>
+<li>步骤四得到的每 11 位字节匹配词库的一个词</li>
+<li>步骤五得到的结果就是助记词串</li>
+</ol>
+<p><img alt="50387664.png" src="/2018/05/29/学习笔记/区块链/区块链钱包/50387664.png" width="" height=""></p>
+<p>通过助记词生成种子<br>助记词由长度为 128 到 256 位的随机序列(熵)匹配词库而来，随后采用 PBKDF2 function 推导出更长的种子(seed)。生成的种子被用来生成构建 deterministic Wallet 和推导钱包密钥。</p>
+<p>为了从助记词中生成二进制种子，BIP39 采用 PBKDF2 函数推算种子，其参数如下：</p>
+<ul>
+<li>助记词句子作为密码</li>
+<li>“mnemonic” + passphrase 作为盐</li>
+<li>2048 作为重复计算的次数</li>
+<li>HMAC-SHA512 作为随机算法</li>
+<li>512 位(64 字节)是期望得到的密钥长度</li>
+</ul>
+<p><img alt="077b8287.png" src="/2018/05/29/学习笔记/区块链/区块链钱包/077b8287.png" width="" height=""><br>BIP32 标准定义了 HD 钱包的生成规则。HD 钱包中的所有层级密钥都是由根种子推导而来，通常根种子由上述步骤 BIP39 生成。所以只需通过助记词就能备份和恢复钱包，这也是 HD 钱包的缺陷，如果你的根种子泄漏，那么全部密钥随之都泄漏。</p>
+<p>主私钥和主链码<br>首先是从根种子生成主密钥 (master key) 和主链码 (master chain code)<br><img alt="7eed3201.png" src="/2018/05/29/学习笔记/区块链/区块链钱包/7eed3201.png" width="" height=""><br>上图中根种子通过不可逆 HMAC-SHA512 算法推算出 512 位的哈希串，左 256 位是 Master Private key(m), 右 256 位是 master chain code, 通过 m 结合推导公钥的椭圆曲线算法能推导出与之对应的 264 位 master public Key (M)。chain code 作为推导下级密钥的熵。<br>子私钥推导<br>HD 钱包使用 CKD(child key derivation) 函数从父密钥(parent keys)推导子密钥(child keys)，CKD 由下列三个要素做单向散列哈希(one way hash function) 。</p>
+<ul>
+<li>父密钥 (没有压缩过的椭圆曲线推导的私钥或公钥 ECDSA uncompressed key)</li>
+<li>链码作为熵 (chain code 256 bits)</li>
+<li>子代索引序号 (index 32 bits)</li>
+</ul>
+<p><img alt="87926d89.png" src="/2018/05/29/学习笔记/区块链/区块链钱包/87926d89.png" width="" height=""></p>
+<p>索引号个数为 2 的 32 次方，每个父级密钥能推导出该数目一半的子密钥 (<br>索引号从 0x00 到 0x7fffffff (0 to 2 的 21 次方减 1) 会生成正常的密钥；索引号从 0x80000000 到 0xffffffff 会生成增强密钥）。CKD 采用不可逆的 HMAC-SHA512 不可逆加密算法，子密钥不能向上推导出父密钥、同时也不能水平推导出同一级的密钥。</p>
+<h2 id="钱包地址生成"><a href="#钱包地址生成" class="headerlink" title="钱包地址生成"></a>钱包地址生成</h2><p><a href="https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses" target="_blank" rel="noopener">参考</a></p>
+<p>比特币地址由一个公钥生成并对应于这个公钥。地址与公钥之间的关系，如下图所示：<br><img alt="67ff7631.png" src="/2018/05/29/学习笔记/区块链/区块链钱包/67ff7631.png" width="" height=""><br><img alt="8d537b52.png" src="/2018/05/29/学习笔记/区块链/区块链钱包/8d537b52.png" width="" height=""></p>
+<p>这里用(RIPEMD16(SHA256(PubKey))算法<br>RipeMD算法：针对MD4和MD5算法缺陷分析提出的算法。这些算法主要是针对摘要值得长度进行了区分<br>Base58Check 编码<br>将密钥从字节码转化成 ASCII 码，<br>比特币公私钥和地址各种格式前缀和 Base58Check 编码如下表 2<br><img alt="58fea837.png" src="/2018/05/29/学习笔记/区块链/区块链钱包/58fea837.png" width="" height=""></p>
+<ul>
+<li>获取公钥，用 RIPEMD160(SHA256(PubKey)) 的哈希算法哈希两次。</li>
+<li>准备转哈希地址生成算法的版本</li>
+<li>通过用 SHA256(SHA256(payload)) 哈希步骤 2 的结果计算 checksum。这个 checksum 是哈希结果的头四个字节。</li>
+<li>准备 checksum 到 version+PubKeyHash 的组合。</li>
+<li>用 Base58 编码 version+PubKeyHash+checksum 的组合。</li>
+</ul>
+<p><a href="http://lenschulwitz.com/base58" target="_blank" rel="noopener">base58校验</a><br>替换钱包地址，就可以查余额了<br><a href="https://blockchain.info/address/1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa" target="_blank" rel="noopener">https://blockchain.info/address/1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">00d296d3a4f2307fe17e2e51398f03a8dcc998e1d67f38858d</span><br><span class="line">Mnemonic:  toilet bottom much member impact film tornado used dinner shove aware bamboo work sustain ticket yellow stem guess story friend virtual elevator fiber pig</span><br><span class="line">Master private key:  xprv9s21ZrQH143K3wBFoUh64FXLnZwGr9S5v1GprnkBHzms5xNZDHnbcucE5Y9BUo1FoE45pMCzxbr3xmduC8HWpmMQEg3FLUbzV7XuxUGxqXj</span><br><span class="line">Master public key:  xpub661MyMwAqRbcGRFiuWE6RPU5LbmmFc9wHECRfB9nrLJqxkhhkq6rAhvhvpcv1pWdNtF8H61am1vvi5iq8NLejVo6pcvAqGeACDe7XSoZjLa</span><br><span class="line">wallet address:  1LCVaumEKaxAC2htJDnbDPNotexEpLoi6g</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -1064,778 +1968,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/05/28/语言相关/python/python爬虫相关信息/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/28/语言相关/python/python爬虫相关信息/" itemprop="url">python爬虫相关信息</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-28T15:46:20+08:00">2018-05-28</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="opendatatools"><a href="#opendatatools" class="headerlink" title="opendatatools"></a>opendatatools</h2><p>pip install opendatatools<br>pip install html5lib</p>
-<p>pip install pyecharts<br>pip install echarts-countries-pypkg<br>pip install echarts-china-provinces-pypkg<br>pip install echarts-china-cities-pypkg</p>
-<h2 id="Scrapy"><a href="#Scrapy" class="headerlink" title="Scrapy"></a>Scrapy</h2><p>pip install scrapy</p>
-<ol>
-<li>生成项目<br>scrapy startproject quotes</li>
-<li><p>生成spider<br>scrapy genspider quotes quotes.toscrape.com</p>
-</li>
-<li><p>pipeline输出<br>settings.py 里面设置<br>ITEM_PIPELINES = {<br> ‘quotes.pipelines.TextPipeline’: 400,<br> ‘quotes.pipelines.MongoPipeline’: 300,<br>}<br>后面的400，300是序号，数值越小，优先级越高</p>
-</li>
-<li>mongodb 参数在settings里面设置<br>pip install pymongo</li>
-</ol>
-<p>Scrapy运行流程大概如下：</p>
-<p>首先，引擎从调度器中取出一个链接(URL)用于接下来的抓取<br>引擎把URL封装成一个请求(Request)传给下载器，下载器把资源下载下来，并封装成应答包(Response)<br>然后，爬虫解析Response<br>若是解析出实体（Item）,则交给实体管道进行进一步的处理。<br>若是解析出的是链接（URL）,则把URL交给Scheduler等待抓取</p>
-<p>Obey robots.txt rules</p>
-<p>输出中文<br>但是对于现在版本的可以直接在setting文件中设置：FEED_EXPORT_ENCODING = ‘utf-8’</p>
-<p>useragent<br>. useragent 模仿百度(“Baiduspider…”)，2. IP每爬半个小时就换一个IP代理。<br>随机1-3秒爬一次，爬10次休息10秒，每天只在8-12，18-20点爬，隔几天还休息一下<br>图像识别（关键词 PIL，tesseract），再对验证码进行了二值化，分词，模式训练之后，识别了小黎的验证码<br>择了内置浏览器引擎的爬虫(关键词：PhantomJS，Selenium)，在浏览器引擎中js 加密脚本算出了正确的结果，又一次拿到了对方的数据。</p>
-<h2 id="Twisted"><a href="#Twisted" class="headerlink" title="Twisted"></a>Twisted</h2><p>Twisted是用Python实现的基于事件驱动的网络引擎框架。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/05/27/学习笔记/区块链/区块链架构设计/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/27/学习笔记/区块链/区块链架构设计/" itemprop="url">区块链架构设计</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-27T22:15:40+08:00">2018-05-27</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://blog.csdn.net/lucky_greenegg/article/details/52821924" target="_blank" rel="noopener">引用</a></p>
-<p>从架构设计上来说，区块链可以简单的分为三个层次，协议层、扩展层和应用层。其中，协议层又可以分为存储层和网络层，它们相互独立但又不可分割。<br><img alt="6437caef.png" src="/2018/05/27/学习笔记/区块链/区块链架构设计/6437caef.png" width="" height=""></p>
-<p>由linux基金会主导的超级账本（HyperLeger），版本库的名字叫Fabric<br>官方网站：<a href="https://www.hyperledger.org/" target="_blank" rel="noopener">https://www.hyperledger.org/</a><br>源码库：<a href="https://github.com/hyperledger" target="_blank" rel="noopener">https://github.com/hyperledger</a></p>
-<h2 id="知识图谱"><a href="#知识图谱" class="headerlink" title="知识图谱"></a>知识图谱</h2><p><img alt="aa5371fd.png" src="/2018/05/27/学习笔记/区块链/区块链架构设计/aa5371fd.png" width="" height=""></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/05/27/学习笔记/区块链/区块链常见概念/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/27/学习笔记/区块链/区块链常见概念/" itemprop="url">区块链常见概念</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-27T20:37:23+08:00">2018-05-27</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="Key-pool"><a href="#Key-pool" class="headerlink" title="Key pool"></a>Key pool</h2><p>钱包预先生成 100 个密钥，保存在 key pool。新建地址的时候，使用这里面的未使用密钥创建。<br>主要用途是减少备份次数，同时防止硬盘损坏时，碰巧使用了新建的地址，导致备份时没有备份到。<br>旧版默认生成 100 个密钥，可以通过 -keekpool 参数来设置。新版扩充到了 1000 个。</p>
-<h2 id="Dapp"><a href="#Dapp" class="headerlink" title="Dapp"></a>Dapp</h2><p><a href="https://github.com/DavidJohnstonCEO/DecentralizedApplications" target="_blank" rel="noopener">参考</a><br><a href="https://blog.ethereum.org/2014/05/06/daos-dacs-das-and-more-an-incomplete-terminology-guide/" target="_blank" rel="noopener">by Vitalik Buterin</a></p>
-<p>Dapp(decentralized application) 应用的后端代码运行在去中心化的 peer-to-peer 网络中。<br>和运行在中心化服务的 app 相比，一个 Dapp 有前端代码和界面，可以调用后端代码，而且前端可以部署在去中心化的存储中例如 Swarm or IPFS<br>如果 App = frontend + server，那么 Ethereum 的合约是运行在 Ethereum 的全球 p2p 网络中的<br>那么 DApp = frontend + contracts</p>
-<p>Contracts: 去中心化的逻辑处理，运行在 Ethereum Virtual Machine (EVM)<br>Swarm: 去中心化的存储，作为记账协议而设计的，不依赖于物理存储系统，可以是 IPFS, BitTorrent 或将来发明的存储技术<br>Whisper: 去中心化的消息处理</p>
-<p>下面是使用区块链 + 智能合约 + swarm + whisper<br><img alt="f54277b3.png" src="/2018/05/27/学习笔记/区块链/区块链常见概念/f54277b3.png" width="" height=""></p>
-<p><img alt="666392f1.png" src="/2018/05/27/学习笔记/区块链/区块链常见概念/666392f1.png" width="" height=""></p>
-<h2 id="分叉-soft-fork"><a href="#分叉-soft-fork" class="headerlink" title="分叉 soft fork"></a>分叉 soft fork</h2><p>软分叉是把之前的有效区块，认为是无效的，旧节点认为新区块是有效的，新节点区块保持向后兼容性，当新规则启用时作为临时分叉，未升级节点也可以接受已升级节点的区块，同时分叉的新链只接受已升级节点的区块。<br>一旦启用软分叉之后，就取决于已升级节点能否尽快取得绝对性的大多数份额，否则软分叉将会失败，旧链没有任何影响。<br>旧版本在新版本拒绝区块时会发现有新版本需要升级，然后完成升级过程。<br>当大多数矿工完成升级后正式启用新规则，称作 miner-activated softfork (MASF)<br>当大多数节点协同一致支持新规则，不需要矿工支持时，称作 user-activated softfork (UASF)</p>
-<p>硬分叉是一种快速，高优先级，不向后兼容的改变，定义为当实现时产生永久的改变。<br>新链和旧链是相互平行的，各自应用不同的规则，两条链之间不能互相转移资产<br>随之而来的是两份资产的问题，用户分别在两条链上同时拥有相同的资产，比如在硬分叉前，旧链中有100个币，那么分叉后，在旧链和新链将同时有100个币，<br>当然两个链中币的价值也是不同的，因为无法相互转移。</p>
-<p><img alt="0b1c1105.png" src="/2018/05/27/学习笔记/区块链/区块链常见概念/0b1c1105.png" width="" height=""></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/05/27/学习笔记/区块链/区块链常见概念/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/05/27/学习笔记/区块链/区块链共识算法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/27/学习笔记/区块链/区块链共识算法/" itemprop="url">区块链共识算法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-27T19:46:39+08:00">2018-05-27</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="什么是共识机制"><a href="#什么是共识机制" class="headerlink" title="什么是共识机制"></a>什么是共识机制</h2><p>区块链可以看作一本记录所有交易的分布式公开帐簿，区块链网络中的每个参与者都把它看作一本所有权的权威记录。<br>公开账本历史数据不可篡改，只允许往后添加，每个节点都具有相同的权限，那么就带来一个问题：<br><code>公开账本每个新区块由谁来负责写入？</code><br>因为所有节点都一样，如果所有节点同时一起写入账本数据，那么肯定数据会不一致。<br>因此需要一种机制来保证区块链中的每一区块只能由一个节点来负责写入，<br>如何选出写入账本数据的节点，这就是共识机制。让平等的参与者按照某种秩序达成一致意见。</p>
-<p>所谓的共识就是在人人平等的社会里需要大家共同形成一个共识，产生一个操作者、临时决策者，代表大家来进行中心化的操作，大家按照这个共识来维持去中心化的网络世界。</p>
-<h2 id="主流的共识算法有哪些"><a href="#主流的共识算法有哪些" class="headerlink" title="主流的共识算法有哪些"></a>主流的共识算法有哪些</h2><p>在分布式网络中如何保证数据一致性。</p>
-<p>说到一致性问题，就不得不提大名鼎鼎的拜占庭将军问题。是 Leslie Lamport 1982 年提出用来解释一致性问题的一个虚构模型。拜占庭是古代东罗马帝国的首都，由于地域宽广，守卫边境的多个将军（系统中的多个节点）需要通过信使来传递消息，达成某些一致的决定。但由于将军中可能存在叛徒（系统中节点出错），这些叛徒将努力向不同的将军发送不同的消息，试图会干扰一致性的达成。</p>
-<p>结论：<br>Leslie Lamport 证明，当叛变者不超过1/3时，存在有效的算法，不论叛变者如何折腾，忠诚的将军们总能达成一致的结果。如果叛变者过多，则无法保证一定能达到一致性。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/05/27/学习笔记/区块链/区块链共识算法/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/05/27/语言相关/Java/java后端面试题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/27/语言相关/Java/java后端面试题/" itemprop="url">java后端面试题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-27T15:11:57+08:00">2018-05-27</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="JVM加载class文件的原理机制"><a href="#JVM加载class文件的原理机制" class="headerlink" title="JVM加载class文件的原理机制"></a>JVM加载class文件的原理机制</h2><p>Java中的所有类，都需要由类加载器装载到JVM中才能运行。<br>Java的类加载器有三个，对应Java的三种类:负责加载系统类，扩展类，应用类。</p>
-<ol>
-<li>装载:查找和导入class文件;</li>
-<li>连接:<br>   (1)检查:检查载入的class文件数据的正确性;<br>   (2)准备:为类的静态变量分配存储空间;<br>   (3)解析:将符号引用转换成直接引用(这一步是可选的)</li>
-<li>初始化:初始化静态变量，静态代码块。<br>这样的过程在程序调用类的静态成员的时候开始执行，所以静态方法main()才会成为一般程序的入口方法。类的构造器也会引发该动作。</li>
-</ol>
-<h2 id="多线程相关"><a href="#多线程相关" class="headerlink" title="多线程相关"></a>多线程相关</h2><h3 id="如何在Java中实现线程？"><a href="#如何在Java中实现线程？" class="headerlink" title="如何在Java中实现线程？"></a>如何在Java中实现线程？</h3><ol>
-<li>继承 java.lang.Thread 类</li>
-<li>实现 java.lang.Runnable 接口</li>
-</ol>
-<h3 id="用什么方式创建线程比较好，用Runnable还是Thread？"><a href="#用什么方式创建线程比较好，用Runnable还是Thread？" class="headerlink" title="用什么方式创建线程比较好，用Runnable还是Thread？"></a>用什么方式创建线程比较好，用Runnable还是Thread？</h3><p>Java不支持类的多重继承，但允许你调用多个接口。</p>
-<h3 id="Thread-类中的start-和-run-方法有什么区别？"><a href="#Thread-类中的start-和-run-方法有什么区别？" class="headerlink" title="Thread 类中的start() 和 run() 方法有什么区别？"></a>Thread 类中的start() 和 run() 方法有什么区别？</h3><p>start()方法被用来启动新创建的线程，而且start()内部调用了run()方法，这和直接调用run()方法的效果不一样。<br>当你调用run()方法的时候，只会是在原来的线程中调用，没有新的线程启动，start()方法才会启动新线程。</p>
-<h3 id="Java中什么是竞态条件？-举个例子说明。"><a href="#Java中什么是竞态条件？-举个例子说明。" class="headerlink" title="Java中什么是竞态条件？ 举个例子说明。"></a>Java中什么是竞态条件？ 举个例子说明。</h3><p>多线程对一些资源的竞争的时候就会产生竞态条件，如果首先要执行的程序竞争失败排到后面执行了，那么整个程序就会出现一些不确定的bugs。<br>一个例子就是无序处理</p>
-<h3 id="Java中如何停止一个线程？"><a href="#Java中如何停止一个线程？" class="headerlink" title="Java中如何停止一个线程？"></a>Java中如何停止一个线程？</h3><p>你可以用volatile 布尔变量来退出run()方法的循环或者是取消任务来中断线程。</p>
-<h3 id="一个线程运行时发生异常会怎样？"><a href="#一个线程运行时发生异常会怎样？" class="headerlink" title="一个线程运行时发生异常会怎样？"></a>一个线程运行时发生异常会怎样？</h3><p>简单的说，如果异常没有被捕获该线程将会停止执行。</p>
-<h3 id="如何在两个线程间共享数据？"><a href="#如何在两个线程间共享数据？" class="headerlink" title="如何在两个线程间共享数据？"></a>如何在两个线程间共享数据？</h3><p>你可以通过共享对象来实现这个目的，或者是使用像阻塞队列这样并发的数据结构。<br>阻塞队列 (BlockingQueue)是Java util.concurrent包下重要的数据结构，BlockingQueue提供了线程安全的队列访问方式：当阻塞队列进行插入数据时，如果队列已满，线程将会阻塞等待直到队列非满；从阻塞队列取数据时，如果队列已空，线程将会阻塞等待直到队列非空。并发包下很多高级同步类的实现都是基于BlockingQueue实现的。</p>
-<p>Java并发编程的过程中遇到了什么挑战，Java内存模型</p>
-<p>你必须知道如何处理死锁，竞态条件，内存冲突和线程安全等并发问题</p>
-<h2 id="java-请求url加时间戳有什么用"><a href="#java-请求url加时间戳有什么用" class="headerlink" title="java 请求url加时间戳有什么用"></a>java 请求url加时间戳有什么用</h2><p>1，防止缓存。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/52/">52</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/53/">53</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1882,7 +2019,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">519</span>
+                    <span class="site-state-item-count">524</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2352,7 +2489,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">159</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">161</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
