@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">542</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">546</span>
       </a>
 </li>
 
@@ -312,6 +312,742 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/06/学习笔记/区块链/bitcoin/bitcoin-搭建测试网络/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/06/学习笔记/区块链/bitcoin/bitcoin-搭建测试网络/" itemprop="url">bitcoin-搭建测试网络</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-06T11:22:33+08:00">2018-08-06</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>bitcoin 0.16.2<br><code>docker run -it --name bitcoinNode1 -v /Users/zhengjun/project/docker/ubuntu16.04:/home/data --net=bridge 938 /bin/bash</code></p>
+<h1 id="Regtest-Mode（regression-test-mode）"><a href="#Regtest-Mode（regression-test-mode）" class="headerlink" title="Regtest Mode（regression test mode）"></a>Regtest Mode（regression test mode）</h1><p>创建私有的链，类似于 testnet 但是可以自己选择创建新块。可以完全控制整个网络。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bitcoind -regtest -printtoconsole -rpcuser=user -rpcpassword=password -txindex=1 -addrindex=1 -datadir=/home/data/bin_bitcoin_0.16.2/regtestData</span><br></pre></td></tr></table></figure>
+<p>查看端口，默认监听 18444 端口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -pant</span><br></pre></td></tr></table></figure></p>
+<p>使用 rpc 创建 101 个区块，只有在  regtest mode 才支持该命令，因为使用默认规则，所以产生速度很快，regtest mode 只有前 150 块奖励 50 bitcoin<br>，只有经过 100 个确认才可以消费奖励。所以我们创建 101 块，才能访问第一块的 coinbase transaction 交易<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">## Bitcoin Core 0.10.1 and earlier</span><br><span class="line">./bitcoin-cli -regtest -rpcuser=user -rpcpassword=password setgenerate true 101</span><br><span class="line">## Bitcoin Core master (as of commit 48265f3)</span><br><span class="line">./bitcoin-cli -regtest -printtoconsole -rpcuser=user -rpcpassword=password generate 101</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./bitcoin-cli -regtest -printtoconsole -rpcuser=user -rpcpassword=password getbalance</span><br><span class="line">50.00000000</span><br></pre></td></tr></table></figure>
+<p>添加节点<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --name bitcoinNode2 -v /Users/zhengjun/project/docker/ubuntu16<span class="number">.04</span>:/home/data --net=bridge <span class="number">938</span> /bin/bash</span><br><span class="line"><span class="comment">// 下面是用于退出后，登录容器的命令</span></span><br><span class="line">docker exec -e COLUMNS=<span class="string">"`tput cols`"</span> -e LINES=<span class="string">"`tput lines`"</span> -it d5 bash</span><br></pre></td></tr></table></figure></p>
+<p>查看 1 节点的 ip，启动 2 节点，增加参数 <code>addnode=172.17.0.2</code><br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">./bitcoind -regtest -printtoconsole -rpcuser=user -rpcpassword=password -txindex=<span class="number">1</span> -addrindex=<span class="number">1</span> -addnode=<span class="number">172.17</span><span class="number">.0</span><span class="number">.2</span>  -datadir=/home/data/bin_bitcoin_0<span class="number">.16</span><span class="number">.2</span>/regtestDataNode2</span><br><span class="line"><span class="comment">// 查看信息</span></span><br><span class="line">./bitcoin-cli -regtest -printtoconsole -rpcuser=user -rpcpassword=password getblockchaininfo</span><br><span class="line"><span class="comment">// 获取地址</span></span><br><span class="line">./bitcoin-cli -regtest -printtoconsole -rpcuser=user -rpcpassword=password getnewaddress</span><br><span class="line"><span class="number">2</span>N7nvzMfpAHR9675TPdWGJG1wDVh2783Uug</span><br><span class="line"><span class="comment">// 从节点 1 发送比特币</span></span><br><span class="line">./bitcoin-cli -regtest -printtoconsole -rpcuser=user -rpcpassword=password sendtoaddress <span class="number">2</span>N7nvzMfpAHR9675TPdWGJG1wDVh2783Uug <span class="number">20</span></span><br><span class="line"><span class="number">252f</span>d4d3af8839c0349b52653aee654722e680d1759f550302e474e291cf2695</span><br><span class="line"><span class="comment">// 在节点 1 产生 100 个新区块来确认交易</span></span><br><span class="line">./bitcoin-cli -regtest -printtoconsole -rpcuser=user -rpcpassword=password generate <span class="number">100</span></span><br><span class="line"><span class="comment">// 这时查看节点 2 应该看到余额 20 列出钱包的 UTXO</span></span><br><span class="line">./bitcoin-cli -regtest -printtoconsole -rpcuser=user -rpcpassword=password listunspent</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/03/学习笔记/区块链/bitcoin/bitcoin-常用命令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/03/学习笔记/区块链/bitcoin/bitcoin-常用命令/" itemprop="url">bitcoin-常用命令</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-03T13:03:17+08:00">2018-08-03</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="命令行方式"><a href="#命令行方式" class="headerlink" title="命令行方式"></a>命令行方式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./src/bitcoin-cli -rpcuser=user -rpcpassword=password getaddressbalance 1BW18n7MfpU35q4MTBSk8pse3XzQF8XvzT</span><br></pre></td></tr></table></figure>
+<h2 id="网络方式"><a href="#网络方式" class="headerlink" title="网络方式"></a>网络方式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --user bitcoin:local321 --data-binary &apos;&#123;&quot;jsonrpc&quot;:&quot;1.0&quot;, &quot;id&quot;:&quot;curltest&quot;, &quot;method&quot;:&quot;getaddressbalance&quot;,&quot;params&quot;:[&quot;1Ebb8NfVmKMoGuMJCAEbVMv2dX8GnzgxSa&quot;]&#125;&apos; -H &apos;content-type: text/plain;&apos; http://127.0.0.1:8332/</span><br></pre></td></tr></table></figure>
+<h2 id="禁止-IP-节点"><a href="#禁止-IP-节点" class="headerlink" title="禁止 IP 节点"></a>禁止 IP 节点</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">setban &quot;ip(/netmask)&quot; &quot;add|remove&quot; (bantime) (absolute)</span><br><span class="line"></span><br><span class="line">Attempts add or remove a IP/Subnet from the banned list.</span><br><span class="line"></span><br><span class="line">Arguments:</span><br><span class="line">1. &quot;ip(/netmask)&quot; (string, required) The IP/Subnet (see getpeerinfo for nodes ip) with a optional netmask (default is /32 = single ip)</span><br><span class="line">2. &quot;command&quot;      (string, required) &apos;add&apos; to add a IP/Subnet to the list, &apos;remove&apos; to remove a IP/Subnet from the list</span><br><span class="line">3. &quot;bantime&quot;      (numeric, optional) time in seconds how long (or until when if [absolute] is set) the ip is banned (0 or empty means using the default time of 24h which can also be overwritten by the -bantime startup argument)</span><br><span class="line">4. &quot;absolute&quot;     (boolean, optional) If set, the bantime must be a absolute timestamp in seconds since epoch (Jan 1 1970 GMT)</span><br><span class="line"></span><br><span class="line">Examples:</span><br><span class="line">&gt; bitcoin-cli setban &quot;192.168.0.6&quot; &quot;add&quot; 86400</span><br><span class="line">&gt; bitcoin-cli setban &quot;192.168.0.0/24&quot; &quot;add&quot;</span><br><span class="line">&gt; curl --user myusername --data-binary &apos;&#123;&quot;jsonrpc&quot;: &quot;1.0&quot;, &quot;id&quot;:&quot;curltest&quot;, &quot;method&quot;: &quot;setban&quot;, &quot;params&quot;: [&quot;192.168.0.6&quot;, &quot;add&quot; 86400] &#125;&apos; -H &apos;content-type: text/plain;&apos; http://127.0.0.1:8332/</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/03/学习笔记/区块链/primecoin/primecoin-常用命令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/03/学习笔记/区块链/primecoin/primecoin-常用命令/" itemprop="url">primecoin-常用命令</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-03T12:59:25+08:00">2018-08-03</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>记录一下常用的命令</p>
+<h2 id="调试命令"><a href="#调试命令" class="headerlink" title="调试命令"></a>调试命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">r -printtoconsole -rpcuser=user -rpcpassword=password -txindex=1 -addrindex=1 -printtodebugger -connect=192.168.31.211 -maxconnections=1 -addnode=192.168.31.211</span><br></pre></td></tr></table></figure>
+<h2 id="指定钱包目录和文件"><a href="#指定钱包目录和文件" class="headerlink" title="指定钱包目录和文件"></a>指定钱包目录和文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./src/qt/primecoin-qt -printtoconsole -datadir=&quot;/mnt/blocks/primecoinMainData_addr&quot; -wallet=&quot;wallet_backup_primecoin_test.dat&quot; -walletdir=&quot;/home/tyler/Documents/wallet_primecoin/&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="支持外网地址绑定"><a href="#支持外网地址绑定" class="headerlink" title="支持外网地址绑定"></a>支持外网地址绑定</h2><p>注意，这里绑定成功的是 ipv6 的地址，命令行会提示绑定 0.0.0.0/0 失败，也就是 ipv4 的，实际上没有影响<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./primecoind -printtoconsole -rpcuser=user -rpcpassword=password -txindex=1 -addrindex=1 -rpcallowip=&quot;::/0&quot; -datadir=&quot;/home/ubuntu/Document/primecoin-core-0.16.1_addr/mainDataAddr&quot;</span><br></pre></td></tr></table></figure></p>
+<h2 id="rpc-web-请求方式访问"><a href="#rpc-web-请求方式访问" class="headerlink" title="rpc web 请求方式访问"></a>rpc web 请求方式访问</h2><p>9912 端口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl --user user:password --data-binary &apos;&#123;&quot;jsonrpc&quot;:&quot;1.0&quot;, &quot;id&quot;:&quot;curltest&quot;, &quot;method&quot;:&quot;getaddressbalance&quot;,&quot;params&quot;:[&quot;AUwoythQxMwt9qW32fcBvoAC716kg4mtGm&quot;]&#125;&apos; -H &apos;content-type: text/plain;&apos; http://103.84.87.82:9912/</span><br><span class="line"></span><br><span class="line">curl --user user:password --data-binary &apos;&#123;&quot;jsonrpc&quot;:&quot;1.0&quot;, &quot;id&quot;:&quot;curltest&quot;, &quot;method&quot;:&quot;searchrawtransactions&quot;,&quot;params&quot;:[&quot;ATyjPcDsQgHgCjX5mi1U3xgrKp36QRiWVj&quot;]&#125;&apos; -H &apos;content-type: text/plain;&apos; http://103.84.87.82:9912/</span><br></pre></td></tr></table></figure></p>
+<h2 id="命令行方式"><a href="#命令行方式" class="headerlink" title="命令行方式"></a>命令行方式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./primecoind -printtoconsole -rpcuser=user -rpcpassword=password -txindex=1 -addrindex=1 -datadir=&quot;/mnt/blocks/primecoinMainData_addr&quot;</span><br><span class="line"></span><br><span class="line">./primecoind -printtoconsole -rpcuser=user -rpcpassword=password -txindex=1 -addrindex=1 -reindex -datadir=&quot;/mnt/blocks/primecoinMainData_addr&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="searchrawtransactions"><a href="#searchrawtransactions" class="headerlink" title="searchrawtransactions"></a>searchrawtransactions</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./primecoin-cli -rpcuser=user -rpcpassword=password searchrawtransactions AaigSgLkYT638VT7DswGGzLszUXdDexo4b</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./src/primecoin-cli -rpcuser=user -rpcpassword=password getaddressbalance  &apos;&#123;&quot;addresses&quot;:[&quot;AaigSgLkYT638VT7DswGGzLszUXdDexo4b&quot;]&#125;&apos;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --user user:password --data-binary &apos;&#123;&quot;jsonrpc&quot;:&quot;1.0&quot;, &quot;id&quot;:&quot;curltest&quot;, &quot;method&quot;:&quot;getaddressbalance&quot;,&quot;params&quot;:[&quot;1Ebb8NfVmKMoGuMJCAEbVMv2dX8GnzgxSa&quot;]&#125;&apos; -H &apos;content-type: text/plain;&apos; http://127.0.0.1:9912/</span><br></pre></td></tr></table></figure>
+<h2 id="挖矿"><a href="#挖矿" class="headerlink" title="挖矿"></a>挖矿</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">setgenerate true -1</span><br><span class="line">取消</span><br><span class="line">setgenerate false</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/03/工具相关/构建工具/makefile相关/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/03/工具相关/构建工具/makefile相关/" itemprop="url">makefile相关</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-03T10:03:20+08:00">2018-08-03</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具相关/" itemprop="url" rel="index"><span itemprop="name">工具相关</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://blog.csdn.net/Qoo_wzp/article/details/6159744" target="_blank" rel="noopener">引用</a></p>
+<p><img alt="56f9e263.png" src="/2018/08/03/工具相关/构建工具/makefile相关/56f9e263.png" width="" height=""></p>
+<p>自动生成 makefile 的工具<br>GNU Automake，GNU Autoconf，GNU m4，perl，GNU Libtool</p>
+<p>用 autoconf/automake/autoheader工具来处理各种移植性的问题，用这些工具完成系统配置信息的收集，制作Makefile文件。然后在打算编译源码时只需要通过 “./configure; make”这样简单的命令就可以得到干净利落的编译。</p>
+<h2 id="制作-Makefile-步骤"><a href="#制作-Makefile-步骤" class="headerlink" title="制作 Makefile 步骤"></a>制作 Makefile 步骤</h2><ol>
+<li>建立源文件<br>2.</li>
+</ol>
+<h2 id="Makefile-am"><a href="#Makefile-am" class="headerlink" title="Makefile.am"></a>Makefile.am</h2><p>Makefile.am is a programmer-defined file and is used by automake to generate the Makefile.in file (the .am stands for automake). The configure script typically seen in source tarballs will use the Makefile.in to generate a Makefile.</p>
+<p>The configure script itself is generated from a programmer-defined file named either configure.ac or configure.in (deprecated). I prefer .ac (for autoconf) since it differentiates it from the generated Makefile.in files and that way I can have rules such as make dist-clean which runs <code>rm -f *.in</code>. Since it is a generated file, it is not typically stored in a revision system such as Git, SVN, Mercurial or CVS, rather the .ac file would be.</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/03/语言相关/go/go-test/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/03/语言相关/go/go-test/" itemprop="url">go-test</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-03T09:43:33+08:00">2018-08-03</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>use concen<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> 文件名必须是_test.<span class="keyword">go</span>结尾的，这样在执行<span class="keyword">go</span> test的时候才会执行到相应的代码</span><br><span class="line"><span class="number">2.</span> 你必须<span class="keyword">import</span> testing这个包</span><br><span class="line"><span class="number">3.</span> 所有的测试用例函数必须是Test开头</span><br><span class="line"><span class="number">4.</span> 测试用例会按照源代码中写的顺序依次执行</span><br><span class="line"><span class="number">5.</span> 测试函数TestXxx()的参数是testing.T，我们可以使用该类型来记录错误或者是测试状态</span><br><span class="line"><span class="number">6.</span> 测试格式：<span class="function"><span class="keyword">func</span> <span class="title">TestXxx</span> <span class="params">(t *testing.T)</span>,<span class="title">Xxx</span>部分可以为任意的字母数字的组合，但是首字母不能是小写字母[<span class="title">a</span>-<span class="title">z</span>]，例如<span class="title">Testintdiv</span>是错误的函数名。</span></span><br><span class="line"><span class="function">7. 函数中通过调用<span class="title">testing</span>.<span class="title">T</span>的<span class="title">Error</span>, <span class="title">Errorf</span>, <span class="title">FailNow</span>, <span class="title">Fatal</span>, <span class="title">FatalIf</span>方法，说明测试不通过，调用<span class="title">Log</span>方法用来记录测试的信息。</span></span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -1052,736 +1788,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/27/语言相关/CPP/cpp-容器类/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/27/语言相关/CPP/cpp-容器类/" itemprop="url">cpp-容器类</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-27T06:50:42+08:00">2018-07-27</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>List特点：元素有放入顺序，元素可重复，支持for循环，也就是通过下标来遍历，也可以用迭代器</p>
-<p>Set特点：元素无放入顺序，元素不可重复，重复元素会覆盖掉，（注意：元素虽然无放入顺序，但是元素在set中的位置是有该元素的HashCode决定的，其位置其实是固定的，加入Set 的Object必须定义equals()方法，只能用迭代，因为他无序，无法用下标来取得想要的值。</p>
-<p>Set：检索元素效率低下，删除和插入效率高，插入和删除不会引起元素位置改变。<br>List：和数组类似，List可以动态增长，查找元素效率高，插入删除元素效率低，因为会引起其他元素位置改变。</p>
-<p>Map适合储存键值对的数据</p>
-<p>线程安全集合类<br>Vector，HashTable，StringBuffer</p>
-<p>非线程安全集合类<br>LinkedList、ArrayList、HashSet，HashMap，StringBuilder</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/26/语言相关/CPP/CFLAGS-LDFLAGS-LIBS说明/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/26/语言相关/CPP/CFLAGS-LDFLAGS-LIBS说明/" itemprop="url">CFLAGS-LDFLAGS-LIBS说明</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-26T18:12:32+08:00">2018-07-26</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Makefile中的CFLAGS、CXXFLAGS、LDFLAGS、LIBS<br>CFLAGS： 指定头文件（.h文件）的路径，如：CFLAGS=-I/usr/include -I/path/include。<br>CXXFLAGS表达上与CFLAGS相同。<br>CFLAGS用于C代码，CXXFLAGS用于C++代码<br>对C文件 CFLAGS 和 CPPFLAGS 效果相同，对C++文件就只识别 CPPFLAGS<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make foo.o CPPFLAGS=&quot;-I/usr/include&quot;</span><br><span class="line">make foo.o CFLAGS=&quot;-I/usr/include&quot;</span><br></pre></td></tr></table></figure></p>
-<p>LDFLAGS：用于指定库文件的位置。用法：LDFLAGS=-L/usr/lib -L/path/to/your/lib。<br>LIBS：告诉链接器要链接哪些库文件，如LIBS = -lpthread -liconv</p>
-<p>有时候LDFLAGS指定-L虽然能让链接器找到库进行链接，但是运行时链接器却找不到这个库，如果要让软件运行时库文件的路径也得到扩展，那么我们需要增加这两个库给”-Wl,R”：</p>
-<p>LDFLAGS =-L/var/xxx/lib -L/opt/mysql/lib -Wl,R/var/xxx/lib -Wl,R/opt/mysql/lib</p>
-<p>如果在执行./configure以前设置环境变量export LDFLAGS=”-L/var/xxx/lib -L/opt/mysql/lib -Wl,R/var/xxx/lib -Wl,R/opt/mysql/lib” ，注意设置环境变量等号两边不可以有空格，而且要加上引号（shell的用法）。那么执行configure以后，Makefile将会设置这个选项，链接时会有这个参数，编译出来的可执行程序的库文件搜索路径就得到扩展了。</p>
-<p>export LDFLAGS=”-L/opt/openssl/lib  -Wl,R/opt/openssl/lib”</p>
-<p>LIBS=-lcrypto </p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/26/学习笔记/开源库/boost/boost库编译/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/26/学习笔记/开源库/boost/boost库编译/" itemprop="url">boost库编译</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-26T10:40:31+08:00">2018-07-26</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="编译-1-64-版"><a href="#编译-1-64-版" class="headerlink" title="编译 1.64 版"></a>编译 1.64 版</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Download source file from: http://www.boost.org/users/history/version_1_64_0.html</span><br><span class="line">$ tar -xzvf boost_1_64_0.tar.gz</span><br><span class="line">$ cd boost_1_64_0</span><br><span class="line">$ ./bootstrap.sh --prefix=/usr/local</span><br><span class="line">$ ./b2 install</span><br><span class="line"></span><br><span class="line">dpkg -s libboost-dev | grep Version</span><br><span class="line">cat /usr/include/boost/version.hpp | grep “BOOST_LIB_VERSION”</span><br></pre></td></tr></table></figure>
-<h2 id="编译-1-41-版"><a href="#编译-1-41-版" class="headerlink" title="编译 1.41 版"></a>编译 1.41 版</h2><p>支持 thread 库编译</p>
-<p>在下面文件中查找 TIME_UTC 修改为 TIME_UTC_ 防止冲突<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">boost_1_41_0/boost/thread/xtime.hpp</span><br><span class="line">boost_1_41_0/libs/thread/src/pthread/timeconv.inl</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">找到下面文件 修改对应行 #ifdef __GLIBCXX__ // gcc 3.4 and greater:</span><br><span class="line">boost_1_41_0/boost/config/stdlib/libstdcpp3.hpp</span><br><span class="line"></span><br><span class="line">#ifdef __GLIBCXX__ // gcc 3.4 and greater:</span><br><span class="line">#  if defined(_GLIBCXX_HAVE_GTHR_DEFAULT) \</span><br><span class="line">        || defined(_GLIBCXX__PTHREADS) \</span><br><span class="line">        || defined(_GLIBCXX_HAS_GTHREADS)</span><br></pre></td></tr></table></figure>
-<p>修改一个 GCC 错误提示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">找到 unspecified_bool_type() 添加上面两行</span><br><span class="line">/Users/zhengjun/project/boost_1_41_0/boost/exception_ptr.hpp</span><br><span class="line"></span><br><span class="line">~exception_ptr() throw() &#123; &#125;</span><br><span class="line"></span><br><span class="line">operator unspecified_bool_type() const</span><br><span class="line">&#123;</span><br><span class="line">return _empty() ? 0 : &amp;exception_ptr::bad_alloc_;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>编译<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./bootstrap.sh</span><br><span class="line">./bjam install</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/25/语言相关/go/go-gui/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/25/语言相关/go/go-gui/" itemprop="url">go-gui</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-25T18:08:32+08:00">2018-07-25</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>开源库<br><a href="https://github.com/andlabs/ui" target="_blank" rel="noopener">andlabs/ui</a><br><a href="https://github.com/asticode/go-astilectron" target="_blank" rel="noopener">astilectron</a></p>
-<p>astilectron 是一个Electron应用程序，通过TCP套接字提供API，允许执行Electron的方法以及捕获Electron的事件。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/25/学习笔记/区块链/bitcoin/bitcoin-mempool/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/25/学习笔记/区块链/bitcoin/bitcoin-mempool/" itemprop="url">bitcoin-mempool</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-25T07:43:46+08:00">2018-07-25</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>bitcoin mempool 是保存一些等待网络确认的交易的。每次交易广播到网络后需要平均 10 分钟左右的确认时间。<br>根据 mempool 里面交易的多少，等待时间可能会较长</p>
-<p>每笔被网络校验过的交易都会放到 mempool 中，等待矿工的确认。当一个矿工验证一笔交易并且放入到区块中时，<br>会自动收到确认信息。</p>
-<p>每个节点都有自己的 mempool 并且可以独立设置合适的大小。当一个新区块被广播时，每个节点从 mempool 中<br>移除掉已被确认的交易。</p>
-<p>每个矿工根据手续费等条件排序处理未确认交易。 1M 的 mempool 说明没有积压。当 size 增大时，说明有交易处理积压了</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1833,7 +1839,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">542</span>
+                    <span class="site-state-item-count">546</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2313,7 +2319,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">164</span>
+                      
+                    
+                    <span class="site-state-item-count">165</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
