@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">63</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">64</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">546</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">554</span>
       </a>
 </li>
 
@@ -312,6 +312,1177 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/11/学习笔记/区块链/bitcoin/macos编译bitcoin0-16-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/11/学习笔记/区块链/bitcoin/macos编译bitcoin0-16-1/" itemprop="url">macos编译bitcoin0.16.1</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-11T09:25:58+08:00">2018-07-11</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="安装命令行工具"><a href="#安装命令行工具" class="headerlink" title="安装命令行工具"></a>安装命令行工具</h2><p><code>xcode-select --install</code></p>
+<h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><p><code>brew install automake berkeley-db4 libtool boost miniupnpc openssl pkg-config protobuf python qt libevent qrencode</code></p>
+<h2 id="如果需要编译-dmg"><a href="#如果需要编译-dmg" class="headerlink" title="如果需要编译.dmg"></a>如果需要编译.dmg</h2><p><code>brew install librsvg</code></p>
+<h2 id="处理-libevent-相关"><a href="#处理-libevent-相关" class="headerlink" title="处理 libevent 相关"></a>处理 libevent 相关</h2><p>查看库的路径<br><code>pkg-config --list-all | grep libevent</code></p>
+<p>如果没有输出，配置的时候会提示错误。configure: error: libevent not found.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">brew install libevent</span><br><span class="line">如果提示已经安装，需要连接</span><br><span class="line">brew link libevent --overwrite</span><br><span class="line">如果提示有权限问题，添加 brew 访问 /usr/local 的权限，然后在执行上面的 link 命令</span><br><span class="line">sudo chown -R $USER $(brew --prefix)</span><br><span class="line"></span><br><span class="line">现在执行 pkg-config --list-all | grep libevent 应该可以看到输出了</span><br></pre></td></tr></table></figure></p>
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./autogen.sh</span><br><span class="line">./configure</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+<h2 id="一些命令"><a href="#一些命令" class="headerlink" title="一些命令"></a>一些命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./src/bitcoind -daemon # Starts the bitcoin daemon.</span><br><span class="line">./src/bitcoin-cli --help # Outputs a list of command-line options.</span><br><span class="line">./src/bitcoin-cli help # Outputs a list of RPC commands when the daemon is running.</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/09/读过的书/区块链核心算法解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/09/读过的书/区块链核心算法解析/" itemprop="url">区块链核心算法解析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-09T21:43:07+08:00">2018-07-09</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这本书涉及到了一些原理性的概念，有点晦涩。<br>提到了 Paxos 算法，共识机制，拜占庭协定，最终一致性。<br>还是要看几遍的，中等推荐阅读。</p>
+<p><img alt="a71de16c.png" src="/2018/07/09/读过的书/区块链核心算法解析/a71de16c.png" width="" height=""></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/07/生活小知识/防晒喷雾的选购/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/07/生活小知识/防晒喷雾的选购/" itemprop="url">防晒喷雾的选购</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-07T22:25:30+08:00">2018-07-07</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/健康/" itemprop="url" rel="index"><span itemprop="name">健康</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>老婆和宝宝要来度暑假啦，之前在这边晒黑了。<br>所以略微做了点市场调查，准备好防护用品。</p>
+<p>直接说结果：Narisup娜丽丝高保湿防晒喷雾</p>
+<h2 id="防晒喷雾怎么用？"><a href="#防晒喷雾怎么用？" class="headerlink" title="防晒喷雾怎么用？"></a>防晒喷雾怎么用？</h2><ol>
+<li>直接喷。使用前先摇晃5-6次，在距离10-15CM的地方喷于需要防晒的部位，反复喷2-3次，可喷于面部和身体肌肤，脸部使用时，需要打好隔离霜，最后一步喷防晒，（不建议脸部素颜裸肤直接喷防晒）。最最重要的是可以喷于双手难于涂抹到的地方，后背、头发、脚趾。</li>
+<li>喷于手心涂抹。将喷雾摇匀直接喷于手心，取涂抹式防晒霜的使用量(一元硬币一张脸)，然后均匀的涂抹于需要防护的皮肤上。这种方法更适合用于上妆前的防晒。</li>
+</ol>
+<p>防晒喷雾和防晒霜、乳、啫喱一样，不是涂一次就能一劳永逸了，都需要补涂。一般建议2个小时，如果流汗多，需要更短时间补涂一次。<br>【温馨提示】：1.切忌不要离的太近！如果离得很近很容易出现白色的泡沫。脸部使用时，请闭上双眼和嘴巴。2.用完之后记得盖上瓶盖，以免瓶内的液体挥发跑气减短使用寿命。3.每一瓶内都有一粒钢珠，摇晃时会发出叮当清脆的声音，钢珠的作用是为了让里面的液体不凝固，使用时配合上下摇晃，喷出更多丰富又薄的雾气。</p>
+<h2 id="防晒喷雾怎么补涂？"><a href="#防晒喷雾怎么补涂？" class="headerlink" title="防晒喷雾怎么补涂？"></a>防晒喷雾怎么补涂？</h2><p>一般先要去汗去油，无妆容用防晒霜/乳、防晒喷雾均可，淡妆选择防晒喷雾，浓妆选择防晒的散粉和粉饼。<br>防晒喷雾的补涂时间也大概是2个小时，如果是下水后，不管这款防晒喷雾所宣传的防水时间是多少，都应该马上进行补涂。</p>
+<h2 id="品牌介绍"><a href="#品牌介绍" class="headerlink" title="品牌介绍"></a>品牌介绍</h2><p>日本最好用的8大防晒喷雾的第一名</p>
+<h3 id="Narisup娜丽丝高保湿防晒喷雾"><a href="#Narisup娜丽丝高保湿防晒喷雾" class="headerlink" title="Narisup娜丽丝高保湿防晒喷雾"></a>Narisup娜丽丝高保湿防晒喷雾</h3><p>包装好粉嫩，外貌控不能错过！淡淡的玫瑰香气也很舒服~可以预防由日晒引起的干燥和肌肤敏感，防晒的同时还能帮助肌肤补充水分，喷出来是细细密密雾状的，很清爽~防水抗汗效果也很好！</p>
+<h3 id="安耐晒金瓶防晒喷雾"><a href="#安耐晒金瓶防晒喷雾" class="headerlink" title="安耐晒金瓶防晒喷雾"></a>安耐晒金瓶防晒喷雾</h3><p>今年安耐晒的一大亮点就是专为懒妹设计的喷雾式防晒！喷雾主打高防晒力和透明感，外出轻轻一喷就能轻松防晒，金色防水防汗能力非常好！清爽无感，轻轻一喷，非常方便补防晒！</p>
+<h3 id="城野医生防晒喷雾"><a href="#城野医生防晒喷雾" class="headerlink" title="城野医生防晒喷雾"></a>城野医生防晒喷雾</h3><p>城野医生家的东西我向来很信赖，这款喷雾能全面阻挡紫外线的侵害，亦配有美白、抗炎、抗氧化成份，呵护肌肤。<br>而且特设有飞散式的喷嘴，方便用于面积较大的手脚部位。不过注意，这款防晒喷雾含酒精含酒精含酒精！孕妇和对酒精过敏的妹子不要买！</p>
+<h3 id="高丝透明防晒喷雾"><a href="#高丝透明防晒喷雾" class="headerlink" title="高丝透明防晒喷雾"></a>高丝透明防晒喷雾</h3><p>使肌肤在高晒下达到持久抵御紫外线。能阻止黑色素形成，使肌肤白皙通透；<br>其独特的防水效果，能抑制汗水和皮脂对防晒效果产生的不良影响。<br>不但对长时间暴露在紫外线中的肌肤有很好的防护效果，更可以滋润、镇静和修复肌肤。<br>有效防止日晒引起肌肤干燥，使肌肤柔嫩光滑，充满弹性，同时抗氧化。</p>
+<h3 id="碧柔长效清爽防晒喷雾"><a href="#碧柔长效清爽防晒喷雾" class="headerlink" title="碧柔长效清爽防晒喷雾"></a>碧柔长效清爽防晒喷雾</h3><p>这款防晒喷雾也是一样清爽不油腻，超级实用，连头皮头发也可以喷！透明的颜色，毫无违和感，随时补擦防晒，妆后也一样使用哦~</p>
+<h3 id="艾杜纱玫瑰防晒喷雾"><a href="#艾杜纱玫瑰防晒喷雾" class="headerlink" title="艾杜纱玫瑰防晒喷雾"></a>艾杜纱玫瑰防晒喷雾</h3><p>喷在身体上非常好推开，而且不泛白，也是可以喷在头发上的防晒，淡淡的玫瑰香味可以持续好久，<br>用之前最好将身上的汗液擦拭干净~富含100%艾杜纱控油精制水！使用超高压乳化制法！使水中精华更易被吸收！<br>并在脸部表面形成保护膜，防止紫外线、强光对肌肤的损害！喷雾质地长久保持妆面的干净！</p>
+<h3 id="JILL-STUART防晒喷雾"><a href="#JILL-STUART防晒喷雾" class="headerlink" title="JILL STUART防晒喷雾"></a>JILL STUART防晒喷雾</h3><p>只需轻松喷洒即能预防紫外线，守护肌肤及秀发的限定款防晒香氛喷雾。头发、脸部、身体，全身皆可使用。重要的是很貌美~</p>
+<h3 id="乐敦SKIN-AQUA防晒喷雾"><a href="#乐敦SKIN-AQUA防晒喷雾" class="headerlink" title="乐敦SKIN AQUA防晒喷雾"></a>乐敦SKIN AQUA防晒喷雾</h3><p>这款防晒喷雾算是很冷门了，不油腻，不泛白，质感清爽柔顺，与皮肤自然融合！含保水因子，玻尿酸等滋润保湿肌肤，适合比较强的紫外线防护。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/07/学习笔记/区块链/交易挖矿学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/07/学习笔记/区块链/交易挖矿学习笔记/" itemprop="url">交易挖矿学习笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-07T20:49:34+08:00">2018-07-07</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>交易就产生代币，一般会按交易手续费的总量，一定比例分配。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/07/学习笔记/加解密/CA服务器介绍/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/07/学习笔记/加解密/CA服务器介绍/" itemprop="url">CA服务器介绍</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-07T14:33:37+08:00">2018-07-07</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/加解密/" itemprop="url" rel="index"><span itemprop="name">加解密</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>很久之前了解过，当时很清晰，然后呢，用进废退，现在突然碰到这个概念发现模糊了。还是掌握的不扎实。</p>
+<p>先说直白的解释吧，CA 就是证明公钥所属的合法性的。</p>
+<h2 id="CA-Certificate-Authority"><a href="#CA-Certificate-Authority" class="headerlink" title="CA(Certificate Authority)"></a>CA(Certificate Authority)</h2><p>CA机构，又称为证书授证(Certificate Authority)中心，作为电子商务交易中受信任和具有权威性的第三方，承担公钥体系中公钥的合法性检验的责任。CA中心为每个使用公开密钥的客户发放数字证书，数字证书的作用是证明证书中列出的客户合法拥有证书中列出的公开密钥。CA机构的数字签名使得第三者不能伪造和篡改证书。它负责产生、分配并管理所有参与网上信息交换各方所需的数字证书，因此是安全电子信息交换的核心。</p>
+<p>每一张客户公钥证书都会有有效期，密钥对生命周期的长短由签发证书的CA中心来确定。各CA系统的证书有效期限有所不同，一般大约为2～3年。<br>证书的签发过程实际上是对申请数字证书的公钥做数字签名，其中还包含证书有效期验证</p>
+<p>CER编码(规范编码格式)：是数字证书的一种编码格式，它是BER(基本编码格式)的一个变种，比BER规定得更严格<br>DER(卓越编码格式)：同样是BER的一个变种，与CER的不同在于，DER使用定长模式，而CER使用变长模式。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/07/07/学习笔记/加解密/CA服务器介绍/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/06/生活小知识/支付宝不可靠了/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/06/生活小知识/支付宝不可靠了/" itemprop="url">支付宝不可靠了</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-06T16:18:48+08:00">2018-07-06</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/公开/" itemprop="url" rel="index"><span itemprop="name">公开</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>一直没遇到问题的支付宝，最近出了安全问题，我的生活缴费里面都是通过煤水电的单据把账户输入进去的，然后也一直是在这里缴费。<br>直到 2018年6月25号 缴费之后，无意中才发现，我原来账户的位置不是我的账户，而是一个陌生人的账户。<br>我就很奇怪了，我都没有他的煤水电单据，怎么出来的账户。<br>支付宝客服给的答复是好友分享的，但是我又没有这个人的好友，我根本就不认识他。<br>分享给大家，注意一下自己的支付宝账户吧，不是那么安全可靠了。</p>
+<p><img alt="aed35fcb.png" src="/2018/07/06/生活小知识/支付宝不可靠了/aed35fcb.png" width="" height=""><br>他母亲的，我都替他交费了，还无权查看。<br><img alt="625c9864.png" src="/2018/07/06/生活小知识/支付宝不可靠了/625c9864.png" width="" height=""></p>
+<p><img alt="3438010b.png" src="/2018/07/06/生活小知识/支付宝不可靠了/3438010b.png" width="" height=""><br>这个陌生账户<br><img alt="32f218c5.png" src="/2018/07/06/生活小知识/支付宝不可靠了/32f218c5.png" width="" height=""></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/06/学习笔记/linux/unix自动编译autogen/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/06/学习笔记/linux/unix自动编译autogen/" itemprop="url">unix自动编译autogen</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-06T10:49:08+08:00">2018-07-06</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>自动编译工具</p>
+<h2 id="autogen-sh"><a href="#autogen-sh" class="headerlink" title="autogen.sh"></a>autogen.sh</h2><p>只需要补充上configure.ac和Makefile.am文件即可</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/04/读过的书/区块链金融/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/04/读过的书/区块链金融/" itemprop="url">区块链金融</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-04T07:41:08+08:00">2018-07-04</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>属于海量阅读收集资料的过程，这个书，大家可以不用看了，完全没价值。</p>
+<p><img alt="193f0afa.png" src="/2018/07/04/读过的书/区块链金融/193f0afa.png" width="" height=""></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -605,1176 +1776,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/02/学习笔记/开源库/minGW/MinGW学习/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/02/学习笔记/开源库/minGW/MinGW学习/" itemprop="url">MinGW学习</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-02T09:41:43+08:00">2018-07-02</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="MinGW32-和-MinGW-w64-区别"><a href="#MinGW32-和-MinGW-w64-区别" class="headerlink" title="MinGW32 和 MinGW-w64 区别"></a>MinGW32 和 MinGW-w64 区别</h2><p>MinGW32先开发，只能编译32位程序；<br>MinGW-w64从MinGW32发展而来，支持编译64和32位位程序，同时可以进行交叉编译。</p>
-<p>MinGW-w64类型:<br>x86_64: 支持在x64和x86上运行<br>i686: 支持在x86上运行</p>
-<p>i386/i686/x86_64区别</p>
-<p>i386 适用于intel和AMD所有32位的cpu，以及采用X86架构的32的cpu。<br>X86_64 适用于intel和AMD采用X86架构的64位cpu，兼容32位。</p>
-<p>关于mingw-w64-x86_64:<br>生成64位库只要用默认的参数编译即可,而生成32位库则要用-m32参数编译.</p>
-<p>对于mingw-w64-i686:默认生成32位程序</p>
-<h2 id="查看默认库的搜索路径"><a href="#查看默认库的搜索路径" class="headerlink" title="查看默认库的搜索路径"></a>查看默认库的搜索路径</h2><p>minGW 下面执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ld --verbose | grep SEARCH_DIR | tr -s &apos; ;&apos; \\012</span><br></pre></td></tr></table></figure></p>
-<h2 id="如何指定某个库的路径"><a href="#如何指定某个库的路径" class="headerlink" title="如何指定某个库的路径"></a>如何指定某个库的路径</h2><p>-llibrary<br><code>foo.o -lz bar.o</code> 搜索库 <code>z</code> 在 foo.o 之后。</p>
-<p>-Lsearchdir<br>–library-path=searchdir</p>
-<p>使用环境变量设置附加库的路径<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export LIBRARY_PATH</span><br><span class="line">LIBRARY_PATH=&quot;C:/mingw/local/lib;$LIBRARY_PATH&quot;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/01/学习笔记/开源库/minGW/Cygwin-和MinGW-的区别/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/01/学习笔记/开源库/minGW/Cygwin-和MinGW-的区别/" itemprop="url">Cygwin 和MinGW 的区别</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-01T11:47:54+08:00">2018-07-01</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Cygwin是运行于Windows平台的POSIX“子系统”，提供Windows下的类Unix环境，并提供将部分+Linux+应用“移植”到Windows平台的开发环境的一套软件。</p>
-<p>MinGW，Minimalist GNU for Windows，用于开发原生（32位） Windows 应用的开发环境。它主要提供了针对 win32 应用的 GCC、GNU binutils 等工具，以及对等于 Windows SDK（的子集）的头文件和用于 MinGW 版本 linker 的库文件（so、a等，而不是 VC 的 lib）。</p>
-<p>MinGW 是用于进行 Windows 应用开发的 GNU 工具链（开发环境），它的编译产物一般是原生 Windows 应用，虽然它本身不一定非要运行在 Windows 系统下（是的 MinGW 工具链也存在于 Linux、BSD 甚至 Cygwin 下）</p>
-<p>MSYS 是用于辅助 Windows 版 MinGW 进行命令行开发的配套软件包，提供了部分 Unix 工具以使得 MinGW 的工具使用起来方便一些。如果不喜欢庞大的 Cygwin，而且使用不多，可以试试。不过喜欢完整体验、不在乎磁盘占用等等，还是推荐 Cygwin 而不是 MSYS。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/06/30/学习笔记/开源库/ipfs/了解ipfs/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/30/学习笔记/开源库/ipfs/了解ipfs/" itemprop="url">了解ipfs</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-30T07:58:24+08:00">2018-06-30</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="IPFS-是什么"><a href="#IPFS-是什么" class="headerlink" title="IPFS 是什么"></a>IPFS 是什么</h2><p><a href="https://ipfs.io/" target="_blank" rel="noopener">IPFS</a>（InterPlanetary File System，星际文件系统）是永久的、去中心化保存和共享文件的方法，这是一种内容可寻址、版本化、点对点超媒体的分布式协议。</p>
-<p>内容可寻址：通过文件内容生成唯一哈希值来标识文件，而不是通过文件保存位置来标识。相同内容的文件在系统中只会存在一份，节约存储空间<br>版本化：可追溯文件修改历史<br>点对点超媒体：P2P 保存各种各样类型的数据</p>
-<p>IPFS采用的索引结构是DHT（分布式哈希表），数据结构是Merkle DAG（Merkle 有向无环图）</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/06/30/学习笔记/开源库/ipfs/了解ipfs/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/06/29/学习笔记/linux/ubuntu/ubuntu16-04安装MinGW32/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/29/学习笔记/linux/ubuntu/ubuntu16-04安装MinGW32/" itemprop="url">ubuntu16.04安装MinGW32</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-29T19:03:31+08:00">2018-06-29</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>直接安装会报错 <code>Unable to locate package mingw32</code><br>解决办法如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit /etc/apt/sources.list</span><br><span class="line">//在sources.list末尾添加，保存</span><br><span class="line">deb http://us.archive.ubuntu.com/ubuntu trusty main universe</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install mingw32</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/06/29/学习笔记/区块链/bitcoin/bitcoin-交易相关/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/29/学习笔记/区块链/bitcoin/bitcoin-交易相关/" itemprop="url">bitcoin-交易相关</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-29T14:53:01+08:00">2018-06-29</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>bitcoin 0.16.1 版本</p>
-<h2 id="Locktime-和-Sequence-Number"><a href="#Locktime-和-Sequence-Number" class="headerlink" title="Locktime 和 Sequence Number"></a>Locktime 和 Sequence Number</h2><p>根据参数设置 nLockTime</p>
-<p>Bitcoin-tx.cpp<br>main-CommandLineRawTx-MutateTx-MutateTxLocktime</p>
-<p>nLockTime 说明：<br>限制交易可以加入区块的条件，<br>用户可以设置一个在将来有效的交易，给用户一个改变的机会。<br>如果用户改主意了，可以创建一个 non-locktime 交易</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/06/29/工具相关/获取代码行数等统计数据/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/29/工具相关/获取代码行数等统计数据/" itemprop="url">获取代码行数等统计数据</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-29T11:46:03+08:00">2018-06-29</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具相关/" itemprop="url" rel="index"><span itemprop="name">工具相关</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="cloc"><a href="#cloc" class="headerlink" title="cloc"></a>cloc</h2><p>在代码目录输入 <code>cloc .</code> 即可看到统计结果</p>
-<h2 id="gitstat"><a href="#gitstat" class="headerlink" title="gitstat"></a>gitstat</h2><p><a href="https://github.com/hoxu/gitstats.git" target="_blank" rel="noopener">github</a></p>
-<p>gitstats code result</p>
-<p>code 是需要统计的代码目录<br>result 是结果输出目录</p>
-<p>bitcoin 0.16.1代码 47W行<br><img alt="d5662299.png" src="/2018/06/29/工具相关/获取代码行数等统计数据/d5662299.png" width="" height=""><br><img alt="f0960234.png" src="/2018/06/29/工具相关/获取代码行数等统计数据/f0960234.png" width="" height=""></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/06/28/学习笔记/数据库/Berkeley DB/数据库-Berkeley-DB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/28/学习笔记/数据库/Berkeley DB/数据库-Berkeley-DB/" itemprop="url">数据库-Berkeley DB</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-28T18:08:35+08:00">2018-06-28</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>bitcoin 使用了 4.8 版本，所以这里大致了解一下。</p>
-<p>Berkeley DB（BDB）是一个高效的嵌入式数据库编程库，C语言、C++、Java、Perl、Python、Tcl以及其他很多语言都有其对应的API。Berkeley DB可以保存任意类型的键/值对（Key/Value Pair），而且可以为一个键保存多个数据。Berkeley DB支持让数千的并发线程同时操作数据库，支持最大256TB的数据，广泛用于各种操作系统，其中包括大多数类Unix操作系统、Windows操作系统以及实时操作系统。</p>
-<p>Berkeley DB以拥有比Microsoft SQL Server和Oracle数据库等更简单的体系结构而著称。例如，它不支持网络访问—程序通过进程内的API访问数据库。<br>Berkeley DB不支持SQL或者其他的数据库查询语言，不支持表结构和数据列。<br>访问数据库的程序自主决定数据如何储存在记录里，Berkeley DB不对记录里的数据进行任何包装。记录和它的键都可以达到4G字节的长度。<br>尽管架构很简单，Berkeley DB却支持很多高级的数据库特性，比如ACID 数据库事务处理，细粒度锁，XA接口，热备份以及同步复制。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/06/28/生活小知识/全部985-211大学名单/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/28/生活小知识/全部985-211大学名单/" itemprop="url">全部985+211大学名单</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-28T13:11:37+08:00">2018-06-28</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/教育/" itemprop="url" rel="index"><span itemprop="name">教育</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>这些都是敲门砖</p>
-<p><img alt="14ac2778.png" src="/2018/06/28/生活小知识/全部985-211大学名单/14ac2778.png" width="" height=""><br><img alt="f7a8a151.png" src="/2018/06/28/生活小知识/全部985-211大学名单/f7a8a151.png" width="" height=""></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/55/">55</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/56/">56</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1821,7 +1827,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">546</span>
+                    <span class="site-state-item-count">554</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1960,7 +1966,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">63</span>
+                      
+                    
+                    <span class="site-state-item-count">64</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -2864,23 +2872,23 @@
   
     
       
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
         
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
       
     
       
