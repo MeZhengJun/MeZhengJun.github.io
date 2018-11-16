@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">584</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">590</span>
       </a>
 </li>
 
@@ -312,6 +312,914 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/17/学习笔记/区块链/primecoin/primecoin-xpmpool-compile/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/17/学习笔记/区块链/primecoin/primecoin-xpmpool-compile/" itemprop="url">primecoin-xpmpool-compile</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-17T22:50:16+08:00">2018-08-17</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>编译 xpmpool</p>
+<h2 id="安装-gcc-4-9"><a href="#安装-gcc-4-9" class="headerlink" title="安装 gcc 4.9"></a>安装 gcc 4.9</h2><p>boost 1.55 版本以下需要使用 gcc 4.9 以下的版本 因为 ABI 兼容性问题导致<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 检查一下版本信息，如果高于 4.9 需要重装</span></span><br><span class="line">gcc -v</span><br><span class="line">sudo apt-get remove gcc g++</span><br><span class="line">sudo apt-get install gcc<span class="number">-4.9</span> g++<span class="number">-4.9</span></span><br><span class="line"><span class="comment">// 做一下软连接</span></span><br><span class="line">cd /usr/bin</span><br><span class="line">sudo ln -s /usr/bin/g++<span class="number">-4.9</span> /usr/bin/g++ -f</span><br><span class="line">sudo ln -s /usr/bin/gcc<span class="number">-4.9</span> /usr/bin/gcc -f</span><br><span class="line"></span><br><span class="line">gcc -v</span><br></pre></td></tr></table></figure></p>
+<p>详细说明：<br>This is essentially a won’t fix. compiling boost with gcc5, which uses<br>C++11 ABI, changes boost ABI and breaks most reverse dependencies.<br>The boost maintainer decided against backporting fixes to older<br>boost1.55, and rename the sonames throughout as that would be<br>non-standard.<br>Boost 1.58 and later is the default in testing and unstable, and it<br>uses gcc5 and thus the C++11 ABI.</p>
+<p>Thus your options are to use:<br>(a) gcc4.9 or lower, C++98 ABI, and debian’s boost1.55 or lower.<br>(b) gcc5 or better, C++11 ABI, and debian’s boost1.57 or better.</p>
+<h2 id="编译-boost-1-46-1"><a href="#编译-boost-1-46-1" class="headerlink" title="编译 boost 1.46.1"></a>编译 boost 1.46.1</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 查看版本</span></span><br><span class="line">dpkg -s libboost-dev | grep 'Version'</span><br><span class="line"><span class="comment">// 如果存在删掉</span></span><br><span class="line">sudo apt-get --purge remove libboost-*</span><br><span class="line">sudo apt-get --purge remove libboost-dev libboost-doc</span><br><span class="line"></span><br><span class="line">sudo apt-get install libbz2-dev</span><br><span class="line"></span><br><span class="line"><span class="keyword">not</span> use icu</span><br><span class="line">libicu-dev</span><br></pre></td></tr></table></figure>
+<h3 id="编译可能遇到的问题："><a href="#编译可能遇到的问题：" class="headerlink" title="编译可能遇到的问题："></a>编译可能遇到的问题：</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/include/boost/config/requires_threads.hpp:<span class="number">29</span>:<span class="number">4</span>: error: <span class="meta">#<span class="meta-keyword">error</span> <span class="meta-string">"Threading support unavaliable: it has been explicitly disabled with BOOST_DISABLE_THREADS"</span></span></span><br></pre></td></tr></table></figure>
+<p>这是因为boost是根据编译器的宏定义来判断gcc是否支持多线程，但是gcc 4.7及以上的版本使用的宏与老版本使用的宏不同，这样，boost自然就不能正确获取gcc支持多线程的宏，从而导致不能成功编译boost_thread支持的程序。解决办法是在boost/config/stdlib/libstdcpp3.hpp文件的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ifdef __GLIBCXX__ // gcc 3.4 and greater:</span><br><span class="line">#  if defined(_GLIBCXX_HAVE_GTHR_DEFAULT) \</span><br><span class="line">        || defined(_GLIBCXX__PTHREADS)</span><br></pre></td></tr></table></figure>
+<p>修改为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#  if defined(_GLIBCXX_HAVE_GTHR_DEFAULT) \</span><br><span class="line">        || defined(_GLIBCXX__PTHREADS) \</span><br><span class="line">	|| defined(_GLIBCXX_HAS_GTHREADS)</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./boost/thread/xtime.hpp:23:5: error: expected identifier before numeric constant</span><br><span class="line">     TIME_UTC=1</span><br><span class="line">libs/thread/src/pthread/timeconv.inl</span><br></pre></td></tr></table></figure>
+<p>修改 TIME_UTC 为 TIME_UTC_ 和 std 的冲突了</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下面使用 stage 了这里的 prefix 就无效了</span></span><br><span class="line">./bootstrap.sh</span><br><span class="line"><span class="comment">// 使用这个即可</span></span><br><span class="line">./bjam --build-dir=/tmp/build-boost toolset=gcc stage</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 这个是安装了 ICU 之后的启用参数，实际操作发现还有问题需要修改，所以暂时不用 ICU</span></span><br><span class="line">./bjam --build-dir=/tmp/build-boost -sHAVE_ICU=<span class="number">1</span> -sICU_PATH=/usr/local/include  -sICU_LINK=<span class="string">"/LIBPATH:/usr/local/lib"</span> toolset=gcc</span><br></pre></td></tr></table></figure>
+<p>如果是自定义目录需要添加环境变量<br>修改/etc/profile, 文件末尾添加<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export BOOST_INCLUDE=&quot;your install path &quot;/include</span><br><span class="line">export BOOST_LIB=&quot;your install path &quot;/lib</span><br></pre></td></tr></table></figure></p>
+<p>在/etc/profile.d/ 中新建一个shell文件boost.sh<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line">export BOOST_INCLUDE_PATH=/home/tyler/Documents/boost_1_46_1</span><br><span class="line">export BOOST_LIB_PATH=/home/tyler/Documents/boost_1_46_1/stage/lib</span><br><span class="line">export BOOST_LIB_SUFFIX=1_46_1</span><br></pre></td></tr></table></figure></p>
+<p>source /etc/profile.d/boost.sh<br>以后在编译程序的时候，只需要加上 ：-I$BOOST_INCLUDE_PATH - L$BOOST_LIB_PATH</p>
+<p>卸载<br>将/usr/local/lib和/usr/local/include/boost两个目录下的文件直接删除就可以。</p>
+<h2 id="编译-wt-3-3-2"><a href="#编译-wt-3-3-2" class="headerlink" title="编译 wt 3.3.2"></a>编译 wt 3.3.2</h2><p>CMake 2.6，找不到 boost 换 2.8<br><a href="http://www.cmake.org/CMake" target="_blank" rel="noopener">CMake</a> (&gt;= 2.4), and<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">./bootstrap</span><br><span class="line">make -j 2</span><br><span class="line">sudo make install</span><br><span class="line">cmake --version</span><br></pre></td></tr></table></figure></p>
+<p>wt3.3.10 需要 cmake 2.12 以上</p>
+<h3 id="编译依赖包"><a href="#编译依赖包" class="headerlink" title="编译依赖包"></a>编译依赖包</h3><ul>
+<li>ZEROMQ message system</li>
+<li>Google protobuf protocol</li>
+<li>libwt database abstraction</li>
+<li>libwt webserver</li>
+<li>Postgres SQL server</li>
+</ul>
+<p>ZEROMQ, czmq, protobuf : ./configure; make; sudo make install;make clean</p>
+<p>Postgres SQL server 9.6.9 源码编译<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libreadline-dev</span><br><span class="line">./configure</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br><span class="line">sudo adduser postgres</span><br><span class="line">sudo mkdir /usr/local/pgsql/data</span><br><span class="line">sudo chown postgres /usr/local/pgsql/data</span><br><span class="line">su - postgres</span><br><span class="line">/usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data</span><br><span class="line">/usr/local/pgsql/bin/postgres -D /usr/local/pgsql/data &gt;logfile 2&gt;&amp;1 &amp;</span><br><span class="line">/usr/local/pgsql/bin/createdb test</span><br><span class="line">/usr/local/pgsql/bin/psql test</span><br></pre></td></tr></table></figure></p>
+<p>然后需要创建数据库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">进入控制台</span><br><span class="line">/usr/local/pgsql/bin/psql</span><br><span class="line">创建用户</span><br><span class="line">CREATE USER backend WITH PASSWORD &apos;XYZPASS&apos;;</span><br><span class="line">创建数据库</span><br><span class="line">CREATE DATABASE testdb8 OWNER backend;</span><br><span class="line">赋予权限</span><br><span class="line">GRANT ALL PRIVILEGES ON DATABASE testdb8 to backend;</span><br><span class="line">查看当前库的表</span><br><span class="line">\d</span><br><span class="line">显示表具体信息</span><br><span class="line">\d table_name</span><br></pre></td></tr></table></figure></p>
+<p>编译 wt 需要<br>使用 CMake 2.8<br>C++ boost library (preferably version 1.46.1 or higher)</p>
+<p>cd wt-x.x.x<br>mkdir build<br>cd build<br>配置<br>cmake -DBOOST_ROOT=/home/tyler/Documents/boost_1_46_1 -DBOOST_DIR=/home/tyler/Documents/boost_1_46_1 -DBOOST_INCLUDE_DIRS=/home/tyler/Documents/boost_1_46_1 -DBOOST_LIB_DIRS=/home/tyler/Documents/boost_1_46_1/stage/lib -DENABLE_POSTGRES=on -DPOSTGRES_PREFIX=/usr/local/pgsql/ -DWT_CPP_11_MODE=-std=c++11 ../</p>
+<p>如果失败了,<br>ccmake ../<br>or<br>cmake-gui ../</p>
+<p>编译<br>make -j 2<br>sudo make install</p>
+<p>编译过程如果有问题：<br>Linking CXX executable test.sqlite3<br>../src/Wt/Dbo/backend/libwtdbosqlite3.so.3.3.2: undefined reference to <code>dlopen</code><br>../src/Wt/Dbo/backend/libwtdbosqlite3.so.3.3.2: undefined reference to <code>dlclose</code><br>../src/Wt/Dbo/backend/libwtdbosqlite3.so.3.3.2: undefined reference to <code>dlerror</code><br>../src/Wt/Dbo/backend/libwtdbosqlite3.so.3.3.2: undefined reference to <code>dlsym</code></p>
+<p>检查 libdl.so 是否存在，如果没有安装下面的库<br><code>apt install libc6-dev-i386</code></p>
+<p>修改 D:\wt-3.3.2\test\CMakeLists.txt<br>找到 HAVE_SQLITE，在 TARGET_LINK_LIBRARIES 语句的最后面加上 dl 链接库</p>
+<p>compiled library path: /usr/local/lib/</p>
+<h3 id="编译-openssl-1-0-2p"><a href="#编译-openssl-1-0-2p" class="headerlink" title="编译 openssl 1.0.2p"></a>编译 openssl 1.0.2p</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">openssl version -a</span><br><span class="line"></span><br><span class="line">./config --prefix=/usr/local --openssldir=/usr/local/openssl threads zlib shared</span><br><span class="line">make</span><br><span class="line">make test</span><br><span class="line">sudo make install</span><br><span class="line"></span><br><span class="line">make clean</span><br></pre></td></tr></table></figure>
+<p>如果不指定–prefix和–openssldir, 那么, 生成的文件在<br>/usr/local/include, /usr/local/lib, /usr/local/ssl这三个目录下<br>–prefix是指定include和lib install路径<br>–openssldir是指定bin  certs  man  misc  openssl.cnf  private的安装路径</p>
+<p>export OPENSSL_INCLUDE_PATH=”/usr/local/include/openssl/“<br>export OPENSSL_LIB_PATH=”/usr/local/lib/“</p>
+<p>1.0.1k 版本，如果提示 SSLv2_method 找不到。<br>修改 ssl/s2_meth.c 文件 77 行，增加下面三个方法原来的三行删掉<br><a href="https://github.com/openssl/openssl/commit/133138569f37d149ed1d7641fe8c75a93fded445" target="_blank" rel="noopener">参见</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">IMPLEMENT_ssl2_meth_func(SSLv2_method,</span><br><span class="line">                         ssl2_accept, ssl2_connect, ssl2_get_method)</span><br><span class="line">#else                           /* !OPENSSL_NO_SSL2 */</span><br><span class="line"></span><br><span class="line">SSL_METHOD *SSLv2_method(void) &#123; return NULL; &#125;</span><br><span class="line">SSL_METHOD *SSLv2_client_method(void) &#123; return NULL; &#125;</span><br><span class="line">SSL_METHOD *SSLv2_server_method(void) &#123; return NULL; &#125;</span><br><span class="line"></span><br><span class="line">#endif</span><br></pre></td></tr></table></figure></p>
+<h2 id="编译-primecoind"><a href="#编译-primecoind" class="headerlink" title="编译 primecoind"></a>编译 primecoind</h2><p>根据上面编译的配置，修改 makefile.unix 的相关依赖路径</p>
+<p>export BOOST_INCLUDE_PATH=/home/tyler/Documents/boost_1_46_1<br>export BOOST_LIB_PATH=/home/tyler/Documents/boost_1_46_1/stage/lib</p>
+<p>需要编译以下berkeley db db-4.8.30.NC<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">tar -xvf db-4.8.30.NC.tar.gz</span><br><span class="line">cd db-4.8.30.NC/build_unix</span><br><span class="line">mkdir -p build</span><br><span class="line">BDB_PREFIX=$(pwd)/build</span><br><span class="line">../dist/configure --disable-shared --enable-cxx --with-pic --prefix=$BDB_PREFIX</span><br><span class="line">make install</span><br><span class="line">cd ../..</span><br></pre></td></tr></table></figure></p>
+<p>export BDB_LIB_PATH=$BDB_PREFIX/lib<br>export BDB_INCLUDE_PATH=$BDB_PREFIX/include<br>export BDB_LIB_SUFFIX=-4.8</p>
+<p>进入目录 primeserver/src 执行<br><code>make -f makefile.unix &gt; log.txt 2&gt;&amp;1</code></p>
+<h2 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">第一次运行需要创建数据库</span><br><span class="line">-initwtdb</span><br><span class="line">矿池手续费地址</span><br><span class="line">-feeaddr</span><br><span class="line">费用计算：</span><br><span class="line">settings-&gt;Fee = GetArg(&quot;-poolfee&quot;, 10);</span><br><span class="line">(block-&gt;Value * mSettings-&gt;Fee) / 100;</span><br><span class="line"></span><br><span class="line">目标值</span><br><span class="line">-target</span><br><span class="line">同步完毕后需要下面的参数启动 primecoind</span><br><span class="line">-gen</span><br><span class="line"></span><br><span class="line">export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:/usr/local/pgsql/lib:/home/tyler/Documents/boost_1_46_1/stage/lib</span><br><span class="line">sudo ldconfig</span><br><span class="line"></span><br><span class="line">启动 postgreSQL</span><br><span class="line">/usr/local/pgsql/bin/pg_ctl -s -D /usr/local/pgsql/data start -w -t 120</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">初始化数据库+同步数据</span><br><span class="line">./primecoind -rpcuser=user -rpcpassword=password -printtoconsole -initwtdb -reindex -txindex=1 -addrindex=1 -datadir=&quot;/mnt/blocks/primecoin_pool_data&quot;</span><br><span class="line"></span><br><span class="line">启动矿池服务</span><br><span class="line">./primecoind -rpcuser=user -rpcpassword=password -printtoconsole -txindex=1 -addrindex=1 -datadir=&quot;/mnt/blocks/primecoin_pool_data&quot; -gen</span><br><span class="line"></span><br><span class="line"> ./primecoind -gen -debug -frontport=6667 -host=121.43.185.81 -feeaddr=AVjsWxuvcmjDvULpuegjKbgjrCthi2JVeq -daemon</span><br><span class="line"></span><br><span class="line">The webserver needs to be started as:</span><br><span class="line">./webserver --docroot /usr/local/share/Wt --http-address 0.0.0.0 --http-port 80</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/17/学习笔记/linux/ubuntu/ubuntu-16-04降级到gcc4-9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/17/学习笔记/linux/ubuntu/ubuntu-16-04降级到gcc4-9/" itemprop="url">ubuntu-16.04降级到gcc4.9</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-17T11:31:21+08:00">2018-08-17</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove gcc g++</span><br><span class="line">gcc –version</span><br><span class="line">sudo apt-get install gcc-4.9 g++-4.9</span><br><span class="line">g++-4.9 –version</span><br><span class="line">gcc-4.9 –version</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/17/学习笔记/linux/linux-远程后台运行任务/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/17/学习笔记/linux/linux-远程后台运行任务/" itemprop="url">linux-远程后台运行任务</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-17T11:16:32+08:00">2018-08-17</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="tmux"><a href="#tmux" class="headerlink" title="tmux"></a>tmux</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">apt install tmux</span><br><span class="line">// 标记标题 dev</span><br><span class="line">tmux new -s dev</span><br><span class="line">tmux new -s admin</span><br><span class="line">执行长时间任务，退出对话</span><br><span class="line">tmux detach</span><br><span class="line">重新登录后</span><br><span class="line">tmux attach -t dev</span><br><span class="line">tmux switch -t admin</span><br></pre></td></tr></table></figure>
+<h2 id="临时长时间后台运行应用"><a href="#临时长时间后台运行应用" class="headerlink" title="临时长时间后台运行应用"></a>临时长时间后台运行应用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup ping www.ibm.com &amp;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/17/学习笔记/区块链/Stratum-protocol/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/17/学习笔记/区块链/Stratum-protocol/" itemprop="url">Stratum protocol</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-17T10:10:51+08:00">2018-08-17</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://bitcointalk.org/index.php?topic=108533.0" target="_blank" rel="noopener">Original protocol announce</a><br><a href="https://slushpool.com/help/manual/stratum-protocol" target="_blank" rel="noopener">All details and links about above mentioned</a><br>Please just adopt the two commands I posted about previously:  A redirect command for a poolserver to send miners elsewhere, and a server restart notification [with timer] so a pool can attempt a graceful restart rather than suddenly dropping connections.</p>
+<p>关键词：<br>TCP socket<br>JSON-RPC 2.0</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/16/学习笔记/区块链/bitcoin/bitcoin-常见问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/16/学习笔记/区块链/bitcoin/bitcoin-常见问题/" itemprop="url">bitcoin-常见问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-16T10:52:14+08:00">2018-08-16</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="node-misbehaving"><a href="#node-misbehaving" class="headerlink" title="node misbehaving"></a>node misbehaving</h2><p>2018-08-16 02:44:33 Misbehaving: 180.159.203.83:56679 peer=58019 (0 -&gt; 100) BAN THRESHOLD EXCEEDED<br>节点 IP 会被加入禁止列表<br>如果某些节点的行为和协议不符，有破坏性（例如发大量无效的信息），一个禁止计数器会依据违反协议的程度增加。<br>（banscore 通过 bitcoind 设置默认 100）<br>当达到一个预设值得时候就会断开节点连接一天（可以使用 bantime 设置）。</p>
+<h2 id="deserialize-or-I-O-error"><a href="#deserialize-or-I-O-error" class="headerlink" title="deserialize or I/O error"></a>deserialize or I/O error</h2><p>重建索引试试</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/14/学习笔记/区块链/primecoin/primecoin-pool学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/14/学习笔记/区块链/primecoin/primecoin-pool学习/" itemprop="url">primecoin-pool学习</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-14T14:38:11+08:00">2018-08-14</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>On going…</p>
+<p> ./primecoind -gen -debug -frontport=6667 -host=121.43.185.81 -feeaddr=AVjsWxuvcmjDvULpuegjKbgjrCthi2JVeq -daemon</p>
+<p>Primecoin XPM Pool Server<br><a href="https://github.com/madMAx43v3r/xpmpool" target="_blank" rel="noopener">https://github.com/madMAx43v3r/xpmpool</a><br>Primecoin XPM GPU Miner for xpmpool (aka. madPrimeMiner)<br><a href="https://github.com/madMAx43v3r/xpmclient" target="_blank" rel="noopener">https://github.com/madMAx43v3r/xpmclient</a><br>The solo-mining server code is at: <a href="https://github.com/madMAx43v3r/xpmserver" target="_blank" rel="noopener">https://github.com/madMAx43v3r/xpmserver</a></p>
+<p>Primecoin XPM GPU Miner for xpmpool (aka. madPrimeMiner)<br><a href="https://github.com/eXtremal-ik7/xpmclient" target="_blank" rel="noopener">https://github.com/eXtremal-ik7/xpmclient</a></p>
+<p><a href="http://xpmforall.org/" target="_blank" rel="noopener">http://xpmforall.org/</a></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/08/14/学习笔记/区块链/primecoin/primecoin-pool学习/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -921,917 +1829,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/08/工具相关/docker/docker-使用ubuntu16-04/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/08/工具相关/docker/docker-使用ubuntu16-04/" itemprop="url">docker-使用ubuntu16.04</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-08T11:11:26+08:00">2018-08-08</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="下载-ubuntu-16-04-image"><a href="#下载-ubuntu-16-04-image" class="headerlink" title="下载 ubuntu 16.04 image"></a>下载 ubuntu 16.04 image</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 下载镜像</span><br><span class="line">docker pull ubuntu:16.04</span><br><span class="line">// 查看 image id</span><br><span class="line">docker images</span><br><span class="line">// 交互式运行， -it交互方式启动容器，-name 给容器命名 -v目录映射 &apos;宿主目录:容器目录&apos;</span><br><span class="line">docker run -it --name ubuntu16.04 -v /Users/zhengjun/project/docker/ubuntu16.04:/home/data --net=bridge 938 /bin/bash</span><br><span class="line">// 登录 docker 容器</span><br><span class="line">docker exec -it &lt;containerIdOrName&gt; bash</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>安装没有自带的常用命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//通过 whereis ifconfig 发现根本就没有安装这个命令，需要自己安装</span><br><span class="line">apt-get update</span><br><span class="line">apt install net-tools # ifconfig</span><br><span class="line">apt install iputils-ping # ping</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>停止容器</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop containerID</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>运行容器</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker start containerID</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>退出容器，容器仍在运行<br><code>exit</code></p>
-</li>
-<li><p>登录容器<br>使用容器 id</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it 29 bash</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="制作镜像"><a href="#制作镜像" class="headerlink" title="制作镜像"></a>制作镜像</h2><p>Dockerfile 中每一个指令都会建立一层.每一个 RUN 的行为，就和刚才我们手工建立镜像的过程一样：新建立一层，在其上执行这些命令，执行结束后，commit 这一层的修改，构成新的镜像。<br>编写 docker file<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># docker file for bitcoin/primecoin test node</span><br><span class="line">FROM ubuntu:16.04</span><br><span class="line"></span><br><span class="line">MAINTAINER Tyler Cheng - &quot;&lt;zhengjun2018@gmail.com&gt;&quot;</span><br><span class="line"></span><br><span class="line">ENV DEBIAN_FRONTEND noninteractive</span><br><span class="line"></span><br><span class="line"># net-tools:ifconfig,iputils-ping:ping</span><br><span class="line">RUN apt-get update &amp;&amp; apt-get upgrade -y \</span><br><span class="line">    &amp;&amp; apt-get install -y net-tools iputils-ping autoconf libtool pkg-config \</span><br><span class="line">    libboost-all-dev libssl-dev libevent-dev software-properties-common</span><br><span class="line">RUN add-apt-repository ppa:bitcoin/bitcoin</span><br><span class="line">RUN apt-get update \</span><br><span class="line">    &amp;&amp; apt-get install -y libdb4.8-dev libdb4.8++-dev libminiupnpc-dev</span><br></pre></td></tr></table></figure></p>
-<p>尚未验证的项目</p>
-<p>EXPOSE 22<br>将22端口‘暴漏’出来，以便在外部访问该端口。没有的话，将无法从外部（非运行docker的主机）ssh。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 设置时区和语言</span><br><span class="line">RUN echo &quot;Asia/Shanghai&quot; &gt; /etc/timezone \</span><br><span class="line">        &amp;&amp; dpkg-reconfigure -f noninteractive tzdata \</span><br><span class="line">        &amp;&amp; dpkg-reconfigure locales  \</span><br><span class="line">        &amp;&amp; locale-gen C.UTF-8 \</span><br><span class="line">        &amp;&amp; /usr/sbin/update-locale LANG=C.UTF-8 \</span><br><span class="line">        &amp;&amp; ENV LC_ALL C.UTF-8</span><br></pre></td></tr></table></figure>
-<ul>
-<li>FROM 指定基础镜像</li>
-<li><p>RUN 执行命令<br>RUN &lt;命令&gt;</p>
-</li>
-<li><p>打包</p>
-<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2></li>
-</ul>
-<ol>
-<li>docker制作镜像 apt-get 安装文件报错debconf: unable to initialize frontend: Dialog<br>解决方法，添加下面设置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ARG DEBIAN_FRONTEND=noninteractive</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker build [OPTIONS] PATH | URL | -</span><br><span class="line"></span><br><span class="line">docker build --no-cache -t ubuntu16.04_bitcoin:bitcoin .</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/08/学习笔记/GPU/GPU-编程初步信息/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/08/学习笔记/GPU/GPU-编程初步信息/" itemprop="url">GPU-编程初步信息</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-08T07:43:16+08:00">2018-08-08</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/GPU/" itemprop="url" rel="index"><span itemprop="name">GPU</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>初步调研，记录一下相关资料</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">《Programming Massively Parallel Processors: A Hands-on Approach 》</span><br><span class="line">《CUDA by Example: An Introduction to General-Purpose GPU Programming》</span><br><span class="line">《CUDA并行程序设计:GPU编程指南》</span><br><span class="line">《CUDA By Example》</span><br><span class="line">http://www.kimicat.com/opencl-1/opencl-jiao-xue-yi</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/07/学习笔记/区块链/bitcoin/bitcoin-文件目录相关/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/07/学习笔记/区块链/bitcoin/bitcoin-文件目录相关/" itemprop="url">bitcoin-文件目录相关</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-07T14:49:33+08:00">2018-08-07</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="默认保存路径"><a href="#默认保存路径" class="headerlink" title="默认保存路径"></a>默认保存路径</h2><ol>
-<li><p>Windows<br><code>WinKey+R</code> 输入 <code>%APPDATA%\Bitcoin</code><br>通常会打开</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:\Documents and Settings\YourUserName\Application data\Bitcoin (XP)</span><br><span class="line">C:\Users\YourUserName\Appdata\Roaming\Bitcoin (Vista and 7)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Linux<br><code>~/.bitcoin/</code> 默认路径</p>
-</li>
-<li><p>Mac<br>默认路径 <code>~/Library/Application Support/Bitcoin/</code></p>
-</li>
-</ol>
-<h2 id="数据目录结构"><a href="#数据目录结构" class="headerlink" title="数据目录结构"></a>数据目录结构</h2><p>blocks/blk*.dat<br>区块数据，使用网络大端格式，直接保存在硬盘上。载入钱包时重新扫描缺失的交易，服务其他节点同步数据，识别区块的不同部分会用到。</p>
-<p>blocks/index/:<br>这是一个 LevelDB 数据库，包括所有已知块的元数据，用来加速查找区块。</p>
-<p>chainstate/:<br>这是一个 LevelDB 数据库，使用压缩形式保存当前的 UTXO 和交易来源的一些相关元数据。这里的数据是校验新交易块所必须的。<br>这些信息可以通过区块重建（参考 -reindex 参数），但是很耗时间。没有这些数据，也可以校验，但是意味着要扫描整个区块查找 UTXO</p>
-<p>blocks/rev*.dat:<br>这里包括 “undo” 数据，对于回退 chainstate，重组区块是必要的数据。</p>
-<p>一个块文件大约为128MB。每个块文件会有一个对应的撤销文件，比如文件 blocks/blk1234.dat 和 blocks/recv1234.dat 对应。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/06/学习笔记/区块链/bitcoin/bitcoin-数据文件备份/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/06/学习笔记/区块链/bitcoin/bitcoin-数据文件备份/" itemprop="url">bitcoin-数据文件备份</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-06T19:26:11+08:00">2018-08-06</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="完整节点同步后的备份"><a href="#完整节点同步后的备份" class="headerlink" title="完整节点同步后的备份"></a>完整节点同步后的备份</h2><ol>
-<li>安全退出程序：File -&gt; Exit or ./bitcoin-cli stop</li>
-<li>备份数据目录 blocks, chainstate</li>
-<li>有问题时，恢复这两个目录即可<br>注意：windows 下面同步后的文件，如果在 linux 上面使用，需要从新建立索引</li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/06/学习笔记/区块链/bitcoin/bitcoin-搭建测试网络/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/06/学习笔记/区块链/bitcoin/bitcoin-搭建测试网络/" itemprop="url">bitcoin-搭建测试网络</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-06T11:22:33+08:00">2018-08-06</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>bitcoin 0.16.2<br><code>docker run -it --name bitcoinNode1 -v /Users/zhengjun/project/docker/ubuntu16.04:/home/data --net=bridge 938 /bin/bash</code></p>
-<h1 id="Regtest-Mode（regression-test-mode）"><a href="#Regtest-Mode（regression-test-mode）" class="headerlink" title="Regtest Mode（regression test mode）"></a>Regtest Mode（regression test mode）</h1><p>创建私有的链，类似于 testnet 但是可以自己选择创建新块。可以完全控制整个网络。<br>注意不同节点的 DATA 目录要分开，不能使用同一个目录。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bitcoind -regtest -printtoconsole -rpcuser=user -rpcpassword=password -txindex=1 -addrindex=1 -datadir=/home/data/bin_bitcoin_0.16.2/regtestData</span><br></pre></td></tr></table></figure>
-<p>查看端口，默认监听 18444 端口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -pant</span><br></pre></td></tr></table></figure></p>
-<p>使用 rpc 创建 101 个区块，只有在  regtest mode 才支持该命令，因为使用默认规则，所以产生速度很快，regtest mode 只有前 150 块奖励 50 bitcoin<br>，只有经过 100 个确认才可以消费奖励。所以我们创建 101 块，才能访问第一块的 coinbase transaction 交易<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">## Bitcoin Core 0.10.1 and earlier</span><br><span class="line">./bitcoin-cli -regtest -rpcuser=user -rpcpassword=password setgenerate true 101</span><br><span class="line">## Bitcoin Core master (as of commit 48265f3)</span><br><span class="line">./bitcoin-cli -regtest -printtoconsole -rpcuser=user -rpcpassword=password generate 101</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./bitcoin-cli -regtest -printtoconsole -rpcuser=user -rpcpassword=password getbalance</span><br><span class="line">50.00000000</span><br></pre></td></tr></table></figure>
-<p>添加节点<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --name bitcoinNode2 -v /Users/zhengjun/project/docker/ubuntu16<span class="number">.04</span>:/home/data --net=bridge <span class="number">938</span> /bin/bash</span><br><span class="line"><span class="comment">// 下面是用于退出后，登录容器的命令</span></span><br><span class="line">docker exec -e COLUMNS=<span class="string">"`tput cols`"</span> -e LINES=<span class="string">"`tput lines`"</span> -it d5 bash</span><br></pre></td></tr></table></figure></p>
-<p>查看 1 节点的 ip，启动 2 节点，增加参数 <code>addnode=172.17.0.2</code><br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">./bitcoind -regtest -printtoconsole -rpcuser=user -rpcpassword=password -txindex=<span class="number">1</span> -addrindex=<span class="number">1</span> -addnode=<span class="number">172.17</span><span class="number">.0</span><span class="number">.2</span>  -datadir=/home/data/bin_bitcoin_0<span class="number">.16</span><span class="number">.2</span>/regtestDataNode2</span><br><span class="line"><span class="comment">// 查看信息</span></span><br><span class="line">./bitcoin-cli -regtest -printtoconsole -rpcuser=user -rpcpassword=password getblockchaininfo</span><br><span class="line"><span class="comment">// 获取地址</span></span><br><span class="line">./bitcoin-cli -regtest -printtoconsole -rpcuser=user -rpcpassword=password getnewaddress</span><br><span class="line"><span class="number">2</span>N7nvzMfpAHR9675TPdWGJG1wDVh2783Uug</span><br><span class="line"><span class="comment">// 从节点 1 发送比特币</span></span><br><span class="line">./bitcoin-cli -regtest -printtoconsole -rpcuser=user -rpcpassword=password sendtoaddress <span class="number">2</span>N7nvzMfpAHR9675TPdWGJG1wDVh2783Uug <span class="number">20</span></span><br><span class="line"><span class="number">252f</span>d4d3af8839c0349b52653aee654722e680d1759f550302e474e291cf2695</span><br><span class="line"><span class="comment">// 在节点 1 产生 100 个新区块来确认交易</span></span><br><span class="line">./bitcoin-cli -regtest -printtoconsole -rpcuser=user -rpcpassword=password generate <span class="number">100</span></span><br><span class="line"><span class="comment">// 这时查看节点 2 应该看到余额 20 列出钱包的 UTXO</span></span><br><span class="line">./bitcoin-cli -regtest -printtoconsole -rpcuser=user -rpcpassword=password listunspent</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/03/学习笔记/区块链/bitcoin/bitcoin-常用命令/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/03/学习笔记/区块链/bitcoin/bitcoin-常用命令/" itemprop="url">bitcoin-常用命令</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-03T13:03:17+08:00">2018-08-03</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="命令行方式"><a href="#命令行方式" class="headerlink" title="命令行方式"></a>命令行方式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./src/bitcoin-cli -rpcuser=user -rpcpassword=password getaddressbalance 1BW18n7MfpU35q4MTBSk8pse3XzQF8XvzT</span><br></pre></td></tr></table></figure>
-<h2 id="网络方式"><a href="#网络方式" class="headerlink" title="网络方式"></a>网络方式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --user bitcoin:local321 --data-binary &apos;&#123;&quot;jsonrpc&quot;:&quot;1.0&quot;, &quot;id&quot;:&quot;curltest&quot;, &quot;method&quot;:&quot;getaddressbalance&quot;,&quot;params&quot;:[&quot;1Ebb8NfVmKMoGuMJCAEbVMv2dX8GnzgxSa&quot;]&#125;&apos; -H &apos;content-type: text/plain;&apos; http://127.0.0.1:8332/</span><br></pre></td></tr></table></figure>
-<h2 id="禁止-IP-节点"><a href="#禁止-IP-节点" class="headerlink" title="禁止 IP 节点"></a>禁止 IP 节点</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">setban &quot;ip(/netmask)&quot; &quot;add|remove&quot; (bantime) (absolute)</span><br><span class="line"></span><br><span class="line">Attempts add or remove a IP/Subnet from the banned list.</span><br><span class="line"></span><br><span class="line">Arguments:</span><br><span class="line">1. &quot;ip(/netmask)&quot; (string, required) The IP/Subnet (see getpeerinfo for nodes ip) with a optional netmask (default is /32 = single ip)</span><br><span class="line">2. &quot;command&quot;      (string, required) &apos;add&apos; to add a IP/Subnet to the list, &apos;remove&apos; to remove a IP/Subnet from the list</span><br><span class="line">3. &quot;bantime&quot;      (numeric, optional) time in seconds how long (or until when if [absolute] is set) the ip is banned (0 or empty means using the default time of 24h which can also be overwritten by the -bantime startup argument)</span><br><span class="line">4. &quot;absolute&quot;     (boolean, optional) If set, the bantime must be a absolute timestamp in seconds since epoch (Jan 1 1970 GMT)</span><br><span class="line"></span><br><span class="line">Examples:</span><br><span class="line">&gt; bitcoin-cli setban &quot;192.168.0.6&quot; &quot;add&quot; 86400</span><br><span class="line">&gt; bitcoin-cli setban &quot;192.168.0.0/24&quot; &quot;add&quot;</span><br><span class="line">&gt; curl --user myusername --data-binary &apos;&#123;&quot;jsonrpc&quot;: &quot;1.0&quot;, &quot;id&quot;:&quot;curltest&quot;, &quot;method&quot;: &quot;setban&quot;, &quot;params&quot;: [&quot;192.168.0.6&quot;, &quot;add&quot; 86400] &#125;&apos; -H &apos;content-type: text/plain;&apos; http://127.0.0.1:8332/</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1883,7 +1880,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">584</span>
+                    <span class="site-state-item-count">590</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2913,7 +2910,69 @@
         onPopupClose();
       }
     });
-  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -2932,44 +2991,7 @@
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->
 
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-  
     
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-  
-
   
 
 
