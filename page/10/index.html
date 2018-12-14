@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">66</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">67</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">623</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">628</span>
       </a>
 </li>
 
@@ -328,7 +328,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/11/学习笔记/区块链/mining-getwork/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/15/学习笔记/区块链/bitcoin/bitcoin-script/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -347,7 +347,846 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/09/11/学习笔记/区块链/mining-getwork/" itemprop="url">mining-getwork</a></h1>
+                <a class="post-title-link" href="/2018/09/15/学习笔记/区块链/bitcoin/bitcoin-script/" itemprop="url">bitcoin-script</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-15T14:41:46+08:00">2018-09-15</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>scriptPubKey (“output script”)<br>pay2pubkey tx: <pubkey> OP_CHECKSIG<br>Pay2PubKeyHash Tx: OP_DUP OP_HASH160 <pubkeyhash> OP_EQUALVERIFY OP_CHECKSIG<br>Pay2ScriptHash Tx: OP_HASH160 <scripthash> OP_EQUAL</scripthash></pubkeyhash></pubkey></p>
+<p>When technical docs refer to the redeemScript, it is referring to the script in the ScriptSig (yet another poorly named element) of the input of a transactions.  There is only a redeemScript when redeeming a P2SH.</p>
+<p>scriptSig (“input script”)<br>Pay2PubKeyHash: <sig> <pubkey><br>Pay2ScriptHash: <sig-0> … <sig-n> <redeemscript></redeemscript></sig-n></sig-0></pubkey></sig></p>
+<p>P2SH <a href="https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki" target="_blank" rel="noopener">BIP16</a></p>
+<p>scriptSig:    [signature] {[pubkey] OP_CHECKSIG}<br>scriptPubKey: OP_HASH160 [20-byte-hash of {[pubkey] OP_CHECKSIG} ] OP_EQUAL</p>
+<ol>
+<li>[signature] and {[pubkey] OP_CHECKSIG} are pushed onto the stack</li>
+<li>OP_HASH160 hashes {[pubkey] OP_CHECKSIG}</li>
+<li>The same hash comes from the scriptPubKey onto the stack</li>
+<li>Consequently OP_EQUAL gives True</li>
+<li>The script is popped off the stack, leaving only [signature] on the stack.</li>
+<li>The deserialized script is added, leaving [signature] [pubkey] OP_CHECKSIG</li>
+<li>The transaction is validated again, that is, a normal signature verification occurs against the specified public key.</li>
+</ol>
+<h2 id="Provably-Unspendable-Prunable-Outputs"><a href="#Provably-Unspendable-Prunable-Outputs" class="headerlink" title="Provably Unspendable/Prunable Outputs"></a>Provably Unspendable/Prunable Outputs</h2><p>The standard way to mark a transaction as provably unspendable is with a scriptPubKey of the following form:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scriptPubKey: OP_RETURN &#123;zero or more ops&#125;</span><br></pre></td></tr></table></figure></p>
+<p>OP_RETURN tx<br><a href="https://bchain.info/BTC/tx/1a2e22a717d626fc5db363582007c46924ae6b28319f07cb1b907776bd8293fc" target="_blank" rel="noopener">https://bchain.info/BTC/tx/1a2e22a717d626fc5db363582007c46924ae6b28319f07cb1b907776bd8293fc</a></p>
+<p>txid 1a2e22a717d626fc5db363582007c46924ae6b28319f07cb1b907776bd8293fc<br>01000000015db413e8393e51026b492cb0547e5910afe81c72ea6008a357075a3ff1584075010000006a473044022055bcb36c829a614451787fe8c9bfb3798b683809b65b92037a015eccb5ff659702202461d2c708a4fd57c839e43634e8c02935d7b7d1db5b978432b0674c44645ed10121032c1ea520c25c4e66831cd395a3cd26f0e0a1472a3103fc8a4a63ef10e92d123cffffffff010000000000000000166a14215477656e74792062797465206469676573742e00000000</p>
+<p>“!Twenty byte digest.”</p>
+<h2 id="Freezing-funds-until-a-time-in-the-future"><a href="#Freezing-funds-until-a-time-in-the-future" class="headerlink" title="Freezing funds until a time in the future"></a>Freezing funds until a time in the future</h2><p>Using OP_CHECKLOCKTIMEVERIFY it is possible to make funds provably unspendable until a certain point in the future.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scriptPubKey: &lt;expiry time&gt; OP_CHECKLOCKTIMEVERIFY OP_DROP OP_DUP OP_HASH160 &lt;pubKeyHash&gt; OP_EQUALVERIFY OP_CHECKSIG</span><br><span class="line">scriptSig: &lt;sig&gt; &lt;pubKey&gt;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/14/学习笔记/区块链/bitcoin/bitcoin-segwit/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/14/学习笔记/区块链/bitcoin/bitcoin-segwit/" itemprop="url">bitcoin-segwit</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-14T21:58:17+08:00">2018-09-14</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki" target="_blank" rel="noopener">BIP141</a></p>
+<p>Segregated Witness, or SegWit Bitcoin Improvement Proposal number BIP141</p>
+<p>The declared purpose was to prevent nonintentional bitcoin transaction malleability, allow optional data transmission, and to bypass certain protocol restrictions (such as the block size limit) with a soft fork.[2]</p>
+<p>It was also intended to mitigate a blockchain size limitation problem that reduces bitcoin transaction speed.</p>
+<p>It does this by splitting the transaction into two segments, removing the unlocking signature (“witness” data) from the original portion and appending it as a separate structure at the end.[3] The original section would continue to hold the sender and receiver data, and the new “witness” structure would contain scripts and signatures. The original data segment would be counted normally, but the “witness” segment would, in effect, be counted as a quarter of its real size.</p>
+<h2 id="隔离见证做了什么改动？"><a href="#隔离见证做了什么改动？" class="headerlink" title="隔离见证做了什么改动？"></a>隔离见证做了什么改动？</h2><p>隔离见证就是把脚本签名(scriptSig)信息从基本结构 (base block) 里拿出来，放在一个新的数据结构当中。做验证工作的节点和矿工也会验证这个新的数据结构里的脚本签名，以确保交易是有效的。<br>当审核统计区块大小不能超过1M的时候。脚本签名大小不会被计算在内。</p>
+<p>隔离见证重新整理了每个交易内容的布局方式。把脚本签名从交易内容的结构里面拿出来，放到了最下面，并有一个指针Pointer指向它。</p>
+<p><img alt="a5ca0713.png" src="/2018/09/14/学习笔记/区块链/bitcoin/bitcoin-segwit/a5ca0713.png" width="" height=""></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/13/学习笔记/区块链/bitcoin/bitcoin-OP-RETURN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/13/学习笔记/区块链/bitcoin/bitcoin-OP-RETURN/" itemprop="url">bitcoin-OP-RETURN</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-13T21:52:57+08:00">2018-09-13</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://bitzuma.com/posts/op-return-and-the-future-of-bitcoin/" target="_blank" rel="noopener">ref</a></p>
+<p>Conclusions<br>Bitcoin’s long-running debate over acceptable uses of the block chain has received some much needed clarity. Applications can now inexpensively add a 40 byte data payload to transactions using the OP_RETURN script function. On a technical level, OP_RETURN doesn’t enable anything that wasn’t previously possible. Instead, OP_RETURN provides a standard interface through which new services can potentially be layered onto the block chain, and a central point of focus for future work on integration tools.</p>
+<p>This move brings the vision of Bitcoin as a universal platform for mediating complex agreements one step closer to reality. The extent to which the Bitcoin community will embrace this vision remains an open question.</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/13/学习笔记/区块链/bitcoin/bitcoin-change-history-study/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/13/学习笔记/区块链/bitcoin/bitcoin-change-history-study/" itemprop="url">bitcoin-change history study</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-13T16:59:00+08:00">2018-09-13</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="change-history"><a href="#change-history" class="headerlink" title="change history"></a>change history</h1><h2 id="2014-03-19-Bitcoin-Core-version-0-9-0-released"><a href="#2014-03-19-Bitcoin-Core-version-0-9-0-released" class="headerlink" title="2014-03-19 Bitcoin Core version 0.9.0 released"></a>2014-03-19 Bitcoin Core version 0.9.0 released</h2><ul>
+<li>OP_RETURN feature<br>这个特性不是认可在区块中存储数据，而是创建一个可证明，可裁剪的 output，避免已经提交的一些存储模式，<br>例如：在 unspendable TX outputs 中保存图片等任意数据。避免 UTXO database 膨胀影响使用。</li>
+</ul>
+<p>在区块中存储非交易数据现在仍然是个坏主意，保存在其他地方更有效率并且成本也更低。</p>
+<ul>
+<li>Autotools build system</li>
+<li>Bitcoin-cli</li>
+<li>Transaction Fees</li>
+</ul>
+<h2 id="2014-04-08-Bitcoin-Core-version-0-9-1-released"><a href="#2014-04-08-Bitcoin-Core-version-0-9-1-released" class="headerlink" title="2014-04-08 Bitcoin Core version 0.9.1 released"></a>2014-04-08 Bitcoin Core version 0.9.1 released</h2><p>No code change, just dependencies</p>
+<h2 id="2014-06-16-Bitcoin-Core-version-0-9-2-released"><a href="#2014-06-16-Bitcoin-Core-version-0-9-2-released" class="headerlink" title="2014-06-16 Bitcoin Core version 0.9.2 released"></a>2014-06-16 Bitcoin Core version 0.9.2 released</h2><ul>
+<li>Gitian OSX build</li>
+<li>GUI</li>
+</ul>
+<h2 id="2014-06-19-Bitcoin-Core-version-0-9-2-1-released"><a href="#2014-06-19-Bitcoin-Core-version-0-9-2-1-released" class="headerlink" title="2014-06-19 Bitcoin Core version 0.9.2.1 released"></a>2014-06-19 Bitcoin Core version 0.9.2.1 released</h2><p>not found potential fork feature</p>
+<h2 id="2014-09-27-Bitcoin-Core-version-0-9-3-released"><a href="#2014-09-27-Bitcoin-Core-version-0-9-3-released" class="headerlink" title="2014-09-27 Bitcoin Core version 0.9.3 released"></a>2014-09-27 Bitcoin Core version 0.9.3 released</h2><p>not found potential fork feature</p>
+<h2 id="2015-02-16-Bitcoin-Core-version-0-10-0-released"><a href="#2015-02-16-Bitcoin-Core-version-0-10-0-released" class="headerlink" title="2015-02-16 Bitcoin Core version 0.10.0 released"></a>2015-02-16 Bitcoin Core version 0.10.0 released</h2><p>BIP 66: strict DER encoding for signatures</p>
+<h2 id="2015-04-27-Bitcoin-Core-version-0-10-1-released"><a href="#2015-04-27-Bitcoin-Core-version-0-10-1-released" class="headerlink" title="2015-04-27 Bitcoin Core version 0.10.1 released"></a>2015-04-27 Bitcoin Core version 0.10.1 released</h2><p>not found potential fork feature</p>
+<h2 id="2015-05-19-Bitcoin-Core-version-0-10-2-released"><a href="#2015-05-19-Bitcoin-Core-version-0-10-2-released" class="headerlink" title="2015-05-19 Bitcoin Core version 0.10.2 released"></a>2015-05-19 Bitcoin Core version 0.10.2 released</h2><p>not found potential fork feature</p>
+<h2 id="2015-07-12-Bitcoin-Core-version-0-11-0-released"><a href="#2015-07-12-Bitcoin-Core-version-0-11-0-released" class="headerlink" title="2015-07-12 Bitcoin Core version 0.11.0 released"></a>2015-07-12 Bitcoin Core version 0.11.0 released</h2><ul>
+<li>Change the default maximum OP_RETURN size to 80 bytes</li>
+<li>Implement BIP62 rule 6</li>
+<li>Implement BIP66</li>
+</ul>
+<h2 id="2015-10-14-Bitcoin-Core-version-0-10-3-released"><a href="#2015-10-14-Bitcoin-Core-version-0-10-3-released" class="headerlink" title="2015-10-14 Bitcoin Core version 0.10.3 released"></a>2015-10-14 Bitcoin Core version 0.10.3 released</h2><h2 id="2015-10-15-Bitcoin-Core-version-0-11-1-released"><a href="#2015-10-15-Bitcoin-Core-version-0-11-1-released" class="headerlink" title="2015-10-15 Bitcoin Core version 0.11.1 released"></a>2015-10-15 Bitcoin Core version 0.11.1 released</h2><h2 id="2015-11-13-Bitcoin-Core-version-0-11-2-released"><a href="#2015-11-13-Bitcoin-Core-version-0-11-2-released" class="headerlink" title="2015-11-13 Bitcoin Core version 0.11.2 released"></a>2015-11-13 Bitcoin Core version 0.11.2 released</h2><p>BIP113 specifies a soft fork</p>
+<h2 id="2016-02-23-Bitcoin-Core-version-0-12-0-released"><a href="#2016-02-23-Bitcoin-Core-version-0-12-0-released" class="headerlink" title="2016-02-23 Bitcoin Core version 0.12.0 released"></a>2016-02-23 Bitcoin Core version 0.12.0 released</h2><h2 id="2016-04-15-Bitcoin-Core-version-0-12-1-released"><a href="#2016-04-15-Bitcoin-Core-version-0-12-1-released" class="headerlink" title="2016-04-15 Bitcoin Core version 0.12.1 released"></a>2016-04-15 Bitcoin Core version 0.12.1 released</h2><p>This release includes a soft fork deployment to enforce BIP68, BIP112 and BIP113 using the BIP9 deployment mechanism.</p>
+<h2 id="2016-08-23-Bitcoin-Core-version-0-13-0-released"><a href="#2016-08-23-Bitcoin-Core-version-0-13-0-released" class="headerlink" title="2016-08-23 Bitcoin Core version 0.13.0 released"></a>2016-08-23 Bitcoin Core version 0.13.0 released</h2><ul>
+<li>From 0.13.0 on, Windows XP is no longer supported.</li>
+<li>C++11 and Python 3</li>
+<li>Newly created wallets will use hierarchical deterministic key generation according to BIP32 (keypath m/0’/0’/k’). Existing wallets will still use traditional key generation.</li>
+<li>Segregated Witness not activate yet</li>
+<li>Removal of internal miner</li>
+</ul>
+<h2 id="2016-10-27-Bitcoin-Core-version-0-13-1-released"><a href="#2016-10-27-Bitcoin-Core-version-0-13-1-released" class="headerlink" title="2016-10-27 Bitcoin Core version 0.13.1 released"></a>2016-10-27 Bitcoin Core version 0.13.1 released</h2><p> Implement NULLDUMMY softfork (BIP147) (jl2012)</p>
+<h2 id="2017-01-03-Bitcoin-Core-version-0-13-2-released"><a href="#2017-01-03-Bitcoin-Core-version-0-13-2-released" class="headerlink" title="2017-01-03 Bitcoin Core version 0.13.2 released"></a>2017-01-03 Bitcoin Core version 0.13.2 released</h2><h2 id="2017-03-08-Bitcoin-Core-version-0-14-0-released"><a href="#2017-03-08-Bitcoin-Core-version-0-14-0-released" class="headerlink" title="2017-03-08 Bitcoin Core version 0.14.0 released"></a>2017-03-08 Bitcoin Core version 0.14.0 released</h2><h2 id="2017-04-22-Bitcoin-Core-version-0-14-1-released"><a href="#2017-04-22-Bitcoin-Core-version-0-14-1-released" class="headerlink" title="2017-04-22 Bitcoin Core version 0.14.1 released"></a>2017-04-22 Bitcoin Core version 0.14.1 released</h2><h2 id="2017-06-17-Bitcoin-Core-version-0-14-2-released"><a href="#2017-06-17-Bitcoin-Core-version-0-14-2-released" class="headerlink" title="2017-06-17 Bitcoin Core version 0.14.2 released"></a>2017-06-17 Bitcoin Core version 0.14.2 released</h2><h2 id="2017-09-14-Bitcoin-Core-version-0-15-0-released"><a href="#2017-09-14-Bitcoin-Core-version-0-15-0-released" class="headerlink" title="2017-09-14 Bitcoin Core version 0.15.0 released"></a>2017-09-14 Bitcoin Core version 0.15.0 released</h2><h2 id="2017-09-19-Bitcoin-Core-version-0-15-0-1-released"><a href="#2017-09-19-Bitcoin-Core-version-0-15-0-1-released" class="headerlink" title="2017-09-19 Bitcoin Core version 0.15.0.1 released"></a>2017-09-19 Bitcoin Core version 0.15.0.1 released</h2><p>fix gui bug</p>
+<h2 id="2017-11-11-Bitcoin-Core-version-0-15-1-released"><a href="#2017-11-11-Bitcoin-Core-version-0-15-1-released" class="headerlink" title="2017-11-11 Bitcoin Core version 0.15.1 released"></a>2017-11-11 Bitcoin Core version 0.15.1 released</h2><h2 id="2018-02-26-Bitcoin-Core-version-0-16-0-released"><a href="#2018-02-26-Bitcoin-Core-version-0-16-0-released" class="headerlink" title="2018-02-26 Bitcoin Core version 0.16.0 released"></a>2018-02-26 Bitcoin Core version 0.16.0 released</h2><ul>
+<li>Segwit Wallet</li>
+<li>HD-wallets by default<br>Due to a backward-incompatible change in the wallet database, wallets created with version 0.16.0 will be rejected by previous versions. Also, version 0.16.0 will only create hierarchical deterministic (HD) wallets. Note that this only applies to new wallets; wallets made with previous versions will not be upgraded to be HD.<h2 id="2018-06-15-Bitcoin-Core-version-0-16-1-released"><a href="#2018-06-15-Bitcoin-Core-version-0-16-1-released" class="headerlink" title="2018-06-15 Bitcoin Core version 0.16.1 released"></a>2018-06-15 Bitcoin Core version 0.16.1 released</h2><h2 id="2018-07-29-Bitcoin-Core-version-0-16-2-released"><a href="#2018-07-29-Bitcoin-Core-version-0-16-2-released" class="headerlink" title="2018-07-29 Bitcoin Core version 0.16.2 released"></a>2018-07-29 Bitcoin Core version 0.16.2 released</h2></li>
+</ul>
+<h1 id="List-of-Bitcoin-consensus-fork"><a href="#List-of-Bitcoin-consensus-fork" class="headerlink" title="List of Bitcoin consensus fork"></a>List of Bitcoin consensus fork</h1><p><a href="https://blog.bitmex.com/bitcoins-consensus-forks/" target="_blank" rel="noopener">ref.</a><br>after 0.8.6 version there is six soft fork has been done</p>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Activation Block Number</th>
+<th>BIP Number or Software Version</th>
+<th>Description</th>
+<th>Type</th>
+<th>Outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4 July 2015</td>
+<td>363,731</td>
+<td>BIP66</td>
+<td>Strict DER signature upgrade means Bitcoin is no longer dependent on OpenSSL’s signature parsing.</td>
+<td>Softfork</td>
+<td>95% threshold over a 1,000-block period. A chainsplit occurred, lasting six blocks, as some miners signaled support for BIP66 but had not upgraded and were SPY mining. The new softfork rules chain eventually took the lead.</td>
+</tr>
+<tr>
+<td>14 Dec 2015</td>
+<td>388,380</td>
+<td>BIP65</td>
+<td>Check Lock Time Verify enables funds to be locked until a specific time in the future. This is Bitcoin’s first new function.</td>
+<td>Softfork</td>
+<td>Successful rollout using a 95% threshold.</td>
+</tr>
+<tr>
+<td>4 July 2016</td>
+<td>419,328</td>
+<td>BIP68，BIP112，BIP113</td>
+<td>Relative lock-time enables a transaction output to be banned for a relative amount of time after the transaction.CheckSequenceVerify.Median time-past removes the incentive for a miner to use a future block timestamp to grab more transaction fees.</td>
+<td>Softfork</td>
+<td>Successful rollout using 95% versionbits signaling.</td>
+</tr>
+<tr>
+<td>23 July 2017</td>
+<td>477,800</td>
+<td>BIP91</td>
+<td>This temporary softfork makes signaling for the SegWit upgrade mandatory.</td>
+<td>Softfork</td>
+<td>Softfork successfully activated with an 80% miner threshold over a 336-block period, although only a tiny minority of users enforced BIP91 rules, which have since expired.  Therefore, the risk of a chainsplit was elevated in this period.</td>
+</tr>
+<tr>
+<td>01 Aug 2017</td>
+<td>478,479</td>
+<td>BIP148</td>
+<td>This temporary softfork makes signaling for the SegWit upgrade mandatory for a two week period following 1 August 2017.</td>
+<td>Softfork</td>
+<td>Flag-day softfork appeared to succeed with no issues, although only a minority of users enforced BIP148 rules, which have since expired. Therefore, the risk of a chainsplit was elevated in this period.</td>
+</tr>
+<tr>
+<td>24 Aug 2017</td>
+<td>481,824</td>
+<td>BIP141，BIP143，BIP147</td>
+<td>The segregated-witness (SegWit) upgrade.</td>
+<td>Softfork</td>
+<td>Rollout using 95% versionbits signaling.</td>
+</tr>
+</tbody>
+</table>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/13/学习笔记/区块链/bitcoin/bitcoin-rpc-commands/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/13/学习笔记/区块链/bitcoin/bitcoin-rpc-commands/" itemprop="url">bitcoin-rpc commands</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-13T11:36:15+08:00">2018-09-13</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="http://chainquery.com/bitcoin-api/getreceivedbyaccount" target="_blank" rel="noopener">bitcoin JSON-RPC</a></p>
+<h2 id="listaddressgroupings"><a href="#listaddressgroupings" class="headerlink" title="listaddressgroupings"></a>listaddressgroupings</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">listaddressgroupings</span><br><span class="line"></span><br><span class="line">Lists groups of addresses which have had their common ownership</span><br><span class="line">made public by common use as inputs or as the resulting change</span><br><span class="line">in past transactions</span><br><span class="line"></span><br><span class="line">Result:</span><br><span class="line">[</span><br><span class="line">  [</span><br><span class="line">    [</span><br><span class="line">      &quot;address&quot;,            (string) The bitcoin address</span><br><span class="line">      amount,                 (numeric) The amount in BTC</span><br><span class="line">      &quot;account&quot;             (string, optional) DEPRECATED. The account</span><br><span class="line">    ]</span><br><span class="line">    ,...</span><br><span class="line">  ]</span><br><span class="line">  ,...</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">Examples:</span><br><span class="line">&gt; bitcoin-cli listaddressgroupings</span><br><span class="line">&gt; curl --user myusername --data-binary &apos;&#123;&quot;jsonrpc&quot;: &quot;1.0&quot;, &quot;id&quot;:&quot;curltest&quot;, &quot;method&quot;: &quot;listaddressgroupings&quot;, &quot;params&quot;: [] &#125;&apos; -H &apos;content-type: text/plain;&apos; http://127.0.0.1:8332/</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/11/学习笔记/区块链/primecoin/mining-getwork/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/11/学习笔记/区块链/primecoin/mining-getwork/" itemprop="url">mining-getwork</a></h1>
         
 
         <div class="post-meta">
@@ -1059,754 +1898,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/07/工具相关/git/git-patch-study/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/07/工具相关/git/git-patch-study/" itemprop="url">git patch study</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-07T15:34:53+08:00">2018-09-07</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具相关/" itemprop="url" rel="index"><span itemprop="name">工具相关</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="gen-patch"><a href="#gen-patch" class="headerlink" title="gen patch"></a>gen patch</h2><ol>
-<li>use <code>git log --pretty=oneline -3</code> list commit<br>gen patch after e7819 commit not include e7819, this may be gen several files.</li>
-<li>gen patch <code>git format-patch e7819</code><br>if you want gen only one file use following command<br><code>git format-patch master --stdout &gt; fix_empty_poster.patch</code></li>
-</ol>
-<p>between two commits patch:<br><code>git format-patch 365a..4e16</code></p>
-<h2 id="apply-patch"><a href="#apply-patch" class="headerlink" title="apply patch"></a>apply patch</h2><ol>
-<li>copy .patch files to a folder</li>
-<li>take a look at what changes are in the patch<br><code>git apply --stat patch/*.patch</code></li>
-<li><p>test before actually apply<br><code>git apply --check patch/*.patch</code></p>
-</li>
-<li><p><code>git am --abort</code> abort earlier am process</p>
-</li>
-<li><code>git am patch/*.patch</code></li>
-</ol>
-<p><code>git am --signoff &lt; fix_empty_poster.patch</code></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/07/学习笔记/区块链/Consensus-DPOS/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/07/学习笔记/区块链/Consensus-DPOS/" itemprop="url">Consensus DPOS</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-07T15:23:26+08:00">2018-09-07</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Delegated Proof of Stake<br>Daniel Larimer<br>Under the hood, DPoS uses a reputation system and real-time voting to achieve consensus</p>
-<p><a href="https://steemit.com/dpos/@dantheman/dpos-consensus-algorithm-this-missing-white-paper" target="_blank" rel="noopener">ref1</a></p>
-<p>Current cryptocurrency projects that use Delegated Proof of Stake:<br><a href="https://bitshares.org/" target="_blank" rel="noopener">BitShares</a><br><a href="https://steem.io/" target="_blank" rel="noopener">Steem</a><br><a href="https://eos.io/" target="_blank" rel="noopener">EOS</a><br><a href="https://lisk.io/" target="_blank" rel="noopener">Lisk</a><br><a href="https://ark.io/" target="_blank" rel="noopener">Ark</a></p>
-<p>To help explain this algorithm I want to assume 3 block producers, A, B, and C. Because consensus requires 2⁄3 + 1 to resolve all cases, this simplified model will assume that producer C is deemed the tie breaker. In the real world there would be 21 or more block producers.</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/09/07/学习笔记/区块链/Consensus-DPOS/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/07/学习笔记/开源库/Qt/qt-multi-language-ts-qm-files/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/07/学习笔记/开源库/Qt/qt-multi-language-ts-qm-files/" itemprop="url">qt multi-language ts qm files</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-07T13:17:22+08:00">2018-09-07</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>qm 是 qt 的语言文件。用 qt 的 languist 先制作好 ts 文件，再生成 qm 文件，再在 qt 程序里面加载 qm 文件即可实现国际化<br>在代码中，我们使用tr()将需要翻译的字符串标记出来。lupdate工具就是提取出tr()函数中的相关字符串<br>如果你想要翻译函数外部的字符串，你需要使用两个宏QT_TR_NOOP()和QT_TRANSLATE_NOOP()。前者是用来翻译一个字符串，后者可以翻译多个字符串。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/07/学习笔记/区块链/Consensus-POS/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/07/学习笔记/区块链/Consensus-POS/" itemprop="url">Consensus POS</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-07T10:54:22+08:00">2018-09-07</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Proof of stake (PoS)<br>is a type of algorithm by which a cryptocurrency blockchain network aims to achieve distributed consensus.</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/06/学习笔记/区块链/Graphene/Graphene-study/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/06/学习笔记/区块链/Graphene/Graphene-study/" itemprop="url">Graphene study</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-06T22:49:27+08:00">2018-09-06</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>石墨烯生态的代表有 BTS，Steem 和 EOS。石墨烯采用的是 DPOS 的共识机制，出快速度大约为 1.5s，<br>石墨烯技术使得区块链应用更高的交易吞吐量，BTS 可以处理十万级别的 TPS，而 EOS 则是宣称百万级别的 TPS。<br>同时石墨烯技术高并发处理能力也是比特币和 ETH 无法做到的。</p>
-<p><a href="https://github.com/cryptonomex/graphene" target="_blank" rel="noopener">GitHub</a></p>
-<ol>
-<li>第一是 转账速度特别快。现在的平均确认时间是 1.5 秒，出块时间是 3 秒<br>比特币是 10 分钟出块，以太坊大约是 1 分钟；确认时间上比特币是 1 小时，以太坊是十几分钟，石墨烯只需要秒级的时间。<br>在石墨烯进一步进化的 EOS 上可能到了零点几秒</li>
-<li>吞吐量比较高<br>石墨烯的吞吐量现在实测大约是 3300 笔每秒，理论上可以到 10 万次<br>比特币大约每秒七笔，以太坊每秒三四十笔</li>
-<li>石墨烯极其稳定<br>石墨烯技术开发运行了这么久，从来没有出过明显的 BUG，也没有资产被盗的情况。</li>
-<li>功能非常强大、完备、容易操作<br>如果我们用过一些桌面端的钱包就会发现，比特股钱包的应用性是最强的<br>以多重签名来举例：比特币也有多重签名，但是比较复杂，而且功能特别简单，只有 M/N 这种模式，就是说如果是 5 个人做多重签名，3 个人同意就可以通过，这是一个很简单的多重签名。石墨烯上的多重签名功能是可以用作公司治理的，它可以设定两个参数：首先它可以设置百分比，每个人占多少百分比，无论多少人都可以随便设。第二个是阈值，就是超过多少个签名就可以生效。假设说现在想做一个 7 个人的理事会管理，有这样一些要求：任何 2 个人出事都不能影响资金的使用；至少 3 个人同意才可以动用资金；非核心成员至少 4 个人同意才能动用资金。这些条件设置好之后，可以很快的算出每个人的占比，这个多签就设置完成了，而且这是在 UI 上直接实现，在操作界面上的，而不是用命令行来实现的。</li>
-</ol>
-<h2 id="代表项目"><a href="#代表项目" class="headerlink" title="代表项目"></a>代表项目</h2><h3 id="BTS"><a href="#BTS" class="headerlink" title="BTS"></a>BTS</h3><p>BTS。 比特股（BitShares，简称 BTS）是一个建立在区块链技术上的开源商业系统</p>
-<h3 id="Steem"><a href="#Steem" class="headerlink" title="Steem"></a>Steem</h3><p>Steem 是一个基于区块链技术的去中心化社交网络平台。</p>
-<h3 id="EOS"><a href="#EOS" class="headerlink" title="EOS"></a>EOS</h3><p>EOS.IO 软件引入了一种区块链架构。 它为满足去中心应用纵向，横向扩展需求而设计。它通过一个可以在上面构建应用程序，类似操作系统的方式来实现。 该软件提供了账号，身份认证，数据库，异步通信，以及跨多核 CPU 或集群调度应用程序等功能。 由此而形成一种区块链架构， 它能达到每秒百万交易量的处理，用户可免费使用，且很容易快速部署去中心化应用。EOS 采用 DPOS 算法，在该共识算法下，在采用 EOS.IO 软件的区块链上，那些持有代币的人可以通过了一个连续的赞成投票系统来选择矿工。任何人可以选择参与挖矿，并有机会获得其相应比例的区块奖励，而这是跟其获得票数与其他所有矿工所获得票数成比例。如果读者对 EOS 感兴趣，可以去 GitHub 阅读下它的相关文档。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1858,7 +1949,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">623</span>
+                    <span class="site-state-item-count">628</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2003,7 +2094,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">66</span>
+                      
+                    
+                    <span class="site-state-item-count">67</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -2354,7 +2447,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">169</span>
+                      
+                    
+                    <span class="site-state-item-count">170</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
