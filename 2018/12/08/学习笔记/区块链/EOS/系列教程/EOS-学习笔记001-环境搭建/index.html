@@ -108,7 +108,7 @@
 <meta property="og:description" content="学习 EOS 的相关笔记，为了方便他人阅读，采用中文记录。 安装开发环境githubDeveloper Portal 先了解一下必须要知道的几个概念：  nodeos (node + eos = nodeos) eos 节点，产生区块，提供 rpc 服务等 cleos (cli + eos = cleos)  命令行接口 keosd (key + eos = keosd) 负责 wallet 和">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://zhengjunblog.top/2018/12/08/学习笔记/区块链/EOS/系列教程/EOS-学习笔记001-环境搭建/dedd9507.png">
-<meta property="og:updated_time" content="2018-12-13T07:19:45.366Z">
+<meta property="og:updated_time" content="2018-12-18T07:15:52.593Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="EOS-学习笔记001-环境搭建">
 <meta name="twitter:description" content="学习 EOS 的相关笔记，为了方便他人阅读，采用中文记录。 安装开发环境githubDeveloper Portal 先了解一下必须要知道的几个概念：  nodeos (node + eos = nodeos) eos 节点，产生区块，提供 rpc 服务等 cleos (cli + eos = cleos)  命令行接口 keosd (key + eos = keosd) 负责 wallet 和">
@@ -248,7 +248,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">628</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">634</span>
       </a>
 </li>
 
@@ -456,42 +456,30 @@
 </tbody>
 </table>
 <p>System Requirements (all platforms)<br>7GB RAM free required<br>20GB Disk free required</p>
-<h2 id="ubuntu-16-04"><a href="#ubuntu-16-04" class="headerlink" title="ubuntu 16.04"></a>ubuntu 16.04</h2><p><a href="https://developers.eos.io/eosio-nodeos/docs/clean-install-ubuntu-1604-and-higher" target="_blank" rel="noopener">official website</a></p>
-<ul>
-<li>安装开发工具</li>
+<h2 id="ubuntu-18-04"><a href="#ubuntu-18-04" class="headerlink" title="ubuntu 18.04"></a>ubuntu 18.04</h2><ul>
+<li>build eos</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -</span><br><span class="line">sudo apt-get install clang-4.0 lldb-4.0 libclang-4.0-dev cmake make \</span><br><span class="line">                     libbz2-dev libssl-dev libgmp3-dev \</span><br><span class="line">                     autotools-dev build-essential \</span><br><span class="line">                     libbz2-dev libicu-dev python-dev \</span><br><span class="line">                     autoconf libtool git mongodb</span><br></pre></td></tr></table></figure>
-<ul>
-<li>Boost 1.66</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br><span class="line">wget -c &apos;https://sourceforge.net/projects/boost/files/boost/1.66.0/boost_1_66_0.tar.bz2/download&apos; -O boost_1.66.0.tar.bz2</span><br><span class="line">tar xjf boost_1.66.0.tar.bz2</span><br><span class="line">cd boost_1_66_0/</span><br><span class="line">echo &quot;export BOOST_ROOT=$HOME/boost_1_66_0&quot; &gt;&gt; ~/.bash_profile</span><br><span class="line">source ~/.bash_profile</span><br><span class="line">./bootstrap.sh &quot;--prefix=$BOOST_ROOT&quot;</span><br><span class="line">./b2 install</span><br><span class="line">source ~/.bash_profile</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>Install mongo-cxx-driver (release/stable):</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br><span class="line">curl -LO https://github.com/mongodb/mongo-c-driver/releases/download/1.13.0/mongo-c-driver-1.13.0.tar.gz</span><br><span class="line">tar xf mongo-c-driver-1.13.0.tar.gz</span><br><span class="line">cd mongo-c-driver-1.13.0</span><br><span class="line">sudo apt-get install cmake libssl-dev libsasl2-dev</span><br><span class="line">mkdir cmake-build</span><br><span class="line">cd cmake-build</span><br><span class="line">cmake -DENABLE_AUTOMATIC_INIT_AND_CLEANUP=OFF ..</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">cd ~</span><br><span class="line">curl -LO https://github.com/mongodb/mongo-c-driver/releases/download/1.9.3/mongo-c-driver-1.9.3.tar.gz</span><br><span class="line">tar xf mongo-c-driver-1.9.3.tar.gz</span><br><span class="line">cd mongo-c-driver-1.9.3</span><br><span class="line">./configure --enable-static --enable-ssl=openssl --disable-automatic-init-and-cleanup --prefix=/usr/local</span><br><span class="line">make -j$( nproc )</span><br><span class="line">sudo make install</span><br><span class="line"></span><br><span class="line">git clone https://github.com/mongodb/mongo-cxx-driver.git --branch releases/stable --depth 1</span><br><span class="line">cd mongo-cxx-driver/build</span><br><span class="line">cmake -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ..</span><br><span class="line">sudo make -j$( nproc )</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Install secp256k1-zkp (Cryptonomex branch):</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br><span class="line">git clone https://github.com/cryptonomex/secp256k1-zkp.git</span><br><span class="line">cd secp256k1-zkp</span><br><span class="line">./autogen.sh</span><br><span class="line">./configure</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>build WASM with LLVM</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mkdir  ~/wasm-compiler</span><br><span class="line">cd ~/wasm-compiler</span><br><span class="line">git clone --depth 1 --single-branch --branch release_40 https://github.com/llvm-mirror/llvm.git</span><br><span class="line">cd llvm/tools</span><br><span class="line">git clone --depth 1 --single-branch --branch release_40 https://github.com/llvm-mirror/clang.git</span><br><span class="line">cd ..</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line">cmake -G &quot;Unix Makefiles&quot; -DCMAKE_INSTALL_PREFIX=.. -DLLVM_TARGETS_TO_BUILD= -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD=WebAssembly -DCMAKE_BUILD_TYPE=Release ../</span><br><span class="line">make -j4 install</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>build eos</p>
+<p>注意：可能因为网络原因，build 的时候导致无法下载依赖包，隔一段时间在执行几次，直到可以下载就可以了。<br>时间会有些长，成功后会看到相应的提示信息。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/EOSIO/eos --recursive</span><br><span class="line">./eosio_build.sh</span><br><span class="line">sudo ./eosio_install.sh</span><br></pre></td></tr></table></figure>
-</li>
+<ul>
+<li>build CDT</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone --recursive https://github.com/eosio/eosio.cdt</span><br><span class="line">$ cd eosio.cdt</span><br><span class="line">$ ./build.sh</span><br><span class="line">$ sudo ./install.sh</span><br></pre></td></tr></table></figure>
 <h1 id="搭建测试网络"><a href="#搭建测试网络" class="headerlink" title="搭建测试网络"></a>搭建测试网络</h1><h2 id="Local-Single-Node-Testnet"><a href="#Local-Single-Node-Testnet" class="headerlink" title="Local Single-Node Testnet"></a>Local Single-Node Testnet</h2><ul>
 <li>Start nodeos</li>
 </ul>
-<p>下面放到 testnet.sh 里面启动</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">nodeos -e -p eosio \</span><br><span class="line">--plugin eosio::producer_plugin \</span><br><span class="line">--plugin eosio::chain_api_plugin \</span><br><span class="line">--plugin eosio::http_plugin \</span><br><span class="line">-d /Users/zhengjun/project/blockchain/EOS/contracts/eosio/data \</span><br><span class="line">--config-dir /Users/zhengjun/project/blockchain/EOS/contracts/eosio/config \</span><br><span class="line">--access-control-allow-origin=* \</span><br><span class="line">--contracts-console=true \</span><br><span class="line">--http-validate-host=false \</span><br><span class="line">—filter-on=‘*’ &gt; nodeos.log 2&gt;nodeosErr.log &amp;</span><br></pre></td></tr></table></figure>
+<p>切换到 <code>/home/ubuntu/Documents/eosio</code> 目录下面<br>下面放到 testnet.sh 里面启动，注意修改一下对应的 data 和 config 路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">nodeos -e -p eosio \</span><br><span class="line">--plugin eosio::producer_plugin \</span><br><span class="line">--plugin eosio::chain_api_plugin \</span><br><span class="line">--plugin eosio::http_plugin \</span><br><span class="line">-d /home/ubuntu/Documents/eosio/data \</span><br><span class="line">--config-dir /home/ubuntu/Documents/eosio/config \</span><br><span class="line">--access-control-allow-origin=* \</span><br><span class="line">--contracts-console \</span><br><span class="line">--http-validate-host=false \</span><br><span class="line">—filter-on=‘*’ &gt;&gt; nodeos.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+<p>执行完后会在后台运行，通过查看日志来确认是否正常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -f ./nodeos.log</span><br></pre></td></tr></table></figure>
 <ul>
-<li><p>获取信息<br>-u url node 节点的 ip 地址</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cleos get info</span><br><span class="line">cleos -u http://127.0.0.1:8888 get info</span><br><span class="line"></span><br><span class="line">cleos get account eosio</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>stop nodeos</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pkill nodeos</span><br></pre></td></tr></table></figure>
-</li>
+<li>获取信息<br>-u url node 节点的 ip 地址</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cleos get info</span><br><span class="line">cleos -u http://127.0.0.1:8888 get info</span><br><span class="line"></span><br><span class="line">cleos get account eosio</span><br></pre></td></tr></table></figure>
+<ul>
+<li>stop nodeos</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pkill nodeos</span><br></pre></td></tr></table></figure>
 <h2 id="Local-Multi-Node-Testnet"><a href="#Local-Multi-Node-Testnet" class="headerlink" title="Local Multi-Node Testnet"></a>Local Multi-Node Testnet</h2><p>对于开发智能合约来说，这个有些浪费了。</p>
 <h2 id="public-test-net"><a href="#public-test-net" class="headerlink" title="public test net"></a>public test net</h2><p><a href="https://www.cryptokylin.io/" target="_blank" rel="noopener">CryptoKylin Testnet</a></p>
 
@@ -650,7 +638,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">628</span>
+                    <span class="site-state-item-count">634</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1207,7 +1195,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装开发环境"><span class="nav-number">1.</span> <span class="nav-text">安装开发环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ubuntu-16-04"><span class="nav-number">1.1.</span> <span class="nav-text">ubuntu 16.04</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#搭建测试网络"><span class="nav-number">2.</span> <span class="nav-text">搭建测试网络</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Local-Single-Node-Testnet"><span class="nav-number">2.1.</span> <span class="nav-text">Local Single-Node Testnet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Local-Multi-Node-Testnet"><span class="nav-number">2.2.</span> <span class="nav-text">Local Multi-Node Testnet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#public-test-net"><span class="nav-number">2.3.</span> <span class="nav-text">public test net</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装开发环境"><span class="nav-number">1.</span> <span class="nav-text">安装开发环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ubuntu-18-04"><span class="nav-number">1.1.</span> <span class="nav-text">ubuntu 18.04</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#搭建测试网络"><span class="nav-number">2.</span> <span class="nav-text">搭建测试网络</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Local-Single-Node-Testnet"><span class="nav-number">2.1.</span> <span class="nav-text">Local Single-Node Testnet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Local-Multi-Node-Testnet"><span class="nav-number">2.2.</span> <span class="nav-text">Local Multi-Node Testnet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#public-test-net"><span class="nav-number">2.3.</span> <span class="nav-text">public test net</span></a></li></ol></li></ol></div>
             
 
           </div>
