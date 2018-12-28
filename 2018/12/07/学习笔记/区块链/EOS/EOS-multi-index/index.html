@@ -99,20 +99,20 @@
 
 
 
-  <meta name="description" content="official siteMulti Index Tables are a way to cache state and/or data in RAM for fast access. Multi index tables support create, read, update and delete (CRUD) operations, each smart contract using a m">
+  <meta name="description" content="official site Multi Index Tables are a way to cache state and/or data in RAM for fast access. Multi index tables support create, read, update and delete (CRUD) operations, each smart contract using a">
 <meta name="keywords" content="blockchain,EOS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="EOS-multi_index">
 <meta property="og:url" content="http://zhengjunblog.top/2018/12/07/学习笔记/区块链/EOS/EOS-multi-index/index.html">
 <meta property="og:site_name" content="郑君的学习笔记">
-<meta property="og:description" content="official siteMulti Index Tables are a way to cache state and/or data in RAM for fast access. Multi index tables support create, read, update and delete (CRUD) operations, each smart contract using a m">
+<meta property="og:description" content="official site Multi Index Tables are a way to cache state and/or data in RAM for fast access. Multi index tables support create, read, update and delete (CRUD) operations, each smart contract using a">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://zhengjunblog.top/2018/12/07/学习笔记/区块链/EOS/EOS-multi-index/cd658330.png">
 <meta property="og:image" content="http://zhengjunblog.top/2018/12/07/学习笔记/区块链/EOS/EOS-multi-index/4b21775b.png">
-<meta property="og:updated_time" content="2018-12-14T12:49:22.382Z">
+<meta property="og:updated_time" content="2018-12-27T10:46:18.956Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="EOS-multi_index">
-<meta name="twitter:description" content="official siteMulti Index Tables are a way to cache state and/or data in RAM for fast access. Multi index tables support create, read, update and delete (CRUD) operations, each smart contract using a m">
+<meta name="twitter:description" content="official site Multi Index Tables are a way to cache state and/or data in RAM for fast access. Multi index tables support create, read, update and delete (CRUD) operations, each smart contract using a">
 <meta name="twitter:image" content="http://zhengjunblog.top/2018/12/07/学习笔记/区块链/EOS/EOS-multi-index/cd658330.png">
 
 
@@ -249,7 +249,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">634</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">642</span>
       </a>
 </li>
 
@@ -416,13 +416,16 @@
       
 
       
-        <p><a href="https://developers.eos.io/eosio-cpp/docs/using-multi-index-tables#section-introduction" target="_blank" rel="noopener">official site</a><br>Multi Index Tables are a way to cache state and/or data in RAM for fast access. Multi index tables support create, read, update and delete (CRUD) operations,</p>
+        <p><a href="https://developers.eos.io/eosio-cpp/docs/using-multi-index-tables#section-introduction" target="_blank" rel="noopener">official site</a></p>
+<p>Multi Index Tables are a way to cache state and/or data in RAM for fast access. Multi index tables support create, read, update and delete (CRUD) operations,</p>
 <p>each smart contract using a multi index table reserves a partition of the RAM cache; access to each partition is controlled using tablename, code and scope.</p>
 <p>Multi Index Tables provide a fast to access data store and are a practical way to store data for use in your smart contract. The blockchain records the transactions, but you should use Multi Index Tables to store application data.</p>
 <a id="more"></a>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">uint64_t</span> TableName, <span class="keyword">typename</span> T, <span class="keyword">typename</span>... Indices&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">multi_index</span>&#123;</span></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第一个参数是表名，第二个参数是表对象的类型，其余为可变参数Indices（二级索引），二级索引的数量不能超过16个。</p>
 <p>EOS的multi_index类似boost的multi_index，即多索引容器。有了多级索引，智能合约就具备了操作类似数据库模块的功能。</p>
 <p><img alt="cd658330.png" src="/2018/12/07/学习笔记/区块链/EOS/EOS-multi-index/cd658330.png" width="" height=""></p>
-<p>每一个multi_index容器都可以理解成传统数据库中的一张表，multi_index只有一列。这一列中的每一行都表示一个对象，通常这个对象是struct或者是class类型的，有多个成员变量</p>
+<p>每一个 multi_index 容器都可以理解成一个对象列表，通常这个对象是struct或者是class类型的，有多个成员变量</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// @abi table proposal i64</span><br><span class="line">struct Proposal &#123;</span><br><span class="line">  uint64_t id;</span><br><span class="line">  account_name owner = 0;</span><br><span class="line">  string description;</span><br><span class="line">  std::vector&lt;account_name, uint32_t&gt; votes;</span><br><span class="line"></span><br><span class="line">  uint64_t primary_key() const &#123; return id; &#125;</span><br><span class="line"></span><br><span class="line">  EOSLIB_SERIALIZE( Proposal, (id)(owner)(description)(votes))</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">typedef eosio::multi_index&lt;N(Proposal), Proposal&gt; proposals;</span><br></pre></td></tr></table></figure>
 <p>在部署合约之前，我们都会用eosiocpp来生成ABI，EOS智能合约编译器可以读取struct结构体和public方法之前的注。在注释中我们可以传入两种类型：action和table，ABI就会根据我们的声明，自动在生成的ABI中添加相应的方法或者表定义。</p>
 <p>第二个proposal就是表名，而第三个i64就是表的主键的类型。在这里主键就是id。</p>
@@ -591,7 +594,7 @@
                 alt="郑  君" />
             
               <p class="site-author-name" itemprop="name">郑  君</p>
-              <p class="site-description motion-element" itemprop="description">C++，golang，Java，Python，Kotlin，Web，前端，后端，全栈，Nodejs</p>
+              <p class="site-description motion-element" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</p>
           </div>
 
           
@@ -601,7 +604,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">634</span>
+                    <span class="site-state-item-count">642</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
