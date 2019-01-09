@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">67</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">68</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">645</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">662</span>
       </a>
 </li>
 
@@ -328,7 +328,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/11/20/学习笔记/区块链/EOS/EOS-基础概念和结构/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/12/06/学习笔记/区块链/EOS/EOS-account/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -347,7 +347,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/20/学习笔记/区块链/EOS/EOS-基础概念和结构/" itemprop="url">EOS 基础概念和结构</a></h1>
+                <a class="post-title-link" href="/2018/12/06/学习笔记/区块链/EOS/EOS-account/" itemprop="url">EOS-account</a></h1>
         
 
         <div class="post-meta">
@@ -359,7 +359,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-20T09:45:57+08:00">2018-11-20</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-06T15:58:59+08:00">2018-12-06</time>
             
 
             
@@ -416,22 +416,321 @@
       
         
           
-            <ul>
-<li>nodeos (node + eos = nodeos)<br>the core EOSIO node daemon that can be configured with plugins to run a node. Example uses are block production, dedicated API endpoints, and local development.</li>
-<li>cleos (cli + eos = cleos)<br>command line interface to interact with the blockchain and to manage wallets</li>
-<li>keosd (key + eos = keosd)<br>component that securely stores EOSIO keys in wallets.</li>
-</ul>
-<p><img alt="dedd9507.png" src="/2018/11/20/学习笔记/区块链/EOS/EOS-基础概念和结构/dedd9507.png" width="" height=""></p>
-<p>创建好EOS账户后，务必先要进行系统资源配置<br>EOS 共有三大资源：CPU、NET（网络带宽）和 RAM（内存）<br>CPU 和 NET 需要临时抵押 EOS 获取，类似于交押金，不用了可以赎回 EOS。<br>RAM 只能用 EOS 直接购买/卖出，因为它是存储状态的，是长期占用的。简单来说，就是根据链上的数据产生的状态是存储在 RAM 中的，如一个账号的信息，包括余额的当前状态都是存储在 RAM 中的，因此需要购买 RAM 来长期存储数据。<br>基础配置推荐：CPU：0.5EOS，RAM：0.1EOS，NET：0.1EOS，该配置能满足正常的交易需求了。</p>
-<p>注意：当账号没有资源时是不允许自己给自己购买RAM或者抵押获得NET和CPU，因为这本身就是一次交易，需要消耗资源，第一次的操作需要通过其他账号进行。</p>
-<p>区块生产者可以</p>
-<h1 id="RAM"><a href="#RAM" class="headerlink" title="RAM"></a>RAM</h1><p>用来在区块链上保存数据的资源，需要用 EOS 购买，就像 EOS 一样，RAM 价格会跟据需求和供给波动的，通过 Bancor Relay算法自动调节<br>创建账户需要消耗RAM。RAM是EOS主网中的内存，用于存储用户在EOS中使用频率高的数据（账户余额、合约状态等）。<br>当存储账号状态的空间不足，即RAM不足时，转账或部署合约等相关操作就无法执行。</p>
-<h1 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h1><p>当执行交易和执行 action 的时候会需要 cpu 带宽，运行时间越长，需要的 cpu 带宽就越多。<br>通过抵押 EOS 来获取 CPU 资源，并且可以赎回，但是有三天的等待期。<br>还可以出租 CPU 资源，</p>
-<h1 id="NET"><a href="#NET" class="headerlink" title="NET"></a>NET</h1><p>当执行交易和执行 action 的时候会需要 net 带宽<br>通过抵押 EOS 来获取 NET 资源</p>
-<h1 id="质押的好处"><a href="#质押的好处" class="headerlink" title="质押的好处"></a>质押的好处</h1><ol>
-<li>防止攻击倒币，因为有三天的赎回期</li>
-<li>通过质押，可以不用支付交易费用</li>
-<li>保障 EOS 的存在</li>
+            <h1 id="EOS-帐户权限"><a href="#EOS-帐户权限" class="headerlink" title="EOS 帐户权限"></a>EOS 帐户权限</h1><p>EOS每个帐户生成需要两对密匙，这个之前已经说过，每个密匙代表不同的权限。</p>
+<blockquote>
+<p>active 表示帐户的活跃权限，包括转账，投票等权限。<br>owner 表示帐户的拥有着权限，可以管理用户的所有权限， 代表的是帐户的最高的权限。</p>
+</blockquote>
+<h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><p>查看权限<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cleos get account your-account</span><br></pre></td></tr></table></figure></p>
+<p>改变权限<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cleos set account permission $&#123;account_name&#125; $&#123;permission&#125; $&#123;JSON&#125; $&#123;permission&#125;</span><br></pre></td></tr></table></figure></p>
+<p>增加权限<br>删除权限</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/12/06/学习笔记/区块链/EOS/EOS-wallet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/06/学习笔记/区块链/EOS/EOS-wallet/" itemprop="url">EOS-wallet</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-06T15:05:57+08:00">2018-12-06</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="create-account"><a href="#create-account" class="headerlink" title="create account"></a>create account</h1><p><a href="https://github.com/cryptokylin/CryptoKylin-Testnet/blob/master/README_CN.md" target="_blank" rel="noopener">https://github.com/cryptokylin/CryptoKylin-Testnet/blob/master/README_CN.md</a></p>
+<p>testnet crate account</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl http://faucet.cryptokylin.io/create_account\?astyler12312</span><br><span class="line"></span><br><span class="line">&#123;&quot;msg&quot;: &quot;succeeded&quot;, &quot;keys&quot;: &#123;&quot;active_key&quot;: &#123;&quot;public&quot;: &quot;EOS7Nd75PyMHmCkHGnLKrCqGCAmtEoUm76cGtAJu42mjzSRcxDHaS&quot;, &quot;private&quot;: &quot;5JviMeLZhp2cm2VbaSMVt5AtCyfGsVPRX23uVDMZNvC1g1iAAUj&quot;&#125;, &quot;owner_key&quot;: &#123;&quot;public&quot;: &quot;EOS6pMi12iPz1AWFtDJkyJQh7fumxtMUstR1NkUqPAKvv1gcf8GBn&quot;, &quot;private&quot;: &quot;5JkTiApCcmEvX4s8RK2s4uEciANxM9ZNFGiwnLqW95eZfMPtkWr&quot;&#125;&#125;, &quot;account&quot;: &quot;astyler12312&quot;&#125;%</span><br></pre></td></tr></table></figure>
+<p>get testnet coin</p>
+<p>每一次调用能获得100EOS, 每天最多获得1000个EOS.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http://faucet.cryptokylin.io/get_token?astyler12312</span><br></pre></td></tr></table></figure></p>
+<h1 id="查看账户"><a href="#查看账户" class="headerlink" title="查看账户"></a>查看账户</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cleos -u https://api-kylin.eoslaomao.com get account astyler12312</span><br></pre></td></tr></table></figure>
+<h1 id="Create-a-Wallet"><a href="#Create-a-Wallet" class="headerlink" title="Create a Wallet"></a>Create a Wallet</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cleos wallet create --to-console</span><br></pre></td></tr></table></figure>
+<p>cleos will return a password, save this password somewhere as you will likely need it later in the tutorial.</p>
+<p>Creating wallet: default<br>Save password to use in the future to unlock this wallet.<br>Without password imported keys will not be retrievable.<br>“PW5JPmkZk4KoRah6sEMfakhzTxcjpP26D3H2oqqR7FbG1hSA4nVW9”</p>
+<h1 id="Open-the-Wallet"><a href="#Open-the-Wallet" class="headerlink" title="Open the Wallet"></a>Open the Wallet</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cleos wallet open</span><br><span class="line">cleos wallet list</span><br><span class="line">cleos wallet unlock</span><br></pre></td></tr></table></figure>
+<h1 id="Import-keys-into-your-wallet"><a href="#Import-keys-into-your-wallet" class="headerlink" title="Import keys into your wallet"></a>Import keys into your wallet</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cleos wallet create_key</span><br><span class="line"></span><br><span class="line">EOS5QhwGZkS3j47j54VSiSeGkC58PpXUKMnoKwor34EfMihvBABqg</span><br></pre></td></tr></table></figure>
+<h1 id="Import-the-Development-Key"><a href="#Import-the-Development-Key" class="headerlink" title="Import the Development Key"></a>Import the Development Key</h1><p>Every new EOSIO chain has a default “system” user called “eosio”.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">cleos wallet import</span><br><span class="line">5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3</span><br><span class="line"></span><br><span class="line">私钥: 5JohqwPMtZkaEbF5rwAk427rQ1jJDPJJaQc4eNcWi8yVnwpNTsC</span><br><span class="line">公钥: EOS76Cw3GN58rjmAUDXSH9qSsk9VpYYLnH7h68KpzcEkzPZifcRd1</span><br><span class="line"></span><br><span class="line">测试网账户</span><br><span class="line">eosio public key: EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV</span><br><span class="line">eosio private key: 5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3</span><br><span class="line"></span><br><span class="line">zuowen123123_PrivateKey</span><br><span class="line">5KHZLf2R26fvdKz3nT22PTYjYb9M1jUwcFqagDKKagiNpze9Lis</span><br><span class="line"></span><br><span class="line">zuowen123123_PublicKey</span><br><span class="line">EOS8SFR2nmePUrbyGnE4rRd4ZtwTXkTyWuczn25umyMafvx8XbmcJ</span><br></pre></td></tr></table></figure></p>
+<h1 id="list-kyes"><a href="#list-kyes" class="headerlink" title="list kyes"></a>list kyes</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cleos wallet keys</span><br></pre></td></tr></table></figure>
+<h1 id="Start-keosd"><a href="#Start-keosd" class="headerlink" title="Start keosd"></a>Start keosd</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keosd &amp;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/12/06/生活小知识/医药健康/养肾穴位/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/06/生活小知识/医药健康/养肾穴位/" itemprop="url">养肾穴位</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-06T08:15:24+08:00">2018-12-06</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/医药/" itemprop="url" rel="index"><span itemprop="name">医药</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/医药/健康/" itemprop="url" rel="index"><span itemprop="name">健康</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li>关元穴</li>
+<li>太溪穴</li>
+<li>涌泉穴</li>
+<li>肾腧穴</li>
 </ol>
 
           
@@ -486,7 +785,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/11/20/学习笔记/区块链/EOS/EOS-开发相关/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/12/06/生活小知识/医药健康/秋季穴位/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -505,7 +804,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/20/学习笔记/区块链/EOS/EOS-开发相关/" itemprop="url">EOS 开发相关</a></h1>
+                <a class="post-title-link" href="/2018/12/06/生活小知识/医药健康/秋季穴位/" itemprop="url">秋季穴位</a></h1>
         
 
         <div class="post-meta">
@@ -517,7 +816,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-20T09:30:46+08:00">2018-11-20</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-06T08:10:34+08:00">2018-12-06</time>
             
 
             
@@ -538,7 +837,14 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/医药/" itemprop="url" rel="index"><span itemprop="name">医药</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/医药/健康/" itemprop="url" rel="index"><span itemprop="name">健康</span></a></span>
 
                 
                 
@@ -573,16 +879,306 @@
 
       
         
-          <p><a href="https://github.com/EOSIO/eos" target="_blank" rel="noopener">GitHub</a></p>
-<p>EOS源码调试及跟踪（下）<br><a href="http://bitbee.io/d/5b8f601014f8bf4896d27b91" target="_blank" rel="noopener">http://bitbee.io/d/5b8f601014f8bf4896d27b91</a></p>
-<h1 id="Mac"><a href="#Mac" class="headerlink" title="Mac"></a>Mac</h1><p>clion cmake option:<br>-DWASM_ROOT=~/opt/wasm</p>
-<p>MacOS Darwin 10.12 and higher (MacOS 10.13.x recommended)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rm -rf /path/to/eos</span><br><span class="line">git clone https://github.com/EOSIO/eos.git --recursive</span><br><span class="line">git submodule update --init --recursive</span><br><span class="line">./eosio_build.sh</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// Mac OS X Brew Install</span><br><span class="line">brew tap eosio/eosio</span><br><span class="line">brew install eosio</span><br><span class="line"></span><br><span class="line">// response</span><br><span class="line">/usr/local/Cellar/eosio/1.4.4: 14 files, 61.9MB</span><br><span class="line"></span><br><span class="line">// Mac OS X Brew Uninstall</span><br><span class="line">brew remove eosio</span><br></pre></td></tr></table></figure>
-<h1 id="centos"><a href="#centos" class="headerlink" title="centos"></a>centos</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/EOSIO/eos/releases/download/v1.5.0/eosio-1.5.0-1.el7.x86_64.rpm</span><br><span class="line"></span><br><span class="line">sudo yum install ./eosio-1.4.4-1.el7.x86_64.rpm</span><br></pre></td></tr></table></figure>
+          
+            <p>夏秋之交，一年之中这个时候是灸关元的最好时机<br>【艾灸方法】：用艾条温和灸关元穴5—10分钟，一天一次<br>【拔罐方法】：用气罐留罐关元穴10—15分钟，隔天一次</p>
+<ol>
+<li>健脾益胃 调整胃肠<br>艾灸关元有健脾益胃的作用，适用于：胃脘不适、胃痛胃寒、腹胀腹泻、五更泄（早晨5点或之前大便）、食物不消化、便秘、消瘦或肥胖等常见病症。</li>
+<li>温阳补肾 固摄膀胱<br>艾灸关元有温阳补肾的作用，适用于：尿频尿急、夜尿增多、小便淋漓不畅或小便失禁、尿潴留等病症。</li>
+<li>补肾壮骨 强健腰膝<br>艾灸关元有补肾壮骨的作用，适用于：腰膝酸软、腰腿疼痛、下肢浮肿、双腿沉重、膝痛肿胀、蹲起吃力等病症。多由膝骨关节病，腰椎骨质增生，腰椎间盘突出等病引起。</li>
+<li>调任温督 协调阴阳<br>艾灸关元有调任温督的作用，适用于：手足冰冷、肢体麻木、畏寒怕冷、痛经、月经不调等常见病症。多由神经末梢循环不良，周围神经病变，妇科病变引起。</li>
+</ol>
+<p>取穴：采用仰卧的姿势，关元穴位于脐下三寸处，有培元固本、补益下焦之功，凡元气亏损均可使用。<br><img alt="8a967785.png" src="/2018/12/06/生活小知识/医药健康/秋季穴位/8a967785.png" width="" height=""></p>
+<p>关元穴的主治病症：<br>第1步强壮穴：作为保健强身长寿穴，用灸法。<br>第2步诊生死：用指头按穴，如果指下感到无力空空，离手时，穴凹无弹力，胸下坚硬如石头，大限已到，活不久。<br>第3步助孕：子宫虚寒不孕者，要常灸此穴。<br>第4步补肾虚：脐下肾间之气藏于此穴。肾虚而腰酸或阳痿者，用灸法。<br>第5步治痛经：冰品引发的痛经，热敷或灸此穴。<br>第6步治虚喘：喘哮发作面色苍白，用灸法，特效。<br>第7步治小肠病：因为小肠募穴，所以治小肠各种疾病。<br>第8步治糖尿病：强肾可缓解糖尿病并发症，需配合足三里、三阴交穴。<br>第9步治排尿不顺：灸后尿排顺，也可以用拍法，五指并拢空拍，一次连续拍108下效果最好。<br>第10步治各种血症：本穴为血液循环的强壮剌激点，又为先天气海，元阴元阳在此交会，虚症用灸，平时多揉按拍可促进血液循环。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/12/05/学习笔记/MacOS/mac-q-a/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/05/学习笔记/MacOS/mac-q-a/" itemprop="url">mac-q&a</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-05T22:37:53+08:00">2018-12-05</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/操作系统/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Can’t-compile-C-program-on-a-Mac-after-upgrade-to-Mojave"><a href="#Can’t-compile-C-program-on-a-Mac-after-upgrade-to-Mojave" class="headerlink" title="Can’t compile C program on a Mac after upgrade to Mojave"></a>Can’t compile C program on a Mac after upgrade to Mojave</h1><p>open /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg</p>
+<h1 id="CMake-not-compiling-after-macOS-10-14-Mojave-update"><a href="#CMake-not-compiling-after-macOS-10-14-Mojave-update" class="headerlink" title="CMake not compiling after macOS 10.14 Mojave update"></a>CMake not compiling after macOS 10.14 Mojave update</h1><p>Problem solved: just download Command Line Tools (macOS 10.14) for Xcode 10. Hope that solves other people’s problems.</p>
+<p><a href="https://developer.apple.com/download/more/" target="_blank" rel="noopener">https://developer.apple.com/download/more/</a></p>
+<p>clion 应该检测到这个路径<br>/Library/Developer/CommandLineTools/usr/bin/c++<br>/Library/Developer/CommandLineTools/usr/bin/cc</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/12/05/学习笔记/心理学/管理-马斯洛的需求层次理论/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/05/学习笔记/心理学/管理-马斯洛的需求层次理论/" itemprop="url">管理-马斯洛的需求层次理论</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-05T08:08:40+08:00">2018-12-05</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/心理学/" itemprop="url" rel="index"><span itemprop="name">心理学</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>感觉自己还处在最低的两层。</p>
+<p><img alt="92732412.png" src="/2018/12/05/学习笔记/心理学/管理-马斯洛的需求层次理论/92732412.png" width="" height=""></p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/11/20/学习笔记/区块链/EOS/EOS-开发相关/#more" rel="contents">
+            <a class="btn" href="/2018/12/05/学习笔记/心理学/管理-马斯洛的需求层次理论/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -638,7 +1234,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/11/19/语言相关/CPP/cpp-set/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/12/03/工具相关/git/git-常用操作/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -657,7 +1253,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/19/语言相关/CPP/cpp-set/" itemprop="url">cpp-set</a></h1>
+                <a class="post-title-link" href="/2018/12/03/工具相关/git/git-常用操作/" itemprop="url">git 常用操作</a></h1>
         
 
         <div class="post-meta">
@@ -669,7 +1265,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-19T09:49:41+08:00">2018-11-19</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-03T20:22:00+08:00">2018-12-03</time>
             
 
             
@@ -690,7 +1286,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具相关/" itemprop="url" rel="index"><span itemprop="name">工具相关</span></a></span>
 
                 
                 
@@ -726,7 +1322,16 @@
       
         
           
-            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">std::set&lt;int&gt; myset;</span><br><span class="line">myset.insert(100);</span><br><span class="line">myset.insert(200);</span><br><span class="line">myset.clear();</span><br><span class="line"></span><br><span class="line">if (myset.count(i) != 0)</span><br><span class="line">	std::cout &lt;&lt; &quot; is an element of myset.\n&quot;;</span><br><span class="line">else</span><br><span class="line">	std::cout &lt;&lt; &quot; is not an element of myset.\n&quot;;</span><br><span class="line"></span><br><span class="line">&#123; // cbegin/cend(c++11): Returns a const_iterator pointing to the first element in the container/</span><br><span class="line">	// Returns a const_iterator pointing to the past-the-end element in the container</span><br><span class="line">	std::set&lt;int&gt; myset = &#123; 50, 20, 60, 10, 25 &#125;;</span><br><span class="line"></span><br><span class="line">	std::cout &lt;&lt; &quot;myset contains:&quot;;</span><br><span class="line">	for (auto it = myset.cbegin(); it != myset.cend(); ++it)</span><br><span class="line">		std::cout &lt;&lt; &apos; &apos; &lt;&lt; *it;</span><br><span class="line"></span><br><span class="line">	std::cout &lt;&lt; &apos;\n&apos;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#123; // crbegin/crend(c++11):Return const_reverse_iterator to reverse beginning/</span><br><span class="line">	// Return const_reverse_iterator to reverse end</span><br><span class="line">	std::set&lt;int&gt; myset = &#123; 50, 20, 60, 10, 25 &#125;;</span><br><span class="line"></span><br><span class="line">	std::cout &lt;&lt; &quot;myset backwards:&quot;;</span><br><span class="line">	for (auto rit = myset.crbegin(); rit != myset.crend(); ++rit)</span><br><span class="line">		std::cout &lt;&lt; &apos; &apos; &lt;&lt; *rit;</span><br><span class="line"></span><br><span class="line">	std::cout &lt;&lt; &apos;\n&apos;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <h1 id="创建仓库"><a href="#创建仓库" class="headerlink" title="创建仓库"></a>创建仓库</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
+<h1 id="创建本地用户"><a href="#创建本地用户" class="headerlink" title="创建本地用户"></a>创建本地用户</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --local user.name xxx</span><br><span class="line">git config --local user.email xxx@example.com</span><br></pre></td></tr></table></figure>
+<h1 id="查看状态"><a href="#查看状态" class="headerlink" title="查看状态"></a>查看状态</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
+<h1 id="添加当前目录所有改动文件"><a href="#添加当前目录所有改动文件" class="headerlink" title="添加当前目录所有改动文件"></a>添加当前目录所有改动文件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br></pre></td></tr></table></figure>
+<h1 id="提交"><a href="#提交" class="headerlink" title="提交"></a>提交</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m &quot;xxx&quot;</span><br></pre></td></tr></table></figure>
+<h1 id="显示日志"><a href="#显示日志" class="headerlink" title="显示日志"></a>显示日志</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git log</span><br><span class="line"></span><br><span class="line">// 获取最后一次提交的时间戳</span><br><span class="line">// %at: author date, UNIX timestamp</span><br><span class="line">git log --format=@%at -1</span><br></pre></td></tr></table></figure>
+<h1 id="显示-tag"><a href="#显示-tag" class="headerlink" title="显示 tag"></a>显示 tag</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag</span><br></pre></td></tr></table></figure>
+<h1 id="显示本地分支"><a href="#显示本地分支" class="headerlink" title="显示本地分支"></a>显示本地分支</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch</span><br></pre></td></tr></table></figure>
+<h2 id="切换分支到test"><a href="#切换分支到test" class="headerlink" title="切换分支到test"></a>切换分支到test</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">git branch  </span><br><span class="line">* br-2.1.2.2  </span><br><span class="line">  master  </span><br><span class="line">  test  </span><br><span class="line"></span><br><span class="line">git checkout test</span><br><span class="line">git branch  </span><br><span class="line">  br-2.1.2.2  </span><br><span class="line">  master  </span><br><span class="line">* test</span><br></pre></td></tr></table></figure>
+<h1 id="撤销本地修改"><a href="#撤销本地修改" class="headerlink" title="撤销本地修改"></a>撤销本地修改</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">git checkout . #本地所有修改的。没有的提交的，都返回到原来的状态</span><br><span class="line">git stash #把所有没有提交的修改暂存到stash里面。可用git stash pop回复。</span><br><span class="line">git reset --hard HASH #返回到某个节点，不保留修改。</span><br><span class="line">git reset --soft HASH #返回到某个节点。保留修改</span><br><span class="line"></span><br><span class="line">git clean -df #返回到某个节点</span><br><span class="line">git clean 参数</span><br><span class="line">    -n 显示 将要 删除的 文件 和  目录</span><br><span class="line">    -f 删除 文件</span><br><span class="line">    -df 删除 文件 和 目录</span><br></pre></td></tr></table></figure>
 
           
         
@@ -780,7 +1385,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/11/19/学习笔记/区块链/What-is-the-2-Way-Peg/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/12/03/学习笔记/其他/项目管理相关/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -799,7 +1404,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/19/学习笔记/区块链/What-is-the-2-Way-Peg/" itemprop="url">What is the 2-Way Peg?</a></h1>
+                <a class="post-title-link" href="/2018/12/03/学习笔记/其他/项目管理相关/" itemprop="url">项目管理相关</a></h1>
         
 
         <div class="post-meta">
@@ -811,7 +1416,157 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-19T09:48:02+08:00">2018-11-19</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-03T13:57:01+08:00">2018-12-03</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/项目管理/" itemprop="url" rel="index"><span itemprop="name">项目管理</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>导致项目延期的问题：</p>
+<ol>
+<li>业务逻辑+需求细节需要清晰。</li>
+<li>原型图: 需要包含交互，关键点的说明。</li>
+<li>整体业务流程图。</li>
+<li>就要确定每个关键点的解决方案。</li>
+<li>确保每个人知道自己的产出是什么，以及目标的ToDo List排序</li>
+<li>确定关键输入，输出的结构，避免由于采用技术的问题导致无法插入数据</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/12/02/学习笔记/区块链/EOS/EOS-Q-A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/02/学习笔记/区块链/EOS/EOS-Q-A/" itemprop="url">EOS-Q&A</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-02T09:36:43+08:00">2018-12-02</time>
             
 
             
@@ -868,8 +1623,17 @@
       
         
           
-            <p>Posted on February 23, 2017</p>
-<p>The 2-Way peg is often said to be a method to transfer BTC into RBTC and vice-versa. In practice, when BTC are exchanged for RBTC, no currency is “transferred” between blockchains. There is no single transaction that does the job. This is because Bitcoin cannot verify the authenticity of balances on another blockchain. When a user intends to convert BTC to RBTC, some BTC are locked in Bitcoin and the same amount of RBTC is unlocked in RSK. When RBTC needs to be converted back into BTC, the RBTC get locked again in RSK and the same amount of BTC are unlocked in the Bitcoin blockchain. A security protocol ensures that the same Bitcoins cannot be unlocked on both blockchains at the same time.</p>
+            <h1 id="Could-NOT-find-WASM-missing-WASM-CLANG-WASM-LLC-WASM-LLVM-LINK"><a href="#Could-NOT-find-WASM-missing-WASM-CLANG-WASM-LLC-WASM-LLVM-LINK" class="headerlink" title="Could NOT find WASM (missing: WASM_CLANG WASM_LLC WASM_LLVM_LINK)"></a>Could NOT find WASM (missing: WASM_CLANG WASM_LLC WASM_LLVM_LINK)</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">brew update</span><br><span class="line">brew install git automake libtool boost openssl llvm@4 gmp ninja gettext</span><br><span class="line">brew link gettext --force</span><br></pre></td></tr></table></figure>
+<p>安装binaryen</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/WebAssembly/binaryen.git</span><br><span class="line">cd binaryen</span><br><span class="line">git checkout tags/1.37.14</span><br><span class="line">cmake . &amp;&amp; make</span><br></pre></td></tr></table></figure>
+<p>编译llvm支持WASM<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mkdir  ~/wasm-compiler</span><br><span class="line">cd ~/wasm-compiler</span><br><span class="line">git clone --depth 1 --single-branch --branch release_40 https://github.com/llvm-mirror/llvm.git</span><br><span class="line">cd llvm/tools</span><br><span class="line">git clone --depth 1 --single-branch --branch release_40 https://github.com/llvm-mirror/clang.git</span><br><span class="line">cd .. &amp;&amp; mkdir -p build &amp;&amp; cd build</span><br><span class="line">cmake -G &quot;Unix Makefiles&quot; -DCMAKE_INSTALL_PREFIX=~/opt/wasm -DLLVM_TARGETS_TO_BUILD= -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD=WebAssembly -DCMAKE_BUILD_TYPE=Release ..</span><br><span class="line">make -j$( sysctl -in machdep.cpu.core_count )</span><br><span class="line">make install</span><br></pre></td></tr></table></figure></p>
+<p>echo “export WASM_LLVM_CONFIG=~/opt/wasm/bin/llvm-config” &gt;&gt; ~/.bash_profile<br>echo “export WASM_ROOT=~/opt/wasm” &gt;&gt; ~/.bash_profile<br>echo “export LLVM_DIR=/usr/local/Cellar/llvm@4/4.0.1_1/lib/cmake/llvm” &gt;&gt; ~/.bash_profile</p>
+<p>source ~/.bash_profile</p>
+<h1 id="N-and-n"><a href="#N-and-n" class="headerlink" title="N() and _n"></a>N() and _n</h1><p>N(active) and “active”_n.value is the same, it converts string into base32 string representation of unsigned 64-bit integer. However, the former is deprecated now and the latter is the new standard in the latest eosio.cdt. “active”_n is a little bit different, it is converting string into a name object.</p>
+<h1 id="INLINE-ACTION-SENDER"><a href="#INLINE-ACTION-SENDER" class="headerlink" title="INLINE_ACTION_SENDER"></a>INLINE_ACTION_SENDER</h1><p>#define INLINE_ACTION_SENDER(…) BOOST_PP_OVERLOAD(INLINE_ACTION_SENDER,<strong>VA_ARGS</strong>)(<strong>VA_ARGS</strong>)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在编译阶段把 base32 编码的字符串转换为 uint64_t 数值</span><br><span class="line">contracts/eosiolib/types.hpp</span><br><span class="line">#define N(X) ::eosio::string_to_name(#X)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">封装 uint64_t 数值，去掉数学计算，打印输出 base32 字符串</span><br><span class="line">struct name &#123;...&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">contracts/eosiolib/types.h</span><br><span class="line">typedef uint64_t account_name;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -923,7 +1687,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/11/18/学习笔记/量子计算/量子相关概念/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/12/01/语言相关/go/go-create-a-website-with-gin/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -942,7 +1706,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/18/学习笔记/量子计算/量子相关概念/" itemprop="url">量子相关概念</a></h1>
+                <a class="post-title-link" href="/2018/12/01/语言相关/go/go-create-a-website-with-gin/" itemprop="url">go-create a website with gin</a></h1>
         
 
         <div class="post-meta">
@@ -954,153 +1718,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-18T16:35:56+08:00">2018-11-18</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/量子计算/" itemprop="url" rel="index"><span itemprop="name">量子计算</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="量子纠缠"><a href="#量子纠缠" class="headerlink" title="量子纠缠"></a>量子纠缠</h1><p>就是两个粒子相互关联，相互影响。比如A粒子状态是上，B粒子状态是下。如果A粒子变成下了，B粒子就会从下变成上。</p>
-<h1 id="叠加态"><a href="#叠加态" class="headerlink" title="叠加态"></a>叠加态</h1><p>一个粒子可以同时表示多种状态，比如即是0，又是1，</p>
-<h1 id="量子纠缠怎么产生的"><a href="#量子纠缠怎么产生的" class="headerlink" title="量子纠缠怎么产生的"></a>量子纠缠怎么产生的</h1><p>简单来说就是，本来有个微观粒子，通过某种手段一分为二了，于是就是产生两个相反方向运动的粒子。</p>
-<p>听得最多的微观粒子是电子和光子，也就是电子纠缠和光子纠缠了。<br>光子：路径，偏振，角动量</p>
-<p>实验室中最常见制备量子纠缠的方式就是衰变零自旋中性π介子，<br>原本中性π介子衰变后会变成一个（带负电）电子和一个正电子，电子和正电子互为反物质！<br>它们会朝着相反的方向运动，<br>如果不去测量它们，那么这个电子和正电子的共同会形成零自旋的纠缠状态。<br>如果观测其中一个粒子，比如电子，那么它们之间的纠缠态就会确定，导致电子和正电子都有了相反状态的自旋。<br>如果观测电子的自旋为下，那么与之纠缠的正电子自旋必为上。就产生了量子纠缠</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/11/16/语言相关/go/go-位操作符/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/16/语言相关/go/go-位操作符/" itemprop="url">go-位操作符</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-16T13:47:01+08:00">2018-11-16</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-01T21:56:08+08:00">2018-12-01</time>
             
 
             
@@ -1157,588 +1775,18 @@
       
         
           
-            <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&amp;      位运算 AND</span><br><span class="line">|      位运算 OR</span><br><span class="line">^      位运算 XOR</span><br><span class="line">&amp;^     位清空 (AND NOT)</span><br><span class="line">&lt;&lt;     左移</span><br><span class="line">&gt;&gt;     右移</span><br></pre></td></tr></table></figure>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取0-n之间的所有偶数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">even</span><span class="params">(a <span class="keyword">int</span>)</span> <span class="params">(array []<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; a; i++ &#123;</span><br><span class="line">	    <span class="keyword">if</span> i&amp;<span class="number">1</span> == <span class="number">0</span> &#123; <span class="comment">// 位操作符&amp;与C语言中使用方式一样</span></span><br><span class="line">		    array = <span class="built_in">append</span>(array, i)</span><br><span class="line">	    &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> array</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 互换两个变量的值</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">swap</span><span class="params">(a, b <span class="keyword">int</span>)</span> <span class="params">(<span class="keyword">int</span>, <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    a ^= b <span class="comment">// 异或等于运算</span></span><br><span class="line">    b ^= a</span><br><span class="line">    a ^= b</span><br><span class="line">    <span class="keyword">return</span> a, b</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 左移、右移运算</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">shifting</span><span class="params">(a <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    a = a &lt;&lt; <span class="number">1</span></span><br><span class="line">    a = a &gt;&gt; <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> a</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 取反操作</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">nagation</span><span class="params">(a <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">        <span class="comment">// 注意: C语言中是 ~a+1这种方式</span></span><br><span class="line">    <span class="keyword">return</span> ^a + <span class="number">1</span> <span class="comment">// Go语言取反方式和C语言不同，Go语言不支持~符号。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/11/16/语言相关/go/go-big-number/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/16/语言相关/go/go-big-number/" itemprop="url">go-big number</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-16T11:20:06+08:00">2018-11-16</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bnMultiplier := <span class="built_in">new</span>(big.Int)</span><br><span class="line">bnHeaderHash := <span class="built_in">new</span>(big.Int)</span><br><span class="line">bnChainOrigin := <span class="built_in">new</span>(big.Int)</span><br><span class="line">bnChainOrigin.Mul(bnHeaderHash,bnMultiplier)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/11/15/语言相关/go/go-set/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/15/语言相关/go/go-set/" itemprop="url">go-set</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-15T16:28:27+08:00">2018-11-15</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>A Set is a collection of values. You can iterate over those values, add new values, remove values and clear the set, get the set size, and check if the set contains an item. A value in the set might only be stored once, duplicates are not possible.</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">requiredClasses := mapset.NewSet()</span><br><span class="line">requiredClasses.Add(<span class="string">"Cooking"</span>)</span><br><span class="line">requiredClasses.Add(<span class="string">"English"</span>)</span><br><span class="line">requiredClasses.Add(<span class="string">"Math"</span>)</span><br><span class="line">requiredClasses.Add(<span class="string">"Biology"</span>)</span><br><span class="line"></span><br><span class="line">scienceSlice := []<span class="keyword">interface</span>&#123;&#125;&#123;<span class="string">"Biology"</span>, <span class="string">"Chemistry"</span>&#125;</span><br><span class="line">scienceClasses := mapset.NewSetFromSlice(scienceSlice)</span><br><span class="line"></span><br><span class="line">electiveClasses := mapset.NewSet()</span><br><span class="line">electiveClasses.Add(<span class="string">"Welding"</span>)</span><br><span class="line">electiveClasses.Add(<span class="string">"Music"</span>)</span><br><span class="line">electiveClasses.Add(<span class="string">"Automotive"</span>)</span><br><span class="line"></span><br><span class="line">bonusClasses := mapset.NewSet()</span><br><span class="line">bonusClasses.Add(<span class="string">"Go Programming"</span>)</span><br><span class="line">bonusClasses.Add(<span class="string">"Python Programming"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//Show me all the available classes I can take</span></span><br><span class="line">allClasses := requiredClasses.Union(scienceClasses).Union(electiveClasses).Union(bonusClasses)</span><br><span class="line">fmt.Println(allClasses) <span class="comment">//Set&#123;Cooking, English, Math, Chemistry, Welding, Biology, Music, Automotive, Go Programming, Python Programming&#125;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//Is cooking considered a science class?</span></span><br><span class="line">fmt.Println(scienceClasses.Contains(<span class="string">"Cooking"</span>)) <span class="comment">//false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//Show me all classes that are not science classes, since I hate science.</span></span><br><span class="line">fmt.Println(allClasses.Difference(scienceClasses)) <span class="comment">//Set&#123;Music, Automotive, Go Programming, Python Programming, Cooking, English, Math, Welding&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//Which science classes are also required classes?</span></span><br><span class="line">fmt.Println(scienceClasses.Intersect(requiredClasses)) <span class="comment">//Set&#123;Biology&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//How many bonus classes do you offer?</span></span><br><span class="line">fmt.Println(bonusClasses.Cardinality()) <span class="comment">//2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//Do you have the following classes? Welding, Automotive and English?</span></span><br><span class="line">fmt.Println(allClasses.IsSuperset(mapset.NewSetFromSlice([]<span class="keyword">interface</span>&#123;&#125;&#123;<span class="string">"Welding"</span>, <span class="string">"Automotive"</span>, <span class="string">"English"</span>&#125;))) <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/11/15/读过的书/健康脑/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/15/读过的书/健康脑/" itemprop="url">健康脑</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-15T09:30:30+08:00">2018-11-15</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>这本书更多的讲的是对脑相关影响因素的讲解，有哪些因素，为什么，哪些坏处等等常识性普及。<br>没有太多的实用价值。</p>
-<p>睡觉，冥想，心情愉快即可。</p>
-<p><img alt="8b487920.png" src="/2018/11/15/读过的书/健康脑/8b487920.png" width="" height=""></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/11/14/学习笔记/区块链/primecoin/primecoin-pow-relative/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/14/学习笔记/区块链/primecoin/primecoin-pow-relative/" itemprop="url">primecoin pow relative</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-14T20:11:26+08:00">2018-11-14</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://www.7234.cn/coin/23431" target="_blank" rel="noopener">引用文章</a></p>
-<p>primecoin pow 是寻找质数链，包括三种类型：<br>第一类坎宁安链，第二类坎宁安链，和孪生坎宁安链。</p>
-<p>第一类坎宁安链的规则是，素数链中每个数都是前一个数的两倍减一。第一个长度为5的第一类坎宁安链包含以下5个素数：<br><code>1531，3061，6121，12241，24481</code></p>
-<p>第二类坎宁安链，素数链中每个数都是前一个数的两倍加一。第一个长度为5的第二类坎宁安链出现得更快，如下：<br><code>2，5，11，23，47</code></p>
-<p>最后，孪生坎宁安链的规则是：大小相差2的孪生素数，后一对的平均值是前一对的平均值的两倍。很容易理解，双坎宁安链具有偶数个数。第一个长度为6的双坎宁安链是：<br><code>211049，211051，422099，422101，844199，844201</code></p>
-<p>孪生坎宁安链本质上是第一类坎宁安链和第二类坎宁安链组合而成。每对的第一个数字组合正好是第二类坎宁安链，每对的第二个数字组合正好是第一类坎宁安链。</p>
-<h1 id="验证方式"><a href="#验证方式" class="headerlink" title="验证方式"></a>验证方式</h1><p>费马测试（费马小定理）:<br>费马测试是一种快速辨别素数的方法：以任意数字（通常为2）为底，以需要测试的素数为幂，计算结果再用来减去该素数和一个大数的乘积，看是否得到原来的数字。</p>
-<p>费马小定理：<br>如果 n 是一个素数，a 是小于 n 的任意正整数，那么 a 的 n 次方与 a 模 n 同余。（两个数称为是模 n 的同余，如果它们除以 n 的余数相同。数 a 除以 n 的余数称为 a 取模 n 的余数，或简称为 a 取模 n）。</p>
-<h1 id="目标难度的匹配"><a href="#目标难度的匹配" class="headerlink" title="目标难度的匹配"></a>目标难度的匹配</h1><p>怎么区分7.2和7.5的素数链长？<br>拿数列中第一个非素数，进行费马测试余数越小，分级长度越大。例如，我们的链2，5，11，23，47下一个值是95，依据上面使用的重复减法的过程计算后，余数是54，因此，链的长度为5+（95-54）/95=5.43。然而，1531……24481素数链的下一个值48961，费马余数为1024，所以链的长度为5+（48961-1024）/48961=5.97。为了一个为了使素数链可以成为有效的工作证明，它用小数表示的长度至少要和现在的难度想当。</p>
-<p>我们不希望工作量证明可以重复使用，素数币还增加了另一种限制。基于素数币的目的，对于双向链的起点被定义为前面两个数字的平均，对于单坎宁安链的的起点被定义为假想双向链存在前面两数字的平均。例如，上面两个单坎宁安链的起点分别是1530和3。这样限制是因为素数列起点必须能够被工作证明的区块哈希数整除。哈希函数从属性看，寻找特定的散列值的唯一途径只能是采用简单地尝试新的值直到得到结果。因此，得到有效的工作证明的方法就是针对已知哈希值的区块寻找素数列，这些素数列只有对特定的区块才有效。</p>
+            <h1 id="setup-environment"><a href="#setup-environment" class="headerlink" title="setup environment"></a>setup environment</h1><ul>
+<li>install go 1.11.2<br><a href="https://golang.org/" target="_blank" rel="noopener">office website</a></li>
+<li>install gin<br><a href="https://github.com/gin-gonic/gin" target="_blank" rel="noopener">github</a><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span> get -u github.com/gin-gonic/gin</span><br><span class="line"><span class="keyword">go</span> get -u github.com/gin-gonic/contrib/static</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="create-website"><a href="#create-website" class="headerlink" title="create website"></a>create website</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><ol>
+<li><p>“lldb-server”: executable file not found in $PATH<br>preferences-debugger-Use Native Backend</p>
+</li>
+<li><p>could not launch process: decoding dwarf section info at offset 0x0: too short。<br>1、更新dlv，go get -u github.com/derekparker/delve/cmd/dlv<br>2、修改Goland的配置，Help-&gt;Edit Custom Properties中增加新版dlv的路径配置：dlv.path=/path/go/bin/dlv</p>
+</li>
+</ol>
 
           
         
@@ -1781,7 +1829,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/65/">65</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/67/">67</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1828,7 +1876,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">645</span>
+                    <span class="site-state-item-count">662</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1975,7 +2023,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">67</span>
+                      
+                    
+                    <span class="site-state-item-count">68</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -2328,7 +2378,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">170</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">172</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
