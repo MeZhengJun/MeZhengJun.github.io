@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">662</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">665</span>
       </a>
 </li>
 
@@ -312,6 +312,475 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/01/07/学习笔记/区块链/Substrate/substrate-翻译Substrate-in-a-nutshell/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/07/学习笔记/区块链/Substrate/substrate-翻译Substrate-in-a-nutshell/" itemprop="url">substrate 翻译Substrate in a nutshell</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-07T10:58:59+08:00">2019-01-07</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://www.parity.io/substrate-in-a-nutshell/" target="_blank" rel="noopener">原文</a></p>
+<p>今天我们讨论一下 Substrate，可以帮助你构建定制化区块链的库。 Substrate 是由 <a href="https://www.parity.io/" target="_blank" rel="noopener">Parity Technologies</a> 创建，并且为 <a href="https://polkadot.network/" target="_blank" rel="noopener">Polkadot</a> 提供基础设施。</p>
+<h1 id="什么是-Substrate"><a href="#什么是-Substrate" class="headerlink" title="什么是 Substrate?"></a>什么是 Substrate?</h1><p>从字典定义，或者字面理解 Substrate 可以用来构建，或者发展某些项目。在我们这里，我们可以构建区块链，对于 Polkadot 来说，是构建整个区块链家族。</p>
+<h1 id="为什么我们需要-Substrate？"><a href="#为什么我们需要-Substrate？" class="headerlink" title="为什么我们需要 Substrate？"></a>为什么我们需要 Substrate？</h1><p>软件充满了抽象。计算机科学的历史展示给我们的就是不断的抽象，从硬件，到开发语言，编程接口。</p>
+<p>每个抽象层都想要解决特定的问题。Substrate 想要解决什么问题呢？<br>在回答这个问题之前，我们先看一下，在你想要实现一个全新的区块链，要考虑哪些方面：</p>
+<ul>
+<li>为什么需要另一个区块链?!</li>
+<li>各种各样的原始加密算法，签名等等.</li>
+<li>共识算法和容错选举.</li>
+<li>POW，POS或者完全不同的概念?</li>
+<li>区块结构，高效存储，信息序列化.</li>
+<li>P2P 网络, 节点发现, 区块和交易传播.</li>
+<li>状态机，运行时，智能合约.</li>
+<li>轻客户端的支持</li>
+</ul>
+<p>尽管 Substrate 不能帮你实现第一条，至少可以帮你做余下的事情。开箱即用的实现，是基于多年开发区块链的经验，设计，实现，极度用心的测试。<br>通过提供典型算法的通用实现，可以使开发者专注于项目的业务逻辑，比如：状态机。</p>
+<p>让我们看看区块链最核心的部分，以及 Substrate 可以为我们做什么。</p>
+<h1 id="区块链的持久化"><a href="#区块链的持久化" class="headerlink" title="区块链的持久化"></a>区块链的持久化</h1><p>区块链唯一的目的就是在非可信环境下，提供一个途径可以在任意时间点验证，达成共识，全局持久化，并且一旦确认真实可靠，就不可更改。</p>
+<p>Substrate 提供了一种高效并且非常易用的，和 Wasm 运行时紧密继承的持久化。</p>
+<h1 id="区块链作为函数"><a href="#区块链作为函数" class="headerlink" title="区块链作为函数"></a>区块链作为函数</h1><p>为了更新区块链状态，根据挂起的操作更改存储，我们需要一个时间点来执行这些操作。<br>这些时间的可以表示为一个函数，根据当前的状态和挂起的操作，生成另一个状态，可以认为是区块链的真实当前状态。我们把这个函数称作 state transition function 或者简称 STF</p>
+<p>Substrate 允许开发者以一种可管理，可移植的方式来定义这个函数。就像 Web 页面执行的 JavaScript 一样，可以提供一组函数作为运行时来提供 STF 服务。此外该实现可以是可移植的，跨平台的，支持浏览器等等方式。</p>
+<p><img alt="c02249f1.png" src="/2019/01/07/学习笔记/区块链/Substrate/substrate-翻译Substrate-in-a-nutshell/c02249f1.png" width="" height=""></p>
+<p>Substrate 使用 WebAssembly 作为通用的运行时。</p>
+<h1 id="安全和速度"><a href="#安全和速度" class="headerlink" title="安全和速度"></a>安全和速度</h1><p>使用 WebAssembly 实现业务逻辑和智能合约意味着可以借用现有的工具快速可靠的执行。Substrate 提供了另一种可以更快执行代码的途径-没有虚拟机的开销。</p>
+<p>Substrate 具有革命性创新之一的就是运行时镜像和 STF 同其他数据一样保存在链上。这意味着，运行时和链的业务逻辑可以通过安全，可校验的方式来更新。并且 Substrate 和 Substrate Runtime Module Library（SRML）是使用 Rust 语言实现的，可以编译为本地代码和 Wasm。</p>
+<p><img alt="eb09d960.png" src="/2019/01/07/学习笔记/区块链/Substrate/substrate-翻译Substrate-in-a-nutshell/eb09d960.png" width="" height=""></p>
+<p>在任意时间点，客户端拥有两份已编译的运行时。一个是本地编译的，一个是 Wasm 镜像可以在 VM 里面执行。当执行运行时函数时，客户端先检查链上的运行时版本和本地的版本是否一致，如果一致，执行本地的版本。</p>
+<h1 id="不分叉的升级"><a href="#不分叉的升级" class="headerlink" title="不分叉的升级"></a>不分叉的升级</h1><p>当链上的运行时镜像升级，一些客户端软件没有升级时，客户端会使用链上的运行时镜像版本来执行。所以在任何时候，所有节点都能够正确的同步区块，防止分叉。</p>
+<h1 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h1><p>使用了 libp2p 库来实现去中心化网络环境。<br>译者注：libp2p 是 IPFS 项目分出来的独立项目。</p>
+<h1 id="定制消息"><a href="#定制消息" class="headerlink" title="定制消息"></a>定制消息</h1><p>对于简单的场景，你不需要考虑网络，因为 Substrate 做了所有的事情。你只需要提供区块链的 STF 即可。如果你需要发送定制化信息，可以通过提供特殊化的网络协议定义消息和处理逻辑来定制和扩展网络子系统。</p>
+<h1 id="共识"><a href="#共识" class="headerlink" title="共识"></a>共识</h1><p>有一个 STF 可以从一个状态转换到另一个状态还不够，还需要所有的节点都对转换后的状态达成共识。</p>
+<p>Substrate 实现的每个共识引擎会有一个运行时模块，处理不良行为的证明。评估的处理结果由运行时来决定。<br>Substrate 提供了一个 BFT 的实现可以开箱即用。并且还会不断的完善，增加其他的算法进来。根据应用场景，开发者可能使用现存在产块逻辑，也可能提供自己的。</p>
+<p>Substrate 是一个完全可定制化，可扩展的框架，开发者可以定义自己的共识算法。实际上 Substrate 非常的灵活，可以提供非传统区块链结构的解决方案。</p>
+<h1 id="轻客户端支持"><a href="#轻客户端支持" class="headerlink" title="轻客户端支持"></a>轻客户端支持</h1><p>全节点需要同步所有的数据，并且不是简单的同步数据，出于安全原因考虑，还需要重新执行所有交易，计算量比较繁重。<br>Substrate 从设计上就考虑了轻客户端的支持，可以开箱即用。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/01/05/学习笔记/区块链/Substrate/substrate-入门操作/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/05/学习笔记/区块链/Substrate/substrate-入门操作/" itemprop="url">substrate 入门操作</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-05T21:18:30+08:00">2019-01-05</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="install"><a href="#install" class="headerlink" title="install"></a>install</h1><p>To get going as fast as possible, there is a simple script that installs all required dependencies and installs Substrate into your path. Just open a terminal and run:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl https://getsubstrate.io -sSf | bash</span><br></pre></td></tr></table></figure>
+<p>You can start a local Substrate development chain with running <code>substrate --dev</code></p>
+<p>Specify the chain specification (one of dev, local or staging)</p>
+<p>To create your own global network/cryptocurrency, make a chainspec file<br>First let’s get a template chainspec that you can edit. We’ll use the “staging” chain, a sort of default chain that the node comes pre-configured with:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">substrate --chain=dev build-spec &gt; ~/chainspec.json</span><br></pre></td></tr></table></figure></p>
+<p>Error: Execution: Instantiation: Export ext_storage_changes_root has different signature Signature { params: [I64, I32], return_type: Some(I32) }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rm -rf ~/.local/share/Substrate/</span><br><span class="line">or</span><br><span class="line">substrate --dev purge-chain</span><br></pre></td></tr></table></figure></p>
+<h1 id="Building-from-source"><a href="#Building-from-source" class="headerlink" title="Building from source"></a>Building from source</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl https://sh.rustup.rs -sSf | sh</span><br><span class="line">rustup update nightly</span><br><span class="line">rustup target add wasm32-unknown-unknown --toolchain nightly</span><br><span class="line">rustup update stable</span><br><span class="line">cargo install --git https://github.com/alexcrichton/wasm-gc</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install cmake pkg-config openssl git llvm</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/paritytech/substrate.git</span><br><span class="line">cd substrate</span><br><span class="line">./scripts/build.sh  		# Builds the WebAssembly binaries</span><br><span class="line">cargo build 				# Builds all native code</span><br></pre></td></tr></table></figure>
+<p>You can run the tests if you like:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cargo test --all</span><br></pre></td></tr></table></figure></p>
+<p>You can start a development chain with:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cargo run -- --dev</span><br><span class="line"></span><br><span class="line">// Detailed log</span><br><span class="line">RUST_LOG=debug RUST_BACKTRACE=1 cargo run —- --dev</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/01/05/语言相关/Rust/rust-control-flow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/05/语言相关/Rust/rust-control-flow/" itemprop="url">rust control flow</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-05T19:02:26+08:00">2019-01-05</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="if"><a href="#if" class="headerlink" title="if"></a>if</h1><h1 id="match"><a href="#match" class="headerlink" title="match"></a>match</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">enum Coin &#123;</span><br><span class="line">    Penny,</span><br><span class="line">    Nickel,</span><br><span class="line">    Dime,</span><br><span class="line">    Quarter,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fn value_in_cents(coin: Coin) -&gt; u32 &#123;</span><br><span class="line">    match coin &#123;</span><br><span class="line">        Coin::Penny =&gt; 1,</span><br><span class="line">        Coin::Nickel =&gt; 5,</span><br><span class="line">        Coin::Dime =&gt; 10,</span><br><span class="line">        Coin::Quarter =&gt; 25,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -1481,565 +1950,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/01/03/语言相关/Rust/rust-介绍/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/03/语言相关/Rust/rust-介绍/" itemprop="url">rust 介绍</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-03T09:46:28+08:00">2019-01-03</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://www.rust-lang.org/" target="_blank" rel="noopener">website</a><br><a href="https://crates.io/" target="_blank" rel="noopener">crates</a><br>Version 1.31.1</p>
-<p>这一杀手级的特性就是Ownership和Lifetime</p>
-<p>IDE 目前使用 Clion + rust plugin</p>
-<h1 id="Why-Rust"><a href="#Why-Rust" class="headerlink" title="Why Rust"></a>Why Rust</h1><p>Rust is a modern systems programming language focusing on safety, speed, and concurrency. It accomplishes these goals by being memory safe without using garbage collection.</p>
-<h2 id="Performance"><a href="#Performance" class="headerlink" title="Performance"></a>Performance</h2><p><strong>Rust is blazingly fast and memory-efficient</strong>: with no runtime or garbage collector, it can power performance-critical services, run on embedded devices, and <strong>easily integrate with other languages</strong>.</p>
-<h2 id="Reliability"><a href="#Reliability" class="headerlink" title="Reliability"></a>Reliability</h2><p>Rust’s rich type system and ownership model guarantee memory-safety and thread-safety — and enable you to eliminate many classes of bugs at compile-time.</p>
-<h2 id="Productivity"><a href="#Productivity" class="headerlink" title="Productivity"></a>Productivity</h2><p>Rust has great documentation, a friendly compiler with useful error messages, and top-notch tooling — an integrated package manager and build tool, smart multi-editor support with auto-completion and type inspections, an auto-formatter, and more.</p>
-<h1 id="some-tools"><a href="#some-tools" class="headerlink" title="some tools"></a>some tools</h1><ul>
-<li>cargo: Rust’s compilation manager, package manager, and general-purpose tool</li>
-<li>rustc:Rust compiler. Usually we let Cargo invoke the compiler for us</li>
-<li>rustdoc:rustdoc can build nicely formatted HTML for us.</li>
-</ul>
-<h1 id="install-development-environment"><a href="#install-development-environment" class="headerlink" title="install development environment"></a>install development environment</h1><p><a href="https://github.com/rust-lang/rustup.rs" target="_blank" rel="noopener">rustup</a></p>
-<p>execute in command-line <code>curl https://sh.rustup.rs -sSf | sh</code></p>
-<p>encountered this error.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl: (35) OpenSSL SSL_connect: SSL_ERROR_SYSCALL in connection to sh.rustup.rs:443</span><br></pre></td></tr></table></figure></p>
-<p>solution:<br>take a rest, buy a cup of coffee. and try again a few hours later.<br>maybe 18.00 is ok</p>
-<p>add the following line to your <code>~/.bash_profile</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=&quot;$HOME/.cargo/bin:$PATH&quot;</span><br></pre></td></tr></table></figure></p>
-<p>Cargo: the Rust build tool and package manager</p>
-<ul>
-<li>build your project with <code>cargo build</code></li>
-<li>run your project with <code>cargo run</code></li>
-<li>test your project with <code>cargo test</code></li>
-<li>build documentation for your project with <code>cargo doc</code></li>
-<li>publish a library to crates.io with <code>cargo publish</code></li>
-</ul>
-<p>To test that you have Rust and Cargo installed, you can run this in your terminal of choice:<br><code>cargo --version</code></p>
-<p>You can install a code formatting tool (Rustfmt) with <code>rustup component add rustfmt</code>,<br>and a linting tool (Clippy) with <code>rustup component add clippy</code>.</p>
-<p>need update <code>rustup update</code><br>need uninstall <code>rustup self uninstall</code></p>
-<h1 id="Ownership"><a href="#Ownership" class="headerlink" title="Ownership"></a>Ownership</h1><p>Ownership is Rust’s most unique feature, and it enables Rust to make memory safety guarantees without needing a garbage collector.<br>related features: borrowing, slices<br>Rust uses a third approach: memory is managed through a system of ownership with a set of rules that the compiler checks at compile time. None of the ownership features slow down your program while it’s running.</p>
-<p>Rules</p>
-<ul>
-<li>Each value in Rust has a variable that’s called its owner.</li>
-<li>There can only be one owner at a time.</li>
-<li>When the owner goes out of scope, the value will be dropped.</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/01/02/学习笔记/区块链/Substrate/Substrate-介绍/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/02/学习笔记/区块链/Substrate/Substrate-介绍/" itemprop="url">Substrate 介绍</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-02T23:28:14+08:00">2019-01-02</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://github.com/paritytech/substrate" target="_blank" rel="noopener">github</a></p>
-<p>和同事聊天的时候听他提到的一个区块链技术，据说可以一键发链（当然有点夸张），不过确实在 15 分钟之内就可以搭建一个全新的区块链出来。<br>很牛的设计。参考了 Web 框架类似的想法，把通用的部分抽象出来了。<br>看了之后很兴奋，这个就是我想要的东西。</p>
-<p>使用 Rust 语言开发的。</p>
-<p>由 Gavin Wood 带领的 parity 团队打造，Gavin Wood 是前以太坊 CTO</p>
-<p><a href="https://polkadot.network/#cover" target="_blank" rel="noopener">https://polkadot.network/#cover</a></p>
-<h1 id="What’s-included-in-Substrate"><a href="#What’s-included-in-Substrate" class="headerlink" title="What’s included in Substrate"></a>What’s included in Substrate</h1><p>many tools come working out-of-the-box, including:</p>
-<ul>
-<li>Polkadot connectivity</li>
-<li>Hot-swappable, pluggable Consensus</li>
-<li>Hot-upgradeable, pluggable STF</li>
-<li>Flexible and general sync</li>
-<li>Pub/Sub WebSocket JSON-RPC</li>
-<li>Light client</li>
-<li>Transaction queue</li>
-<li>Pervasive, secure networking</li>
-<li>JavaScript implementation</li>
-<li>Substrate Runtime Module Library (SRML)</li>
-</ul>
-<p>Because of Substrate’s novel on-chain upgrade mechanism, you will be able “hot-swap” consensus algorithms or upgrade STFs without the need to hard fork. The latter, a forkless upgrade mechanism was first publicly demonstrated on the Polkadot “Krumme Lanke” testnet on July 17th, 2018, and continues as the PoC-2 testnet at the time of this article’s release.</p>
-<p>Several consensus algorithms are supported in the 1.0-beta, with more are coming soon, including:</p>
-<ul>
-<li>Rhododendron (instant finality)</li>
-<li>SHAFT/GRANDPA (progressive, adaptive finality)</li>
-<li>Aurand (probabilistic finality, constant blocktime)</li>
-<li>Ouroboros (live, probabilistic finality) (planned)</li>
-<li>PoW (e.g., Ethash) (planned)</li>
-<li>Parachain (PoV, Polkadot consensus) (planned)<br>Your can also design your own consensus algorithm with Substrate’s API.</li>
-</ul>
-<h1 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h1><p>提供如下特性，开箱即用。</p>
-<ul>
-<li>共识机制，不可逆性，出块投票逻辑，拜占庭容错机制。</li>
-<li>p2p 网络。比如 p2p 节点的搜索，同步等等。</li>
-<li>运行时的 WebAssembly 虚拟机。可以运行智能合约，或者其他基于 Substrate 开发的项目。</li>
-<li>在浏览器中运行一个节点，并与其他节点通信</li>
-<li>跨平台的数据库 / 文件存储系统，还支持浏览器环境</li>
-<li>客户端平滑更新。对于可能影响共识的更新，会将代码编译成 WebAssembly 的执行文件，然后部署时作为网络上的一条消息。 这样的机制提供了这种可能，就是你还可以本地保有多个版本的共识代码，并在本地执行一个与部署环境不同版本的共识，Substrate 会去处理本机环境与部署环境的差异。因为 WebAssembly 有回退机制，所以保证不会有不受控制的硬分叉或其他难以解决的共识导致的问题。</li>
-<li>Polkadot 发布时立即接入你的项目。可以共享 Polkadot 的安全性和链之间的互操作性。</li>
-</ul>
-<h1 id="启动并运行一个完整的区块链需要做什么"><a href="#启动并运行一个完整的区块链需要做什么" class="headerlink" title="启动并运行一个完整的区块链需要做什么"></a>启动并运行一个完整的区块链需要做什么</h1><ol>
-<li>初始化块的函数。该函数根据前一个块的头创建一个新的块。<br>块的头包括：1. 块高度 ; 2. 块状态的加密索引，主要用于轻客户端验证块是否正确。 加密索引类似于 hash; 3. 块中二进制 BLOB 的加密索引 ; 4. 父块的 hash 值 ;</li>
-<li>块头的自定义数据。轻客户端仅同步块头，更新轻客户端时，注意处理块头中自定义的数据。</li>
-<li>将交易写入块的函数。 这个函数也更新链的状态（例如，账户余额）;</li>
-<li>生成块的函数。生成一个写好头、写好 BLOB 数据的块。这个块就可以广播出去了。</li>
-<li>校验块的函数。 全节点运行这个函数，确认接收到的块在接受之前是有效的。 例如，在资产链中，你可以检查是否有人人花费超过其自身余额的钱。</li>
-</ol>
-<h1 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h1><p>Substrate combines three new technologies: Rust, WebAssembly and Libp2p in order to create a framework that makes building upgradable, efficient and innovative blockchains easy. In short, Substrate helps you build the best blockchain you can.</p>
-<p>AfG is an internal codename “Al’s Finality Gadget” due to @AlistairStewart who invented it</p>
-<h2 id="libp2p"><a href="#libp2p" class="headerlink" title="libp2p"></a>libp2p</h2><p><img alt="f4e27cee.png" src="/2019/01/02/学习笔记/区块链/Substrate/Substrate-介绍/f4e27cee.png" width="" height=""></p>
-<ul>
-<li>Transports：传输层，TCP，uTP，QUIC，SCTP……</li>
-<li>Discovery：网络发现层，mDNS，bootstrap，DNS，Kad……</li>
-<li>Peer Routing: 节点路由，mDNS, KadDHT……</li>
-<li>NAT Traversal: NAT穿越层……</li>
-<li>Content Routing: 内容寻址……</li>
-</ul>
-<p>libp2p的主要功能是：</p>
-<ul>
-<li>发现节点</li>
-<li>连接节点</li>
-<li>发现数据</li>
-<li>传输数据</li>
-</ul>
-<p>libp2p 规范及其实现的目标是：<br>允许使用各种:<br>传输协议: TCP、UDP、SCTP、UDT、UTP、QIC、SSH等<br>认证传输协议：TLS，DTLS，CurveCP，SSH等<br>高效使用套接字（连接重用）<br>使对等体之间的通信在一个套接字上复用（避免握手开销）<br>使用协商过程使多种协议和不同协议版本在对等体之间使用<br>向后兼容<br>能在现有系统中工作<br>利用当前网络技术的全部能力<br>有 NAT 穿透功能<br>允许中继连接<br>启用加密通道<br>有效利用底层传输（例如本地流复用、本地AUTH等）。</p>
-<p>Substrate gives blockchain innovators the framework for maximum freedom with minimal effort. It is highly customisable, adaptable, and made by blockchain developers for blockchain developers. It allows developers to focus their effort on the thing they care most about—the state transition function—while providing them with the networking, consensus and security as well as an upgrade path to interoperability with Polkadot.</p>
-<p>Substrate’s revolutionary generality and developability is evidenced through it being used to build four wildly different blockchains including Polkadot and Ethereum 2.0 simultaneously and in a fraction of the time it would otherwise take (an early version of Ethereum 2.0 was prototyped in a few weeks).</p>
-<p>relative chapter<br><a href="https://medium.com/polkadot-network/polkadot-poc-2-is-here-parachains-runtime-upgrades-and-libp2p-networking-7035bb141c25" target="_blank" rel="noopener">https://medium.com/polkadot-network/polkadot-poc-2-is-here-parachains-runtime-upgrades-and-libp2p-networking-7035bb141c25</a></p>
-<h1 id="module"><a href="#module" class="headerlink" title="module"></a>module</h1><p>Substrate is separated into Substrate Core and Substrate Runtime Module Library (SRML) and comes with a pre-assembled Substrate Node that is simple to configure.</p>
-<h2 id="Substrate-Core"><a href="#Substrate-Core" class="headerlink" title="Substrate Core"></a>Substrate Core</h2><p>is the minimal Substrate base for building blockchains. Substrate Core gives you a foundation that is far easier than building a blockchain from scratch, though you don’t get a finished blockchain. It includes:</p>
-<ul>
-<li>Pervasive and secure networking via libp2p</li>
-<li>Storage</li>
-<li>Telemetry</li>
-<li>Light client</li>
-<li>Block synchronisation</li>
-<li>Extensible JSON-RPC API endpoints</li>
-<li>Low-level JavaScript utils</li>
-<li>Transaction queue and block production mechanism</li>
-<li>Sandboxed WebAssembly interpreter</li>
-<li>Interchain connectivity via the Polkadot protocol</li>
-<li>Crypto primitives library</li>
-<li>Chain specification and versioning</li>
-<li>Pluggable consensus</li>
-</ul>
-<h2 id="Substrate-Runtime-Module-Library-SRML"><a href="#Substrate-Runtime-Module-Library-SRML" class="headerlink" title="Substrate Runtime Module Library (SRML)"></a>Substrate Runtime Module Library (SRML)</h2><p>The core architecture of Substrate separates the basic functionality of a network blockchain node and the chain-specific implementations by executing the latter in a separate WebAssembly environment. You have absolute freedom to write the chain logic in any language that can compile down to WebAssembly (Rust, C/C++, C#, Go, etc). You can add modules from the Substrate Runtime Module Library, or SRML. With SRML, you can take off-the-shelf components, plug them together, and build a blockchain that does what you want it to do. Modules include:</p>
-<ul>
-<li>Accounts &amp; Balances – basic cryptocurrency, including account management and viewing</li>
-<li>Assets – simple, secure additional on-chain fungible assets</li>
-<li>Consensus – setting and modifying runtime code and storage (i.e. the set of authorities as a list of session keys on-chain), and reporting offline or misbehaving validators</li>
-<li>Contracts – turbo-charged Wasm-based smart contracts</li>
-<li>Council – council election and proposals</li>
-<li>Democracy – public proposals and referendums</li>
-<li>Sessions – key rotation for authorities</li>
-<li>Staking – Proof-of-Stake logic, including both staking and nominating of validator accounts</li>
-<li>Timestamp – have your chain know about time</li>
-<li>Treasury – decentralised grants, similar to a DAO</li>
-</ul>
-<p>So, for example, if you want to create a Proof-of-Stake smart contract blockchain, you would take Substrate Core and plug in the Accounts &amp; Balances, Staking, and Contracts modules. Once Polkadot launches, you could also make it interoperable by plugging it into Polkadot.</p>
-<h2 id="Substrate-Node"><a href="#Substrate-Node" class="headerlink" title="Substrate Node"></a>Substrate Node</h2><p>Finally, Substrate Node allows you to deploy a blockchain with maximum ease. Soon you will be able to configure Substrate Node with a JSON file.</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/01/01/读过的书/区块链技术原理及底层架构/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/01/读过的书/区块链技术原理及底层架构/" itemprop="url">区块链技术原理及底层架构</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-01T18:27:20+08:00">2019-01-01</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>不推荐阅读，顺便鄙视。</p>
-<p>新的一年，第一天就看了本假书，我真佩服这家公司的勇气，文不对题，分明就是他们公司区块链的说明书，讲了一堆 API 调用接口。玩这个文字游戏有意思么，故意隐藏内容使用通用的标题骗人看。</p>
-<p><img alt="dee87dc5.png" src="/2019/01/01/读过的书/区块链技术原理及底层架构/dee87dc5.png" width="" height=""></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2091,7 +2001,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">662</span>
+                    <span class="site-state-item-count">665</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
