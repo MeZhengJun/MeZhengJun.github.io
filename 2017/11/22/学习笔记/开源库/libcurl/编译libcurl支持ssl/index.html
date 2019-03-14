@@ -107,7 +107,7 @@
 <meta property="og:site_name" content="郑君的学习笔记">
 <meta property="og:description" content="使用vs2017编译libcurl和openssl静态库。因为用到了https相关操作所以需要libcurl支持ssh，在编译openssl的过程中遇到些小麻烦，所以记录下来。openssl1.1.x有了些变化，附带的帮助文件，信息量不小，时间有限，暂时使用openssl1.0.x来编译。 编译好的库http://slproweb.com/products/Win32OpenSSL.html">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-06T01:46:16.000Z">
+<meta property="og:updated_time" content="2019-03-14T12:31:30.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="编译libcurl支持ssl">
 <meta name="twitter:description" content="使用vs2017编译libcurl和openssl静态库。因为用到了https相关操作所以需要libcurl支持ssh，在编译openssl的过程中遇到些小麻烦，所以记录下来。openssl1.1.x有了些变化，附带的帮助文件，信息量不小，时间有限，暂时使用openssl1.0.x来编译。 编译好的库http://slproweb.com/products/Win32OpenSSL.html">
@@ -236,7 +236,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">69</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">70</span>
       </a>
 </li>
 
@@ -246,7 +246,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">684</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">704</span>
       </a>
 </li>
 
@@ -419,26 +419,32 @@
 <h1 id="编译libcurl-with-ssh-support-for-vs2017"><a href="#编译libcurl-with-ssh-support-for-vs2017" class="headerlink" title="编译libcurl with ssh support for vs2017"></a>编译libcurl with ssh support for vs2017</h1><p>下载<a href="https://curl.haxx.se/download.html" target="_blank" rel="noopener">libcrul</a><br>下载<a href="https://www.libssh2.org/" target="_blank" rel="noopener">libssh2</a><br>下载<a href="https://www.openssl.org/" target="_blank" rel="noopener">openssl</a><br>下载<a href="https://www.activestate.com/" target="_blank" rel="noopener">activePerl</a><br>下载<a href="http://www.nasm.us/" target="_blank" rel="noopener">nasm</a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">需要引入的库文件：</span><br><span class="line">crypt32.lib;ws2_32.lib;wldap32.lib</span><br></pre></td></tr></table></figure>
 <ol>
-<li><p>安装perl</p>
+<li>安装perl<br>ActivePerl-5.26.3.2603-MSWin32-x64-a95bce075</li>
+</ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">perl -version</span><br></pre></td></tr></table></figure>
-</li>
+<ol>
 <li><p>安装nasm：设置环境变量，添加nasm的路径</p>
 </li>
 <li><p>编译openssl</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1.1.xx的变化很大，下面编译成功，但是应用链接的时候有错误信息</span><br><span class="line"></span><br><span class="line">vs2017 command</span><br><span class="line">NOTES.PERL提到需要下面的，因为之前装过CPAN所以不知道是否已经安装了，编译的时候没提示出错。</span><br><span class="line">cpan -i Text::Template</span><br><span class="line"></span><br><span class="line">perl Configure VC-WIN32 --prefix=C:\project2017\openssl_lib</span><br><span class="line">perl Configure VC-WIN32 --prefix=C:\project2017\openssl_lib_debug</span><br><span class="line">perl Configure no-shared debug-VC-WIN32 --prefix=C:\project2017\openssl_lib_debug</span><br><span class="line">perl Configure no-shared VC-WIN32 --prefix=C:\project2017\openssl_lib_release</span><br><span class="line"></span><br><span class="line">nmake</span><br><span class="line">nmake test</span><br><span class="line">nmake install</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">1.0.2l 版本编译</span><br><span class="line"></span><br><span class="line">Building the 32-bit static libraries</span><br><span class="line"></span><br><span class="line">perl Configure VC-WIN32 no-shared --prefix=C:\project\libcurl_bindproject\openssl_lib_release_1.0</span><br><span class="line"></span><br><span class="line">perl Configure debug-VC-WIN32 no-shared no-asm --prefix=C:\project\libcurl_bindproject\openssl_lib_debug_1.0</span><br><span class="line"></span><br><span class="line">如果支持汇编使用这个</span><br><span class="line">ms\do_nasm</span><br><span class="line">不支持汇编使用这个</span><br><span class="line">ms\do_ms</span><br><span class="line">nmake -f ms\nt.mak</span><br><span class="line">nmake –f ms\nt.mak test</span><br><span class="line">nmake -f ms\nt.mak install</span><br></pre></td></tr></table></figure>
+<p>使用vs2010的命令行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1.1.xx的变化很大，下面编译成功，但是应用链接的时候有错误信息</span><br><span class="line"></span><br><span class="line">vs2017 command</span><br><span class="line">NOTES.PERL提到需要下面的，因为之前装过CPAN所以不知道是否已经安装了，编译的时候没提示出错。</span><br><span class="line">cpan -i Text::Template</span><br><span class="line"></span><br><span class="line">perl Configure VC-WIN32 --prefix=C:\project2017\openssl_lib</span><br><span class="line">perl Configure VC-WIN32 --prefix=C:\project2017\openssl_lib_debug</span><br><span class="line">perl Configure no-shared debug-VC-WIN32 --prefix=C:\project2017\openssl_lib_debug</span><br><span class="line">perl Configure no-shared VC-WIN32 --prefix=C:\project2017\openssl_lib_release</span><br><span class="line"></span><br><span class="line">nmake</span><br><span class="line">nmake test</span><br><span class="line">nmake install</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">1.0.2l 版本编译</span><br><span class="line"></span><br><span class="line">Building the 32-bit static libraries</span><br><span class="line"></span><br><span class="line">perl Configure VC-WIN32 no-shared --prefix=C:\project\libcurl_bindproject\openssl_lib_release_1.0</span><br><span class="line"></span><br><span class="line">perl Configure debug-VC-WIN32 no-shared no-asm --prefix=C:\project\libcurl_bindproject\openssl_lib_debug_1.0</span><br><span class="line"></span><br><span class="line">Building the 32-bit dynamic libraries</span><br><span class="line">perl Configure debug-VC-WIN32 --prefix=C:\project\libcurl_bindproject\openssl_lib_debug_1.0</span><br><span class="line">perl Configure VC-WIN32 --prefix=C:\project\libcurl_bindproject\openssl_lib_debug_1.0</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">如果支持汇编使用这个</span><br><span class="line">ms\do_nasm</span><br><span class="line">不支持汇编使用这个</span><br><span class="line">ms\do_ms</span><br><span class="line">nmake -f ms\nt.mak</span><br><span class="line">nmake –f ms\nt.mak test</span><br><span class="line">nmake -f ms\nt.mak install</span><br></pre></td></tr></table></figure>
 <p>Configure 后面的选项可选值有 VC-WIN32(32位) | VC-WIN64A(64位AMD) | VC-WIN64I(64位Intel) | VC-CE(Windows CE)<br>Debug库使用这个选项debug-VC-WIN32<br>prefix: 表示生成的lib文件存放路径</p>
 <p>执行完成上面的三个步骤之后在C:\project2017\openssl_lib这个目录下面会生成四个文件夹（include/lib/bin/html)：</p>
 <p>include目录下面存放的是头文件<br>lib目录是生成的静态库文件,文件的后缀是.lib<br>bin目录下面存放的是dll文件和exe文件<br>html目录下面存放的是文档</p>
 <ol>
 <li><p>编译libssh2<br>版本1.8.0<br>添加openssl的库libeay32.lib;ssleay32.lib和头文件路径<br>使用vs2017编译即可生成libssh2d.lib</p>
 </li>
-<li><p>编译libcurl<br>把openssl的include目录拷贝到libcurl的include目录里面<br>使用vs2017编译<br>添加libssh2的include，项目里面添加libssh2d.lib引用<br>添加预编译信息<br>CURL_STATICLIB;USE_LIBSSH2;CURL_DISABLE_LDAP;HAVE_LIBSSH2;HAVE_LIBSSH2_H;LIBSSH2_WIN32;LIBSSH2_LIBRARY</p>
+<li><p>编译libcurl<br>curl-7.64.0</p>
 </li>
-<li><p>使用libcurl</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"Wldap32.lib"</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"Ws2_32.lib"</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"crypt32.lib"</span>)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _DEBUG</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"libcurld.lib"</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"libcurl.lib"</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+</ol>
+<p>把openssl的include目录拷贝到libcurl的include目录里面<br>使用vs2017编译<br>添加libssh2的include，项目里面添加libssh2d.lib引用 </p>
+<p>如果有下面的问题 添加 crypt32.lib 库</p>
+<p>Error LNK2019 unresolved external symbol <strong>imp</strong>CertOpenStore@20 referenced in function _capi_open_store libssh2 Error LNK2019 unresolved external symbol <strong>imp</strong>CertCloseStore@8 referenced in function _capi_find_key libssh2 Error LNK2019 unresolved external symbol <strong>imp</strong>CertEnumCertificatesInStore@8 referenced in function _capi_find_cert libssh2 Error LNK2019 unresolved external symbol <strong>imp</strong>CertFindCertificateInStore@24 referenced in function _capi_find_cert libssh2 Error LNK2019 unresolved external symbol <strong>imp</strong>CertFreeCertificateContext@4 referenced in function _capi_rsa_free libssh2 Error LNK2019 unresolved external symbol <strong>imp</strong>CertDuplicateCertificateContext@4 referenced in function _capi_load_ssl_client_cert libssh2 Error LNK2019 unresolved external symbol <strong>imp</strong>CertGetCertificateContextProperty@16 referenced in function _capi_cert_get_fname libssh2</p>
+<p>添加预编译信息<br>CURL_STATICLIB;USE_LIBSSH2;CURL_DISABLE_LDAP;HAVE_LIBSSH2;HAVE_LIBSSH2_H;LIBSSH2_WIN32;LIBSSH2_LIBRARY</p>
+<ol>
+<li>使用libcurl<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"Wldap32.lib"</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"Ws2_32.lib"</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"crypt32.lib"</span>)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _DEBUG</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"libcurld.lib"</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"libcurl.lib"</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 
@@ -593,7 +599,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">684</span>
+                    <span class="site-state-item-count">704</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -744,7 +750,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">69</span>
+                      
+                    
+                    <span class="site-state-item-count">70</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -1105,11 +1113,7 @@
                     
                       
                     
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">176</span>
+                    <span class="site-state-item-count">174</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

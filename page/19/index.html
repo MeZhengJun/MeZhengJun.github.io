@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">69</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">70</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">684</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">704</span>
       </a>
 </li>
 
@@ -328,7 +328,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/23/学习笔记/区块链/bitcoin/bitcoin-p2p协议/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/06/学习笔记/区块链/Graphene/Graphene-study/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -347,7 +347,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/23/学习笔记/区块链/bitcoin/bitcoin-p2p协议/" itemprop="url">bitcoin-p2p协议</a></h1>
+                <a class="post-title-link" href="/2018/09/06/学习笔记/区块链/Graphene/Graphene-study/" itemprop="url">Graphene study</a></h1>
         
 
         <div class="post-meta">
@@ -359,7 +359,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-23T09:53:29+08:00">2018-08-23</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-06T22:49:27+08:00">2018-09-06</time>
             
 
             
@@ -416,728 +416,37 @@
       
         
           
-            <p>需要握手之后才能发送其他命令，握手流程如下：<br><img alt="54cd7de8.png" src="/2018/08/23/学习笔记/区块链/bitcoin/bitcoin-p2p协议/54cd7de8.png" width="" height=""><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">version&lt;---&gt;verack</span><br><span class="line">ping&lt;---&gt;pong</span><br><span class="line">addr&lt;---&gt;addr</span><br><span class="line">getaddr&lt;---&gt;addr</span><br><span class="line">SendHeaders---&gt;</span><br><span class="line">SendCmpct---&gt;</span><br><span class="line">FEEFILTER---&gt;</span><br><span class="line">GETHEADERS&lt;---&gt; Headers</span><br></pre></td></tr></table></figure></p>
-<p>0.8.6 版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">version&lt;---&gt;verack</span><br><span class="line">ping&lt;---&gt;pong</span><br><span class="line">addr&lt;---&gt;addr</span><br><span class="line">getaddr&lt;---&gt;addr</span><br><span class="line">SendHeaders---&gt;</span><br><span class="line">SendCmpct---&gt;</span><br><span class="line">FEEFILTER---&gt;</span><br><span class="line">getblocks&lt;----&gt;inv</span><br><span class="line">getdata&lt;---&gt;block； spv wallet response merkleblock</span><br></pre></td></tr></table></figure></p>
-<p>Message structure</p>
-<table>
-<thead>
-<tr>
-<th>Field Size</th>
-<th>Description</th>
-<th>Data type</th>
-<th>Comments</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>4</td>
-<td>magic</td>
-<td>uint32_t</td>
-<td>Magic value indicating message origin network, and used to seek to next message when stream state is unknown</td>
-</tr>
-<tr>
-<td>12</td>
-<td>command</td>
-<td>char[12]</td>
-<td>ASCII string identifying the packet content, NULL padded (non-NULL padding results in packet rejected)</td>
-</tr>
-<tr>
-<td>4</td>
-<td>length</td>
-<td>uint32_t</td>
-<td>Length of payload in number of bytes</td>
-</tr>
-<tr>
-<td>4</td>
-<td>checksum</td>
-<td>uint32_t</td>
-<td>First 4 bytes of sha256(sha256(payload))</td>
-</tr>
-<tr>
-<td> ?</td>
-<td>payload</td>
-<td>uchar[]</td>
-<td>The actual data</td>
-</tr>
-</tbody>
-</table>
-<p>getheaders</p>
-<table>
-<thead>
-<tr>
-<th>Field Size</th>
-<th>Description</th>
-<th>Data type</th>
-<th>Comments</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>4</td>
-<td>version</td>
-<td>uint32_t</td>
-<td>the protocol version</td>
-</tr>
-<tr>
-<td>1+</td>
-<td>hash count</td>
-<td>var_int</td>
-<td>number of block locator hash entries</td>
-</tr>
-<tr>
-<td>32+</td>
-<td>block locator hashes</td>
-<td>char[32]</td>
-<td>block locator object; newest back to genesis block (dense to start, but then sparse)</td>
-</tr>
-<tr>
-<td>32</td>
-<td>hash_stop</td>
-<td>char[32]</td>
-<td>hash of the last desired block header; set to zero to get as many blocks as possible (2000)</td>
-</tr>
-</tbody>
-</table>
-<p>API wallet<br>A wallet that relies on a central server like Electrum could be called an API wallet. This wallet will only connect to one or more servers and speak to the server using the API there. It will implicitly trust what the servers tell it and it won’t download the whole blockchain.</p>
-<p>Autotip chrome extension. It’s similar to SPV in that it doesn’t download the whole blockchain, but is different in that not even headers are downloaded.</p>
-<p>When an API wallet wants to send bitcoin the following process occurs:</p>
-<ol>
-<li>Call to UTXO source (via blockchain.info/blockr.io/blocktrail/etc)</li>
-<li>Pass desired UTXO into Transaction library (such as Bitcore or Moneywagon)</li>
-<li>Pass in private key to transaction library to sign desired inputs from step 2</li>
-<li>Decode transaction object from JS/python/C#/whatever type to hex type.</li>
-<li>Send hex data of transaction through PushTX (via blockchain.info/blockr.io/etc)</li>
-<li>Short Poll “unconfirmed transaction” until your newly pushed TX gets confirmed.</li>
-<li>You are done!</li>
-</ol>
-<p>SPV wallet</p>
-<h2 id="spv-操作"><a href="#spv-操作" class="headerlink" title="spv 操作"></a>spv 操作</h2><p>只下载 headers</p>
-<p>SPV verification<br><a href="https://www.reddit.com/r/Bitcoin/comments/2feox9/electrum_securityprivacy_model/" target="_blank" rel="noopener">https://www.reddit.com/r/Bitcoin/comments/2feox9/electrum_securityprivacy_model/</a></p>
-<p>I am the main developer of Electrum. The original post contains statements that are not true. Electrum does indeed connect to a single server in order to fetch transactions and address histories. However, it also connects to MANY servers in order to fetch block headers, find and verify the longest chain, and verify that all the transactions in its history are consistent with the blockchain, using SPV.</p>
-<p>SPV is a way to check that all transactions received by the client are in the blockchain. However, SPV is not a proof of completeness: the client has no proof that it received all the transactions that are relevant to its wallet (the nodes you are talking to could be lying by omission). Electrum currently does not have a way to verify completeness of its history (although this will be addressed soon). Note that clients using bloom filters (Multibit) have exactly the same weakness: they can verify the transactions they receive (using spv), but they lack a proof of completeness too.</p>
-<p>One security advantage of Electrumis that servers are authenticated using SSL; this provides protection against MITM attacks, which is a problem for thin clients, including bloom filter clients. However, this advantage comes at the cost of privacy, because the main Electrum server you use knowns which addresses you are using; bloom filter clients have more privacy (although I believe the default setting in Multibit is to favor speed at the expense of privacy).</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/22/学习笔记/区块链/bitcoin/bitcoin-generate-命令/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/22/学习笔记/区块链/bitcoin/bitcoin-generate-命令/" itemprop="url">bitcoin-generate 命令</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-22T11:59:25+08:00">2018-08-22</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>wallet.cpp</p>
-<p>std::vector<cwalletref> vpwallets;</cwalletref></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/22/学习笔记/linux/linux-网络抓包tcpdump/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/22/学习笔记/linux/linux-网络抓包tcpdump/" itemprop="url">linux 网络抓包tcpdump</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-22T09:33:48+08:00">2018-08-22</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="抓取指定端口"><a href="#抓取指定端口" class="headerlink" title="抓取指定端口"></a>抓取指定端口</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">这个可能没用</span><br><span class="line">// sudo apt install apparmor-profiles</span><br><span class="line"></span><br><span class="line">查看 AppArmor 状态</span><br><span class="line">sudo aa-status</span><br><span class="line"></span><br><span class="line">tcpdump tcp port 9911 -C 1 -w ./9911.cap</span><br><span class="line"></span><br><span class="line">tcpdump -i eth0 -n -w out.pcap -C 1 -Z root</span><br><span class="line">返回  Permission denied</span><br><span class="line">sudo apt-get install apparmor-utils</span><br><span class="line">设置模式</span><br><span class="line">aa-complain /usr/sbin/tcpdump</span><br><span class="line">查看使用的模式</span><br><span class="line">grep tcpdump /sys/kernel/security/apparmor/profiles</span><br><span class="line">返回状态 (enforce) or (complain)，需要的是 complain 状态</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/18/学习笔记/区块链/概念/区块链概念-lightning-network/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/18/学习笔记/区块链/概念/区块链概念-lightning-network/" itemprop="url">区块链概念-lightning network</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-18T06:08:18+08:00">2018-08-18</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>On going…</p>
-<p>Scalable, Instant Bitcoin/Blockchain Transactions</p>
-<p>the Lightning Network (LN) is a fix for both transaction costs and speeds. Lightening Network is neither a hard fork or softfork but “an additional layer.” It is a fix that allows for instant low cost transactions for Bitcoin and other coins likelitecoin using a bunch of tricks (it has also been embraced by Ethereum under the name Plasma). The Lightening Network alsoallows for cross platform atomic swaps, meaning one could use it to trade one coin to another without an exchange (for example,Bitcoin to Litecoin). Like SegWit2x, LN is predicated on SegWit’s code change. See details on <a href="https://en.wikipedia.org/wiki/SegWit" target="_blank" rel="noopener">how LN workshere</a>.</p>
-<p>由于 bitcoin 产生区块的时间间隔和区块大小的限制，导致了 bitcoin 的可扩展问题。为了提升交易效率提出了一些解决方案。<br>lightning network 是其中一个。</p>
-<p>区块大小的限制成为瓶颈，导致手续费的上升和处理交易的延迟。</p>
-<p>lightning network 是构建于区块链上面的 <code>第二层</code> 支付协议，主要目的是增加交易效率。<br>通过双向小额支付网络实现不需要资金代理托管的点对点支付系统</p>
-<p>通常的使用时通过向相关的区块链提交一笔资金配额交易来打开支付通道，随后可以提交任意笔 Lightning 交易来更新暂定的通道资金配额，<br>不向区块链发送广播。可选的通过广播通道资金的最终交易来关闭支付通道。</p>
-<p>为了实现上面的想法，Lightning 网络需要一种交易可延展性的补丁，例如：bitcoin 的隔离见证 Segregated Witness (SegWit)  BIP141</p>
-<p>相关历史：<br>Joseph Poon and Thaddeus Dryja published the Lightning white paper in 2015</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/17/学习笔记/区块链/primecoin/primecoin-xpmpool-compile/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/17/学习笔记/区块链/primecoin/primecoin-xpmpool-compile/" itemprop="url">primecoin-xpmpool-compile</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-17T22:50:16+08:00">2018-08-17</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>编译 xpmpool</p>
-<h2 id="安装-gcc-4-9"><a href="#安装-gcc-4-9" class="headerlink" title="安装 gcc 4.9"></a>安装 gcc 4.9</h2><p>boost 1.55 版本以下需要使用 gcc 4.9 以下的版本 因为 ABI 兼容性问题导致<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 检查一下版本信息，如果高于 4.9 需要重装</span></span><br><span class="line">gcc -v</span><br><span class="line">sudo apt-get remove gcc g++</span><br><span class="line">sudo apt-get install gcc<span class="number">-4.9</span> g++<span class="number">-4.9</span></span><br><span class="line"><span class="comment">// 做一下软连接</span></span><br><span class="line">cd /usr/bin</span><br><span class="line">sudo ln -s /usr/bin/g++<span class="number">-4.9</span> /usr/bin/g++ -f</span><br><span class="line">sudo ln -s /usr/bin/gcc<span class="number">-4.9</span> /usr/bin/gcc -f</span><br><span class="line"></span><br><span class="line">gcc -v</span><br></pre></td></tr></table></figure></p>
-<p>详细说明：<br>This is essentially a won’t fix. compiling boost with gcc5, which uses<br>C++11 ABI, changes boost ABI and breaks most reverse dependencies.<br>The boost maintainer decided against backporting fixes to older<br>boost1.55, and rename the sonames throughout as that would be<br>non-standard.<br>Boost 1.58 and later is the default in testing and unstable, and it<br>uses gcc5 and thus the C++11 ABI.</p>
-<p>Thus your options are to use:<br>(a) gcc4.9 or lower, C++98 ABI, and debian’s boost1.55 or lower.<br>(b) gcc5 or better, C++11 ABI, and debian’s boost1.57 or better.</p>
-<h2 id="编译-boost-1-46-1"><a href="#编译-boost-1-46-1" class="headerlink" title="编译 boost 1.46.1"></a>编译 boost 1.46.1</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 查看版本</span></span><br><span class="line">dpkg -s libboost-dev | grep 'Version'</span><br><span class="line"><span class="comment">// 如果存在删掉</span></span><br><span class="line">sudo apt-get --purge remove libboost-*</span><br><span class="line">sudo apt-get --purge remove libboost-dev libboost-doc</span><br><span class="line"></span><br><span class="line">sudo apt-get install libbz2-dev</span><br><span class="line"></span><br><span class="line"><span class="keyword">not</span> use icu</span><br><span class="line">libicu-dev</span><br></pre></td></tr></table></figure>
-<h3 id="编译可能遇到的问题："><a href="#编译可能遇到的问题：" class="headerlink" title="编译可能遇到的问题："></a>编译可能遇到的问题：</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/include/boost/config/requires_threads.hpp:<span class="number">29</span>:<span class="number">4</span>: error: <span class="meta">#<span class="meta-keyword">error</span> <span class="meta-string">"Threading support unavaliable: it has been explicitly disabled with BOOST_DISABLE_THREADS"</span></span></span><br></pre></td></tr></table></figure>
-<p>这是因为boost是根据编译器的宏定义来判断gcc是否支持多线程，但是gcc 4.7及以上的版本使用的宏与老版本使用的宏不同，这样，boost自然就不能正确获取gcc支持多线程的宏，从而导致不能成功编译boost_thread支持的程序。解决办法是在boost/config/stdlib/libstdcpp3.hpp文件的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ifdef __GLIBCXX__ // gcc 3.4 and greater:</span><br><span class="line">#  if defined(_GLIBCXX_HAVE_GTHR_DEFAULT) \</span><br><span class="line">        || defined(_GLIBCXX__PTHREADS)</span><br></pre></td></tr></table></figure>
-<p>修改为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#  if defined(_GLIBCXX_HAVE_GTHR_DEFAULT) \</span><br><span class="line">        || defined(_GLIBCXX__PTHREADS) \</span><br><span class="line">	|| defined(_GLIBCXX_HAS_GTHREADS)</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./boost/thread/xtime.hpp:23:5: error: expected identifier before numeric constant</span><br><span class="line">     TIME_UTC=1</span><br><span class="line">libs/thread/src/pthread/timeconv.inl</span><br></pre></td></tr></table></figure>
-<p>修改 TIME_UTC 为 TIME_UTC_ 和 std 的冲突了</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下面使用 stage 了这里的 prefix 就无效了</span></span><br><span class="line">./bootstrap.sh</span><br><span class="line"><span class="comment">// 使用这个即可</span></span><br><span class="line">./bjam --build-dir=/tmp/build-boost toolset=gcc stage</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 这个是安装了 ICU 之后的启用参数，实际操作发现还有问题需要修改，所以暂时不用 ICU</span></span><br><span class="line">./bjam --build-dir=/tmp/build-boost -sHAVE_ICU=<span class="number">1</span> -sICU_PATH=/usr/local/include  -sICU_LINK=<span class="string">"/LIBPATH:/usr/local/lib"</span> toolset=gcc</span><br></pre></td></tr></table></figure>
-<p>如果是自定义目录需要添加环境变量<br>修改/etc/profile, 文件末尾添加<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export BOOST_INCLUDE=&quot;your install path &quot;/include</span><br><span class="line">export BOOST_LIB=&quot;your install path &quot;/lib</span><br></pre></td></tr></table></figure></p>
-<p>在/etc/profile.d/ 中新建一个shell文件boost.sh<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line">export BOOST_INCLUDE_PATH=/home/tyler/Documents/boost_1_46_1</span><br><span class="line">export BOOST_LIB_PATH=/home/tyler/Documents/boost_1_46_1/stage/lib</span><br><span class="line">export BOOST_LIB_SUFFIX=1_46_1</span><br></pre></td></tr></table></figure></p>
-<p>source /etc/profile.d/boost.sh<br>以后在编译程序的时候，只需要加上 ：-I$BOOST_INCLUDE_PATH - L$BOOST_LIB_PATH</p>
-<p>卸载<br>将/usr/local/lib和/usr/local/include/boost两个目录下的文件直接删除就可以。</p>
-<h2 id="编译-wt-3-3-2"><a href="#编译-wt-3-3-2" class="headerlink" title="编译 wt 3.3.2"></a>编译 wt 3.3.2</h2><p>CMake 2.6，找不到 boost 换 2.8<br><a href="http://www.cmake.org/CMake" target="_blank" rel="noopener">CMake</a> (&gt;= 2.4), and<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">./bootstrap</span><br><span class="line">make -j 2</span><br><span class="line">sudo make install</span><br><span class="line">cmake --version</span><br></pre></td></tr></table></figure></p>
-<p>wt3.3.10 需要 cmake 2.12 以上</p>
-<h3 id="编译依赖包"><a href="#编译依赖包" class="headerlink" title="编译依赖包"></a>编译依赖包</h3><ul>
-<li>ZEROMQ message system</li>
-<li>Google protobuf protocol</li>
-<li>libwt database abstraction</li>
-<li>libwt webserver</li>
-<li>Postgres SQL server</li>
+            <p><a href="https://github.com/cryptonomex/graphene" target="_blank" rel="noopener">GitHub</a></p>
+<p>石墨烯生态的代表有 BTS，Steem 和 EOS。石墨烯采用的是 DPOS 的共识机制，出快速度大约为 1.5s，<br>石墨烯技术使得区块链应用更高的交易吞吐量，BTS 可以处理十万级别的 TPS，而 EOS 则是宣称百万级别的 TPS。<br>同时石墨烯技术高并发处理能力也是比特币和 ETH 无法做到的。</p>
+<p>有三个项目需要克隆：graphene，graphene-ui和fc<br>FC库用于管理传输细节，允许节点接受各种传输协议。</p>
+<p>Graphene has been designed especially for transactions (token transfer) and high-throughput in order to compete with Visa and Mastercard. This results in a lack of versatility</p>
+<p>The real bottleneck is not the memory requirements, but the bandwidth requirements. At 1 million transactions per second and 256 bytes per transaction, the network would require 256 megabytes per second (1 Gbit/sec).</p>
+<p><a href="https://bitshares.org/technology/industrial-performance-and-scalability" target="_blank" rel="noopener">industrial-performance-and-scalability</a></p>
+<ul>
+<li>Keep everything in memory.</li>
+<li>Keep the core business logic in a single thread.</li>
+<li>Keep cryptographic operations (hashes and signatures) out of the core business logic.</li>
+<li>Divide validation into state-dependent and state-independent checks.</li>
+<li>Use an object oriented data model.</li>
+<li>Avoid synchronization primitives (locks, atomic operations).</li>
+<li>Minimize unnecessary computation in the business logic processor.</li>
 </ul>
-<p>ZEROMQ, czmq, protobuf : ./configure; make; sudo make install;make clean</p>
-<p>Postgres SQL server 9.6.9 源码编译<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libreadline-dev</span><br><span class="line">./configure</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br><span class="line">sudo adduser postgres</span><br><span class="line">sudo mkdir /usr/local/pgsql/data</span><br><span class="line">sudo chown postgres /usr/local/pgsql/data</span><br><span class="line">su - postgres</span><br><span class="line">/usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data</span><br><span class="line">/usr/local/pgsql/bin/postgres -D /usr/local/pgsql/data &gt;logfile 2&gt;&amp;1 &amp;</span><br><span class="line">/usr/local/pgsql/bin/createdb test</span><br><span class="line">/usr/local/pgsql/bin/psql test</span><br></pre></td></tr></table></figure></p>
-<p>然后需要创建数据库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">进入控制台</span><br><span class="line">/usr/local/pgsql/bin/psql</span><br><span class="line">创建用户</span><br><span class="line">CREATE USER backend WITH PASSWORD &apos;XYZPASS&apos;;</span><br><span class="line">创建数据库</span><br><span class="line">CREATE DATABASE testdb8 OWNER backend;</span><br><span class="line">赋予权限</span><br><span class="line">GRANT ALL PRIVILEGES ON DATABASE testdb8 to backend;</span><br><span class="line">查看当前库的表</span><br><span class="line">\d</span><br><span class="line">显示表具体信息</span><br><span class="line">\d table_name</span><br></pre></td></tr></table></figure></p>
-<p>编译 wt 需要<br>使用 CMake 2.8<br>C++ boost library (preferably version 1.46.1 or higher)</p>
-<p>cd wt-x.x.x<br>mkdir build<br>cd build<br>配置<br>cmake -DBOOST_ROOT=/home/tyler/Documents/boost_1_46_1 -DBOOST_DIR=/home/tyler/Documents/boost_1_46_1 -DBOOST_INCLUDE_DIRS=/home/tyler/Documents/boost_1_46_1 -DBOOST_LIB_DIRS=/home/tyler/Documents/boost_1_46_1/stage/lib -DENABLE_POSTGRES=on -DPOSTGRES_PREFIX=/usr/local/pgsql/ -DWT_CPP_11_MODE=-std=c++11 ../</p>
-<p>如果失败了,<br>ccmake ../<br>or<br>cmake-gui ../</p>
-<p>编译<br>make -j 2<br>sudo make install</p>
-<p>编译过程如果有问题：<br>Linking CXX executable test.sqlite3<br>../src/Wt/Dbo/backend/libwtdbosqlite3.so.3.3.2: undefined reference to <code>dlopen</code><br>../src/Wt/Dbo/backend/libwtdbosqlite3.so.3.3.2: undefined reference to <code>dlclose</code><br>../src/Wt/Dbo/backend/libwtdbosqlite3.so.3.3.2: undefined reference to <code>dlerror</code><br>../src/Wt/Dbo/backend/libwtdbosqlite3.so.3.3.2: undefined reference to <code>dlsym</code></p>
-<p>检查 libdl.so 是否存在，如果没有安装下面的库<br><code>apt install libc6-dev-i386</code></p>
-<p>修改 D:\wt-3.3.2\test\CMakeLists.txt<br>找到 HAVE_SQLITE，在 TARGET_LINK_LIBRARIES 语句的最后面加上 dl 链接库</p>
-<p>compiled library path: /usr/local/lib/</p>
-<h3 id="编译-openssl-1-0-2p"><a href="#编译-openssl-1-0-2p" class="headerlink" title="编译 openssl 1.0.2p"></a>编译 openssl 1.0.2p</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">openssl version -a</span><br><span class="line"></span><br><span class="line">./config --prefix=/usr/local --openssldir=/usr/local/openssl threads zlib shared</span><br><span class="line">make</span><br><span class="line">make test</span><br><span class="line">sudo make install</span><br><span class="line"></span><br><span class="line">make clean</span><br></pre></td></tr></table></figure>
-<p>如果不指定–prefix和–openssldir, 那么, 生成的文件在<br>/usr/local/include, /usr/local/lib, /usr/local/ssl这三个目录下<br>–prefix是指定include和lib install路径<br>–openssldir是指定bin  certs  man  misc  openssl.cnf  private的安装路径</p>
-<p>export OPENSSL_INCLUDE_PATH=”/usr/local/include/openssl/“<br>export OPENSSL_LIB_PATH=”/usr/local/lib/“</p>
-<p>1.0.1k 版本，如果提示 SSLv2_method 找不到。<br>修改 ssl/s2_meth.c 文件 77 行，增加下面三个方法原来的三行删掉<br><a href="https://github.com/openssl/openssl/commit/133138569f37d149ed1d7641fe8c75a93fded445" target="_blank" rel="noopener">参见</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">IMPLEMENT_ssl2_meth_func(SSLv2_method,</span><br><span class="line">                         ssl2_accept, ssl2_connect, ssl2_get_method)</span><br><span class="line">#else                           /* !OPENSSL_NO_SSL2 */</span><br><span class="line"></span><br><span class="line">SSL_METHOD *SSLv2_method(void) &#123; return NULL; &#125;</span><br><span class="line">SSL_METHOD *SSLv2_client_method(void) &#123; return NULL; &#125;</span><br><span class="line">SSL_METHOD *SSLv2_server_method(void) &#123; return NULL; &#125;</span><br><span class="line"></span><br><span class="line">#endif</span><br></pre></td></tr></table></figure></p>
-<h2 id="编译-primecoind"><a href="#编译-primecoind" class="headerlink" title="编译 primecoind"></a>编译 primecoind</h2><p>根据上面编译的配置，修改 makefile.unix 的相关依赖路径</p>
-<p>export BOOST_INCLUDE_PATH=/home/tyler/Documents/boost_1_46_1<br>export BOOST_LIB_PATH=/home/tyler/Documents/boost_1_46_1/stage/lib</p>
-<p>需要编译以下berkeley db db-4.8.30.NC<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">tar -xvf db-4.8.30.NC.tar.gz</span><br><span class="line">cd db-4.8.30.NC/build_unix</span><br><span class="line">mkdir -p build</span><br><span class="line">BDB_PREFIX=$(pwd)/build</span><br><span class="line">../dist/configure --disable-shared --enable-cxx --with-pic --prefix=$BDB_PREFIX</span><br><span class="line">make install</span><br><span class="line">cd ../..</span><br></pre></td></tr></table></figure></p>
-<p>export BDB_LIB_PATH=$BDB_PREFIX/lib<br>export BDB_INCLUDE_PATH=$BDB_PREFIX/include<br>export BDB_LIB_SUFFIX=-4.8</p>
-<p>进入目录 primeserver/src 执行<br><code>make -f makefile.unix &gt; log.txt 2&gt;&amp;1</code></p>
-<h2 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">第一次运行需要创建数据库</span><br><span class="line">-initwtdb</span><br><span class="line">矿池手续费地址</span><br><span class="line">-feeaddr</span><br><span class="line">费用计算：</span><br><span class="line">settings-&gt;Fee = GetArg(&quot;-poolfee&quot;, 10);</span><br><span class="line">(block-&gt;Value * mSettings-&gt;Fee) / 100;</span><br><span class="line"></span><br><span class="line">目标值</span><br><span class="line">-target</span><br><span class="line">同步完毕后需要下面的参数启动 primecoind</span><br><span class="line">-gen</span><br><span class="line"></span><br><span class="line">export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:/usr/local/pgsql/lib:/home/tyler/Documents/boost_1_46_1/stage/lib</span><br><span class="line">sudo ldconfig</span><br><span class="line"></span><br><span class="line">启动 postgreSQL</span><br><span class="line">/usr/local/pgsql/bin/pg_ctl -s -D /usr/local/pgsql/data start -w -t 120</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">初始化数据库+同步数据</span><br><span class="line">./primecoind -rpcuser=user -rpcpassword=password -printtoconsole -initwtdb -reindex -txindex=1 -addrindex=1 -datadir=&quot;/mnt/blocks/primecoin_pool_data&quot;</span><br><span class="line"></span><br><span class="line">启动矿池服务</span><br><span class="line">./primecoind -rpcuser=user -rpcpassword=password -printtoconsole -txindex=1 -addrindex=1 -datadir=&quot;/mnt/blocks/primecoin_pool_data&quot; -gen</span><br><span class="line"></span><br><span class="line"> ./primecoind -gen -debug -frontport=6667 -host=121.43.185.81 -feeaddr=AVjsWxuvcmjDvULpuegjKbgjrCthi2JVeq -daemon</span><br><span class="line"></span><br><span class="line">The webserver needs to be started as:</span><br><span class="line">./webserver --docroot /usr/local/share/Wt --http-address 0.0.0.0 --http-port 80</span><br></pre></td></tr></table></figure>
+<p><a href="https://medium.com/karmared/core-graphene-issues-uncovered-by-the-karma-team-a6c3445a114a" target="_blank" rel="noopener">https://medium.com/karmared/core-graphene-issues-uncovered-by-the-karma-team-a6c3445a114a</a><br>However, the more we’ve drilled down the Graphene core source code, the more we’ve understood why Dan Larimer left the project and completely switched to EOS. Here are some main issues we’ve found:</p>
+<p><a href="https://smartym.pro/blog/what-is-graphene-blockchain-and-why-should-develop-a-graphene-based-project" target="_blank" rel="noopener">what-is-graphene-blockchain-and-why-should-develop-a-graphene-based-project</a></p>
+<ol>
+<li>第一是 转账速度特别快。现在的平均确认时间是 1.5 秒，出块时间是 3 秒<br>比特币是 10 分钟出块，以太坊大约是 1 分钟；确认时间上比特币是 1 小时，以太坊是十几分钟，石墨烯只需要秒级的时间。<br>在石墨烯进一步进化的 EOS 上可能到了零点几秒</li>
+<li>吞吐量比较高<br>石墨烯的吞吐量现在实测大约是 3300 笔每秒，理论上可以到 10 万次<br>比特币大约每秒七笔，以太坊每秒三四十笔</li>
+<li>石墨烯极其稳定<br>石墨烯技术开发运行了这么久，从来没有出过明显的 BUG，也没有资产被盗的情况。</li>
+<li>功能非常强大、完备、容易操作<br>如果我们用过一些桌面端的钱包就会发现，比特股钱包的应用性是最强的<br>以多重签名来举例：比特币也有多重签名，但是比较复杂，而且功能特别简单，只有 M/N 这种模式，就是说如果是 5 个人做多重签名，3 个人同意就可以通过，这是一个很简单的多重签名。石墨烯上的多重签名功能是可以用作公司治理的，它可以设定两个参数：首先它可以设置百分比，每个人占多少百分比，无论多少人都可以随便设。第二个是阈值，就是超过多少个签名就可以生效。假设说现在想做一个 7 个人的理事会管理，有这样一些要求：任何 2 个人出事都不能影响资金的使用；至少 3 个人同意才可以动用资金；非核心成员至少 4 个人同意才能动用资金。这些条件设置好之后，可以很快的算出每个人的占比，这个多签就设置完成了，而且这是在 UI 上直接实现，在操作界面上的，而不是用命令行来实现的。</li>
+<li>支持免费转账</li>
+<li>使用 DPOS 共识算法</li>
+<li>The possibility of receiving a reward not only by the miners but also by other active members of the system. Creators, remitters, curators, shoppers, market makers, entrepreneurs, merchants, bloggers, referrers, community leaders, and internet leaders amongst many others.</li>
+<li>The possibility of working with several tokens in one system at once.</li>
+<li>The possibility of binding the value of the token to another currency, precious metals, etc. If there are several tokens and one tied, for instance, to USD, the internal exchange will always be at the rate of USD. It gives a sense of stability to the token holders.</li>
+</ol>
+<h2 id="代表项目"><a href="#代表项目" class="headerlink" title="代表项目"></a>代表项目</h2><h3 id="BTS"><a href="#BTS" class="headerlink" title="BTS"></a>BTS</h3><p>BTS。 比特股（BitShares，简称 BTS）是一个建立在区块链技术上的开源商业系统</p>
+<h3 id="Steem"><a href="#Steem" class="headerlink" title="Steem"></a>Steem</h3><p>Steem 是一个基于区块链技术的去中心化社交网络平台。</p>
+<h3 id="EOS"><a href="#EOS" class="headerlink" title="EOS"></a>EOS</h3><p>EOS.IO 软件引入了一种区块链架构。 它为满足去中心应用纵向，横向扩展需求而设计。它通过一个可以在上面构建应用程序，类似操作系统的方式来实现。 该软件提供了账号，身份认证，数据库，异步通信，以及跨多核 CPU 或集群调度应用程序等功能。 由此而形成一种区块链架构， 它能达到每秒百万交易量的处理，用户可免费使用，且很容易快速部署去中心化应用。EOS 采用 DPOS 算法，在该共识算法下，在采用 EOS.IO 软件的区块链上，那些持有代币的人可以通过了一个连续的赞成投票系统来选择矿工。任何人可以选择参与挖矿，并有机会获得其相应比例的区块奖励，而这是跟其获得票数与其他所有矿工所获得票数成比例。如果读者对 EOS 感兴趣，可以去 GitHub 阅读下它的相关文档。</p>
 
           
         
@@ -1191,7 +500,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/17/学习笔记/linux/ubuntu/ubuntu-16-04降级到gcc4-9/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/03/学习笔记/开源库/zmq/ZMQ-study/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1210,7 +519,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/17/学习笔记/linux/ubuntu/ubuntu-16-04降级到gcc4-9/" itemprop="url">ubuntu-16.04降级到gcc4.9</a></h1>
+                <a class="post-title-link" href="/2018/09/03/学习笔记/开源库/zmq/ZMQ-study/" itemprop="url">ZMQ study</a></h1>
         
 
         <div class="post-meta">
@@ -1222,7 +531,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-17T11:31:21+08:00">2018-08-17</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-03T17:23:33+08:00">2018-09-03</time>
             
 
             
@@ -1243,7 +552,14 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
 
                 
                 
@@ -1279,7 +595,54 @@
       
         
           
-            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove gcc g++</span><br><span class="line">gcc –version</span><br><span class="line">sudo apt-get install gcc-4.9 g++-4.9</span><br><span class="line">g++-4.9 –version</span><br><span class="line">gcc-4.9 –version</span><br></pre></td></tr></table></figure>
+            <p>ZeroMQ high-water mark (HWM) queues</p>
+<p>These are the socket combinations that are valid for a connect-bind pair (either side can bind):<br>PUB and SUB<br>REQ and REP<br>REQ and ROUTER (take care, REQ inserts an extra null frame)<br>DEALER and REP (take care, REP assumes a null frame)<br>DEALER and ROUTER<br>DEALER and DEALER<br>ROUTER and ROUTER<br>PUSH and PULL<br>PAIR and PAIR</p>
+<h2 id="ZMQ-POLLIN"><a href="#ZMQ-POLLIN" class="headerlink" title="ZMQ_POLLIN"></a>ZMQ_POLLIN</h2><p>对于ZMQ socket来说，至少有一个消息在这个socket上被非阻塞的接收到了。对于标准socket来说，此标志和系统调用的poll()函数的POLLIN标志等价，而且通常意味着，fd文件描述符上至少非阻塞的接收到了1B的数据。</p>
+<p>zmq_inproc – ØMQ 本地进程内（线程间）传输方式</p>
+<p>zmq_proxy</p>
+<h2 id="Socket-types"><a href="#Socket-types" class="headerlink" title="Socket types"></a>Socket types</h2><p>Thread safety: ZeroMQ的socket是非线程安全的，并且ZeroMQ本身不建议在多个线程中传递同一个Socket，即使保证了线程同步。<br>Socket types: ZeroMQ一共具有12种类型的socket，5种消息模式。</p>
+<ul>
+<li>请求/应答模式：ZMQ_REQ、ZMQ_REP、ZMQ_DEALER、ZMQ_ROUTER</li>
+<li>发布/订阅模式: ZMQ_PUB, ZMQ_SUB、ZMQ_XPUB、ZMQ_XSUB</li>
+<li>管道模式：ZMQ_PUSH、ZMQ_PULL</li>
+<li>配对模式：ZMQ_PAIR</li>
+<li>本地模式：ZMQ_STREAM</li>
+</ul>
+<h3 id="Request-Reply-请求-应答模式"><a href="#Request-Reply-请求-应答模式" class="headerlink" title="Request-Reply 请求/应答模式"></a>Request-Reply 请求/应答模式</h3><p><img alt="fc0c497b.png" src="/2018/09/03/学习笔记/开源库/zmq/ZMQ-study/fc0c497b.png" width="" height=""></p>
+<p>Here are some tips for remembering the semantics. DEALER is like an asynchronous REQ socket, and ROUTER is like an asynchronous REP socket. Where we use a REQ socket, we can use a DEALER; we just have to read and write the envelope ourselves. Where we use a REP socket, we can stick a ROUTER; we just need to manage the identities ourselves.</p>
+<p>Think of REQ and DEALER sockets as “clients” and REP and ROUTER sockets as “servers”. Mostly, you’ll want to bind REP and ROUTER sockets, and connect REQ and DEALER sockets to them. It’s not always going to be this simple, but it is a clean and memorable place to start.</p>
+<h4 id="ZMQ-ROUTER"><a href="#ZMQ-ROUTER" class="headerlink" title="ZMQ_ROUTER"></a>ZMQ_ROUTER</h4><p>A socket of type ZMQ_ROUTER is an advanced pattern used for extending request/reply sockets.</p>
+<h4 id="ZMQ-DEALER"><a href="#ZMQ-DEALER" class="headerlink" title="ZMQ_DEALER"></a>ZMQ_DEALER</h4><p>DEALER是一种用于请求/答应模式的更高级的扩展Socket，它可以自由的收发消息，没有ZMQ_REP/ZMQ_REQ那样的限制。<br>对于每一个连接，接收消息也是使用了公平队列，发送使用了循环队列（RR）。<br>ZMQ_DEALER受ZMQ_RCVHW和ZMQ_SNDHW两个阀值影响（可通过zmq_setsockopt函数设置），一旦发送或接收队列达到阀值，Socket就会进入mute状态，<br>此时对DEALER的任何zmq_send操作都会阻塞，直到mute状态结束。<br>如果当前没有有效的连接，zmq_send操作也会阻塞，直到有新的连接到来为止。<br>DEALER发生阻塞并不会丢弃消息。</p>
+<p>注意：如果ZMQ_DEALER连接到ZMQ_REP，每一个消息包必须包含一个空帧，然后再紧跟着数据包体。<br>特点总结：<br>  可兼容的Socket types:    ZMQ_ROUTER, ZMQ_REP, ZMQ_DEALER<br>  数据传输：             双向<br>  发送/接收模式：        无限制<br>  发送路由策略：        Round-robin（循环队列）<br>  接收路由策略：        Fair-queued（公平队列）<br>  进入mute状态后：        阻塞</p>
+<h3 id="PUB-SUB-发布-订阅模式"><a href="#PUB-SUB-发布-订阅模式" class="headerlink" title="PUB/SUB 发布/订阅模式"></a>PUB/SUB 发布/订阅模式</h3><p><img alt="6b377fd8.png" src="/2018/09/03/学习笔记/开源库/zmq/ZMQ-study/6b377fd8.png" width="" height=""></p>
+<ul>
+<li>ZMQ_PUB</li>
+</ul>
+<p>ZMQ_PUB类型的Socket以发布者的身份向订阅者分发消息，消息以扇出的形式发送给所有订阅者连接。</p>
+<p>ZMQ_PUB类型的Socket没有实现zmq_recv函数，所以不能对其调用zmq_recv函数！<br>当ZMQ_PUB Socket达到阀值时进入mute状态，此时后续发送的消息会被丢弃，直到mute状态结束。<br>对ZMQ_PUB Socket调用zmq_send永远不会发生阻塞。</p>
+<p>特点总结：</p>
+<ul>
+<li>可兼容的Socket types:    ZMQ_SUB, ZMQ_XSUB</li>
+<li>数据传输：             单向</li>
+<li>发送/接收模式：        只能发送</li>
+<li>接收路由策略：        Fan out（扇出）</li>
+<li><p>进入mute状态后：        丢弃消息</p>
+</li>
+<li><p>ZMQ_SUB</p>
+</li>
+</ul>
+<p>ZMQ_SUB类型的Socket以订阅者的身份接收消息。初始的ZMQ_SUB Socket没有订阅任何消息，可以通过设置ZMQ_SUBSRIBE选项来指定需要订阅的消息。</p>
+<p>ZMQ_SUB Socket没有实现zmq_send函数，所以不能对其调用zmq_send函数！</p>
+<p>特点总结：</p>
+<ul>
+<li>可兼容的Socket types:    ZMQ_PUB, ZMQ_XPUB</li>
+<li>数据传输：             单向</li>
+<li>发送/接收模式：        只能接收</li>
+<li>接收路由策略：        Fair-queued（公平队列）</li>
+</ul>
+<h3 id="管道模式-ZMQ-PUSH-ZMQ-PULL"><a href="#管道模式-ZMQ-PUSH-ZMQ-PULL" class="headerlink" title="管道模式 ZMQ_PUSH ZMQ_PULL"></a>管道模式 ZMQ_PUSH ZMQ_PULL</h3><p><img alt="be9e302e.png" src="/2018/09/03/学习笔记/开源库/zmq/ZMQ-study/be9e302e.png" width="" height=""></p>
+<p>Fair Queuing<br><img alt="3cecf366.png" src="/2018/09/03/学习笔记/开源库/zmq/ZMQ-study/3cecf366.png" width="" height=""></p>
+<p>是单向的，即PUSH端发送消息，PULL端接收消息</p>
 
           
         
@@ -1333,7 +696,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/17/学习笔记/linux/linux-远程后台运行任务/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/03/学习笔记/算法/auth-code-generation-algorithm/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1352,7 +715,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/17/学习笔记/linux/linux-远程后台运行任务/" itemprop="url">linux-远程后台运行任务</a></h1>
+                <a class="post-title-link" href="/2018/09/03/学习笔记/算法/auth-code-generation-algorithm/" itemprop="url">auth code generation algorithm</a></h1>
         
 
         <div class="post-meta">
@@ -1364,7 +727,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-17T11:16:32+08:00">2018-08-17</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-03T13:30:27+08:00">2018-09-03</time>
             
 
             
@@ -1385,7 +748,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/算法/" itemprop="url" rel="index"><span itemprop="name">算法</span></a></span>
 
                 
                 
@@ -1421,8 +784,8 @@
       
         
           
-            <h2 id="tmux"><a href="#tmux" class="headerlink" title="tmux"></a>tmux</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">apt install tmux</span><br><span class="line">// 标记标题 dev</span><br><span class="line">tmux new -s dev</span><br><span class="line">tmux new -s admin</span><br><span class="line">执行长时间任务，退出对话</span><br><span class="line">tmux detach</span><br><span class="line">重新登录后</span><br><span class="line">tmux attach -t dev</span><br><span class="line">tmux switch -t admin</span><br></pre></td></tr></table></figure>
-<h2 id="临时长时间后台运行应用"><a href="#临时长时间后台运行应用" class="headerlink" title="临时长时间后台运行应用"></a>临时长时间后台运行应用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup ping www.ibm.com &amp;</span><br></pre></td></tr></table></figure>
+            <p>generate active code or authentication code.</p>
+<p><a href="https://www.jianshu.com/p/e4b574be0ba6" target="_blank" rel="noopener">ref1</a><br><a href="https://github.com/robbiev/two-factor-auth" target="_blank" rel="noopener">ref2</a><br><a href="https://garbagecollected.org/2014/09/14/how-google-authenticator-works/" target="_blank" rel="noopener">ref3</a><br><a href="https://blog.csdn.net/c359719435/article/details/79034884" target="_blank" rel="noopener">ref4</a></p>
 
           
         
@@ -1476,7 +839,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/17/学习笔记/区块链/primecoin/Stratum-protocol/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/02/学习笔记/区块链/primecoin/primecoin-core-compile-right-way/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1495,7 +858,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/17/学习笔记/区块链/primecoin/Stratum-protocol/" itemprop="url">Stratum protocol</a></h1>
+                <a class="post-title-link" href="/2018/09/02/学习笔记/区块链/primecoin/primecoin-core-compile-right-way/" itemprop="url">primecoin-core compile right way</a></h1>
         
 
         <div class="post-meta">
@@ -1507,150 +870,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-17T10:10:51+08:00">2018-08-17</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://bitcointalk.org/index.php?topic=108533.0" target="_blank" rel="noopener">Original protocol announce</a><br><a href="https://slushpool.com/help/manual/stratum-protocol" target="_blank" rel="noopener">All details and links about above mentioned</a><br>Please just adopt the two commands I posted about previously:  A redirect command for a poolserver to send miners elsewhere, and a server restart notification [with timer] so a pool can attempt a graceful restart rather than suddenly dropping connections.</p>
-<p>关键词：<br>TCP socket<br>JSON-RPC 2.0</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/16/学习笔记/区块链/bitcoin/bitcoin-常见问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/16/学习笔记/区块链/bitcoin/bitcoin-常见问题/" itemprop="url">bitcoin-常见问题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-16T10:52:14+08:00">2018-08-16</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-02T22:07:30+08:00">2018-09-02</time>
             
 
             
@@ -1707,8 +927,11 @@
       
         
           
-            <h2 id="node-misbehaving"><a href="#node-misbehaving" class="headerlink" title="node misbehaving"></a>node misbehaving</h2><p>2018-08-16 02:44:33 Misbehaving: 180.159.203.83:56679 peer=58019 (0 -&gt; 100) BAN THRESHOLD EXCEEDED<br>节点 IP 会被加入禁止列表<br>如果某些节点的行为和协议不符，有破坏性（例如发大量无效的信息），一个禁止计数器会依据违反协议的程度增加。<br>（banscore 通过 bitcoind 设置默认 100）<br>当达到一个预设值得时候就会断开节点连接一天（可以使用 bantime 设置）。</p>
-<h2 id="deserialize-or-I-O-error"><a href="#deserialize-or-I-O-error" class="headerlink" title="deserialize or I/O error"></a>deserialize or I/O error</h2><p>重建索引试试</p>
+            <p>this is official way to compile primecoin-core/bitcoin</p>
+<h2 id="ubuntu-16-04-compile-primecoin-core-0-16-1-statically"><a href="#ubuntu-16-04-compile-primecoin-core-0-16-1-statically" class="headerlink" title="ubuntu 16.04 compile primecoin-core 0.16.1 statically"></a>ubuntu 16.04 compile primecoin-core 0.16.1 statically</h2><p><code>error: unknown type name &#39;__locale_t&#39; __locale_t __loc)</code><br>sudo apt-get install libcurl4-gnutls-dev</p>
+<p>tested in ubuntu 14.04,16.04,18.04 first system install<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade</span><br><span class="line">sudo apt install -y build-essential autoconf libtool pkg-config libboost-all-dev libssl-dev libevent-dev libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler libqrencode-dev libminiupnpc-dev curl</span><br><span class="line"></span><br><span class="line">cd depends</span><br><span class="line">make</span><br><span class="line">cd ..</span><br><span class="line">./autogen.sh</span><br><span class="line">./configure  --enable-glibc-back-compat --prefix=`pwd`/depends/x86_64-pc-linux-gnu --disable-shared LDFLAGS=&quot;-static-libstdc++&quot;</span><br><span class="line">make STATIC=all</span><br><span class="line"></span><br><span class="line">mkdir ./dist</span><br><span class="line">cp ./src/primecoind ./src/primecoin-* ./src/qt/primecoin-qt ./dist</span><br><span class="line">strip ./dist/*</span><br><span class="line"></span><br><span class="line">//following config as backup, don&apos;t see other errors now.</span><br><span class="line">if has following problem, not encountered so far:</span><br><span class="line">./bitcoind: /lib64/libc.so.6: version `GLIBC_2.15&apos; not found (required by ./bitcoind)</span><br><span class="line">./bitcoind: /lib64/libc.so.6: version `GLIBC_2.14&apos; not found (required by ./bitcoind)</span><br><span class="line">Answer:</span><br><span class="line">./configure --enable-glibc-back-compat --prefix=`pwd`/depends/x86_64-pc-linux-gnu LDFLAGS=&quot;-static-libstdc++&quot;</span><br></pre></td></tr></table></figure></p>
+<h2 id="cross-compile-for-win64-32"><a href="#cross-compile-for-win64-32" class="headerlink" title="cross compile for win64/32"></a>cross compile for win64/32</h2><p>if want to compile win32 version just need change x86_64-w64-mingw32<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y build-essential autoconf libtool pkg-config libboost-all-dev libssl-dev libevent-dev libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler libqrencode-dev libminiupnpc-dev curl</span><br><span class="line"></span><br><span class="line">// cross compile specific depends</span><br><span class="line">sudo apt install -y autotools-dev automake pkg-config bsdmainutils curl git g++-mingw-w64-x86-64 nsis</span><br><span class="line"></span><br><span class="line">sudo apt install -y software-properties-common</span><br><span class="line">sudo add-apt-repository &quot;deb http://archive.ubuntu.com/ubuntu zesty universe&quot;</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade</span><br><span class="line"># Set the default mingw32 g++ compiler option to posix.</span><br><span class="line">sudo update-alternatives --config x86_64-w64-mingw32-g++</span><br><span class="line"></span><br><span class="line"># strip out problematic Windows %PATH% imported var</span><br><span class="line">PATH=$(echo &quot;$PATH&quot; | sed -e &apos;s/:\/mnt.*//g&apos;)</span><br><span class="line"></span><br><span class="line">cd depends</span><br><span class="line">make HOST=x86_64-w64-mingw32</span><br><span class="line">cd ..</span><br><span class="line">./autogen.sh</span><br><span class="line">./configure --prefix=`pwd`/depends/x86_64-w64-mingw32  --disable-shared</span><br><span class="line">make STATIC=all</span><br><span class="line"></span><br><span class="line">mkdir release</span><br><span class="line">cp ./src/primecoind.* ./src/primecoin-* ./src/qt/primecoin-qt.* ./release</span><br><span class="line"></span><br><span class="line">// package installer</span><br><span class="line">makensis share/setup.nsi</span><br></pre></td></tr></table></figure></p>
+<h2 id="cross-compile-for-mac"><a href="#cross-compile-for-mac" class="headerlink" title="cross compile for mac"></a>cross compile for mac</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y build-essential autoconf libtool pkg-config libboost-all-dev libssl-dev libevent-dev libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler libqrencode-dev libminiupnpc-dev curl</span><br><span class="line"></span><br><span class="line">for mac cross build</span><br><span class="line">sudo apt-get install curl librsvg2-bin libtiff-tools bsdmainutils cmake imagemagick libcap-dev libz-dev libbz2-dev python-setuptools</span><br><span class="line"></span><br><span class="line">need SDKs of Xcode_7.3.1.dmg</span><br><span class="line">hdiutil attach Xcode_7.3.1.dmg</span><br><span class="line">tar -C /Volumes/Xcode/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/ -czf MacOSX10.11.sdk.tar.gz MacOSX10.11.sdk</span><br><span class="line">unpack to depends/SDKs/MacOSX10.11.sdk</span><br><span class="line"></span><br><span class="line">cd depends</span><br><span class="line">make HOST=x86_64-apple-darwin11</span><br><span class="line">cd ..</span><br><span class="line">./autogen.sh</span><br><span class="line">./configure --prefix=`pwd`/depends/x86_64-apple-darwin11  --disable-shared</span><br><span class="line">make STATIC=all</span><br><span class="line">make deploy</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1762,7 +985,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/14/学习笔记/区块链/primecoin/primecoin-pool学习/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/30/工具相关/vmware-install-black-apple/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1781,7 +1004,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/14/学习笔记/区块链/primecoin/primecoin-pool学习/" itemprop="url">primecoin-pool学习</a></h1>
+                <a class="post-title-link" href="/2018/08/30/工具相关/vmware-install-black-apple/" itemprop="url">vmware install black apple</a></h1>
         
 
         <div class="post-meta">
@@ -1793,7 +1016,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-14T14:38:11+08:00">2018-08-14</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-30T08:48:53+08:00">2018-08-30</time>
             
 
             
@@ -1814,7 +1037,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具相关/" itemprop="url" rel="index"><span itemprop="name">工具相关</span></a></span>
 
                 
                 
@@ -1849,14 +1072,12 @@
 
       
         
-          <p>On going…</p>
-<p> ./primecoind -gen -debug -frontport=6667 -host=121.43.185.81 -feeaddr=AVjsWxuvcmjDvULpuegjKbgjrCthi2JVeq -daemon</p>
-<p>Primecoin XPM Pool Server<br><a href="https://github.com/madMAx43v3r/xpmpool" target="_blank" rel="noopener">https://github.com/madMAx43v3r/xpmpool</a><br>Primecoin XPM GPU Miner for xpmpool (aka. madPrimeMiner)<br><a href="https://github.com/madMAx43v3r/xpmclient" target="_blank" rel="noopener">https://github.com/madMAx43v3r/xpmclient</a><br>The solo-mining server code is at: <a href="https://github.com/madMAx43v3r/xpmserver" target="_blank" rel="noopener">https://github.com/madMAx43v3r/xpmserver</a></p>
-<p>Primecoin XPM GPU Miner for xpmpool (aka. madPrimeMiner)<br><a href="https://github.com/eXtremal-ik7/xpmclient" target="_blank" rel="noopener">https://github.com/eXtremal-ik7/xpmclient</a></p>
-<p><a href="http://xpmforall.org/" target="_blank" rel="noopener">http://xpmforall.org/</a></p>
+          <p>转载文章，<a href="https://blog.csdn.net/u011415782/article/details/78505422" target="_blank" rel="noopener">引用</a></p>
+<p>VMware® Workstation 14 Pro<br>14.1.2 build-8497320</p>
+<p>OS X 10.11</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/08/14/学习笔记/区块链/primecoin/primecoin-pool学习/#more" rel="contents">
+            <a class="btn" href="/2018/08/30/工具相关/vmware-install-black-apple/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1897,11 +1118,742 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/29/工具相关/构建工具/GNU-Build-System/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/29/工具相关/构建工具/GNU-Build-System/" itemprop="url">GNU Build System</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-29T10:52:10+08:00">2018-08-29</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具相关/" itemprop="url" rel="index"><span itemprop="name">工具相关</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>The GNU Build System, also known as the Autotools, is a suite of programming tools designed to assist in making source code packages portable to many Unix-like systems.</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/29/学习笔记/其他/服务器更新原则参考/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/29/学习笔记/其他/服务器更新原则参考/" itemprop="url">服务器更新原则参考</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-29T07:26:34+08:00">2018-08-29</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/其他/" itemprop="url" rel="index"><span itemprop="name">其他</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>一切操作的前提是服务的高可用性，高效性。</p>
+<ol>
+<li>更新操作之前要有应对突发事件的准备（例如：更新失败，网络错误，硬件故障等等意想不到的能导致服务失败的可能性）</li>
+<li>确保相关人员在更新操作后2个小时内能够及时响应。（建议周一—–周四，上午 10.00，下午 15.00，其他时间不推荐更新操作）</li>
+<li>确保服务程序可以回退到更新前的版本，保证高可用性</li>
+<li>多台服务，先更新一台，然后验证功能是否正常，确认无误后可以更新其他服务（要准备相关验证脚本或工具）</li>
+<li>更新操作过程尽可能原子化 （推荐使用更新脚本或其他工具，后台执行，避免操作端出现意外故障导致更新操作处于中间状态）</li>
+<li>要熟悉每个服务的相关指令和参数，加强岗位技能</li>
+<li>只做必要操作（和本次更新无关的操作禁止执行）</li>
+<li>针对每项服务要有更新流程清单。（记录每一步需要的操作和注意事项）</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/28/学习笔记/linux/centos/centos7-install-docker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/28/学习笔记/linux/centos/centos7-install-docker/" itemprop="url">centos7 install docker</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-28T16:16:46+08:00">2018-08-28</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum -y install docker</span><br><span class="line">#启动 Docker 后台服务</span><br><span class="line">service docker start</span><br><span class="line">#测试运行 hello-world,由于本地没有hello-world这个镜像，所以会下载一个hello-world的镜像，并在容器内运行。</span><br><span class="line">docker run hello-world</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/28/学习笔记/linux/linux-application-mime-type/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/28/学习笔记/linux/linux-application-mime-type/" itemprop="url">linux-application mime type</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-28T15:39:49+08:00">2018-08-28</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>when I deploy some application on linux platform I found some application can run<br>in file manager through double click, but my application can’t. So I do some research.</p>
+<h2 id="short-answer"><a href="#short-answer" class="headerlink" title="short answer:"></a>short answer:</h2><p>app has mime type:</p>
+<ul>
+<li>application/x-executable</li>
+<li>application/x-sharedlib</li>
+</ul>
+<p>that x-executable file manager recognize it you can double click to run it.<br>but x-sharedlib has some security advantage, so x-sharedlib is recommended</p>
+<h2 id="long-answer"><a href="#long-answer" class="headerlink" title="long answer"></a>long answer</h2><p>you can use <code>file --mime-type app</code> see app’s mime type, also <code>file app</code> is working too.</p>
+<p>gcc now defaults to building with PIE (Position Independent Executable) enabled on x86 Debian systems for security reasons.<br>The behavior is occurring because newer ubuntu distros set GCC default link flag -pie,<br>which marks e_type as ET_DYN on the binary file. Consequently, the Operating System recognizes as Shared Library.</p>
+<p>-pie allows for some extra security protections that are fundamentally incompatible with -no-pie.</p>
+<p>Qt project:<br>QMAKE_LFLAGS += -no-pie</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/27/学习笔记/数据库/Rocksdb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/27/学习笔记/数据库/Rocksdb/" itemprop="url">Rocksdb</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-27T21:31:23+08:00">2018-08-27</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Rocksdb is a better Leveldb</p>
+<p><a href="https://rocksdb.org/" target="_blank" rel="noopener">office website</a><br><a href="https://github.com/facebook/rocksdb" target="_blank" rel="noopener">github</a><br><a href="https://github.com/tecbot/gorocksdb" target="_blank" rel="noopener">go wrapper</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/18/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span><a class="page-number" href="/page/20/">20</a><span class="space">&hellip;</span><a class="page-number" href="/page/69/">69</a><a class="extend next" rel="next" href="/page/20/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/18/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span><a class="page-number" href="/page/20/">20</a><span class="space">&hellip;</span><a class="page-number" href="/page/71/">71</a><a class="extend next" rel="next" href="/page/20/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1948,7 +1900,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">684</span>
+                    <span class="site-state-item-count">704</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2099,7 +2051,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">69</span>
+                      
+                    
+                    <span class="site-state-item-count">70</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -2460,11 +2414,7 @@
                     
                       
                     
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">176</span>
+                    <span class="site-state-item-count">174</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -3006,69 +2956,7 @@
         onPopupClose();
       }
     });
-  </script>
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-  
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-        
-      
-    
-  
-
-  
-    
-      <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-      var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -3087,7 +2975,44 @@
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->
 
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
     
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+
   
 
 
