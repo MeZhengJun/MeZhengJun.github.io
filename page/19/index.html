@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">717</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">719</span>
       </a>
 </li>
 
@@ -312,6 +312,315 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/15/学习笔记/区块链/bitcoin/bitcoin-script/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/15/学习笔记/区块链/bitcoin/bitcoin-script/" itemprop="url">bitcoin-script</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-15T14:41:46+08:00">2018-09-15</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>scriptPubKey (“output script”)<br>pay2pubkey tx: <pubkey> OP_CHECKSIG<br>Pay2PubKeyHash Tx: OP_DUP OP_HASH160 <pubkeyhash> OP_EQUALVERIFY OP_CHECKSIG<br>Pay2ScriptHash Tx: OP_HASH160 <scripthash> OP_EQUAL</scripthash></pubkeyhash></pubkey></p>
+<p>When technical docs refer to the redeemScript, it is referring to the script in the ScriptSig (yet another poorly named element) of the input of a transactions.  There is only a redeemScript when redeeming a P2SH.</p>
+<p>scriptSig (“input script”)<br>Pay2PubKeyHash: <sig> <pubkey><br>Pay2ScriptHash: <sig-0> … <sig-n> <redeemscript></redeemscript></sig-n></sig-0></pubkey></sig></p>
+<p>P2SH <a href="https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki" target="_blank" rel="noopener">BIP16</a></p>
+<p>scriptSig:    [signature] {[pubkey] OP_CHECKSIG}<br>scriptPubKey: OP_HASH160 [20-byte-hash of {[pubkey] OP_CHECKSIG} ] OP_EQUAL</p>
+<ol>
+<li>[signature] and {[pubkey] OP_CHECKSIG} are pushed onto the stack</li>
+<li>OP_HASH160 hashes {[pubkey] OP_CHECKSIG}</li>
+<li>The same hash comes from the scriptPubKey onto the stack</li>
+<li>Consequently OP_EQUAL gives True</li>
+<li>The script is popped off the stack, leaving only [signature] on the stack.</li>
+<li>The deserialized script is added, leaving [signature] [pubkey] OP_CHECKSIG</li>
+<li>The transaction is validated again, that is, a normal signature verification occurs against the specified public key.</li>
+</ol>
+<h2 id="Provably-Unspendable-Prunable-Outputs"><a href="#Provably-Unspendable-Prunable-Outputs" class="headerlink" title="Provably Unspendable/Prunable Outputs"></a>Provably Unspendable/Prunable Outputs</h2><p>The standard way to mark a transaction as provably unspendable is with a scriptPubKey of the following form:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scriptPubKey: OP_RETURN &#123;zero or more ops&#125;</span><br></pre></td></tr></table></figure></p>
+<p>OP_RETURN tx<br><a href="https://bchain.info/BTC/tx/1a2e22a717d626fc5db363582007c46924ae6b28319f07cb1b907776bd8293fc" target="_blank" rel="noopener">https://bchain.info/BTC/tx/1a2e22a717d626fc5db363582007c46924ae6b28319f07cb1b907776bd8293fc</a></p>
+<p>txid 1a2e22a717d626fc5db363582007c46924ae6b28319f07cb1b907776bd8293fc<br>01000000015db413e8393e51026b492cb0547e5910afe81c72ea6008a357075a3ff1584075010000006a473044022055bcb36c829a614451787fe8c9bfb3798b683809b65b92037a015eccb5ff659702202461d2c708a4fd57c839e43634e8c02935d7b7d1db5b978432b0674c44645ed10121032c1ea520c25c4e66831cd395a3cd26f0e0a1472a3103fc8a4a63ef10e92d123cffffffff010000000000000000166a14215477656e74792062797465206469676573742e00000000</p>
+<p>“!Twenty byte digest.”</p>
+<h2 id="Freezing-funds-until-a-time-in-the-future"><a href="#Freezing-funds-until-a-time-in-the-future" class="headerlink" title="Freezing funds until a time in the future"></a>Freezing funds until a time in the future</h2><p>Using OP_CHECKLOCKTIMEVERIFY it is possible to make funds provably unspendable until a certain point in the future.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scriptPubKey: &lt;expiry time&gt; OP_CHECKLOCKTIMEVERIFY OP_DROP OP_DUP OP_HASH160 &lt;pubKeyHash&gt; OP_EQUALVERIFY OP_CHECKSIG</span><br><span class="line">scriptSig: &lt;sig&gt; &lt;pubKey&gt;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/14/学习笔记/区块链/bitcoin/bitcoin-segwit/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/14/学习笔记/区块链/bitcoin/bitcoin-segwit/" itemprop="url">bitcoin-segwit</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-14T21:58:17+08:00">2018-09-14</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki" target="_blank" rel="noopener">BIP141</a></p>
+<p>Segregated Witness, or SegWit Bitcoin Improvement Proposal number BIP141</p>
+<p>The declared purpose was to prevent nonintentional bitcoin transaction malleability, allow optional data transmission, and to bypass certain protocol restrictions (such as the block size limit) with a soft fork.[2]</p>
+<p>It was also intended to mitigate a blockchain size limitation problem that reduces bitcoin transaction speed.</p>
+<p>It does this by splitting the transaction into two segments, removing the unlocking signature (“witness” data) from the original portion and appending it as a separate structure at the end.[3] The original section would continue to hold the sender and receiver data, and the new “witness” structure would contain scripts and signatures. The original data segment would be counted normally, but the “witness” segment would, in effect, be counted as a quarter of its real size.</p>
+<h2 id="隔离见证做了什么改动？"><a href="#隔离见证做了什么改动？" class="headerlink" title="隔离见证做了什么改动？"></a>隔离见证做了什么改动？</h2><p>隔离见证就是把脚本签名(scriptSig)信息从基本结构 (base block) 里拿出来，放在一个新的数据结构当中。做验证工作的节点和矿工也会验证这个新的数据结构里的脚本签名，以确保交易是有效的。<br>当审核统计区块大小不能超过1M的时候。脚本签名大小不会被计算在内。</p>
+<p>隔离见证重新整理了每个交易内容的布局方式。把脚本签名从交易内容的结构里面拿出来，放到了最下面，并有一个指针Pointer指向它。</p>
+<p><img alt="a5ca0713.png" src="/2018/09/14/学习笔记/区块链/bitcoin/bitcoin-segwit/a5ca0713.png" width="" height=""></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -1590,311 +1899,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/07/工具相关/git/git-patch-study/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/07/工具相关/git/git-patch-study/" itemprop="url">git patch study</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-07T15:34:53+08:00">2018-09-07</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具相关/" itemprop="url" rel="index"><span itemprop="name">工具相关</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="gen-patch"><a href="#gen-patch" class="headerlink" title="gen patch"></a>gen patch</h2><ol>
-<li>use <code>git log --pretty=oneline -3</code> list commit<br>gen patch after e7819 commit not include e7819, this may be gen several files.</li>
-<li>gen patch <code>git format-patch e7819</code><br>if you want gen only one file use following command<br><code>git format-patch master --stdout &gt; fix_empty_poster.patch</code></li>
-</ol>
-<p>between two commits patch:<br><code>git format-patch 365a..4e16</code></p>
-<h2 id="apply-patch"><a href="#apply-patch" class="headerlink" title="apply patch"></a>apply patch</h2><ol>
-<li>copy .patch files to a folder</li>
-<li>take a look at what changes are in the patch<br><code>git apply --stat patch/*.patch</code></li>
-<li><p>test before actually apply<br><code>git apply --check patch/*.patch</code></p>
-</li>
-<li><p><code>git am --abort</code> abort earlier am process</p>
-</li>
-<li><code>git am patch/*.patch</code></li>
-</ol>
-<p><code>git am --signoff &lt; fix_empty_poster.patch</code></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/07/学习笔记/区块链/概念/Consensus-DPOS/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/07/学习笔记/区块链/概念/Consensus-DPOS/" itemprop="url">Consensus DPOS</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-07T15:23:26+08:00">2018-09-07</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Delegated Proof of Stake<br>Daniel Larimer<br>Under the hood, DPoS uses a reputation system and real-time voting to achieve consensus</p>
-<p><a href="https://steemit.com/dpos/@dantheman/dpos-consensus-algorithm-this-missing-white-paper" target="_blank" rel="noopener">ref1</a></p>
-<p>Current cryptocurrency projects that use Delegated Proof of Stake:<br><a href="https://bitshares.org/" target="_blank" rel="noopener">BitShares</a><br><a href="https://steem.io/" target="_blank" rel="noopener">Steem</a><br><a href="https://eos.io/" target="_blank" rel="noopener">EOS</a><br><a href="https://lisk.io/" target="_blank" rel="noopener">Lisk</a><br><a href="https://ark.io/" target="_blank" rel="noopener">Ark</a></p>
-<p>To help explain this algorithm I want to assume 3 block producers, A, B, and C. Because consensus requires 2⁄3 + 1 to resolve all cases, this simplified model will assume that producer C is deemed the tie breaker. In the real world there would be 21 or more block producers.</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/09/07/学习笔记/区块链/概念/Consensus-DPOS/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1946,7 +1950,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">717</span>
+                    <span class="site-state-item-count">719</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>

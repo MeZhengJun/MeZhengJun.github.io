@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">717</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">719</span>
       </a>
 </li>
 
@@ -312,6 +312,303 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/12/29/学习笔记/windows/MFC/MFC-hotkey/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/29/学习笔记/windows/MFC/MFC-hotkey/" itemprop="url">MFC-hotkey</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-29T13:46:46+08:00">2017-12-29</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>hotkey控件的使用。  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//用来转换的</span></span><br><span class="line"><span class="function">UINT <span class="title">ModToHotkey</span><span class="params">(UINT fsModifiers)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> ((fsModifiers &amp; MOD_SHIFT) &amp;&amp; !(fsModifiers &amp; MOD_ALT)) <span class="comment">// shift转alt</span></span><br><span class="line">	&#123;</span><br><span class="line">		fsModifiers &amp;= ~MOD_SHIFT;</span><br><span class="line">		fsModifiers |= HOTKEYF_SHIFT;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (!(fsModifiers &amp; MOD_SHIFT) &amp;&amp; (fsModifiers &amp; MOD_ALT)) <span class="comment">// alt转shift</span></span><br><span class="line">	&#123;</span><br><span class="line">		fsModifiers &amp;= ~MOD_ALT;</span><br><span class="line">		fsModifiers |= HOTKEYF_ALT;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> fsModifiers;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">UINT <span class="title">HotkeyToMod</span><span class="params">(UINT fsModifiers)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> ((fsModifiers &amp; HOTKEYF_SHIFT) &amp;&amp; !(fsModifiers &amp; HOTKEYF_ALT)) <span class="comment">// shift转alt</span></span><br><span class="line">	&#123;</span><br><span class="line">		fsModifiers &amp;= ~HOTKEYF_SHIFT;</span><br><span class="line">		fsModifiers |= MOD_SHIFT;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (!(fsModifiers &amp; HOTKEYF_SHIFT) &amp;&amp; (fsModifiers &amp; HOTKEYF_ALT)) <span class="comment">// alt转shift</span></span><br><span class="line">	&#123;</span><br><span class="line">		fsModifiers &amp;= ~HOTKEYF_ALT;</span><br><span class="line">		fsModifiers |= MOD_ALT;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> fsModifiers;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> CtesseractDemoDlg::OnBnClickedBtnSavehotkey()</span><br><span class="line">&#123;</span><br><span class="line">	WORD wVirtualKeyCode;</span><br><span class="line">	WORD wModifiers;</span><br><span class="line">	m_hotkey.GetHotKey(wVirtualKeyCode, wModifiers);</span><br><span class="line">	<span class="keyword">if</span> (wVirtualKeyCode &amp;&amp; wModifiers)</span><br><span class="line">	&#123;</span><br><span class="line">		UnregisterHotKey(GetSafeHwnd(), m_iHotKeyId); <span class="comment">//注销HotKey, 释放资源。</span></span><br><span class="line"></span><br><span class="line">		wModifiers = HotkeyToMod(wModifiers);</span><br><span class="line">		<span class="comment">//注册全局热键Alt + F8</span></span><br><span class="line">		<span class="keyword">if</span> (<span class="number">0</span> == RegisterHotKey(GetSafeHwnd(), m_iHotKeyId, wModifiers | MOD_NOREPEAT, wVirtualKeyCode))</span><br><span class="line">		&#123;</span><br><span class="line">			OutputDebugString(_T(<span class="string">"register hotkey failed.\n"</span>));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="设置默认值"><a href="#设置默认值" class="headerlink" title="设置默认值"></a>设置默认值</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SetHotKey</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    WORD wVirtualKeyCode,  </span></span></span><br><span class="line"><span class="function"><span class="params">    WORD wModifiers)</span></span>;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/12/28/语言相关/python/python-datetime/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/28/语言相关/python/python-datetime/" itemprop="url">python-datetime</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-28T19:02:27+08:00">2017-12-28</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="字符串-时间转换"><a href="#字符串-时间转换" class="headerlink" title="字符串,时间转换"></a>字符串,时间转换</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 字符串转时间</span></span><br><span class="line">lastTradeDate = datetime.datetime.strptime(<span class="string">"20180226152134"</span>, <span class="string">'%Y%m%d%H%M%S'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 时间转字符串</span></span><br><span class="line">endDateStr = endDate.strftime(<span class="string">'%Y%m%d'</span>) <span class="comment"># 结果显示：'20171007'</span></span><br></pre></td></tr></table></figure>
+<h2 id="获取当前时间"><a href="#获取当前时间" class="headerlink" title="获取当前时间"></a>获取当前时间</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">datetime.datetime.now().strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 毫秒</span></span><br><span class="line">datetime.datetime.now().strftime(<span class="string">'%Y-%m-%d %H:%M:%S.%f'</span>)[:<span class="number">-3</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="日期加减"><a href="#日期加减" class="headerlink" title="日期加减"></a>日期加减</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">startDate = code[<span class="string">'list_date'</span>]</span><br><span class="line">endDate = startDate + datetime.timedelta(days=<span class="number">365</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="两个日期相差多少天。"><a href="#两个日期相差多少天。" class="headerlink" title="两个日期相差多少天。"></a>两个日期相差多少天。</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">d1 = datetime.datetime.strptime(<span class="string">'2012-03-05 17:41:20'</span>, <span class="string">'%Y-%m-%d %H:%M:%S'</span>)</span><br><span class="line">d2 = datetime.datetime.strptime(<span class="string">'2012-03-02 17:41:20'</span>, <span class="string">'%Y-%m-%d %H:%M:%S'</span>)</span><br><span class="line">delta = d1 - d2</span><br><span class="line"><span class="keyword">print</span> delta.days</span><br></pre></td></tr></table></figure>
+<h2 id="sleep"><a href="#sleep" class="headerlink" title="sleep"></a>sleep</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> <span class="string">"Start : %s"</span> % time.ctime()</span><br><span class="line">time.sleep( <span class="number">5</span> )</span><br><span class="line"><span class="keyword">print</span> <span class="string">"End : %s"</span> % time.ctime()</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -1550,306 +1847,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/12/25/学习笔记/数学/数学-如何计算矩阵乘法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/25/学习笔记/数学/数学-如何计算矩阵乘法/" itemprop="url">数学-如何计算矩阵乘法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-25T21:59:27+08:00">2017-12-25</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数学/" itemprop="url" rel="index"><span itemprop="name">数学</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>数学是个好东西，需要加强。</p>
-<p><a href="https://zh.wikihow.com/%E8%AE%A1%E7%AE%97%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95" target="_blank" rel="noopener">转载wikihow</a></p>
-<p>矩阵是一组排列成矩形的或者排列成行成列的数字或符号。要计算矩阵的乘法，你需要用第一个矩阵行上的元素（或数字）乘以第二个矩阵中列上的元素，再计算它们的和。矩阵乘法的步骤很简单，需要用到加法运算和乘法运算，并且还要正确的摆出最终结果。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/25/学习笔记/数学/数学-如何计算矩阵乘法/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/12/25/生活小知识/医药健康/芳香疗法/精油疗法-精油品牌/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/25/生活小知识/医药健康/芳香疗法/精油疗法-精油品牌/" itemprop="url">精油疗法-精油品牌</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-25T21:50:03+08:00">2017-12-25</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/健康/" itemprop="url" rel="index"><span itemprop="name">健康</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="美国now-foods"><a href="#美国now-foods" class="headerlink" title="美国now foods"></a>美国now foods</h2><p>官网：<a href="https://www.nowfoods.com/" target="_blank" rel="noopener">https://www.nowfoods.com/</a><br>在iherb上有时候也有比较好的折扣。<br>美国Now Foods公司位于美国伊利诺州， 创立于1968年，至今已有四十多年历史，为美国最大最全的天然保健食品生产商之一。<br>1998年，Now Foods于美国伊利诺伊州开办了占地203,000平方公尺的厂房，极大地扩大了公司规模。经营营养保健食品生产四十年来，<br>公司一直保持零违规记录，成为美国保健食品生产行业的领导者。是美国保健品市场上名列三甲的国际知名的天然保健品牌，<br>其生产的保健食品种类达1800多种，均通过美国GMP认证，远销世界63个国家。品牌下精油是便宜又好用的有机芳香精油!</p>
-<h2 id="AMPHORA-AROMATICS"><a href="#AMPHORA-AROMATICS" class="headerlink" title="AMPHORA AROMATICS"></a>AMPHORA AROMATICS</h2><p>购买网站：<a href="http://www.amphora-aromatics.com/" target="_blank" rel="noopener">www.amphora-aromatics.com/</a><br>也就是传说中的英国AA网 大家要分清楚哦 某宝上流行的另外一种AA 可能是假冒的哦。<br>AMPHORA AROMATICS 成立于1984年， 是英国最好，最大的精油和芳疗产品的供应商之一。历经30年的考验, AA网旗下已经拥有数百款高品质精油、基础护肤品以及芳香疗法全系列产品。<br>AA公司除了一般品牌有的纯精油，花水外，还有多个系列的有机精油成品，精油皂，木盒，精油瓶等。公司将芳疗产品细分为女士，男士和儿童系列，所以每个消费者都可以在这个品牌中找到合适自己的产品。<br>AA网的芳疗精油主要包括单方精油、基础油、香薰油、滚珠精油棒等产品。单方精油种类齐全，从耳熟能详的玫瑰精油、薰衣草精油到知者甚少的桂花精油、鸢尾草精油，总数可达数百款之多。</p>
-<h2 id="F家"><a href="#F家" class="headerlink" title="F家"></a>F家</h2><p>购物网站：<a href="http://www.florihana.com" target="_blank" rel="noopener">http://www.florihana.com</a></p>
-<p>堪称“世界上最好的纯露”！<br>来自法国精油品牌，获得医疗级认证。Florial（又叫Florihana），公司设立在法国的南部，于国家级自然保护区内的科斯高山上。 那里百年来未曾有过化学农药、人工合成肥料、除草剂等人为的污染，一个10 公顷的有机农场和一个800 英亩的植物园，里面长满了纯种野生小叶薰衣草、百里香、香薄荷等芳香药用物。该网站主要经营天然精油、天然纯露、天然植物油、浸泡油、有机按摩油等产品。得益于特殊的蒸馏技术和包装瓶，Florihana家的产品保持了纯净和清新，无防腐剂/添加剂，成分安全。支持VISA/MASTERcard信用卡，可以直邮，但运费不便宜，还是转运更划算一些。<br>值得购买的产品:<br>1、Florihana Arnica Montana 100ml(Florihana牌美白保湿纯露100ml)<br>2、Florihana Jasminum Grandiflora 2g(Florihana牌茉莉丰胸原精2g)</p>
-<h2 id="德国Oshadhi"><a href="#德国Oshadhi" class="headerlink" title="德国Oshadhi"></a>德国Oshadhi</h2><p>购物网站：<a href="http://www.oshadhi.de/" target="_blank" rel="noopener">www.oshadhi.de/</a><br>中文名称：奥莎迪！简称O家，非常著名的顶级精油品牌，来自德国。一直坚持着使用植物疗法来修复人体功能以及追求心灵的和谐，<br>且植物的采集皆具有卓越的医疗效果，为了追求高品质的精油，他与全世界提供原料的1000家农场签订了”保证书 “，<br>规定只能提供不含杂质的植物原料，并且农场的挑选也只选定纯净、原始的、高海拔的农场，也因此获得了欧洲精油协会的最高荣誉认证。<br>值得买的产品：<br>Oshadhi 橙花花水(5205)控油去痘：适合干性(缺水)、敏感及成熟型肌肤，对于其它的皮肤问题也都有帮助。温和的美白效果使肌肤明亮，淡化斑点，改善肤色不匀和暗沉，净化收敛的效果可治疗粉刺和青春痘，减少油脂分泌，缩小毛孔。适用各种肤质！<br>Oshadhi特级高地薰衣草花水：可镇定及疏解长痘痘时不安的情绪，同时具 有平衡油脂分泌之效果，对油性皮肤及敏感皮肤有收敛及安抚之功效。<br>Oshadhi 瘦脸提升轮廓配方：（瘦脸提升轮廓配方—迷迭香3滴+天竺葵3滴+高地薰衣草2滴+甜杏仁油20ml）专门针对各种“胖胖脸”的配方，适合脸部“肥胖”型（全部及局部）、双下巴、面部浮肿等，同时红润活化肌肤。</p>
-<h2 id="MRH"><a href="#MRH" class="headerlink" title="MRH"></a>MRH</h2><p>官网：<a href="https://www.mountainroseherbs.com/" target="_blank" rel="noopener">https://www.mountainroseherbs.com/</a><br>这家基础油和精油是非常流行非常不错的。想必这个大家都是非常熟悉啦。由于国人的购买，他家的产品已经涨价几次，<br>并且也不支持国卡和美国转运地址啦。我最近一次购买是使用的私人地址和美卡。</p>
-<h2 id="Aura-Cacia"><a href="#Aura-Cacia" class="headerlink" title="Aura Cacia"></a>Aura Cacia</h2><p>官网：<a href="http://www.auracacia.com/" target="_blank" rel="noopener">http://www.auracacia.com/</a><br>Aura Cacia始建于1982年，在美国加利福尼亚州的Weaverville地区。它的创始人掌握了精油的精神，并开始传播关于芳香疗法说法。越来越多的人了解到，他们需要更多的精油，也更喜欢天然的芳香疗法，这个过程一直持续到今天。Aura Cacia因为产品的天然原料来源，成为芳香疗法的质量代言人。我们的理论和可持续采集的天然材料，以及内部精密的测试能力，使我们能够保证精油纯度和天然性。在面临今天的质量夸张和添加物质的精油市场，这也成为我们安心为客户服务的基础。个人感觉可能要比now foods 要好一点。<br>推荐产品：Aura Cacia100%天然有机纯茶树精油<br>Aura Cacia天然有机宝宝牛奶燕麦香薰泡澡粉</p>
-<h2 id="shirley-price"><a href="#shirley-price" class="headerlink" title="shirley price"></a>shirley price</h2><p>官网：<a href="http://www.shirleyprice.co.uk/" target="_blank" rel="noopener">http://www.shirleyprice.co.uk/</a><br>shirley price精油被国内的资深精油玩家给予5颗星的最高评价，被称作世界三大顶级品牌之一。<br>Shirley Price的所有产品都不含任何人工香料，动物成分，羊毛脂，是过敏皮肤和极度敏感皮肤的最佳选择。其生产的洋甘菊滴眼液号称是Shirley Price产品系列中的镇牌之宝。特别适合需要长时间用眼的现代上班一族。<br>值得一提的是他家的洋甘菊滴眼液，芳疗应用于眼部的极少数产品之一。是一款非常温和的眼部产品，号称是Shirley Price产品系列中的镇牌之宝。主要致力于改善眼部疲劳，干涩，沙砾感，痒感，酸涨等症状，还你一双清澈舒适的明眸。特别适合需要长时间用眼的现代上班一族，可以明显改善用眼过度的所造成的眼部诸多问题。</p>
-<h2 id="Q家也是英国的一家非常有名的精油网站"><a href="#Q家也是英国的一家非常有名的精油网站" class="headerlink" title="Q家也是英国的一家非常有名的精油网站"></a>Q家也是英国的一家非常有名的精油网站</h2><p>官网：<a href="http://www.quinessence.com/" target="_blank" rel="noopener">http://www.quinessence.com/</a><br>QUINESSENCE公司成立于1984年，是全球芳香业界的权威机构ATC的创立成员之一，也是英国芳疗贸易协会ATC的001号会员，做精油的品牌都以加入这个协会为自己品质优秀的象征。QuinEssence在世界各地拥有相当多非常忠实的客户，已故戴妃就是Quinessence的忠实爱好者和支持者，这家网</p>
-<h2 id="green-valley"><a href="#green-valley" class="headerlink" title="green valley"></a>green valley</h2><p>购物网站：<a href="https://www.57aromas.com/" target="_blank" rel="noopener">https://www.57aromas.com/</a><br>Green Valley 是加拿大排名第一的精油品牌，简称：GV！在全世界也是排名前十，提供世界各地所生产的100%纯正、优质的精油，性价比很高，是很实惠的品牌，一般大众都可以买得起。所以它也是国际上评价较高的平价精油之一。<br>GV最大的优点就是有多种容量包装，最小包装是2ml，对于一些价格昂贵，但是需要量不大的精油种类来说，这样的包装实在是很不错的。GV的系列产品包括: 单方精油、复方精油、纯露、天然保养品、芳疗书籍、熏香器、扩散仪、按摩油、基底油、脉轮复方精油等。所有的商品均是纯天然、环保及不以动物做实验。<br>值得买的产品：柑橘类的精油产品！</p>
-<h2 id="Base-Formula"><a href="#Base-Formula" class="headerlink" title="Base Formula"></a>Base Formula</h2><p>购物网站：<a href="http://www.baseformula-us.com/" target="_blank" rel="noopener">www.baseformula-us.com/</a><br>Base Formula中文名芳程式，1996年创立于英国,是英国芳香精油的著名品牌，一直致力向全球的专业芳疗师提供顶级的精油以及芳疗用品。与此同时芳程式承诺所有用品都有可靠来源，公平贸易的原材料以及环保的包装。<br>所有用品由英国制造、没有动物测试、不含苯甲酸酯类和人造成分、适合素食主义、符合伦理道德的原料和生产以及可循环利用的包装材料。<br>值得买的产品：精油种类很多，基地油和浸泡油的质量很不错，品种也相当齐全。价格很便宜，但是运费高，适合大批量购买或拼单！除了精油以外，他家的的花水跟芦荟胶热度很高，Base Formula家还有很多其他产品，比入无香产品，胶类、扩香石等。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1901,7 +1898,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">717</span>
+                    <span class="site-state-item-count">719</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2961,69 +2958,7 @@
         onPopupClose();
       }
     });
-  </script>
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-  
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-        
-      
-    
-      
-    
-  
-
-  
-    
-      <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-      var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -3042,7 +2977,44 @@
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->
 
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
     
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+
   
 
 

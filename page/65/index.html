@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">717</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">719</span>
       </a>
 </li>
 
@@ -312,6 +312,317 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/10/31/学习笔记/windows/MFC/MFC问题集锦/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/31/学习笔记/windows/MFC/MFC问题集锦/" itemprop="url">MFC问题集锦</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-31T22:45:26+08:00">2017-10-31</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="error-RC2104-undefined-keyword-or-keyname-SS-REALSIZECONTROL-错误解决"><a href="#error-RC2104-undefined-keyword-or-keyname-SS-REALSIZECONTROL-错误解决" class="headerlink" title="error RC2104:undefined keyword or keyname:SS_REALSIZECONTROL 错误解决"></a>error RC2104:undefined keyword or keyname:SS_REALSIZECONTROL 错误解决</h2><p>这个解决方法似乎并不是正常的方式因为rc文件是自动生成的</p>
+<p>编辑RC文件代码，头文件加入 #include &lt;windows.h&gt;</p>
+<h1 id="uafxcwd-lib-new-already-defined"><a href="#uafxcwd-lib-new-already-defined" class="headerlink" title="uafxcwd.lib new already defined"></a>uafxcwd.lib new already defined</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1&gt;uafxcwd.lib(afxmem.obj) : error LNK2005: &quot;void * __cdecl operator new(unsigned int)&quot; (??2@YAPAXI@Z) already defined in LIBCMTD.lib(new_scalar.obj)</span><br><span class="line">1&gt;uafxcwd.lib(afxmem.obj) : error LNK2005: &quot;void __cdecl operator delete(void *)&quot; (??3@YAXPAX@Z) already defined in LIBCMTD.lib(delete_scalar.obj)</span><br><span class="line">1&gt;uafxcwd.lib(afxmem.obj) : error LNK2005: &quot;void __cdecl operator delete[](void *)&quot; (??_V@YAXPAX@Z) already defined in LIBCMTD.lib(delete_array.obj)</span><br><span class="line">1&gt;D:\project\videoHelper\Debug\videoHelper.exe : fatal error LNK1169: one or more multiply defined symbols found</span><br></pre></td></tr></table></figure>
+<p>处理方法<br>做如下改动，注意顺序</p>
+<p>debug版本<br>附加依赖库：uafxcwd.lib;LIBCMTD.lib;<br>忽略特定默认库：LIBCMTD.lib;uafxcwd.lib</p>
+<p>release版本<br>附加依赖库：uafxcw.lib;LIBCMT.lib;<br>忽略特定默认库：LIBCMT.lib;uafxcw.lib</p>
+<p>错误原因是由于这二个库有各自的new和delete，这是冲突的，需要指定顺序。正确加载库的顺序是uafxcw.lib Libcmtd.lib，而默认的是Libcmtd.lib  uafxcw.lib。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/10/30/业余爱好/电吉他/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/30/业余爱好/电吉他/" itemprop="url">电吉他</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-30T22:31:37+08:00">2017-10-30</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/乐器/" itemprop="url" rel="index"><span itemprop="name">乐器</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="电吉他连接mac-book-pro："><a href="#电吉他连接mac-book-pro：" class="headerlink" title="电吉他连接mac book pro："></a>电吉他连接mac book pro：</h2><p>连接MBP设备Apogee Jam With Guitar Rig &amp; Garage Band</p>
+<p>IK Multimedia iRig HD 2 吉他和贝斯接口 RMB 890</p>
+<p>需要注意的是，使用的时候不要把gain调得过高，那里是有指示灯的，如果闪红色，说明过载了，得调低一些，绿色就是正常。<br>连USB之前请把gain和音量都调到最低，连上后再进行调整，用完后也是一样，调到最低，再拔USB。这样可以保护自己的设备。</p>
+<p>吉他40%，效果器10%，音箱50%</p>
+<p><img alt="4d7ef135.png" src="/2017/10/30/业余爱好/电吉他/4d7ef135.png" width="" height=""></p>
+<p>琴颈：</p>
+<ol>
+<li>握把后上下滑动，检查边缘是否平滑</li>
+<li>厚度是否适合手型，薄些的适合速弹</li>
+<li>从尾部向琴头方向检查琴颈是否有变形，弯曲的情况</li>
+</ol>
+<p>音色：<br>拾音器 单，双线圈<br>单： 清脆，有杂音  fender<br>双： 杂音小，浑厚  Gipson    </p>
+<p>Fender的美产标准款Telecaster和Stratocaster，应该是体验标准Fender音色最好的选择。</p>
+<p>PRS Guitar：<br>Paul Reed Smith（簡稱 PRS）指的是美國電吉他廠牌及其創始人（Paul Reed Smith, 1956年2月18日 - ）創立於西元 1985 年。<br>PRS 融合了電吉他界中的二大巨頭：Gibson Les Paul 及 Fender Stratocaster 的特長，將它們合而為一。在 PRS 上面你可以透過不同段數的切換得到 Gibson 的雙線圈溫暖厚實 tone 與 Fender 的單線圈清亮 tone，可以說是非常實用划算的電吉他。<br>Gibson Les Paul<br><img alt="4d412917.png" src="/2017/10/30/业余爱好/电吉他/4d412917.png" width="" height=""><br>Fender Stratocaster<br><img alt="f3b2eed9.png" src="/2017/10/30/业余爱好/电吉他/f3b2eed9.png" width="" height=""><br>主力型號 Custom 系列，琴身由桃花心木背板 + 楓木面板製成，並可依需求選擇有／無搭載搖座的款式。<br>PRS Custom 24  韩产比印尼产要好些<br><img alt="48f6521b.png" src="/2017/10/30/业余爱好/电吉他/48f6521b.png" width="" height=""><br>PRS 外觀上最大的特色就是指板上的飛鳥雕刻（Bird inlay）每一格的品種皆不同，表列如下：<br>Custom、Standard、ME、CE、McCarty、Singlecut、Santana 等等型號的 Bird inlay 上基本上都是這種<br><img alt="dc31a6c8.png" src="/2017/10/30/业余爱好/电吉他/dc31a6c8.png" width="" height=""><br>513代表5个拾音器与13种音色。513桃花心木版本则是紫檀木“原版”513的升级版本。它采用新的桃花心木琴颈，紫檀木指板，改良的硬件以及PRS专利的拾音器系统利用五个单线圈拾音器（双单双）提供包括从现代和到古典的各种音色共计13种。其他配置包括25 1/4英寸的尺寸，特殊的琴颈接合，新的513“小鸟”品记，新的更易使用的电路控制系统，包括Volume，Tone控制和两个刀口切换开关，一个是5向的拾音器切换开关，一个3向的模式切换开关，让您可以选择单线圈，干净的双线圈或者是重型双线圈模式。这是PRS最全面的型号，从尖叫的双线圈，到轻声吟唱的单线圈，只需要操作一个3向切换开关即可。<br><img alt="e6840039.png" src="/2017/10/30/业余爱好/电吉他/e6840039.png" width="" height=""><br>PRS 513 （玫瑰木琴颈+单片枫木贴面）  </p>
+<p>PRS 513 Artist（巴西玫瑰木限量款）<br>此款513是仅次于PRS private stock系列的最高配置，首先是艺术家标志性的极品贴面和渐变颜色搭配，无处不彰显着华丽气息。琴颈使用单片虎皮枫木纹路整齐，选料考究。最后就是富有传奇色彩的巴西玫瑰木指板，使音色更加均衡，延音很出色，枫木和玫瑰木的搭配使音色更加富有动态，更具有现代感。一句话总结：一琴在手，别无所求！  </p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -1511,297 +1822,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/10/26/学习笔记/windows/MFC/Button/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/26/学习笔记/windows/MFC/Button/" itemprop="url">Button</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-26T14:51:55+08:00">2017-10-26</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="操作checkbox"><a href="#操作checkbox" class="headerlink" title="操作checkbox"></a>操作checkbox</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (pwnd-&gt;m_curInfo.isShowFloat)</span><br><span class="line">&#123;</span><br><span class="line">	CheckDlgButton(IDC_CHECK_FLOATWINDOW, BST_CHECKED);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">	CheckDlgButton(IDC_CHECK_FLOATWINDOW, BST_UNCHECKED);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (IsDlgButtonChecked(IDC_CHECK_FLOATWINDOW))</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// checked</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/10/25/语言相关/python/图片相关操作/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/25/语言相关/python/图片相关操作/" itemprop="url">图片相关操作</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-25T22:56:51+08:00">2017-10-25</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>安装Open-cv</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1853,7 +1873,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">717</span>
+                    <span class="site-state-item-count">719</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
