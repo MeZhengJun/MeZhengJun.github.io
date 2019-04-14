@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">70</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">72</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">719</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">792</span>
       </a>
 </li>
 
@@ -328,7 +328,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/05/16/语言相关/javascript/bootstrap/bootstrap-alert/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/06/14/学习笔记/开源库/zmq/认识ZMQ/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -347,7 +347,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/05/16/语言相关/javascript/bootstrap/bootstrap-alert/" itemprop="url">bootstrap-alert</a></h1>
+                <a class="post-title-link" href="/2018/06/14/学习笔记/开源库/zmq/认识ZMQ/" itemprop="url">认识ZMQ</a></h1>
         
 
         <div class="post-meta">
@@ -359,7 +359,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-16T13:51:05+08:00">2018-05-16</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-14T08:48:40+08:00">2018-06-14</time>
             
 
             
@@ -380,593 +380,14 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>用来显示提示信息的，如果带有 data-dismiss=”alert” 那么关闭后就没了，无法再次打开。<br>下面是实际使用的例子。默认是隐藏的，需要的地方使用js设置消息并显示出来，</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"alert alert-danger alert-message"</span> <span class="attr">id</span>=<span class="string">"alertMsg"</span> <span class="attr">style</span>=<span class="string">"display:none;"</span> <span class="attr">role</span>=<span class="string">"alert"</span>&gt;</span></span><br><span class="line">    information here.</span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"close"</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span>×<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">//js 处理</span><br><span class="line">$('#alertMsg').html("<span class="tag">&lt;<span class="name">strong</span>&gt;</span>警告！<span class="tag">&lt;/<span class="name">strong</span>&gt;</span>两次密码输入不一致" + '<span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"close"</span> <span class="attr">onclick</span>=<span class="string">"$(this).parent().hide();"</span>  <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span>×<span class="tag">&lt;/<span class="name">a</span>&gt;</span>');</span><br><span class="line">$('#alertMsg').show();</span><br></pre></td></tr></table></figure>
-<h2 id="自动关闭"><a href="#自动关闭" class="headerlink" title="自动关闭"></a>自动关闭</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">showAlert</span>(<span class="params">msg, isSuccess</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (isSuccess) &#123;</span><br><span class="line">        $(<span class="string">'#alertMsg'</span>).removeClass(<span class="string">"alert-danger"</span>);</span><br><span class="line">        $(<span class="string">'#alertMsg'</span>).addClass(<span class="string">"alert-success"</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        $(<span class="string">'#alertMsg'</span>).removeClass(<span class="string">"alert-success"</span>);</span><br><span class="line">        $(<span class="string">'#alertMsg'</span>).addClass(<span class="string">"alert-danger"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    $(<span class="string">'#alertMsg'</span>).html(msg + <span class="string">'&lt;a class="close" onclick="$(this).parent().hide();"  href="#"&gt;×&lt;/a&gt;'</span>);</span><br><span class="line">    <span class="comment">// $('#alertMsg').show();</span></span><br><span class="line">    $(<span class="string">"#alertMsg"</span>).fadeTo(<span class="number">2000</span>, <span class="number">500</span>).slideUp(<span class="number">500</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        $(<span class="string">"#alertMsg"</span>).slideUp(<span class="number">500</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/05/16/语言相关/css/css-显示-隐藏元素/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/16/语言相关/css/css-显示-隐藏元素/" itemprop="url">css-显示-隐藏元素</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-16T09:30:39+08:00">2018-05-16</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="隐藏元素"><a href="#隐藏元素" class="headerlink" title="隐藏元素"></a>隐藏元素</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div style="display: none;" /&gt;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/05/12/语言相关/javascript/js-循环语句/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/12/语言相关/javascript/js-循环语句/" itemprop="url">js-循环语句</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-12T10:44:47+08:00">2018-05-12</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="for"><a href="#for" class="headerlink" title="for"></a>for</h2><h3 id="常规用法"><a href="#常规用法" class="headerlink" title="常规用法"></a>常规用法</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (语句 <span class="number">1</span>; 语句 <span class="number">2</span>; 语句 <span class="number">3</span>)</span><br><span class="line">&#123;</span><br><span class="line">  被执行的代码块</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="效率最高的用法"><a href="#效率最高的用法" class="headerlink" title="效率最高的用法"></a>效率最高的用法</h3><p>使用临时变量，将长度缓存起来，避免重复获取数组长度，当数组较大时优化效果才会比较明显。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(j = <span class="number">0</span>,len=arr.length; j &lt; len; j++) &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="For-In-循环"><a href="#For-In-循环" class="headerlink" title="For/In 循环"></a>For/In 循环</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person=&#123;<span class="attr">fname</span>:<span class="string">"John"</span>,<span class="attr">lname</span>:<span class="string">"Doe"</span>,<span class="attr">age</span>:<span class="number">25</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (x <span class="keyword">in</span> person)</span><br><span class="line">&#123;</span><br><span class="line">  txt=txt + person[x];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/05/12/Web开发/微服务架构认证方案/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/12/Web开发/微服务架构认证方案/" itemprop="url">微服务架构认证方案</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-12T09:53:09+08:00">2018-05-12</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端/" itemprop="url" rel="index"><span itemprop="name">后端</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="单体应用"><a href="#单体应用" class="headerlink" title="单体应用"></a>单体应用</h2><p>单体应用体系下，应用是一个整体，一般针对所有的请求都会进行权限校验。请求一般会通过一个权限的拦截器进行权限的校验，在登录时将用户信息缓存到 session 中，后续访问则从缓存中获取用户信息。</p>
-<p><img alt="d1e19fda.png" src="/2018/05/12/Web开发/微服务架构认证方案/d1e19fda.png" width="400" height=""></p>
-<h2 id="微服务"><a href="#微服务" class="headerlink" title="微服务"></a>微服务</h2><p>要考虑外部应用接入的场景、用户 - 服务的鉴权、服务 - 服务的鉴权等多种鉴权场景。<br><img alt="e5ce1cb1.png" src="/2018/05/12/Web开发/微服务架构认证方案/e5ce1cb1.png" width="400" height=""></p>
-<p>David Borsos 在伦敦的微服务大会上提出了四种方案</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/05/12/Web开发/微服务架构认证方案/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/05/11/学习笔记/开源库/SOUI/SOUI-button-check-radio/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/11/学习笔记/开源库/SOUI/SOUI-button-check-radio/" itemprop="url">SOUI-button-check-radio</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-11T17:16:24+08:00">2018-05-11</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
 
                 
                 
                   , 
                 
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/UI/" itemprop="url" rel="index"><span itemprop="name">UI</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
 
                 
                 
@@ -1001,11 +422,304 @@
 
       
         
-          <h2 id="checkbox"><a href="#checkbox" class="headerlink" title="checkbox"></a>checkbox</h2><p>响应事件和button一样</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnBtnShowFloat</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//soui消息</span></span><br><span class="line">	EVENT_MAP_BEGIN()</span><br><span class="line">EVENT_NAME_COMMAND(<span class="string">L"chkShowFlow"</span>, OnBtnShowFloat)</span><br><span class="line">...</span><br><span class="line">EVENT_MAP_END()</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> CMainDlg::OnBtnShowFloat()</span><br><span class="line">&#123;</span><br><span class="line">	SCheckBox* chk = (SCheckBox*)FindChildByName(<span class="string">L"chkAutoRecg"</span>);</span><br><span class="line">	<span class="keyword">if</span> (chk-&gt;IsChecked())</span><br><span class="line">	&#123;</span><br><span class="line">		g_curInfo.isShowFloat = <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		g_curInfo.isShowFloat = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+            <p><a href="http://zeromq.org/" target="_blank" rel="noopener">官网</a></p>
+<p>发布订阅异步消息系统，不支持持久化。<br>短消息，高并发，高可靠性是设计中的重点</p>
+<p>官网首页的特性：<br>ZeroMQ \zero-em-queue\, \ØMQ\:<br> Ø  Connect your code in any language, on any platform.<br> Ø  Carries messages across inproc, IPC, TCP, TIPC, multicast.<br> Ø  Smart patterns like pub-sub, push-pull, and router-dealer.<br> Ø  High-speed asynchronous I/O engines, in a tiny library.<br> Ø  Backed by a large and active open source community.<br> Ø  Supports every modern language and platform.<br> Ø  Build any architecture: centralized, distributed, small, or large.<br> Ø  Free software with full commercial support.</p>
+<p>优势：<br>TCP：ZeroMQ基于消息，消息模式，而非字节流。<br>XMPP：ZeroMQ更简单、快速、更底层。Jabber可建在ØMQ之上。<br>AMQP：完成相同的工作，ZeroMQ要快100倍，而且不需要代理（规范更简洁——少278页）<br>IPC：ZeroMQ可以跨多个主机盒，而非单台机器。<br>CORBA：ZeroMQ不会将复杂到恐怖的消息格式强加于你。<br>RPC：ZeroMQ完全是异步的，你可以随时增加/删除参与者。<br>RFC 1149：ZeroMQ比它快多了！<br>29west LBM：ZeroMQ是自由软件！<br>IBM低延迟：ZeroMQ是自由软件！<br>Tibco：仍然是自由软件！</p>
+<h2 id="zmq"><a href="#zmq" class="headerlink" title="zmq"></a>zmq</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">./autogen.sh</span><br><span class="line">./configure; make; make install</span><br><span class="line"></span><br><span class="line">installed directory</span><br><span class="line">/usr/local/bin</span><br><span class="line">/usr/local/include</span><br><span class="line">/usr/local/lib</span><br></pre></td></tr></table></figure>
+<h2 id="czmq"><a href="#czmq" class="headerlink" title="czmq"></a>czmq</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">git clone git://github.com/zeromq/czmq.git</span><br><span class="line">cd czmq</span><br><span class="line">sh autogen.sh</span><br><span class="line">./configure</span><br><span class="line">make </span><br><span class="line">make check</span><br><span class="line">sudo make install</span><br><span class="line">sudo ldconfig</span><br><span class="line"></span><br><span class="line">After building, you can run the CZMQ selftests:</span><br><span class="line"></span><br><span class="line">cd src</span><br><span class="line">./czmq_selftest</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/06/13/读过的书/解密比特币/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/13/读过的书/解密比特币/" itemprop="url">解密比特币</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-13T20:45:37+08:00">2018-06-13</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这是一本知识普及性的书籍，里面没有具体的细节，更多的是一些概念和常识。<br>没有研究价值，作为入门看一下了解了解，也是可以的。</p>
+<p><img alt="d29b79b1.png" src="/2018/06/13/读过的书/解密比特币/d29b79b1.png" width="" height=""></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/06/13/学习笔记/区块链/区块链类型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/13/学习笔记/区块链/区块链类型/" itemprop="url">区块链类型</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-13T15:31:55+08:00">2018-06-13</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><a href="https://www.jianshu.com/p/3e795696a3b0" target="_blank" rel="noopener">参考</a></p>
+<h2 id="公有链（Public-blockchains）"><a href="#公有链（Public-blockchains）" class="headerlink" title="公有链（Public blockchains）"></a>公有链（Public blockchains）</h2><p>公有链是对所有人公开，用户不需要注册和授权就能够匿名访问网络和区块，任何人都可以自由加入和退出网络，并参与记账和交易。</p>
+<p>公有链是真正完全意义上的去中心化区块链，它通过密码学（非对称加密）算法保证了交易的安全性和不可篡改性，在陌生的网络（非安全）环境中，建立了互信和共识机制。在公有链中共识机制一般是工作量证明（POW）和权益证明（POS）。</p>
+<p>公有链因为人人可参与，无需授权的特点又被称为非许可链，即不需要验证身份即可参与一切网络活动。目前比特币、以太坊、超级账本、大多数山寨币以及智能合约都是建立在公有链上，其中公有链的始祖是比特币区块链。</p>
+<p>公有链适用于数字货币、电子商务、互联网金融、知识产权等应用场景。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/05/11/学习笔记/开源库/SOUI/SOUI-button-check-radio/#more" rel="contents">
+            <a class="btn" href="/2018/06/13/学习笔记/区块链/区块链类型/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1061,7 +775,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/05/10/语言相关/CPP/cpp-DateTime/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/06/13/学习笔记/区块链/ethereum/以太坊代码解析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1080,7 +794,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/05/10/语言相关/CPP/cpp-DateTime/" itemprop="url">cpp-DateTime</a></h1>
+                <a class="post-title-link" href="/2018/06/13/学习笔记/区块链/ethereum/以太坊代码解析/" itemprop="url">以太坊代码解析</a></h1>
         
 
         <div class="post-meta">
@@ -1092,7 +806,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-10T19:35:00+08:00">2018-05-10</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-13T15:29:50+08:00">2018-06-13</time>
             
 
             
@@ -1113,7 +827,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
 
                 
                 
@@ -1149,10 +863,17 @@
       
         
           
-            <h2 id="Win32-获取时间"><a href="#Win32-获取时间" class="headerlink" title="Win32 获取时间"></a>Win32 获取时间</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SYSTEMTIME time;</span><br><span class="line">GetSystemTime(&amp;time);</span><br></pre></td></tr></table></figure>
-<h2 id="win32-格式化时间"><a href="#win32-格式化时间" class="headerlink" title="win32 格式化时间"></a>win32 格式化时间</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> msg[<span class="number">9</span>];</span><br><span class="line"><span class="built_in">sprintf</span>(msg, <span class="string">"%04d%02d%02d"</span>, st.wYear, st.wMonth, st.wDay);</span><br></pre></td></tr></table></figure>
-<h2 id="timestamp"><a href="#timestamp" class="headerlink" title="timestamp"></a>timestamp</h2><p>need cpp 11 support<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="keyword">time_t</span> getTimeStamp()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">std</span>::chrono::time_point&lt;<span class="built_in">std</span>::chrono::system_clock,<span class="built_in">std</span>::chrono::milliseconds&gt; tp = <span class="built_in">std</span>::chrono::time_point_cast&lt;<span class="built_in">std</span>::chrono::milliseconds&gt;(<span class="built_in">std</span>::chrono::system_clock::now());</span><br><span class="line">    <span class="keyword">auto</span> tmp=<span class="built_in">std</span>::chrono::duration_cast&lt;<span class="built_in">std</span>::chrono::milliseconds&gt;(tp.time_since_epoch());</span><br><span class="line">    <span class="built_in">std</span>::<span class="keyword">time_t</span> timestamp = tmp.count();</span><br><span class="line">    <span class="keyword">return</span> timestamp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="时间戳转日期"><a href="#时间戳转日期" class="headerlink" title="时间戳转日期"></a>时间戳转日期</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="function">tm* <span class="title">gettm</span><span class="params">(int64 timestamp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    int64 milli = timestamp+ (int64)<span class="number">8</span>*<span class="number">60</span>*<span class="number">60</span>*<span class="number">1000</span>;<span class="comment">//此处转化为东八区北京时间，如果是其它时区需要按需求修改</span></span><br><span class="line">    <span class="keyword">auto</span> mTime = <span class="built_in">std</span>::chrono::milliseconds(milli);</span><br><span class="line">    <span class="keyword">auto</span> tp=<span class="built_in">std</span>::chrono::time_point&lt;<span class="built_in">std</span>::chrono::system_clock,<span class="built_in">std</span>::chrono::milliseconds&gt;(mTime);</span><br><span class="line">    <span class="keyword">auto</span> tt = <span class="built_in">std</span>::chrono::system_clock::<span class="keyword">to_time_t</span>(tp);</span><br><span class="line">    <span class="built_in">std</span>::tm* now = <span class="built_in">std</span>::gmtime(&amp;tt);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%4d年%02d月%02d日 %02d:%02d:%02d\n"</span>,now-&gt;tm_year+<span class="number">1900</span>,now-&gt;tm_mon+<span class="number">1</span>,now-&gt;tm_mday,now-&gt;tm_hour,now-&gt;tm_min,now-&gt;tm_sec);</span><br><span class="line">   <span class="keyword">return</span> now;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <p>暂时留空，后面填。</p>
+<h2 id="merkle-tree"><a href="#merkle-tree" class="headerlink" title="merkle tree"></a>merkle tree</h2><p>以太坊的每一个区块头，并非只包含一颗梅克尔树，而是包含了三颗梅克尔树，分别对应了三种对象：<br>交易（Transactions）<br>收据（Receipts，基本上，它是展示每一笔交易影响的数据条）<br>状态（State）</p>
+<p><img alt="ffbe32d4.png" src="/2018/06/13/学习笔记/区块链/ethereum/以太坊代码解析/ffbe32d4.png" width="" height=""></p>
+<p>这使得一个非常先进的轻客户端协议成为了可能，它允许轻客户端轻松地进行并核实以下类型的查询答案：</p>
+<ol>
+<li>这笔交易被包含在特定的区块中了么？</li>
+<li>告诉我这个地址在过去30天中，发出X类型事件的所有实例（例如，一个众筹合约完成了它的目标）</li>
+<li>目前我的账户余额是多少？</li>
+<li>这个账户是否存在？</li>
+<li>假装在这个合约中运行这笔交易，它的输出会是什么？<br>第一种是由交易树（transaction tree）来处理的；第三和第四种则是由状态树（state tree）负责处理，第二种则由收据树（receipt tree）处理。计算前四个查询任务是相当简单的。服务器简单地找到对象，获取梅克尔分支，并通过分支来回复轻客户端。<br>第五种查询任务同样也是由状态树处理，但它的计算方式会比较复杂。这里，我们需要构建下我们称之为梅克尔状态转变的证明（Merkle state transition proof）。</li>
+</ol>
 
           
         
@@ -1206,7 +927,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/05/10/语言相关/CPP/cpp-map/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/06/13/学习笔记/区块链/bitcoin/比特币代码解析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1225,7 +946,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/05/10/语言相关/CPP/cpp-map/" itemprop="url">cpp-map</a></h1>
+                <a class="post-title-link" href="/2018/06/13/学习笔记/区块链/bitcoin/比特币代码解析/" itemprop="url">比特币代码解析</a></h1>
         
 
         <div class="post-meta">
@@ -1237,7 +958,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-10T14:47:16+08:00">2018-05-10</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-13T15:26:14+08:00">2018-06-13</time>
             
 
             
@@ -1258,7 +979,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
 
                 
                 
@@ -1294,10 +1015,31 @@
       
         
           
-            <p>map内部本身就是按序存储的（比如红黑树）。在我们插入&lt;key, value&gt;键值对时，就会按照key的大小顺序进行存储。这也是作为key的类型必须能够进行&lt;运算比较的原因。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;map&gt;</span></span></span><br><span class="line"><span class="built_in">map</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; mapCode;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m_pDb-&gt;m_vResult.size(); i += <span class="number">2</span>)</span><br><span class="line">&#123;</span><br><span class="line">    mapCode.insert(<span class="built_in">std</span>::pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;(m_pDb-&gt;m_vResult.at(i + <span class="number">1</span>).typeInt64, m_pDb-&gt;m_vResult.at(i).typeInt64));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Searches the container <span class="keyword">for</span> elements with a key equivalent to k <span class="keyword">and</span> returns the number of matches.</span><br><span class="line">Because all elements in a <span class="built_in">map</span> container are unique, the function can only <span class="keyword">return</span> <span class="number">1</span> (<span class="keyword">if</span> the element is found) <span class="keyword">or</span> zero (otherwise).</span><br><span class="line"><span class="keyword">if</span> ( <span class="number">0</span> &lt; g_mapHookInfo.count(hWnd))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//present</span></span><br><span class="line">		HOOKINFO hookInfo = g_mapHookInfo[hWnd];</span><br><span class="line">		<span class="keyword">if</span> (hookInfo.type == type)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">0</span>; <span class="comment">// already hooked!</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> <span class="built_in">map</span>&lt;wstring, CODEINFO&gt;::iterator  it;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (it = g_pMain-&gt;m_CodeInfo.begin(); it != g_pMain-&gt;m_CodeInfo.end(); ++it)</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="key是否存在"><a href="#key是否存在" class="headerlink" title="key是否存在"></a>key是否存在</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (m_curInfo.mapMonitorInfo.count(str))</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//exist</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//not exist. should be a new file</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="built_in">map</span>&lt;wstring, wstring&gt;&amp; filter</span><br><span class="line"><span class="keyword">auto</span> search = filter.find(fileName);</span><br><span class="line"><span class="keyword">if</span> (search == filter.end())</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//not found, can be delete</span></span><br><span class="line">	<span class="keyword">if</span> (FALSE == DeleteFile(it.c_str()))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//delete file faild.</span></span><br><span class="line">		iRet = <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <p>随时更新</p>
+<p>解析的 bitcoin 版本 0.16.1</p>
+<h2 id="基础概念简介"><a href="#基础概念简介" class="headerlink" title="基础概念简介"></a>基础概念简介</h2><ol>
+<li>共识机制</li>
+<li>防止篡改</li>
+<li>重复交易(double spending)</li>
+</ol>
+<h2 id="分析数据结构"><a href="#分析数据结构" class="headerlink" title="分析数据结构"></a>分析数据结构</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br></pre></td><td class="code"><pre><span class="line">height 	100000</span><br><span class="line">&#123;</span><br><span class="line">  &quot;hash&quot;: &quot;000000000003ba27aa200b1cecaad478d2b00432346c3f1f3986da1afd33e506&quot;,</span><br><span class="line">  &quot;ver&quot;: 1,</span><br><span class="line">  &quot;prev_block&quot;: &quot;000000000002d01c1fccc21636b607dfd930d31d01c3a62104612a1719011250&quot;,</span><br><span class="line">  &quot;mrkl_root&quot;: &quot;f3e94742aca4b5ef85488dc37c06c3282295ffec960994b2c0d5ac2a25a95766&quot;,</span><br><span class="line">  &quot;time&quot;: 1293623863,</span><br><span class="line">  &quot;bits&quot;: 453281356,</span><br><span class="line">  &quot;nonce&quot;: 274148111,</span><br><span class="line">  &quot;n_tx&quot;: 4,</span><br><span class="line">  &quot;size&quot;: 957,</span><br><span class="line">  &quot;tx&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;hash&quot;: &quot;8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87&quot;,</span><br><span class="line">      &quot;ver&quot;: 1,</span><br><span class="line">      &quot;vin_sz&quot;: 1,</span><br><span class="line">      &quot;vout_sz&quot;: 1,</span><br><span class="line">      &quot;lock_time&quot;: 0,</span><br><span class="line">      &quot;size&quot;: 135,</span><br><span class="line">      &quot;in&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;prev_out&quot;: &#123;</span><br><span class="line">            &quot;hash&quot;: &quot;0000000000000000000000000000000000000000000000000000000000000000&quot;,</span><br><span class="line">            &quot;n&quot;: 4294967295</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;coinbase&quot;: &quot;044c86041b020602&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      &quot;out&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;value&quot;: &quot;50.00000000&quot;,</span><br><span class="line">          &quot;scriptPubKey&quot;: &quot;041b0e8c2567c12536aa13357b79a073dc4444acb83c4ec7a0e2f99dd7457516c5817242da796924ca4e99947d087fedf9ce467cb9f7c6287078f801df276fdf84 OP_CHECKSIG&quot;,</span><br><span class="line">          &quot;next_in&quot;: &#123;</span><br><span class="line">            &quot;hash&quot;: &quot;f3e6066078e815bb24db0dfbff814f738943bddaaa76f8beba360cfe2882480a&quot;,</span><br><span class="line">            &quot;n&quot;: 12</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      &quot;nid&quot;: &quot;70ab531a68f973f7d20b8260cb5e7fecba3699c48715b8b44539ff9776d0b88e&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;hash&quot;: &quot;fff2525b8931402dd09222c50775608f75787bd2b87e56995a7bdd30f79702c4&quot;,</span><br><span class="line">      &quot;ver&quot;: 1,</span><br><span class="line">      &quot;vin_sz&quot;: 1,</span><br><span class="line">      &quot;vout_sz&quot;: 2,</span><br><span class="line">      &quot;lock_time&quot;: 0,</span><br><span class="line">      &quot;size&quot;: 259,</span><br><span class="line">      &quot;in&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;prev_out&quot;: &#123;</span><br><span class="line">            &quot;hash&quot;: &quot;87a157f3fd88ac7907c05fc55e271dc4acdc5605d187d646604ca8c0e9382e03&quot;,</span><br><span class="line">            &quot;n&quot;: 0</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;scriptSig&quot;: &quot;3046022100c352d3dd993a981beba4a63ad15c209275ca9470abfcd57da93b58e4eb5dce82022100840792bc1f456062819f15d33ee7055cf7b5ee1af1ebcc6028d9cdb1c3af774801 04f46db5e9d61a9dc27b8d64ad23e7383a4e6ca164593c2527c038c0857eb67ee8e825dca65046b82c9331586c82e0fd1f633f25f87c161bc6f8a630121df2b3d3&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      &quot;out&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;value&quot;: &quot;5.56000000&quot;,</span><br><span class="line">          &quot;scriptPubKey&quot;: &quot;OP_DUP OP_HASH160 c398efa9c392ba6013c5e04ee729755ef7f58b32 OP_EQUALVERIFY OP_CHECKSIG&quot;,</span><br><span class="line">          &quot;address&quot;: &quot;1JqDybm2nWTENrHvMyafbSXXtTk5Uv5QAn&quot;,</span><br><span class="line">          &quot;next_in&quot;: &#123;</span><br><span class="line">            &quot;hash&quot;: &quot;5aa8e36f9423ee5fcf17c1d0d45d6988b8a5773eae8ad25d945bf34352040009&quot;,</span><br><span class="line">            &quot;n&quot;: 6</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;value&quot;: &quot;44.44000000&quot;,</span><br><span class="line">          &quot;scriptPubKey&quot;: &quot;OP_DUP OP_HASH160 948c765a6914d43f2a7ac177da2c2f6b52de3d7c OP_EQUALVERIFY OP_CHECKSIG&quot;,</span><br><span class="line">          &quot;address&quot;: &quot;1EYTGtG4LnFfiMvjJdsU7GMGCQvsRSjYhx&quot;,</span><br><span class="line">          &quot;next_in&quot;: &#123;</span><br><span class="line">            &quot;hash&quot;: &quot;220ebc64e21abece964927322cba69180ed853bb187fbc6923bac7d010b9d87a&quot;,</span><br><span class="line">            &quot;n&quot;: 0</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      &quot;nid&quot;: &quot;fc7704fdd7ec5e69163e51b827fea2133990a26defee2b475408b3c16fd9a968&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;hash&quot;: &quot;6359f0868171b1d194cbee1af2f16ea598ae8fad666d9b012c8ed2b79a236ec4&quot;,</span><br><span class="line">      &quot;ver&quot;: 1,</span><br><span class="line">      &quot;vin_sz&quot;: 1,</span><br><span class="line">      &quot;vout_sz&quot;: 2,</span><br><span class="line">      &quot;lock_time&quot;: 0,</span><br><span class="line">      &quot;size&quot;: 257,</span><br><span class="line">      &quot;in&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;prev_out&quot;: &#123;</span><br><span class="line">            &quot;hash&quot;: &quot;cf4e2978d0611ce46592e02d7e7daf8627a316ab69759a9f3df109a7f2bf3ec3&quot;,</span><br><span class="line">            &quot;n&quot;: 1</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;scriptSig&quot;: &quot;30440220032d30df5ee6f57fa46cddb5eb8d0d9fe8de6b342d27942ae90a3231e0ba333e02203deee8060fdc70230a7f5b4ad7d7bc3e628cbe219a886b84269eaeb81e26b4fe01 04ae31c31bf91278d99b8377a35bbce5b27d9fff15456839e919453fc7b3f721f0ba403ff96c9deeb680e5fd341c0fc3a7b90da4631ee39560639db462e9cb850f&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      &quot;out&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;value&quot;: &quot;0.01000000&quot;,</span><br><span class="line">          &quot;scriptPubKey&quot;: &quot;OP_DUP OP_HASH160 b0dcbf97eabf4404e31d952477ce822dadbe7e10 OP_EQUALVERIFY OP_CHECKSIG&quot;,</span><br><span class="line">          &quot;address&quot;: &quot;1H8ANdafjpqYntniT3Ddxh4xPBMCSz33pj&quot;,</span><br><span class="line">          &quot;next_in&quot;: &#123;</span><br><span class="line">            &quot;hash&quot;: &quot;ae1933ba2b7dc9702c96b99fb00f1df1392d9dea998a24b88d61974e8da8d2ab&quot;,</span><br><span class="line">            &quot;n&quot;: 0</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;value&quot;: &quot;2.99000000&quot;,</span><br><span class="line">          &quot;scriptPubKey&quot;: &quot;OP_DUP OP_HASH160 6b1281eec25ab4e1e0793ff4e08ab1abb3409cd9 OP_EQUALVERIFY OP_CHECKSIG&quot;,</span><br><span class="line">          &quot;address&quot;: &quot;1Am9UTGfdnxabvcywYG2hvzr6qK8T3oUZT&quot;,</span><br><span class="line">          &quot;next_in&quot;: &#123;</span><br><span class="line">            &quot;hash&quot;: &quot;20ed3fc9688a13fceeae5fdd606266c351b1f15b90404d9df387644e4c3d5b90&quot;,</span><br><span class="line">            &quot;n&quot;: 3</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      &quot;nid&quot;: &quot;fe8c78250fb2a8e5a91e60a93ca7ddaf048a0d0d7dfb5663456c2265a0a0aaea&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;hash&quot;: &quot;e9a66845e05d5abc0ad04ec80f774a7e585c6e8db975962d069a522137b80c1d&quot;,</span><br><span class="line">      &quot;ver&quot;: 1,</span><br><span class="line">      &quot;vin_sz&quot;: 1,</span><br><span class="line">      &quot;vout_sz&quot;: 1,</span><br><span class="line">      &quot;lock_time&quot;: 0,</span><br><span class="line">      &quot;size&quot;: 225,</span><br><span class="line">      &quot;in&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;prev_out&quot;: &#123;</span><br><span class="line">            &quot;hash&quot;: &quot;f4515fed3dc4a19b90a317b9840c243bac26114cf637522373a7d486b372600b&quot;,</span><br><span class="line">            &quot;n&quot;: 0</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;scriptSig&quot;: &quot;3046022100bb1ad26df930a51cce110cf44f7a48c3c561fd977500b1ae5d6b6fd13d0b3f4a022100c5b42951acedff14abba2736fd574bdb465f3e6f8da12e2c5303954aca7f78f301 04a7135bfe824c97ecc01ec7d7e336185c81e2aa2c41ab175407c09484ce9694b44953fcb751206564a9c24dd094d42fdbfdd5aad3e063ce6af4cfaaea4ea14fbb&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      &quot;out&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;value&quot;: &quot;0.01000000&quot;,</span><br><span class="line">          &quot;scriptPubKey&quot;: &quot;OP_DUP OP_HASH160 39aa3d569e06a1d7926dc4be1193c99bf2eb9ee0 OP_EQUALVERIFY OP_CHECKSIG&quot;,</span><br><span class="line">          &quot;address&quot;: &quot;16FuTPaeRSPVxxCnwQmdyx2PQWxX6HWzhQ&quot;,</span><br><span class="line">          &quot;next_in&quot;: &#123;</span><br><span class="line">            &quot;hash&quot;: &quot;1ebf2dd645b815a59e35485dd4ceebc0587a1b7588b810e42085b479ce507bfa&quot;,</span><br><span class="line">            &quot;n&quot;: 1</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      &quot;nid&quot;: &quot;9e763d097af86cb157abacc0bdb3e31db5968390d065f2af0453e3f03c9260b0&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;mrkl_tree&quot;: [</span><br><span class="line">    &quot;8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87&quot;,</span><br><span class="line">    &quot;fff2525b8931402dd09222c50775608f75787bd2b87e56995a7bdd30f79702c4&quot;,</span><br><span class="line">    &quot;6359f0868171b1d194cbee1af2f16ea598ae8fad666d9b012c8ed2b79a236ec4&quot;,</span><br><span class="line">    &quot;e9a66845e05d5abc0ad04ec80f774a7e585c6e8db975962d069a522137b80c1d&quot;,</span><br><span class="line">    &quot;ccdafb73d8dcd0173d5d5c3c9a0770d0b3953db889dab99ef05b1907518cb815&quot;,</span><br><span class="line">    &quot;8e30899078ca1813be036a073bbf80b86cdddde1c96e9e9c99e9e3782df4ae49&quot;,</span><br><span class="line">    &quot;f3e94742aca4b5ef85488dc37c06c3282295ffec960994b2c0d5ac2a25a95766&quot;</span><br><span class="line">  ],</span><br><span class="line">  &quot;next_block&quot;: &quot;00000000000080b66c911bd5ba14a74260057311eaeb1982802f7010f1a9f090&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>16进制数据，littleendian 表示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">01000000 int32_t nVersion; 版本信息</span><br><span class="line">50120119172a610421a6c3011dd330d9df07b63616c2cc1f1cd0020000000000 uint256 hashPrevBlock</span><br><span class="line">6657a9252aacd5c0b2940996ecff952228c3067cc38d4885efb5a4ac4247e9f3 uint256 hashMerkleRoot</span><br><span class="line">37221b4d nTime</span><br><span class="line">4c86041b nBits</span><br><span class="line">0f2b5710 nNonce</span><br><span class="line">040100000001</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000  第 1 笔交易 in &quot;hash&quot;</span><br><span class="line">ffffffff &quot;n&quot;</span><br><span class="line">08 044c86041b020602 &quot;coinbase&quot;</span><br><span class="line">ffffffff</span><br><span class="line">0100f2052a010000004341</span><br><span class="line">041b0e8c2567c12536aa13357b79a073dc4444acb83c4ec7a0e2f99dd7457516c5817242da796924ca4e99947d087fedf9ce467cb9f7c6287078f801df276fdf84 &quot;out&quot; - &quot;scriptPubKey&quot;</span><br><span class="line">ac000000000100000001032e38e9c0a84c6046d687d10556dcacc41d275ec55fc00779ac88fdf357a187000000008c493046022100c352d3dd993a981beba4a63ad15c209275ca9470abfcd57da93b58e4eb5dce82022100840792bc1f456062819f15d33ee7055cf7b5ee1af1ebcc6028d9cdb1c3af7748014104f46db5e9d61a9dc27b8d64ad23e7383a4e6ca164593c2527c038c0857eb67ee8e825dca65046b82c9331586c82e0fd1f633f25f87c161bc6f8a630121df2b3d3ffffffff0200e32321000000001976a914c398efa9c392ba6013c5e04ee729755ef7f58b3288ac000fe208010000001976a914948c765a6914d43f2a7ac177da2c2f6b52de3d7c88ac000000000100000001c33ebff2a709f13d9f9a7569ab16a32786af7d7e2de09265e41c61d078294ecf010000008a4730440220032d30df5ee6f57fa46cddb5eb8d0d9fe8de6b342d27942ae90a3231e0ba333e02203deee8060fdc70230a7f5b4ad7d7bc3e628cbe219a886b84269eaeb81e26b4fe014104ae31c31bf91278d99b8377a35bbce5b27d9fff15456839e919453fc7b3f721f0ba403ff96c9deeb680e5fd341c0fc3a7b90da4631ee39560639db462e9cb850fffffffff0240420f00000000001976a914b0dcbf97eabf4404e31d952477ce822dadbe7e1088acc060d211000000001976a9146b1281eec25ab4e1e0793ff4e08ab1abb3409cd988ac0000000001000000010b6072b386d4a773235237f64c1126ac3b240c84b917a3909ba1c43ded5f51f4000000008c493046022100bb1ad26df930a51cce110cf44f7a48c3c561fd977500b1ae5d6b6fd13d0b3f4a022100c5b42951acedff14abba2736fd574bdb465f3e6f8da12e2c5303954aca7f78f3014104a7135bfe824c97ecc01ec7d7e336185c81e2aa2c41ab175407c09484ce9694b44953fcb751206564a9c24dd094d42fdbfdd5aad3e063ce6af4cfaaea4ea14fbbffffffff0140420f00000000001976a91439aa3d569e06a1d7926dc4be1193c99bf2eb9ee088ac00000000</span><br></pre></td></tr></table></figure></p>
+<p>hash 是这个区块的 header 的 hash 值，也就是下面的数据的 hash 值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class CBlockHeader</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    // header</span><br><span class="line">    int32_t nVersion;</span><br><span class="line">    uint256 hashPrevBlock;</span><br><span class="line">    uint256 hashMerkleRoot;</span><br><span class="line">    uint32_t nTime;</span><br><span class="line">    uint32_t nBits;</span><br><span class="line">    uint32_t nNonce;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="代码入口"><a href="#代码入口" class="headerlink" title="代码入口"></a>代码入口</h2><p><img alt="83035bde.png" src="/2018/06/13/学习笔记/区块链/bitcoin/比特币代码解析/83035bde.png" width="" height=""></p>
+<h2 id="检查点"><a href="#检查点" class="headerlink" title="检查点"></a>检查点</h2><p>可以自己生成几个区块，然后放到下面的字段中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">static Checkpoints::MapCheckpoints mapCheckpoints =</span><br><span class="line">        boost::assign::map_list_of</span><br><span class="line">        ( BLOCK_HEIGHT, uint256S(&quot;0xBLOCK_HASH&quot;));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">static const Checkpoints::CCheckpointData data = &#123;</span><br><span class="line">        &amp;mapCheckpoints,</span><br><span class="line">       bitcoin-cli getblock [last checkpoint block], then get the unix time, // * UNIX timestamp of last checkpoint block</span><br><span class="line">        Write a script to count?,   // * total number of transactions between genesis and last checkpoint</span><br><span class="line">                    //   (the tx=... number in the SetBestChain debug.log lines)</span><br><span class="line">        estimate_a_number     // * estimated number of transactions per day after checkpoint</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// What makes a good checkpoint block?</span><br><span class="line">    // + Is surrounded by blocks with reasonable timestamps</span><br><span class="line">    //   (no blocks before with a timestamp after, none after with</span><br><span class="line">    //    timestamp before)</span><br><span class="line">    // + Contains no strange transactions</span><br><span class="line">    static MapCheckpoints mapCheckpoints =</span><br><span class="line">        boost::assign::map_list_of</span><br></pre></td></tr></table></figure>
+<h2 id="Merkle-Tree相关"><a href="#Merkle-Tree相关" class="headerlink" title="Merkle Tree相关"></a>Merkle Tree相关</h2><p>多笔交易，收集在每块的交易数据部分，然后计算hash值，每对hash值在计算hash值，直到最后一个。the merkle root of a    merkle tree.<br>4f68594945ccded4d77a01992db7f4c5 是4笔交易的merkle root</p>
+<p><img alt="88f81555.png" src="/2018/06/13/学习笔记/区块链/bitcoin/比特币代码解析/88f81555.png" width="" height=""></p>
+<p>merkle_root.cpp</p>
+<p><img alt="2d44838b.png" src="/2018/06/13/学习笔记/区块链/bitcoin/比特币代码解析/2d44838b.png" width="" height=""></p>
+<p>而这样做的好处，也就是中本聪描述到的“简化支付验证”（SPV）的概念:而不是下载每一笔交易以及每一个区块，一个“轻客户端”（light client）可以仅下载链的区块头，每个区块中仅包含五项内容，数据块大小为80字节：</p>
+<ol>
+<li>上一区块头的哈希值</li>
+<li>时间戳</li>
+<li>挖矿难度值</li>
+<li>工作量证明随机数（nonce）</li>
+<li>包含该区块交易的梅克尔树的根哈希</li>
+</ol>
 
           
         
@@ -1351,7 +1093,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/05/09/生活小知识/医药健康/皮肤颜色的形成原理/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/06/09/学习笔记/区块链/概念/多重签名/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1370,7 +1112,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/05/09/生活小知识/医药健康/皮肤颜色的形成原理/" itemprop="url">皮肤颜色的形成原理</a></h1>
+                <a class="post-title-link" href="/2018/06/09/学习笔记/区块链/概念/多重签名/" itemprop="url">多重签名</a></h1>
         
 
         <div class="post-meta">
@@ -1382,7 +1124,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-09T08:49:44+08:00">2018-05-09</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-09T21:47:32+08:00">2018-06-09</time>
             
 
             
@@ -1403,7 +1145,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/健康/" itemprop="url" rel="index"><span itemprop="name">健康</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
 
                 
                 
@@ -1438,11 +1180,13 @@
 
       
         
-          <p>最近宝宝大人开始关注自己的容貌啦，可惜爸爸比较黑。<br>宝宝想要美白，那么我就帮忙调研一下，看看美白的可行性有多少。说实话，我个人觉得改变的可能性不大，只能是表面覆盖。</p>
-<p>先说结论：<br>遗传基因决定肤色的基础色调以及能晒黑多少。<br>能做的就是注意饮食，规律生活，调节内分泌，防晒，防紫外线。防止黑色素的生成，维持原有的肤色基础。<br>市面的美白产品都是通过处理黑色素来实现的，做的最好的也就是达到基因的肤色。</p>
+          <p>常规的签名机制下，如果私钥丢失，那么就无法花费对应地址的货币了，因为无法做签名。</p>
+<p>所以引入了多重签名的概念，来解决这个问题</p>
+<p>具体来说，就是假设N个人分别持有N个私钥，只要其中M个人同意签名就可以动用某个“联合地址”的资金。</p>
+<p>多重签名地址实际上是一个Script Hash，以2-3类型的多重签名为例，它的创建过程如下：</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/05/09/生活小知识/医药健康/皮肤颜色的形成原理/#more" rel="contents">
+            <a class="btn" href="/2018/06/09/学习笔记/区块链/概念/多重签名/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1498,7 +1242,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/05/08/工具相关/docker/docker入门/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/06/08/学习笔记/区块链/区块链应用汇总/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1517,7 +1261,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/05/08/工具相关/docker/docker入门/" itemprop="url">docker入门</a></h1>
+                <a class="post-title-link" href="/2018/06/08/学习笔记/区块链/区块链应用汇总/" itemprop="url">区块链应用汇总</a></h1>
         
 
         <div class="post-meta">
@@ -1529,7 +1273,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-08T20:28:06+08:00">2018-05-08</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-08T18:33:26+08:00">2018-06-08</time>
             
 
             
@@ -1550,7 +1294,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
 
                 
                 
@@ -1586,67 +1330,7 @@
       
         
           
-            <p><a href="https://kitematic.com/" target="_blank" rel="noopener">GUI工具</a></p>
-<h2 id="什么是-Docker"><a href="#什么是-Docker" class="headerlink" title="什么是 Docker"></a>什么是 Docker</h2><p> Go 语言实现的操作系统层面的虚拟化技术。由于隔离的进程独立于宿主和其它的隔离的进程，因此也称其为容器。<br>传统虚拟机技术是虚拟出一套硬件后，在其上运行一个完整操作系统，在该系统上再运行所需应用进程；<br>而容器内的应用进程直接运行于宿主的内核，容器内没有自己的内核，而且也没有进行硬件虚拟。因此容器要比传统虚拟机更为轻便。<br>Docker 在容器的基础上，进行了进一步的封装，从文件系统、网络互联到进程隔离等等，极大的简化了容器的创建和维护。使得 Docker 技术比虚拟机技术更为轻便、快捷。</p>
-<h2 id="为什么要使用-Docker"><a href="#为什么要使用-Docker" class="headerlink" title="为什么要使用 Docker"></a>为什么要使用 Docker</h2><ul>
-<li><p>更高效的利用系统资源<br>不需要进行硬件虚拟以及运行完整操作系统等额外开销</p>
-</li>
-<li><p>更快速的启动时间<br>直接运行于宿主内核，无需启动完整的操作系统。大大的节约了开发、测试、部署的时间。</p>
-</li>
-<li><p>一致的运行环境<br>Docker 的镜像提供了除内核外完整的运行时环境，确保了应用运行环境一致性</p>
-</li>
-<li><p>持续交付和部署<br>使用 Docker 可以通过定制应用镜像来实现持续集成、持续交付、部署。开发人员可以通过 Dockerfile 来进行镜像构建，并结合 持续集成(Continuous Integration) 系统进行集成测试，而运维人员则可以直接在生产环境中快速部署该镜像，甚至结合 持续部署(Continuous Delivery/Deployment) 系统进行自动部署。</p>
-</li>
-</ul>
-<p>而且使用 Dockerfile 使镜像构建透明化，不仅仅开发团队可以理解应用运行环境，也方便运维团队理解应用运行所需条件，帮助更好的生产环境中部署该镜像。</p>
-<ul>
-<li><p>更轻松的迁移<br>由于 Docker 确保了执行环境的一致性，使得应用的迁移更加容易。Docker 可以在很多平台上运行，无论是物理机、虚拟机、公有云、私有云，甚至是笔记本，其运行结果是一致的。因此用户可以很轻易的将在一个平台上运行的应用，迁移到另一个平台上，而不用担心运行环境的变化导致应用无法正常运行的情况。</p>
-</li>
-<li><p>更轻松的维护和扩展<br>Docker 使用的分层存储以及镜像的技术，使得应用重复部分的复用更为容易，也使得应用的维护更新更加简单，基于基础镜像进一步扩展镜像也变得非常简单。此外，Docker 团队同各个开源项目团队一起维护了一大批高质量的 官方镜像，既可以直接在生产环境使用，又可以作为基础进一步定制，大大的降低了应用服务的镜像制作成本。</p>
-</li>
-</ul>
-<p>对比传统虚拟机总结</p>
-<table>
-<thead>
-<tr>
-<th>特性</th>
-<th>容器</th>
-<th>虚拟机</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>启动</td>
-<td>秒级</td>
-<td>分钟级</td>
-</tr>
-<tr>
-<td>硬盘使用</td>
-<td>一般为 MB</td>
-<td>一般为 GB</td>
-</tr>
-<tr>
-<td>性能</td>
-<td>接近原生</td>
-<td>弱于</td>
-</tr>
-<tr>
-<td>系统支持量</td>
-<td>单机支持上千个容器</td>
-<td>一般几十个</td>
-</tr>
-</tbody>
-</table>
-<h2 id="Docker-包括三个基本概念"><a href="#Docker-包括三个基本概念" class="headerlink" title="Docker 包括三个基本概念"></a>Docker 包括三个基本概念</h2><h3 id="镜像（Image）"><a href="#镜像（Image）" class="headerlink" title="镜像（Image）"></a>镜像（Image）</h3><p>操作系统分为内核和用户空间。对于 Linux 而言，内核启动后，会挂载 root 文件系统为其提供用户空间支持。而 Docker 镜像（Image），就相当于是一个 root 文件系统。比如官方镜像 ubuntu:16.04 就包含了完整的一套 Ubuntu 16.04 最小系统的 root 文件系统。</p>
-<p>Docker 镜像是一个特殊的文件系统，除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。镜像不包含任何动态数据，其内容在构建之后也不会被改变</p>
-<h4 id="分层存储"><a href="#分层存储" class="headerlink" title="分层存储"></a>分层存储</h4><p>因为镜像包含操作系统完整的 root 文件系统，其体积往往是庞大的，因此在 Docker 设计时，就充分利用 Union FS 的技术，将其设计为分层存储的架构。所以严格来说，镜像并非是像一个 ISO 那样的打包文件，镜像只是一个虚拟的概念，其实际体现并非由一个文件组成，而是由一组文件系统组成，或者说，由多层文件系统联合组成。</p>
-<p>镜像构建时，会一层层构建，前一层是后一层的基础。每一层构建完就不会再发生改变，后一层上的任何改变只发生在自己这一层。比如，删除前一层文件的操作，实际不是真的删除前一层的文件，而是仅在当前层标记为该文件已删除。在最终容器运行的时候，虽然不会看到这个文件，但是实际上该文件会一直跟随镜像。因此，在构建镜像的时候，需要额外小心，每一层尽量只包含该层需要添加的东西，任何额外的东西应该在该层构建结束前清理掉。</p>
-<p>分层存储的特征还使得镜像的复用、定制变的更为容易。甚至可以用之前构建好的镜像作为基础层，然后进一步添加新的层，以定制自己所需的内容，构建新的镜像。</p>
-<h3 id="容器（Container）"><a href="#容器（Container）" class="headerlink" title="容器（Container）"></a>容器（Container）</h3><p>镜像和容器的关系，就像是面向对象程序设计中的类和实例一样，镜像是静态的定义，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等。<br>容器存储层的生存周期和容器一样，容器消亡时，容器存储层也随之消亡。因此，任何保存于容器存储层的信息都会随容器删除而丢失。</p>
-<p>按照 Docker 最佳实践的要求，容器不应该向其存储层内写入任何数据，容器存储层要保持无状态化。所有的文件写入操作，都应该使用 数据卷（Volume）、或者绑定宿主目录，在这些位置的读写会跳过容器存储层，直接对宿主(或网络存储)发生读写，其性能和稳定性更高。</p>
-<p>数据卷的生存周期独立于容器，容器消亡，数据卷不会消亡。因此，使用数据卷后，容器可以随意删除、重新 run，数据却不会丢失。</p>
-<h3 id="仓库（Repository）"><a href="#仓库（Repository）" class="headerlink" title="仓库（Repository）"></a>仓库（Repository）</h3><p>镜像构建完成后，可以很容易的在当前宿主上运行，但是，如果需要在其它服务器上使用这个镜像，我们就需要一个集中的存储、分发镜像的服务，Docker Registry 就是这样的服务。</p>
-<h2 id="mac-安装-docker"><a href="#mac-安装-docker" class="headerlink" title="mac 安装 docker"></a>mac 安装 docker</h2><p><code>brew cask install docker</code><br>在 app 里面找到 docker 运行，查看是否正常<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">➜  bitcoin docker --version</span><br><span class="line">Docker version 18.03.1-ce, build 9ee9f40</span><br><span class="line">➜  bitcoin docker-compose --version</span><br><span class="line">docker-compose version 1.21.1, build 5a3f1a3</span><br><span class="line">➜  bitcoin docker-machine --version</span><br><span class="line">docker-machine version 0.14.0, build 89b8332</span><br></pre></td></tr></table></figure></p>
+            <h2 id="Factom-公证通-–基于区块链的存证系统"><a href="#Factom-公证通-–基于区块链的存证系统" class="headerlink" title="Factom(公证通)–基于区块链的存证系统"></a>Factom(公证通)–基于区块链的存证系统</h2><p>ongoing…</p>
 
           
         
@@ -1700,7 +1384,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/05/08/学习笔记/开源库/SOUI/soui-combobox/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/06/06/学习笔记/算法/Merkle-Tree介绍/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1719,7 +1403,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/05/08/学习笔记/开源库/SOUI/soui-combobox/" itemprop="url">soui-combobox</a></h1>
+                <a class="post-title-link" href="/2018/06/06/学习笔记/算法/Merkle-Tree介绍/" itemprop="url">Merkle Tree介绍</a></h1>
         
 
         <div class="post-meta">
@@ -1731,7 +1415,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-08T17:18:59+08:00">2018-05-08</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-06T19:25:46+08:00">2018-06-06</time>
             
 
             
@@ -1752,14 +1436,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/UI/" itemprop="url" rel="index"><span itemprop="name">UI</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/算法/" itemprop="url" rel="index"><span itemprop="name">算法</span></a></span>
 
                 
                 
@@ -1795,9 +1472,331 @@
       
         
           
-            <p>combobox的使用</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">combobox</span> <span class="attr">name</span>=<span class="string">"rf_cmb"</span> <span class="attr">size</span>=<span class="string">"120, 24"</span> <span class="attr">dropDown</span>=<span class="string">"1"</span> <span class="attr">skin</span>=<span class="string">"skin_border"</span> <span class="attr">btnSkin</span>=<span class="string">"skin_cmbBtn"</span> <span class="attr">dropHeight</span>=<span class="string">"150"</span> <span class="attr">dotted</span>=<span class="string">"0"</span> <span class="attr">animateTime</span>=<span class="string">"200"</span> <span class="attr">curSel</span>=<span class="string">"0"</span> <span class="attr">drawFocusRect</span>=<span class="string">"0"</span> <span class="attr">colorText</span>=<span class="string">"#000000ff"</span> <span class="attr">colorBkgnd</span>=<span class="string">"#FFFFFF"</span> <span class="attr">pos</span>=<span class="string">"24,400"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">liststyle</span> <span class="attr">iconSkin</span>=<span class="string">""</span> <span class="attr">itemSkin</span>=<span class="string">""</span> <span class="attr">itemHeight</span>=<span class="string">"24"</span> <span class="attr">colorText</span>=<span class="string">"#000000"</span> <span class="attr">colorSelText</span>=<span class="string">"#FFFFFF"</span> <span class="attr">colorItemBkgnd</span>=<span class="string">"#FFFFFF"</span> <span class="attr">colorItemSelBkgnd</span>=<span class="string">"rgb(51,153,255)"</span> /&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">editstyle</span> <span class="attr">inset</span>=<span class="string">"5,0,5,0"</span> <span class="attr">colorText</span>=<span class="string">"#000000"</span> <span class="attr">align</span>=<span class="string">"left"</span> <span class="attr">colorBkgnd</span>=<span class="string">"#FFFFFF"</span> /&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">items</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">item</span> <span class="attr">text</span>=<span class="string">"  部分"</span> /&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">item</span> <span class="attr">text</span>=<span class="string">"  全部"</span>  <span class="attr">data</span>=<span class="string">"100"</span> /&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">items</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">combobox</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="changed事件"><a href="#changed事件" class="headerlink" title="changed事件"></a>changed事件</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//soui消息</span></span><br><span class="line">EVENT_MAP_BEGIN()</span><br><span class="line">  EVENT_ID_HANDLER(R.id.rf_cmb, EventCBSelChange::EventID, OnRfCmbChange)</span><br><span class="line">...</span><br><span class="line">EVENT_MAP_END()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnRfCmbChange</span><span class="params">(EventArgs *e)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> CMainDlg::OnRfCmbChange(EventArgs *e)</span><br><span class="line">&#123;</span><br><span class="line">	EventCBSelChange * e2 = sobj_cast&lt;EventCBSelChange&gt;(e);</span><br><span class="line">	<span class="keyword">if</span> (e2-&gt;nCurSel == <span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//m_logAdapter-&gt;SetLevel(e2-&gt;nCurSel);</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <h2 id="什么是-Merkle-Tree"><a href="#什么是-Merkle-Tree" class="headerlink" title="什么是 Merkle Tree"></a>什么是 Merkle Tree</h2><p>是一种树，也称为 Merkle Hash Tree，因为所有节点都是 hash 值</p>
+<p>在密码学及计算机科学中，哈希树（hash tree）是一种树形数据结构，每个叶节点均以数据块的哈希作为标签，而非叶节点则以其子节点标签的加密哈希作为标签 。哈希树能够高效、安全地验证大型数据结构的内容，是哈希链的推广形式。</p>
+<p>哈希树的概念由瑞夫·墨克于 1979 年申请专利，故亦称墨克树（Merkle tree）。</p>
+<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ul>
+<li>它是一种树，可以是二叉树，也可以多叉树，具有树结构的所有特点</li>
+<li>叶子节点上的 value，是由你指定的，这主要看你的设计了，如 Merkle Hash Tree 会将数据的 Hash 值作为叶子节点的值；</li>
+<li>非叶子节点的 value 是根据它下面所有的叶子节点值，然后按照一定的算法计算而得出的。<br>如 Merkle Hash Tree 的非叶子节点 value 的计算方法是将该节点的所有子节点进行组合，然后对组合结果进行 hash 计算所得出的 hash value。</li>
+</ul>
+<p><img alt="8e3c5408.png" src="/2018/06/06/学习笔记/算法/Merkle-Tree介绍/8e3c5408.png" width="" height=""></p>
+<h2 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h2><h3 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h3><p>最初Merkle Tree目的是高效的处理Lamport one-time signatures。 每一个Lamport key只能被用来签名一个消息，但是与Merkle tree结合可以来签名多条Merkle。这种方法成为了一种高效的数字签名框架，即Merkle Signature Scheme。</p>
+<p>Merkle proof 如何工作的?</p>
+<p>用来判断下面几种情况</p>
+<ol>
+<li>数据是否属于 Merkle tree</li>
+<li>不需要保存整个数据集，就能够简洁的证明某个数据属于该数据集</li>
+<li>能够证明一个数据集属于一组更大的数据集，而不需要展示整个数据集或者他的子集</li>
+</ol>
+<p>Merkle Tree 拓展了单向哈希的应用。<br>Merkle proof 是通过把子哈希连在一起然后再计算哈希的方式一直递归向上，直到得到根哈希值，作为公钥。<br>单向哈希算法不会产生碰撞，并且是确定性算法，不会有两个明文的哈希值相同的情况。</p>
+<p><img alt="d7199733.png" src="/2018/06/06/学习笔记/算法/Merkle-Tree介绍/d7199733.png" width="" height=""></p>
+<p>比特币的Merkle Tree<br><img alt="2d44838b.png" src="/2018/06/06/学习笔记/算法/Merkle-Tree介绍/2d44838b.png" width="" height=""></p>
+<h3 id="P2P网络"><a href="#P2P网络" class="headerlink" title="P2P网络"></a>P2P网络</h3><p>在P2P网络中，Merkle Tree用来确保从其他节点接受的数据块没有损坏且没有被替换，甚至检查其他节点不会欺骗或者发布虚假的块。</p>
+<h3 id="Trusted-Computing"><a href="#Trusted-Computing" class="headerlink" title="Trusted Computing"></a>Trusted Computing</h3><p><img alt="e636ff03.png" src="/2018/06/06/学习笔记/算法/Merkle-Tree介绍/e636ff03.png" width="" height=""></p>
+<h3 id="IPFS"><a href="#IPFS" class="headerlink" title="IPFS"></a>IPFS</h3><p>IPFS(InterPlanetary File System)是很多NB的互联网技术的综合体，如DHT( Distributed HashTable，分布式哈希表)，Git版本控制系统，Bittorrent等。它创建了一个P2P的集群，这个集群允许IPFS对象的交换。全部的IPFS对象形成了一个被称作Merkle DAG的加密认证数据结构。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/06/05/学习笔记/linux/ubuntu/ubuntu环境搭建/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/05/学习笔记/linux/ubuntu/ubuntu环境搭建/" itemprop="url">ubuntu环境搭建</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-05T17:58:52+08:00">2018-06-05</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>版本 16.04 TLS</p>
+<h2 id="切换源"><a href="#切换源" class="headerlink" title="切换源"></a>切换源</h2><p>备份 <code>/etc/apt/sources.list</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo cp /etc/apt/sources.list /etc/apt/sources.list_backup</span><br><span class="line"></span><br><span class="line">// 修改源</span><br><span class="line">sed -i &apos;s/security.ubuntu.com/mirrors.aliyun.com/g&apos; /etc/apt/sources.list</span><br><span class="line">sed -i &apos;s/archive.ubuntu.com/mirrors.aliyun.com/g&apos; /etc/apt/sources.list</span><br></pre></td></tr></table></figure></p>
+<p>输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit /etc/apt/sources.list</span><br></pre></td></tr></table></figure></p>
+<p>将下面的源复制到文件中，注销一下在执行，问题少些。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get upgrade</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"># 阿里云deb cdrom:[Ubuntu 16.04 LTS _Xenial Xerus_ - Release amd64 (20160420.1)]/ xenial main restricted</span><br><span class="line">deb-src http://archive.ubuntu.com/ubuntu xenial main restricted #Added by software-properties</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ xenial main restricted multiverse universe #Added by software-properties</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted multiverse universe #Added by software-properties</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial universe</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-updates universe</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial multiverse</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-updates multiverse</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse #Added by software-properties</span><br><span class="line">deb http://archive.canonical.com/ubuntu xenial partner</span><br><span class="line">deb-src http://archive.canonical.com/ubuntu xenial partner</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted multiverse universe #Added by software-properties</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-security universe</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-security multiverse</span><br><span class="line"></span><br><span class="line"># 清华大学 deb cdrom:[Ubuntu 16.04 LTS _Xenial Xerus_ - Release amd64 (20160420.1)]/ xenial main restricted</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial main restricted</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates main restricted</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial universe</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates universe</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial multiverse</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates multiverse</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security main restricted</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security universe</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security multiverse</span><br><span class="line"></span><br><span class="line"># Xenial (16.04) - Last update : Mon, 04 Jun 2018 23:27:51 UTC / Revision: 333935</span><br><span class="line">deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial main</span><br><span class="line">deb-src http://apt.llvm.org/xenial/ llvm-toolchain-xenial main</span><br><span class="line"># 5.0</span><br><span class="line">deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-5.0 main</span><br><span class="line">deb-src http://apt.llvm.org/xenial/ llvm-toolchain-xenial-5.0 main</span><br><span class="line"># 6.0</span><br><span class="line">deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-6.0 main</span><br><span class="line">deb-src http://apt.llvm.org/xenial/ llvm-toolchain-xenial-6.0 main</span><br></pre></td></tr></table></figure>
+<p><a href="http://apt.llvm.org/" target="_blank" rel="noopener">clang源</a></p>
+<h2 id="install-ssh"><a href="#install-ssh" class="headerlink" title="install ssh"></a>install ssh</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install ssh</span><br><span class="line">service ssh status</span><br></pre></td></tr></table></figure>
+<h2 id="clang-6-0-on-Ubuntu-16-04-xenial-lldb"><a href="#clang-6-0-on-Ubuntu-16-04-xenial-lldb" class="headerlink" title="clang (6.0) on Ubuntu 16.04 (xenial) lldb"></a>clang (6.0) on Ubuntu 16.04 (xenial) lldb</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -</span><br><span class="line">sudo apt-get install clang-6.0 clang-tools-6.0 clang-6.0-doc libclang-common-6.0-dev libclang-6.0-dev libclang1-6.0 libllvm-6.0-ocaml-dev libllvm6.0 lldb-6.0 llvm-6.0 llvm-6.0-dev llvm-6.0-doc llvm-6.0-examples llvm-6.0-runtime clang-format-6.0 python-clang-6.0 lldb-6.0-dev lld-6.0 libfuzzer-6.0-dev</span><br></pre></td></tr></table></figure>
+<p>sudo apt-get remove –auto-remove lldb</p>
+<p>lldb 7.0<br>sudo add-apt-repository ppa:jonathonf/gcc-7.1<br>sudo apt-get update<br>sudo apt-get install gcc-7 g++-7</p>
+<h2 id="支持exFat"><a href="#支持exFat" class="headerlink" title="支持exFat"></a>支持exFat</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install exfat-fuse exfat-utils</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/06/05/学习笔记/区块链/通用/Stellar学习-入门/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/05/学习笔记/区块链/通用/Stellar学习-入门/" itemprop="url">Stellar学习-入门</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-05T17:40:40+08:00">2018-06-05</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Stellar-网络概览"><a href="#Stellar-网络概览" class="headerlink" title="Stellar 网络概览"></a>Stellar 网络概览</h2><p><img alt="22fe07f0.png" src="/2018/06/05/学习笔记/区块链/通用/Stellar学习-入门/22fe07f0.png" width="" height=""></p>
+<p>使用 Stellar 网路，可以构建钱包应用，银行工具，支持支付的智能设备。 使用起来并不复杂。</p>
+<h2 id="API-Horizon"><a href="#API-Horizon" class="headerlink" title="API: Horizon"></a>API: Horizon</h2><p>大多数应用是通过 Horizon 来同 Stellar 网络交互的。 是一个 RESTful HTTP API 服务。<br>可以提交交易，检查账户，订阅事件，也可以使用支持多种语言的 Stellar SDK</p>
+<h2 id="Stellar-Core"><a href="#Stellar-Core" class="headerlink" title="Stellar Core"></a>Stellar Core</h2><p>Stellar Core(后面简称SC) 是 Stellar 网络的主干网，每个 Horizon 服务都会连接到 SC，SC 负责校验交易，达成共识。<br>核心是大量的单独节点运行而构成的分布式网络。网络上的每笔交易都有手续费 100 stroops (等于 0.00001 XLM). 防止垃圾信息<br>污染网络。</p>
+<h2 id="Stellar-一致性协议-SCP"><a href="#Stellar-一致性协议-SCP" class="headerlink" title="Stellar 一致性协议 (SCP)"></a>Stellar 一致性协议 (SCP)</h2><p><a href="https://www.stellar.org/cn/papers/stellar-consensus-protocol.pdf?noredirect=zh" target="_blank" rel="noopener">SCP白皮书</a><br>相对于活跃度 SCP 更看重安全，对于行为可疑的节点会停止网络处理，直到达成共识</p>
+<h2 id="使用-docker-运行-Stellar-Core"><a href="#使用-docker-运行-Stellar-Core" class="headerlink" title="使用 docker 运行 Stellar Core"></a>使用 docker 运行 Stellar Core</h2><p><a href="https://hub.docker.com/r/stellar/quickstart/" target="_blank" rel="noopener">stellar/quickstart docker image</a></p>
+<h2 id="Testnet"><a href="#Testnet" class="headerlink" title="Testnet"></a>Testnet</h2><p>提供了用于测试的网络<a href="https://www.stellar.org/developers/guides/concepts/test-net.html" target="_blank" rel="noopener">这里</a></p>
+<h2 id="ubuntu-16-04-编译环境"><a href="#ubuntu-16-04-编译环境" class="headerlink" title="ubuntu 16.04 编译环境"></a>ubuntu 16.04 编译环境</h2><h3 id="安装-clang-6-0-等依赖库"><a href="#安装-clang-6-0-等依赖库" class="headerlink" title="安装 clang 6.0 等依赖库"></a>安装 clang 6.0 等依赖库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -</span><br><span class="line">sudo apt-add-repository &quot;deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-6.0 main&quot;</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y clang-6.0</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install git build-essential pkg-config autoconf automake libtool bison flex libpq-dev pandoc</span><br><span class="line">// 安装 postgresql</span><br><span class="line">sudo apt-get install postgresql postgresql-contrib</span><br><span class="line">加入环境变量</span><br><span class="line">cd ~</span><br><span class="line">sudo nano .profile</span><br><span class="line">PATH=$PATH:/usr/lib/postgresql/5.9/bin</span><br><span class="line"></span><br><span class="line">执行命令</span><br><span class="line">. ~/.profile</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">git clone https://github.com/stellar/stellar-core.git</span><br><span class="line">cd stellar-core</span><br><span class="line">git submodule init</span><br><span class="line">git submodule update</span><br><span class="line">./autogen.sh</span><br><span class="line">./configure (If configure complains about compiler versions, try CXX=clang-5.0 ./configure or CXX=g++-5 ./configure or similar, depending on your compiler.)</span><br><span class="line">Type make or make -j (for aggressive parallel build)</span><br><span class="line">Type make check to run tests.</span><br><span class="line">Type make install to install.</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1840,7 +1839,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/34/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><span class="page-number current">35</span><a class="page-number" href="/page/36/">36</a><span class="space">&hellip;</span><a class="page-number" href="/page/72/">72</a><a class="extend next" rel="next" href="/page/36/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/34/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><span class="page-number current">35</span><a class="page-number" href="/page/36/">36</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" href="/page/36/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1887,7 +1886,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">719</span>
+                    <span class="site-state-item-count">792</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2040,7 +2039,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">70</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">72</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -2405,7 +2408,17 @@
                     
                       
                     
-                    <span class="site-state-item-count">176</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">181</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
