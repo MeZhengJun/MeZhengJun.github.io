@@ -108,7 +108,7 @@
 <meta property="og:description" content="记录常用的功能备查">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://zhengjunblog.top/2017/11/16/学习笔记/数据库/MySQL/MySQL学习/4c4ef002.png">
-<meta property="og:updated_time" content="2019-03-14T12:31:46.000Z">
+<meta property="og:updated_time" content="2019-05-01T00:31:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL学习">
 <meta name="twitter:description" content="记录常用的功能备查">
@@ -238,7 +238,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">72</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">71</span>
       </a>
 </li>
 
@@ -248,7 +248,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">808</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">825</span>
       </a>
 </li>
 
@@ -417,6 +417,13 @@
       
         <p>记录常用的功能备查</p>
 <a id="more"></a>
+<h1 id="新建用户"><a href="#新建用户" class="headerlink" title="新建用户"></a>新建用户</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">'username'</span>@<span class="string">'host'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'password'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">'demo'</span>@<span class="string">'%'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'1qaz'</span>;</span><br></pre></td></tr></table></figure>
+<p>username：你将创建的用户名<br>host：指定该用户在哪个主机上可以登陆，如果是本地用户可用localhost，如果想让该用户可以从任意远程主机登陆，可以使用通配符%<br>password：该用户的登陆密码，密码可以为空，如果为空则该用户可以不需要密码登陆服务器</p>
+<h2 id="授权"><a href="#授权" class="headerlink" title="授权"></a>授权</h2><p>privileges：用户的操作权限，如SELECT，INSERT，UPDATE等，如果要授予所的权限则使用ALL<br>databasename：数据库名<br>tablename：表名，如果要授予该用户对所有数据库和表的相应操作权限则可用<em>表示，如</em>.*</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">privileges</span> <span class="keyword">ON</span> databasename.tablename <span class="keyword">TO</span> <span class="string">'username'</span>@<span class="string">'host'</span></span><br><span class="line"><span class="keyword">GRANT</span> ALL <span class="keyword">ON</span> *.* <span class="keyword">TO</span> <span class="string">'demo'</span>@<span class="string">'%'</span>;</span><br></pre></td></tr></table></figure>
+<p>用以上命令授权的用户不能给其它用户授权，如果想让该用户可以授权，用以下命令:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">privileges</span> <span class="keyword">ON</span> databasename.tablename <span class="keyword">TO</span> <span class="string">'username'</span>@<span class="string">'host'</span> <span class="keyword">WITH</span> <span class="keyword">GRANT</span> <span class="keyword">OPTION</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="删除用户"><a href="#删除用户" class="headerlink" title="删除用户"></a>删除用户</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">USER</span> <span class="string">'username'</span>@<span class="string">'host'</span>;</span><br></pre></td></tr></table></figure>
 <h2 id="命令行登陆退出"><a href="#命令行登陆退出" class="headerlink" title="命令行登陆退出"></a>命令行登陆退出</h2><p><code>quit</code><br><code>mysql -u 用户名 -p</code><br><code>mysql -h 127.0.0.1 -u root -p</code></p>
 <h3 id="登录错误ERROR-1045-28000"><a href="#登录错误ERROR-1045-28000" class="headerlink" title="登录错误ERROR 1045 (28000)"></a>登录错误ERROR 1045 (28000)</h3><p>第一次安装时root用户没有密码，会出现这个问题。使用<code>mysqladmin -u root password</code>设置一下就可以了。  </p>
 <h2 id="SQL执行顺序"><a href="#SQL执行顺序" class="headerlink" title="SQL执行顺序"></a>SQL执行顺序</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">SELECT DISTINCT &lt;select_list&gt;</span><br><span class="line">FROM &lt;left_table&gt;</span><br><span class="line">&lt;join_type&gt; JOIN &lt;right_table&gt;</span><br><span class="line">ON &lt;join_condition&gt;</span><br><span class="line">WHERE &lt;where_condition&gt;</span><br><span class="line">GROUP BY &lt;group_by_list&gt;</span><br><span class="line">HAVING &lt;having_condition&gt;</span><br><span class="line">ORDER BY &lt;order_by_condition&gt;</span><br><span class="line">LIMIT &lt;limit_number&gt;</span><br></pre></td></tr></table></figure>
@@ -607,7 +614,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">808</span>
+                    <span class="site-state-item-count">825</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -762,9 +769,7 @@
                     
                       
                     
-                      
-                    
-                    <span class="site-state-item-count">72</span>
+                    <span class="site-state-item-count">71</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -1143,7 +1148,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">183</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">185</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -1200,7 +1209,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#命令行登陆退出"><span class="nav-number">1.</span> <span class="nav-text">命令行登陆退出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#登录错误ERROR-1045-28000"><span class="nav-number">1.1.</span> <span class="nav-text">登录错误ERROR 1045 (28000)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL执行顺序"><span class="nav-number">2.</span> <span class="nav-text">SQL执行顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询去重"><span class="nav-number">3.</span> <span class="nav-text">查询去重</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取信息"><span class="nav-number">4.</span> <span class="nav-text">获取信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取版本"><span class="nav-number">4.1.</span> <span class="nav-text">获取版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看所有用户信息"><span class="nav-number">4.2.</span> <span class="nav-text">查看所有用户信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看数据库相关信息"><span class="nav-number">4.3.</span> <span class="nav-text">查看数据库相关信息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置信息"><span class="nav-number">5.</span> <span class="nav-text">设置信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改数据库密码"><span class="nav-number">6.</span> <span class="nav-text">修改数据库密码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后一条记录"><span class="nav-number">7.</span> <span class="nav-text">最后一条记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除数据库"><span class="nav-number">8.</span> <span class="nav-text">删除数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导入、导出数据"><span class="nav-number">9.</span> <span class="nav-text">导入、导出数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询数据"><span class="nav-number">10.</span> <span class="nav-text">查询数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不重复查询"><span class="nav-number">10.1.</span> <span class="nav-text">不重复查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结果集排序"><span class="nav-number">10.2.</span> <span class="nav-text">结果集排序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#触发器"><span class="nav-number">11.</span> <span class="nav-text">触发器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NEW-和-OLD"><span class="nav-number">11.1.</span> <span class="nav-text">NEW 和 OLD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除触发器"><span class="nav-number">11.2.</span> <span class="nav-text">删除触发器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行顺序"><span class="nav-number">11.3.</span> <span class="nav-text">执行顺序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#procedure-vs-function"><span class="nav-number">12.</span> <span class="nav-text">procedure vs function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySql中delimiter的作用是什么"><span class="nav-number">13.</span> <span class="nav-text">MySql中delimiter的作用是什么?</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#新建用户"><span class="nav-number">1.</span> <span class="nav-text">新建用户</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#授权"><span class="nav-number">1.1.</span> <span class="nav-text">授权</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除用户"><span class="nav-number">2.</span> <span class="nav-text">删除用户</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#命令行登陆退出"><span class="nav-number">2.1.</span> <span class="nav-text">命令行登陆退出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#登录错误ERROR-1045-28000"><span class="nav-number">2.1.1.</span> <span class="nav-text">登录错误ERROR 1045 (28000)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL执行顺序"><span class="nav-number">2.2.</span> <span class="nav-text">SQL执行顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询去重"><span class="nav-number">2.3.</span> <span class="nav-text">查询去重</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取信息"><span class="nav-number">2.4.</span> <span class="nav-text">获取信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取版本"><span class="nav-number">2.4.1.</span> <span class="nav-text">获取版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看所有用户信息"><span class="nav-number">2.4.2.</span> <span class="nav-text">查看所有用户信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看数据库相关信息"><span class="nav-number">2.4.3.</span> <span class="nav-text">查看数据库相关信息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置信息"><span class="nav-number">2.5.</span> <span class="nav-text">设置信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改数据库密码"><span class="nav-number">2.6.</span> <span class="nav-text">修改数据库密码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后一条记录"><span class="nav-number">2.7.</span> <span class="nav-text">最后一条记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除数据库"><span class="nav-number">2.8.</span> <span class="nav-text">删除数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导入、导出数据"><span class="nav-number">2.9.</span> <span class="nav-text">导入、导出数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询数据"><span class="nav-number">2.10.</span> <span class="nav-text">查询数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不重复查询"><span class="nav-number">2.10.1.</span> <span class="nav-text">不重复查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结果集排序"><span class="nav-number">2.10.2.</span> <span class="nav-text">结果集排序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#触发器"><span class="nav-number">2.11.</span> <span class="nav-text">触发器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NEW-和-OLD"><span class="nav-number">2.11.1.</span> <span class="nav-text">NEW 和 OLD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除触发器"><span class="nav-number">2.11.2.</span> <span class="nav-text">删除触发器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行顺序"><span class="nav-number">2.11.3.</span> <span class="nav-text">执行顺序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#procedure-vs-function"><span class="nav-number">2.12.</span> <span class="nav-text">procedure vs function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySql中delimiter的作用是什么"><span class="nav-number">2.13.</span> <span class="nav-text">MySql中delimiter的作用是什么?</span></a></li></ol></li></ol></div>
             
 
           </div>

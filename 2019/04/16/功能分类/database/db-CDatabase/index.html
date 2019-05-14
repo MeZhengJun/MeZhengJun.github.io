@@ -99,17 +99,17 @@
 
 
 
-  <meta name="description" content="use ODBC access database insert">
+  <meta name="description" content="use ODBC access database insert123db.BeginTrans();db.ExecuteSQL(sql.c_str());db.CommitTrans(); insert by CRecordset插入图片https://blog.csdn.net/weixin_40026797/article/details/83719070 使用class wizard 添加">
 <meta property="og:type" content="article">
 <meta property="og:title" content="db-CDatabase">
 <meta property="og:url" content="http://zhengjunblog.top/2019/04/16/功能分类/database/db-CDatabase/index.html">
 <meta property="og:site_name" content="郑君的学习笔记">
-<meta property="og:description" content="use ODBC access database insert">
+<meta property="og:description" content="use ODBC access database insert123db.BeginTrans();db.ExecuteSQL(sql.c_str());db.CommitTrans(); insert by CRecordset插入图片https://blog.csdn.net/weixin_40026797/article/details/83719070 使用class wizard 添加">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-17T01:52:50.000Z">
+<meta property="og:updated_time" content="2019-05-01T00:28:48.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="db-CDatabase">
-<meta name="twitter:description" content="use ODBC access database insert">
+<meta name="twitter:description" content="use ODBC access database insert123db.BeginTrans();db.ExecuteSQL(sql.c_str());db.CommitTrans(); insert by CRecordset插入图片https://blog.csdn.net/weixin_40026797/article/details/83719070 使用class wizard 添加">
 
 
 
@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">72</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">71</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">808</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">825</span>
       </a>
 </li>
 
@@ -413,7 +413,29 @@
 
       
         <p>use ODBC access database</p>
-<h1 id="insert"><a href="#insert" class="headerlink" title="insert"></a>insert</h1>
+<h1 id="insert"><a href="#insert" class="headerlink" title="insert"></a>insert</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">db.BeginTrans();</span><br><span class="line">db.ExecuteSQL(sql.c_str());</span><br><span class="line">db.CommitTrans();</span><br></pre></td></tr></table></figure>
+<h1 id="insert-by-CRecordset"><a href="#insert-by-CRecordset" class="headerlink" title="insert by CRecordset"></a>insert by CRecordset</h1><p>插入图片<br><a href="https://blog.csdn.net/weixin_40026797/article/details/83719070" target="_blank" rel="noopener">https://blog.csdn.net/weixin_40026797/article/details/83719070</a></p>
+<p>使用class wizard 添加 CRecordset 的继承类,使用 mfc odbc consumer 选择要处理的表.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">db.BeginTrans();</span><br><span class="line"><span class="function">Ct_personRecordset <span class="title">rs</span><span class="params">(&amp;db)</span></span>; <span class="comment">//绑定数据库</span></span><br><span class="line"></span><br><span class="line"><span class="number">1.</span> Call AddNew.</span><br><span class="line"><span class="number">2.</span> Set field appropriately.</span><br><span class="line"><span class="number">3.</span> Call Update</span><br><span class="line"></span><br><span class="line">db.CommitTrans();</span><br></pre></td></tr></table></figure>
+<p>下面代码一直报错,未成功. Conversion is not supported</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// has picture need to store</span><br><span class="line">rs.m_f_pic.m_dwDataLength = vOut.size();</span><br><span class="line">HGLOBAL hGlobal = GlobalAlloc(GPTR, rs.m_f_pic.m_dwDataLength);</span><br><span class="line">rs.m_f_pic.m_hData = GlobalLock(hGlobal);</span><br><span class="line">memcpy_s(rs.m_f_pic.m_hData, rs.m_f_pic.m_dwDataLength, &amp;vOut[0], vOut.size());</span><br><span class="line"></span><br><span class="line">rs.SetFieldDirty(&amp;rs.m_f_pic, true);</span><br><span class="line">rs.SetFieldNull(&amp;rs.m_f_pic, false);</span><br><span class="line"></span><br><span class="line">while (!rs.CanUpdate())</span><br><span class="line">    Sleep(200);</span><br><span class="line">GlobalUnlock(rs.m_f_pic.m_hData);</span><br></pre></td></tr></table></figure>
+<h1 id="modify-by-CRecordset"><a href="#modify-by-CRecordset" class="headerlink" title="modify by CRecordset"></a>modify by CRecordset</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rs.Edit();</span><br><span class="line">rs.m_field1 = ...;<span class="comment">//字段1</span></span><br><span class="line">rs.m_field2 = ...;<span class="comment">//字段2</span></span><br><span class="line">.....</span><br><span class="line">rs.Update();</span><br></pre></td></tr></table></figure>
+<h1 id="CRecordset-相关说明"><a href="#CRecordset-相关说明" class="headerlink" title="CRecordset 相关说明"></a>CRecordset 相关说明</h1><p>Snapshots and Dynasets</p>
+<p>Snapshots 是静态数据,反应获取时的那一点的数据<br>Dynasets 是动态数据,如果有其他人修改了,会动态反应出来,需要调用 requery </p>
+<p>class view 窗口右键项目-菜单选择 add class- mfc - mfc odbc consumer 然后选择数据源,生成类</p>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><h2 id="CRecordset-的坑"><a href="#CRecordset-的坑" class="headerlink" title="CRecordset 的坑"></a>CRecordset 的坑</h2><p>手动修改了生成类的字段似乎不生效,需要重新生成.</p>
+<p>RFX_TEXT  nMaxLength  默认 255 不够用,需要手动修改<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">RFX_Text(pFX, _T(<span class="string">"[f_gis]"</span>), m_f_gis, <span class="number">1024</span>);</span><br><span class="line">RFX_Text(pFX, _T(<span class="string">"[f_gisArea]"</span>), m_f_gisArea, <span class="number">1024</span>);</span><br></pre></td></tr></table></figure></p>
+<h3 id="blob-error-Conversion-is-not-supported"><a href="#blob-error-Conversion-is-not-supported" class="headerlink" title="blob error: Conversion is not supported"></a>blob error: Conversion is not supported</h3><p>insert image to blob field error.</p>
+<h2 id="Lock-wait-timeout-exceeded-try-restarting-transaction"><a href="#Lock-wait-timeout-exceeded-try-restarting-transaction" class="headerlink" title="Lock wait timeout exceeded; try restarting transaction"></a>Lock wait timeout exceeded; try restarting transaction</h2><p>Enter MySQL</p>
+<p><code>mysql -u your_user -p</code></p>
+<p>2) Let’s see the list of locked tables</p>
+<p><code>mysql&gt; show open tables where in_use&gt;0;</code></p>
+<p>3) Let’s see the list of the current processes, one of them is locking your table(s)</p>
+<p><code>mysql&gt; show processlist;</code></p>
+<p>4) Kill one of these processes</p>
+<p><code>mysql&gt; kill &lt;put_process_id_here&gt;;</code></p>
+<h1 id="Conversion-is-not-supported"><a href="#Conversion-is-not-supported" class="headerlink" title="Conversion is not supported"></a>Conversion is not supported</h1><p>State:07006,Native:0,Origin:[MySQL][ODBC 8.0(a) Driver][mysqld-5.5.62-log]</p>
+
       
     </div>
 
@@ -559,7 +581,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">808</span>
+                    <span class="site-state-item-count">825</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -714,9 +736,7 @@
                     
                       
                     
-                      
-                    
-                    <span class="site-state-item-count">72</span>
+                    <span class="site-state-item-count">71</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -1095,7 +1115,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">183</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">185</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -1152,7 +1176,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#insert"><span class="nav-number">1.</span> <span class="nav-text">insert</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#insert"><span class="nav-number">1.</span> <span class="nav-text">insert</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#insert-by-CRecordset"><span class="nav-number">2.</span> <span class="nav-text">insert by CRecordset</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#modify-by-CRecordset"><span class="nav-number">3.</span> <span class="nav-text">modify by CRecordset</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CRecordset-相关说明"><span class="nav-number">4.</span> <span class="nav-text">CRecordset 相关说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">5.</span> <span class="nav-text">问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CRecordset-的坑"><span class="nav-number">5.1.</span> <span class="nav-text">CRecordset 的坑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#blob-error-Conversion-is-not-supported"><span class="nav-number">5.1.1.</span> <span class="nav-text">blob error: Conversion is not supported</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lock-wait-timeout-exceeded-try-restarting-transaction"><span class="nav-number">5.2.</span> <span class="nav-text">Lock wait timeout exceeded; try restarting transaction</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Conversion-is-not-supported"><span class="nav-number">6.</span> <span class="nav-text">Conversion is not supported</span></a></li></ol></div>
             
 
           </div>
