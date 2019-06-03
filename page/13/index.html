@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">825</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">785</span>
       </a>
 </li>
 
@@ -312,280 +312,6 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/01/14/语言相关/Java/springboot系列/spring-boot-swagger2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/14/语言相关/Java/springboot系列/spring-boot-swagger2/" itemprop="url">spring-boot swagger2</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-14T10:20:46+08:00">2019-01-14</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://github.com/springfox/springfox-demos" target="_blank" rel="noopener">springfox-demos</a><br><a href="https://github.com/OAI/OpenAPI-Specification" target="_blank" rel="noopener">OpenAPI-Specification</a></p>
-<p>注意，如果不指定请求的 Method 会把所有支持的 Method 都自动显示出来，GET，POST，HEAD，DELETE…等等</p>
-<h1 id="添加插件配置"><a href="#添加插件配置" class="headerlink" title="添加插件配置"></a>添加插件配置</h1><p>添加插件, 在这里获取 <a href="https://mvnrepository.com/" target="_blank" rel="noopener">https://mvnrepository.com/</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// https://mvnrepository.com/artifact/io.springfox/springfox-swagger2</span><br><span class="line">compile group: &apos;io.springfox&apos;, name: &apos;springfox-swagger2&apos;, version: &apos;2.9.2&apos;</span><br><span class="line">// https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui</span><br><span class="line">compile group: &apos;io.springfox&apos;, name: &apos;springfox-swagger-ui&apos;, version: &apos;2.9.2&apos;</span><br></pre></td></tr></table></figure></p>
-<h1 id="Swagger2-配置"><a href="#Swagger2-配置" class="headerlink" title="Swagger2 配置"></a>Swagger2 配置</h1><p>在主应用同级目录下创建 swagger2Config.java 内容如下，根据实际情况修改</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.google.common.base.Predicate;</span><br><span class="line"><span class="keyword">import</span> com.google.common.base.Predicates;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.builders.ApiInfoBuilder;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.builders.PathSelectors;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.builders.RequestHandlerSelectors;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.service.ApiInfo;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.spi.DocumentationType;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.spring.web.plugins.Docket;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.swagger2.annotations.EnableSwagger2;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableSwagger</span>2</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">swagger2Config</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Docket <span class="title">createRestApi</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2)</span><br><span class="line">                .groupName(<span class="string">"public-api"</span>)</span><br><span class="line">                .apiInfo(apiInfo())</span><br><span class="line">                .select()</span><br><span class="line">                .apis(RequestHandlerSelectors.basePackage(<span class="string">"com.example.demo"</span>))</span><br><span class="line">                .paths(paths())</span><br><span class="line">                .build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> ApiInfo <span class="title">apiInfo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ApiInfoBuilder()</span><br><span class="line">                .title(<span class="string">"REST API 文档演示"</span>)</span><br><span class="line">                .description(<span class="string">"Gradle 构建 Spring boot项目 集成 mybatis 使用 pagehelper 插件"</span>)</span><br><span class="line">                .termsOfServiceUrl(<span class="string">"http://zhengjunblog.top"</span>)</span><br><span class="line">                .version(<span class="string">"1.0"</span>)</span><br><span class="line">                .build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//Here is an example where we select any api that matches one of these paths</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Predicate&lt;String&gt; <span class="title">paths</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Predicates.or(</span><br><span class="line">                PathSelectors.regex(<span class="string">"/api/.*"</span>),</span><br><span class="line">                PathSelectors.regex(<span class="string">"/business/.*"</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>apis() 定义包含的类(controller and model classes)。这个是包括所有的 <code>RequestHandlerSelectors.any()</code>，可通过包名，类名来定制<br>paths() 通过路径映射来定制。</p>
-<h1 id="实体类的注释"><a href="#实体类的注释" class="headerlink" title="实体类的注释"></a>实体类的注释</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">package com.example.demo;</span><br><span class="line"></span><br><span class="line">import io.swagger.annotations.ApiModel;</span><br><span class="line">import io.swagger.annotations.ApiModelProperty;</span><br><span class="line"></span><br><span class="line">@ApiModel(value=&quot;Topic 对象&quot;,description=&quot;Topic 对象类的相关描述&quot;)</span><br><span class="line">public class Topic &#123;</span><br><span class="line"></span><br><span class="line">    @ApiModelProperty(value=&quot;Topic id&quot;,name=&quot;id&quot;,example=&quot;1&quot;,required=true)</span><br><span class="line">    private String id;</span><br><span class="line">    @ApiModelProperty(value=&quot;Topic string&quot;,name=&quot;topic&quot;,example=&quot;java&quot;,required=true)</span><br><span class="line">    private String topic;</span><br><span class="line">    @ApiModelProperty(value=&quot;Topic description&quot;,name=&quot;descript&quot;,example=&quot;a java description&quot;,required=true)</span><br><span class="line">    private String descript;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">@Configuration 注解 让Spring来加载该类配置</span><br><span class="line">@EnableSwagger2 注解 启用Swagger2。</span><br><span class="line"></span><br><span class="line">.apis(RequestHandlerSelectors.basePackage(&quot;com.example.demo.Controller&quot;))</span><br><span class="line">待扫描的接口包，Swagger会扫描该包下所有Controller定义的API ，并生成API文档（除了被@ApiIgnore指定的请求）。</span><br><span class="line"></span><br><span class="line">@ApiImplicitParams、@ApiImplicitParam 注解来给参数增加说明</span><br><span class="line">@Api：用在类上，说明该类的作用</span><br><span class="line">@ApiOperation(value = “接口说明”, httpMethod = “接口请求方式”, response = “接口返回参数类型”, notes = “接口发布说明”；其他参数可参考源码；</span><br><span class="line">@ApiImplicitParams：用在方法上包含一组参数说明</span><br><span class="line">@ApiImplicitParam：用在@ApiImplicitParams注解中，指定一个请求参数的各个方面</span><br><span class="line">  paramType：参数放在哪个地方</span><br><span class="line">    header--&gt;请求参数的获取：@RequestHeader</span><br><span class="line">    query--&gt;请求参数的获取：@RequestParam</span><br><span class="line">    path（用于restful接口）--&gt;请求参数的获取：@PathVariable</span><br><span class="line">    body（不常用）</span><br><span class="line">    form（不常用）</span><br><span class="line">  name：参数名</span><br><span class="line">  dataType：参数类型</span><br><span class="line">  required：参数是否必须传</span><br><span class="line">  value：参数的意思</span><br><span class="line">  defaultValue：参数的默认值</span><br><span class="line">@ApiResponses：用于表示一组响应</span><br><span class="line">@ApiResponse：用在@ApiResponses中，一般用于表达一个错误的响应信息</span><br><span class="line">code：数字，例如400</span><br><span class="line">message：信息，例如&quot;请求参数没填好&quot;</span><br><span class="line">response：抛出异常的类</span><br><span class="line">@ApiModel：描述一个Model的信息（这种一般用在post创建的时候，使用@RequestBody这样的场景，请求参数无法使用@ApiImplicitParam注解进行描述的时候）</span><br><span class="line">@ApiModelProperty()用于方法，字段； 表示对model属性的说明或者数据操作更改</span><br><span class="line">  value–字段说明</span><br><span class="line">  name–重写属性名字</span><br><span class="line">  dataType–重写属性类型</span><br><span class="line">  required–是否必填</span><br><span class="line">  example–举例说明</span><br><span class="line">  hidden–隐藏</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/01/11/学习笔记/linux/centos/centos-install-java/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/11/学习笔记/linux/centos/centos-install-java/" itemprop="url">centos-install java</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-11T17:34:02+08:00">2019-01-11</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Install OpenJDK 8 JDK</p>
-<p><code>sudo yum install java-1.8.0-openjdk-devel</code></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
     
       
 
@@ -1199,150 +925,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/01/10/学习笔记/开源库/消息中间件比较ZeroMq-RabbitMQ-ActiveMQ/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/10/学习笔记/开源库/消息中间件比较ZeroMq-RabbitMQ-ActiveMQ/" itemprop="url">消息中间件比较ZeroMq-RabbitMQ-ActiveMQ</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-10T10:57:04+08:00">2019-01-10</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h1><p>is one of the leading implementation of the AMQP protocol (along with Apache Qpid). Therefore, it implements a broker architecture, meaning that messages are queued on a central node before being sent to clients. This approach makes RabbitMQ very easy to use and deploy, because advanced scenarios like routing, load balancing or persistent message queuing are supported in just a few lines of code. However, it also makes it less scalable and “slower” because the central node adds latency and message envelopes are quite big.</p>
-<h1 id="ZeroMq"><a href="#ZeroMq" class="headerlink" title="ZeroMq"></a>ZeroMq</h1><p>is a very lightweight messaging system specially designed for high throughput/low latency scenarios like the one you can find in the financial world. Zmq supports many advanced messaging scenarios but contrary to RabbitMQ, you’ll have to implement most of them yourself by combining various pieces of the framework (e.g : sockets and devices). Zmq is very flexible but you’ll have to study the 80 pages or so of the guide (which I recommend reading for anybody writing distributed system, even if you don’t use Zmq) before being able to do anything more complicated than sending messages between 2 peers.</p>
-<h1 id="ActiveMQ"><a href="#ActiveMQ" class="headerlink" title="ActiveMQ"></a>ActiveMQ</h1><p>is in the middle ground. Like Zmq, it can be deployed with both broker and P2P topologies. Like RabbitMQ, it’s easier to implement advanced scenarios but usually at the cost of raw performance. It’s the Swiss army knife of messaging :-).</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/01/09/语言相关/CPP/cpp-面试题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1787,11 +1369,509 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/01/07/学习笔记/MacOS/mac-install-tomcat-9-0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/07/学习笔记/MacOS/mac-install-tomcat-9-0/" itemprop="url">mac install tomcat 9.0</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-07T16:07:50+08:00">2019-01-07</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/操作系统mo/" itemprop="url" rel="index"><span itemprop="name">操作系统mo</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="check-java-environment"><a href="#check-java-environment" class="headerlink" title="check java environment"></a>check java environment</h1><p>Tomcat 9.x requires Java 8 or later.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure>
+<h1 id="Installing-Tomcat"><a href="#Installing-Tomcat" class="headerlink" title="Installing Tomcat"></a>Installing Tomcat</h1><ol>
+<li>download binary distribution apache-tomcat-9.0.14 from <a href="https://tomcat.apache.org/download-90.cgi" target="_blank" rel="noopener">here</a></li>
+<li>extract to /usr/local/apache-tomcat-9.0.14</li>
+<li><p>remove old link and create new one</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo rm -f /Library/Tomcat</span><br><span class="line">sudo ln -s /usr/local/apache-tomcat-9.0.14 /Library/Tomcat</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>change ownership and permission</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo chown -R &lt;your_username&gt; /Library/Tomcat</span><br><span class="line">sudo chmod +x /Library/Tomcat/bin/*.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>start and stop</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/Library/Tomcat/bin/startup.sh</span><br><span class="line">/Library/Tomcat/bin/shutdown.sh</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>browse <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/01/07/学习笔记/区块链/Substrate/substrate-Create-a-Custom-chain/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/07/学习笔记/区块链/Substrate/substrate-Create-a-Custom-chain/" itemprop="url">substrate Create a Custom chain</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-07T15:43:22+08:00">2019-01-07</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>展示如何构建一个 Substrate 区块链的 Runtime Library</p>
+<h1 id="先决条件"><a href="#先决条件" class="headerlink" title="先决条件"></a>先决条件</h1><ol>
+<li>make sure node and npm is installed</li>
+<li>Rust and other dependencies for substrate</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl https://getsubstrate.io -sSf | bash</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/paritytech/substrate-up" target="_blank" rel="noopener">scripts for utils</a></p>
+<p>进入到上面的项目中。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./substrate-node-new substrate-node-template &lt;author-name&gt;</span><br><span class="line">./substrate-ui-new substrate</span><br></pre></td></tr></table></figure></p>
+<p>This will create a folder called substrate-node-template and substrate-ui with the corresponding repositories cloned in them.</p>
+<h1 id="Launch-a-Blockchain"><a href="#Launch-a-Blockchain" class="headerlink" title="Launch a Blockchain"></a>Launch a Blockchain</h1><p>If you have set up everything correctly, you can now start a substrate dev chain! In substrate-node-template run:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./target/release/substrate-node-template --dev</span><br></pre></td></tr></table></figure></p>
+<p>if you run into any errors starting or running your node, you may need to purge the chain files on your computer. You can do this by running:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 优先使用这个</span><br><span class="line">rm -rf ~/Library/Application\ Support/Substrate/chains/dev/</span><br><span class="line">// or</span><br><span class="line">cargo run -- purge-chain --dev</span><br></pre></td></tr></table></figure></p>
+<p>If everything is working it should start producing blocks!</p>
+<p>To interact with the blockchain, you need to start the Substrate UI. Navigate to the substrate-ui folder and run:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
+<p>Finally, if open your browser to <a href="http://localhost:8000" target="_blank" rel="noopener">http://localhost:8000</a>, you should be able to interact with your new chain!</p>
+<h1 id="Add-Alice-to-your-network"><a href="#Add-Alice-to-your-network" class="headerlink" title="Add Alice to your network"></a>Add Alice to your network</h1><p>Alice is a hard-coded account in the substrate system, which is pre-funded to make your life easier. Alice may already be added to your network if you used the latest version of the substrate-node-template.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">subkey restore Alice</span><br><span class="line"></span><br><span class="line">&gt; Seed</span><br><span class="line">&gt; 0x416c696365202020202020202020202020202020202020202020202020202020 is account:</span><br><span class="line">&gt;    SS58: 5GoKvZWG5ZPYL1WUovuHW3zJBWBP5eT8CbqjdRY4Q6iMaDtZ</span><br><span class="line">     Hex: 0xd172a74cda4c865912c32ba0a80a57ae69abae410e5ccb59dee84e2f4432db4f</span><br></pre></td></tr></table></figure>
+<p>Then in the Substrate UI, you can go into the Wallet section and add Alice using her seed and name.<br><img alt="402e50b0.png" src="/2019/01/07/学习笔记/区块链/Substrate/substrate-Create-a-Custom-chain/402e50b0.png" width="" height=""></p>
+<p>If all is working correctly, you can now go into the Send Funds section and send funds from Alice to Default. You will see that Alice has a bunch of units pre-funded in her account, so send some and wait for the green checkmark and an updated balance for Default to show that the transfer has been successfully recorded on the blockchain.</p>
+<h1 id="Create-a-new-runtime-module"><a href="#Create-a-new-runtime-module" class="headerlink" title="Create a new runtime module"></a>Create a new runtime module</h1><p>Now it’s time to create our own runtime.</p>
+<p>Open up the substrate-node-template folder and create a new file:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./runtime/src/demo.rs</span><br></pre></td></tr></table></figure></p>
+<p>This is where our new runtime module will live. Inline comments will hopefully give you insight to what the code is doing.</p>
+<p>First, we will need to import a few libraries at the top of our file:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// Encoding library</span><br><span class="line">use parity_codec::Encode;</span><br><span class="line"></span><br><span class="line">// Enables access to the runtime storage</span><br><span class="line">use srml_support::&#123;StorageValue, dispatch::Result&#125;;</span><br><span class="line"></span><br><span class="line">// Enables us to do hashing</span><br><span class="line">use runtime_primitives::traits::Hash;</span><br><span class="line"></span><br><span class="line">// Enables access to account balances and interacting with signed messages</span><br><span class="line">use &#123;balances, system::&#123;self, ensure_signed&#125;&#125;;</span><br><span class="line"></span><br><span class="line">// Includes the standard rust imports for things like Vec</span><br><span class="line">use rstd::prelude::*;</span><br></pre></td></tr></table></figure></p>
+<p>All modules need to expose a configuration trait. In this case, our trait inherits from the Balances module’s trait since we will be using features and functions made available to us there.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pub trait Trait: balances::Trait &#123;&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Upgrade-our-chain"><a href="#Upgrade-our-chain" class="headerlink" title="Upgrade our chain"></a>Upgrade our chain</h1>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/01/07/学习笔记/区块链/Substrate/substrate-翻译Substrate-in-a-nutshell/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/07/学习笔记/区块链/Substrate/substrate-翻译Substrate-in-a-nutshell/" itemprop="url">substrate 翻译Substrate in a nutshell</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-07T10:58:59+08:00">2019-01-07</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://www.parity.io/substrate-in-a-nutshell/" target="_blank" rel="noopener">原文</a></p>
+<p>今天我们讨论一下 Substrate，可以帮助你构建定制化区块链的库。 Substrate 是由 <a href="https://www.parity.io/" target="_blank" rel="noopener">Parity Technologies</a> 创建，并且为 <a href="https://polkadot.network/" target="_blank" rel="noopener">Polkadot</a> 提供基础设施。</p>
+<h1 id="什么是-Substrate"><a href="#什么是-Substrate" class="headerlink" title="什么是 Substrate?"></a>什么是 Substrate?</h1><p>从字典定义，或者字面理解 Substrate 可以用来构建，或者发展某些项目。在我们这里，我们可以构建区块链，对于 Polkadot 来说，是构建整个区块链家族。</p>
+<h1 id="为什么我们需要-Substrate？"><a href="#为什么我们需要-Substrate？" class="headerlink" title="为什么我们需要 Substrate？"></a>为什么我们需要 Substrate？</h1><p>软件充满了抽象。计算机科学的历史展示给我们的就是不断的抽象，从硬件，到开发语言，编程接口。</p>
+<p>每个抽象层都想要解决特定的问题。Substrate 想要解决什么问题呢？<br>在回答这个问题之前，我们先看一下，在你想要实现一个全新的区块链，要考虑哪些方面：</p>
+<ul>
+<li>为什么需要另一个区块链?!</li>
+<li>各种各样的原始加密算法，签名等等.</li>
+<li>共识算法和容错选举.</li>
+<li>POW，POS或者完全不同的概念?</li>
+<li>区块结构，高效存储，信息序列化.</li>
+<li>P2P 网络, 节点发现, 区块和交易传播.</li>
+<li>状态机，运行时，智能合约.</li>
+<li>轻客户端的支持</li>
+</ul>
+<p>尽管 Substrate 不能帮你实现第一条，至少可以帮你做余下的事情。开箱即用的实现，是基于多年开发区块链的经验，设计，实现，极度用心的测试。<br>通过提供典型算法的通用实现，可以使开发者专注于项目的业务逻辑，比如：状态机。</p>
+<p>让我们看看区块链最核心的部分，以及 Substrate 可以为我们做什么。</p>
+<h1 id="区块链的持久化"><a href="#区块链的持久化" class="headerlink" title="区块链的持久化"></a>区块链的持久化</h1><p>区块链唯一的目的就是在非可信环境下，提供一个途径可以在任意时间点验证，达成共识，全局持久化，并且一旦确认真实可靠，就不可更改。</p>
+<p>Substrate 提供了一种高效并且非常易用的，和 Wasm 运行时紧密继承的持久化。</p>
+<h1 id="区块链作为函数"><a href="#区块链作为函数" class="headerlink" title="区块链作为函数"></a>区块链作为函数</h1><p>为了更新区块链状态，根据挂起的操作更改存储，我们需要一个时间点来执行这些操作。<br>这些时间的可以表示为一个函数，根据当前的状态和挂起的操作，生成另一个状态，可以认为是区块链的真实当前状态。我们把这个函数称作 state transition function 或者简称 STF</p>
+<p>Substrate 允许开发者以一种可管理，可移植的方式来定义这个函数。就像 Web 页面执行的 JavaScript 一样，可以提供一组函数作为运行时来提供 STF 服务。此外该实现可以是可移植的，跨平台的，支持浏览器等等方式。</p>
+<p><img alt="c02249f1.png" src="/2019/01/07/学习笔记/区块链/Substrate/substrate-翻译Substrate-in-a-nutshell/c02249f1.png" width="" height=""></p>
+<p>Substrate 使用 WebAssembly 作为通用的运行时。</p>
+<h1 id="安全和速度"><a href="#安全和速度" class="headerlink" title="安全和速度"></a>安全和速度</h1><p>使用 WebAssembly 实现业务逻辑和智能合约意味着可以借用现有的工具快速可靠的执行。Substrate 提供了另一种可以更快执行代码的途径-没有虚拟机的开销。</p>
+<p>Substrate 具有革命性创新之一的就是运行时镜像和 STF 同其他数据一样保存在链上。这意味着，运行时和链的业务逻辑可以通过安全，可校验的方式来更新。并且 Substrate 和 Substrate Runtime Module Library（SRML）是使用 Rust 语言实现的，可以编译为本地代码和 Wasm。</p>
+<p><img alt="eb09d960.png" src="/2019/01/07/学习笔记/区块链/Substrate/substrate-翻译Substrate-in-a-nutshell/eb09d960.png" width="" height=""></p>
+<p>在任意时间点，客户端拥有两份已编译的运行时。一个是本地编译的，一个是 Wasm 镜像可以在 VM 里面执行。当执行运行时函数时，客户端先检查链上的运行时版本和本地的版本是否一致，如果一致，执行本地的版本。</p>
+<h1 id="不分叉的升级"><a href="#不分叉的升级" class="headerlink" title="不分叉的升级"></a>不分叉的升级</h1><p>当链上的运行时镜像升级，一些客户端软件没有升级时，客户端会使用链上的运行时镜像版本来执行。所以在任何时候，所有节点都能够正确的同步区块，防止分叉。</p>
+<h1 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h1><p>使用了 libp2p 库来实现去中心化网络环境。<br>译者注：libp2p 是 IPFS 项目分出来的独立项目。</p>
+<h1 id="定制消息"><a href="#定制消息" class="headerlink" title="定制消息"></a>定制消息</h1><p>对于简单的场景，你不需要考虑网络，因为 Substrate 做了所有的事情。你只需要提供区块链的 STF 即可。如果你需要发送定制化信息，可以通过提供特殊化的网络协议定义消息和处理逻辑来定制和扩展网络子系统。</p>
+<h1 id="共识"><a href="#共识" class="headerlink" title="共识"></a>共识</h1><p>有一个 STF 可以从一个状态转换到另一个状态还不够，还需要所有的节点都对转换后的状态达成共识。</p>
+<p>Substrate 实现的每个共识引擎会有一个运行时模块，处理不良行为的证明。评估的处理结果由运行时来决定。<br>Substrate 提供了一个 BFT 的实现可以开箱即用。并且还会不断的完善，增加其他的算法进来。根据应用场景，开发者可能使用现存在产块逻辑，也可能提供自己的。</p>
+<p>Substrate 是一个完全可定制化，可扩展的框架，开发者可以定义自己的共识算法。实际上 Substrate 非常的灵活，可以提供非传统区块链结构的解决方案。</p>
+<h1 id="轻客户端支持"><a href="#轻客户端支持" class="headerlink" title="轻客户端支持"></a>轻客户端支持</h1><p>全节点需要同步所有的数据，并且不是简单的同步数据，出于安全原因考虑，还需要重新执行所有交易，计算量比较繁重。<br>Substrate 从设计上就考虑了轻客户端的支持，可以开箱即用。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/83/">83</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/79/">79</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1838,7 +1918,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">825</span>
+                    <span class="site-state-item-count">785</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2372,11 +2452,7 @@
                     
                       
                     
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">185</span>
+                    <span class="site-state-item-count">183</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
