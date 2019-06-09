@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">785</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">787</span>
       </a>
 </li>
 
@@ -312,6 +312,309 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/28/开源库/zmq/zmq-usually-use-api/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/28/开源库/zmq/zmq-usually-use-api/" itemprop="url">zmq-usually use api</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-28T16:07:56+08:00">2018-09-28</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>为啥 zmq 的文档找起来这么费劲，4.0.x</p>
+<h2 id="zsocket-new"><a href="#zsocket-new" class="headerlink" title="zsocket_new"></a>zsocket_new</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//  Create a new socket within our CZMQ context, replaces zmq_socket.</span><br><span class="line">//  Use this to get automatic management of the socket at shutdown.</span><br><span class="line">//  Note: SUB sockets do not automatically subscribe to everything; you</span><br><span class="line">//  must set filters explicitly.</span><br><span class="line">CZMQ_EXPORT void *  zsocket_new (zctx_t *self, int type);</span><br></pre></td></tr></table></figure>
+<h2 id="zsocket-bind"><a href="#zsocket-bind" class="headerlink" title="zsocket_bind"></a>zsocket_bind</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//  Bind a socket to a formatted endpoint. If the port is specified as</span><br><span class="line">//  &apos;*&apos;, binds to any free port from ZSOCKET_DYNFROM to ZSOCKET_DYNTO</span><br><span class="line">//  and returns the actual port number used. Otherwise asserts that the</span><br><span class="line">//  bind succeeded with the specified port number. Always returns the</span><br><span class="line">//  port number if successful.</span><br><span class="line">CZMQ_EXPORT int zsocket_bind (void *self, const char *format, ...);</span><br></pre></td></tr></table></figure>
+<h2 id="thread"><a href="#thread" class="headerlink" title="thread"></a>thread</h2><h3 id="zactor"><a href="#zactor" class="headerlink" title="zactor"></a>zactor</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">//  This is a stable class, and may not change except for emergencies. It</span><br><span class="line">//  is provided in stable builds.</span><br><span class="line">//  This class has draft methods, which may change over time. They are not</span><br><span class="line">//  in stable releases, by default. Use --enable-drafts to enable.</span><br><span class="line">// Actors get a pipe and arguments from caller</span><br><span class="line">typedef void (zactor_fn) (</span><br><span class="line">   zsock_t *pipe, void *args);</span><br><span class="line"></span><br><span class="line">//  Create a new actor passing arbitrary arguments reference.</span><br><span class="line">CZMQ_EXPORT zactor_t *</span><br><span class="line">   zactor_new (zactor_fn task, void *args);</span><br><span class="line"></span><br><span class="line">//  Destroy an actor.</span><br><span class="line">CZMQ_EXPORT void</span><br><span class="line">   zactor_destroy (zactor_t **self_p);</span><br><span class="line"></span><br><span class="line">//  Send a zmsg message to the actor, take ownership of the message</span><br><span class="line">//  and destroy when it has been sent.</span><br><span class="line">CZMQ_EXPORT int</span><br><span class="line">   zactor_send (zactor_t *self, zmsg_t **msg_p);</span><br><span class="line"></span><br><span class="line">//  Receive a zmsg message from the actor. Returns NULL if the actor</span><br><span class="line">//  was interrupted before the message could be received, or if there</span><br><span class="line">//  was a timeout on the actor.</span><br><span class="line">//  Caller owns return value and must destroy it when done.</span><br><span class="line">CZMQ_EXPORT zmsg_t *</span><br><span class="line">   zactor_recv (zactor_t *self);</span><br><span class="line"></span><br><span class="line">//  Probe the supplied object, and report if it looks like a zactor_t.</span><br><span class="line">CZMQ_EXPORT bool</span><br><span class="line">   zactor_is (void *self);</span><br><span class="line"></span><br><span class="line">//  Probe the supplied reference. If it looks like a zactor_t instance,</span><br><span class="line">//  return the underlying libzmq actor handle; else if it looks like</span><br><span class="line">//  a libzmq actor handle, return the supplied value.</span><br><span class="line">CZMQ_EXPORT void *</span><br><span class="line">   zactor_resolve (void *self);</span><br><span class="line"></span><br><span class="line">//  Return the actor&apos;s zsock handle. Use this when you absolutely need</span><br><span class="line">//  to work with the zsock instance rather than the actor.</span><br><span class="line">CZMQ_EXPORT zsock_t *</span><br><span class="line">   zactor_sock (zactor_t *self);</span><br><span class="line"></span><br><span class="line">//  Self test of this class.</span><br><span class="line">CZMQ_EXPORT void</span><br><span class="line">   zactor_test (bool verbose);</span><br><span class="line"></span><br><span class="line">#ifdef CZMQ_BUILD_DRAFT_API</span><br><span class="line">// Function to be called on zactor_destroy. Default behavior is to send zmsg_t with string &quot;$TERM&quot; in a first frame.</span><br><span class="line">//</span><br><span class="line">// An example - to send $KTHXBAI string</span><br><span class="line">//</span><br><span class="line">//     if (zstr_send (self, &quot;$KTHXBAI&quot;) == 0)</span><br><span class="line">//         zsock_wait (self);</span><br><span class="line">typedef void (zactor_destructor_fn) (</span><br><span class="line">   zactor_t *self);</span><br><span class="line"></span><br><span class="line">//  *** Draft method, for development use, may change without warning ***</span><br><span class="line">//  Change default destructor by custom function. Actor MUST be able to handle new message instead of default $TERM.</span><br><span class="line">CZMQ_EXPORT void</span><br><span class="line">   zactor_set_destructor (zactor_t *self, zactor_destructor_fn destructor);</span><br><span class="line"></span><br><span class="line">#endif // CZMQ_BUILD_DRAFT_API</span><br><span class="line">Please add &apos;@interface&apos; section in &apos;./../src/zactor.c&apos;.</span><br></pre></td></tr></table></figure>
+<h2 id="zthread-fork"><a href="#zthread-fork" class="headerlink" title="zthread_fork"></a>zthread_fork</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//  Create an attached thread. An attached thread gets a ctx and a PAIR</span><br><span class="line">//  pipe back to its parent. It must monitor its pipe, and exit if the</span><br><span class="line">//  pipe becomes unreadable. Do not destroy the ctx, the thread does this</span><br><span class="line">//  automatically when it ends.</span><br><span class="line">CZMQ_EXPORT void * zthread_fork (zctx_t *ctx, zthread_attached_fn *thread_fn, void *args);</span><br></pre></td></tr></table></figure>
+<h2 id="zsocket-wait"><a href="#zsocket-wait" class="headerlink" title="zsocket_wait"></a>zsocket_wait</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//  Wait on a signal. Use this to coordinate between threads, over</span><br><span class="line">//  pipe pairs. Returns -1 on error, 0 on success.</span><br><span class="line">CZMQ_EXPORT int zsocket_wait (void *self);</span><br></pre></td></tr></table></figure>
+<h2 id="zmq-proxy"><a href="#zmq-proxy" class="headerlink" title="zmq_proxy"></a>zmq_proxy</h2><p>在当前线程内开始ZMQ内置代理。<br>代理将一个前端socket连接到一个后端。一般来说，数据会从前端流向后端。根据socket的类型，数据可能向相反的方向流动。方向指示概念上的；代理是完全对称的，在技术上前端和后端没有什么区别。<br>zmq_proxy()函数在当前的线程空间中运行，并且只有在当前使用的context被关闭之后才会返回。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">//  This port range is defined by IANA for dynamic or private ports</span><br><span class="line">//  We use this when choosing a port for dynamic binding.</span><br><span class="line">#define ZSOCKET_DYNFROM     0xc000</span><br><span class="line">#define ZSOCKET_DYNTO       0xffff</span><br><span class="line"></span><br><span class="line">//  Callback function for zero-copy methods</span><br><span class="line">typedef void (zsocket_free_fn) (void *data, void *arg);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//  Destroy a socket within our CZMQ context, replaces zmq_close.</span><br><span class="line">CZMQ_EXPORT void</span><br><span class="line">    zsocket_destroy (zctx_t *ctx, void *self);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//  Unbind a socket from a formatted endpoint.</span><br><span class="line">//  Returns 0 if OK, -1 if the endpoint was invalid or the function</span><br><span class="line">//  isn&apos;t supported.</span><br><span class="line">CZMQ_EXPORT int</span><br><span class="line">    zsocket_unbind (void *self, const char *format, ...);</span><br><span class="line"></span><br><span class="line">//  Connect a socket to a formatted endpoint</span><br><span class="line">//  Returns 0 if OK, -1 if the endpoint was invalid.</span><br><span class="line">CZMQ_EXPORT int</span><br><span class="line">    zsocket_connect (void *self, const char *format, ...);</span><br><span class="line"></span><br><span class="line">//  Disconnect a socket from a formatted endpoint</span><br><span class="line">//  Returns 0 if OK, -1 if the endpoint was invalid or the function</span><br><span class="line">//  isn&apos;t supported.</span><br><span class="line">CZMQ_EXPORT int</span><br><span class="line">    zsocket_disconnect (void *self, const char *format, ...);</span><br><span class="line"></span><br><span class="line">//  Poll for input events on the socket. Returns TRUE if there is input</span><br><span class="line">//  ready on the socket, else FALSE.</span><br><span class="line">CZMQ_EXPORT bool</span><br><span class="line">    zsocket_poll (void *self, int msecs);</span><br><span class="line"></span><br><span class="line">//  Returns socket type as printable constant string</span><br><span class="line">CZMQ_EXPORT const char *</span><br><span class="line">    zsocket_type_str (void *self);</span><br><span class="line"></span><br><span class="line">//  Send data over a socket as a single message frame.</span><br><span class="line">//  Accepts these flags: ZFRAME_MORE and ZFRAME_DONTWAIT.</span><br><span class="line">//  Returns -1 on error, 0 on success</span><br><span class="line">CZMQ_EXPORT int</span><br><span class="line">    zsocket_sendmem (void *self, const void *data, size_t size, int flags);</span><br><span class="line"></span><br><span class="line">//  Send a signal over a socket. A signal is a zero-byte message.</span><br><span class="line">//  Signals are used primarily between threads, over pipe sockets.</span><br><span class="line">//  Returns -1 if there was an error sending the signal.</span><br><span class="line">CZMQ_EXPORT int</span><br><span class="line">    zsocket_signal (void *self);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//  Self test of this class</span><br><span class="line">CZMQ_EXPORT void</span><br><span class="line">    zsocket_test (bool verbose);</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/28/学习笔记/区块链/primecoin/primecoin-compile-0-8-6-version/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/28/学习笔记/区块链/primecoin/primecoin-compile-0-8-6-version/" itemprop="url">primecoin-compile 0.8.6 version</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-28T14:56:26+08:00">2018-09-28</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>ubuntu 14.04 版本下编译,<br>ubuntu 16.04 compile linux version success<br>windows version use windows7 compile success</p>
+<p>修改版本<br>primecoin-qt.pro<br>share/setup.nsi<br>share/genbuild.sh<br>src/clientversion.h (change CLIENT_VERSION_IS_RELEASE to true)<br>下面的文件是生成的地方。undefine 两个判断宏<br>src/version.cpp</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/09/28/学习笔记/区块链/primecoin/primecoin-compile-0-8-6-version/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -1493,299 +1796,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/14/学习笔记/区块链/bitcoin/bitcoin-segwit/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/14/学习笔记/区块链/bitcoin/bitcoin-segwit/" itemprop="url">bitcoin-segwit</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-14T21:58:17+08:00">2018-09-14</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki" target="_blank" rel="noopener">BIP141</a></p>
-<p>Segregated Witness, or SegWit Bitcoin Improvement Proposal number BIP141</p>
-<p>The declared purpose was to prevent nonintentional bitcoin transaction malleability, allow optional data transmission, and to bypass certain protocol restrictions (such as the block size limit) with a soft fork.[2]</p>
-<p>It was also intended to mitigate a blockchain size limitation problem that reduces bitcoin transaction speed.</p>
-<p>It does this by splitting the transaction into two segments, removing the unlocking signature (“witness” data) from the original portion and appending it as a separate structure at the end.[3] The original section would continue to hold the sender and receiver data, and the new “witness” structure would contain scripts and signatures. The original data segment would be counted normally, but the “witness” segment would, in effect, be counted as a quarter of its real size.</p>
-<h2 id="隔离见证做了什么改动？"><a href="#隔离见证做了什么改动？" class="headerlink" title="隔离见证做了什么改动？"></a>隔离见证做了什么改动？</h2><p>隔离见证就是把脚本签名(scriptSig)信息从基本结构 (base block) 里拿出来，放在一个新的数据结构当中。做验证工作的节点和矿工也会验证这个新的数据结构里的脚本签名，以确保交易是有效的。<br>当审核统计区块大小不能超过1M的时候。脚本签名大小不会被计算在内。</p>
-<p>隔离见证重新整理了每个交易内容的布局方式。把脚本签名从交易内容的结构里面拿出来，放到了最下面，并有一个指针Pointer指向它。</p>
-<p><img alt="a5ca0713.png" src="/2018/09/14/学习笔记/区块链/bitcoin/bitcoin-segwit/a5ca0713.png" width="" height=""></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/13/学习笔记/区块链/bitcoin/bitcoin-OP-RETURN/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/13/学习笔记/区块链/bitcoin/bitcoin-OP-RETURN/" itemprop="url">bitcoin-OP-RETURN</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-13T21:52:57+08:00">2018-09-13</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://bitzuma.com/posts/op-return-and-the-future-of-bitcoin/" target="_blank" rel="noopener">ref</a></p>
-<p>Conclusions<br>Bitcoin’s long-running debate over acceptable uses of the block chain has received some much needed clarity. Applications can now inexpensively add a 40 byte data payload to transactions using the OP_RETURN script function. On a technical level, OP_RETURN doesn’t enable anything that wasn’t previously possible. Instead, OP_RETURN provides a standard interface through which new services can potentially be layered onto the block chain, and a central point of focus for future work on integration tools.</p>
-<p>This move brings the vision of Bitcoin as a universal platform for mediating complex agreements one step closer to reality. The extent to which the Bitcoin community will embrace this vision remains an open question.</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1837,7 +1847,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">785</span>
+                    <span class="site-state-item-count">787</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
