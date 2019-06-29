@@ -107,7 +107,7 @@
 <meta property="og:site_name" content="郑君的学习笔记">
 <meta property="og:description" content="先备份配置文件sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak 日志路径：/var/log/nginx 执行命令 cd /etc/nginx/conf.d 打开 Nginx 服务配置文件目录。执行命令 sudo nano domain_name.conf 创建域名规则配置文件每个域名建立一个独立的配置文件，输入下面配置信息。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-24T12:41:35.000Z">
+<meta property="og:updated_time" content="2019-06-02T12:42:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="web-nginx配置学习">
 <meta name="twitter:description" content="先备份配置文件sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak 日志路径：/var/log/nginx 执行命令 cd /etc/nginx/conf.d 打开 Nginx 服务配置文件目录。执行命令 sudo nano domain_name.conf 创建域名规则配置文件每个域名建立一个独立的配置文件，输入下面配置信息。">
@@ -236,7 +236,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">71</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">72</span>
       </a>
 </li>
 
@@ -246,7 +246,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">787</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">815</span>
       </a>
 </li>
 
@@ -419,8 +419,8 @@
 <a id="more"></a>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">server</span><br><span class="line">&#123;</span><br><span class="line">listen   80;                            #监听端口设为 80。</span><br><span class="line">server_name  www.server110.com server110.com 121.11.22.33;         #绑定您的域名。</span><br><span class="line">index index.htm index.html index.php;   #指定默认文件。</span><br><span class="line">root /var/www/server110.com;           #指定网站根目录。</span><br><span class="line">include location.conf;                  #当您需要调用其他配置文件时才粘贴此项，如无需要，请删除此项。</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>执行命令 <code>sudo nginx -t</code> 检查配置是否有误，并按照报错提示修复错误。</p>
-<p>执行命令 <code>systemctl restart nginx.service</code> 重启 Nginx 服务。</p>
-<p>执行命令 <code>service nginx reload</code> 重新载入 Nginx 服务。</p>
+<p>执行命令 <code>sudo systemctl restart nginx.service</code> 重启 Nginx 服务。</p>
+<p>执行命令 <code>sudo service nginx reload</code> 重新载入 Nginx 服务。</p>
 <h2 id="配置flask的gunicorn服务转发"><a href="#配置flask的gunicorn服务转发" class="headerlink" title="配置flask的gunicorn服务转发"></a>配置flask的gunicorn服务转发</h2><p>修改为  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name example.org; # 这是HOST机器的外部域名，用地址也行，空格隔开</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://127.0.0.1:5000; # 这里是指向 gunicorn host 的服务地址</span><br><span class="line">        proxy_set_header Host $host;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
 <h2 id="转发给apache"><a href="#转发给apache" class="headerlink" title="转发给apache"></a>转发给apache</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">server</span><br><span class="line">&#123;</span><br><span class="line">listen   80;                            #监听端口设为 80。</span><br><span class="line">server_name  xxx.top www.xxx.top;         #绑定您的域名。</span><br><span class="line">index index.php;   #指定默认文件。</span><br><span class="line"></span><br><span class="line"># 动态文件.php请求转发给后端Apache</span><br><span class="line">    location /&#123;</span><br><span class="line">        # 向后端服务器发起请求时添加指定的header头信息</span><br><span class="line">        proxy_set_header Host $http_host;</span><br><span class="line">        # 向后端服务器发送真实 IP</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        # 让后端如php能直接通过变量获取真实IP</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_pass   http://127.0.0.1:8080;</span><br><span class="line">    &#125;</span><br><span class="line">    # nginx找不到文件时，转发请求给后端Apache</span><br><span class="line">    location @proxy &#123;</span><br><span class="line">        proxy_set_header Host $http_host;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_pass http://127.0.0.1:8080;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -580,7 +580,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">787</span>
+                    <span class="site-state-item-count">815</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -735,7 +735,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">71</span>
+                      
+                    
+                    <span class="site-state-item-count">72</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -1114,7 +1116,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">183</span>
+                      
+                    
+                    <span class="site-state-item-count">184</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
