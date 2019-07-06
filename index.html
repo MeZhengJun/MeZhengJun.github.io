@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">815</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">814</span>
       </a>
 </li>
 
@@ -664,6 +664,152 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/06/30/开源库/tushare/tushare-学习笔记003-选股策略均线多头排列/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/30/开源库/tushare/tushare-学习笔记003-选股策略均线多头排列/" itemprop="url">tushare-学习笔记003-选股策略均线多头排列</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-30T09:02:44+08:00">2019-06-30</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>均线天数自定义，数量自定义，选出符合多头排列的股票。<br>增加索引，选股结果保存到 .csv 文件中</p>
+<p>思路比较简单，根据选股策略，准备数据，然后执行策略，保存结果。</p>
+<p><a href="https://github.com/tyler2018/stocker.git" target="_blank" rel="noopener">github 链接</a></p>
+<p>下面是部分代码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置选股日期为最后一个有效交易日</span></span><br><span class="line">valid_screen_date = get_last_valid_trade_date()</span><br><span class="line"><span class="comment"># [[func,param],[func,param]]</span></span><br><span class="line">strategies = [[name_filter, [<span class="string">'ST'</span>]], [close_filter, <span class="number">25</span>], [ma_divergency, [<span class="number">10</span>, <span class="number">25</span>, <span class="number">43</span>, <span class="number">60</span>]]]</span><br><span class="line"><span class="comment"># 市场,选股日期,[[func,param],[func,param]]</span></span><br><span class="line">pickup_list = screen_stock(<span class="string">'ALL'</span>, valid_screen_date, strategies)</span><br><span class="line">print(<span class="string">'选股策略执行完毕'</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">screen_stock</span><span class="params">(market, screen_date, strategies)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    负责根据策略选股操作</span></span><br><span class="line"><span class="string">    :param market: 选股的市场，目前支持 ALL，SH，SZ 三种</span></span><br><span class="line"><span class="string">    :param screen_date: 指定选股日期</span></span><br><span class="line"><span class="string">    :param strategies: 指定选股策略</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># 如果数据为准备好，根据选股策略，获取对应的数据</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> g_is_data_prepared:</span><br><span class="line">        <span class="comment"># 20秒</span></span><br><span class="line">        <span class="comment"># start = time.clock()</span></span><br><span class="line">        datas = prepare_data(market, screen_date, strategies)</span><br><span class="line">        <span class="comment"># end = time.clock()</span></span><br><span class="line">        <span class="comment"># print('CPU执行时间: ', end - start)</span></span><br><span class="line"></span><br><span class="line">    pickup_list = []</span><br><span class="line">    <span class="keyword">for</span> data <span class="keyword">in</span> datas:</span><br><span class="line">        bFound = <span class="keyword">True</span></span><br><span class="line">        <span class="keyword">for</span> row <span class="keyword">in</span> strategies:</span><br><span class="line">            <span class="comment"># 股票名称过滤策略在获取数据的时候应用，这里不需要执行</span></span><br><span class="line">            <span class="keyword">if</span> row[<span class="number">0</span>] == name_filter:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="comment"># print(row)</span></span><br><span class="line">            pickup = row[<span class="number">0</span>](data, row[<span class="number">1</span>])</span><br><span class="line">            <span class="keyword">if</span> pickup <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">                bFound = <span class="keyword">False</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">if</span> bFound:</span><br><span class="line">            <span class="comment"># print(pickup)</span></span><br><span class="line">            pickup_list.append(pickup)</span><br><span class="line">    <span class="keyword">return</span> pickup_list</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/06/29/学习笔记/数据库/mongoDB/pymongo学习/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -752,10 +898,20 @@
       
         
           
-            <h1 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pymongo</span><br><span class="line">conn = pymongo.MongoClient(<span class="string">'127.0.0.1'</span>, <span class="number">27017</span>)</span><br><span class="line"><span class="comment"># database name is stock</span></span><br><span class="line">db = conn[<span class="string">'stock'</span>]</span><br></pre></td></tr></table></figure>
+            <p>use PyMongo</p>
+<h1 id="Getting-a-Database"><a href="#Getting-a-Database" class="headerlink" title="Getting a Database"></a>Getting a Database</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># attribute style access</span></span><br><span class="line">db = client.test_database</span><br><span class="line"></span><br><span class="line"><span class="comment"># dictionary style access</span></span><br><span class="line">db = client[<span class="string">'test-database'</span>]</span><br></pre></td></tr></table></figure>
+<h1 id="Getting-a-Collection"><a href="#Getting-a-Collection" class="headerlink" title="Getting a Collection"></a>Getting a Collection</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">collection = db.test_collection</span><br><span class="line">collection = db[<span class="string">'test-collection'</span>]</span><br></pre></td></tr></table></figure>
+<h1 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">collection.insert(&#123;<span class="string">'code'</span>: code, <span class="string">'startDate'</span>: start_date, <span class="string">'endDate'</span>: end_date, <span class="string">'klines'</span>: klines&#125;)</span><br></pre></td></tr></table></figure>
+<h1 id="Error"><a href="#Error" class="headerlink" title="Error"></a>Error</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">解决bson.errors.InvalidDocument: Cannot encode object:错误的一种方法</span><br><span class="line">这是因为pandas库在读取数值型值时返回的结果不是整型或者浮点型，而是numpy.int64类型的一个对象，mongodb是无法对一个对象进行编码存储的，所以这里需要对读取到的结果进行强制类型转换</span><br><span class="line">dates = []</span><br><span class="line">for i in range(0, 2):</span><br><span class="line">   print(cal.iloc[i][&apos;cal_date&apos;], cal.iloc[i][&apos;is_open&apos;])</span><br><span class="line">   print(cal.iloc[i][&apos;cal_date&apos;] + &apos; %d&apos; %cal.iloc[i][&apos;is_open&apos;])</span><br><span class="line">   a = int(cal.iloc[i][&apos;is_open&apos;])</span><br><span class="line">   print(type(a))</span><br><span class="line">   dates.append(&#123;&apos;cal_date&apos;:cal.iloc[i][&apos;cal_date&apos;], &apos;is_open&apos;:int(cal.iloc[i][&apos;is_open&apos;])&#125;)</span><br><span class="line"></span><br><span class="line">result = calender.insert_many(dates)</span><br><span class="line">print(result)</span><br><span class="line">print(result.inserted_ids)</span><br></pre></td></tr></table></figure>
+<h1 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pymongo</span><br><span class="line">conn = pymongo.MongoClient(<span class="string">'127.0.0.1'</span>, <span class="number">27017</span>)</span><br><span class="line"><span class="comment"># database name is stock</span></span><br><span class="line">db = conn[<span class="string">'stock'</span>]</span><br></pre></td></tr></table></figure>
 <h1 id="单条插入"><a href="#单条插入" class="headerlink" title="单条插入"></a>单条插入</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">result = collection.insert_one(student)</span><br><span class="line">print(result)</span><br><span class="line">print(result.inserted_id)</span><br></pre></td></tr></table></figure>
 <h1 id="批量插入"><a href="#批量插入" class="headerlink" title="批量插入"></a>批量插入</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment"># 创建集合，相当于表</span></span><br><span class="line">t_codes = db[<span class="string">'codes'</span>]</span><br><span class="line"><span class="comment"># 插入获取的代码</span></span><br><span class="line">result = t_codes.insert_many(dataArr)</span><br><span class="line">print(result)</span><br><span class="line">print(result.inserted_ids)</span><br></pre></td></tr></table></figure>
+<h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">t_codes = db[<span class="string">'codes'</span>]</span><br><span class="line">   <span class="comment"># 获取所有索引</span></span><br><span class="line">   all_index = t_codes.index_information()</span><br><span class="line">   <span class="comment"># print(list(all_index))</span></span><br><span class="line">   <span class="comment"># 判断有无索引</span></span><br><span class="line">   has_id_index = all_index.get(<span class="string">"idx_ts_code"</span>, <span class="keyword">False</span>)</span><br><span class="line">   <span class="keyword">if</span> has_id_index:</span><br><span class="line">      <span class="comment"># 是否为唯一索引</span></span><br><span class="line">      <span class="keyword">if</span> all_index[<span class="string">'idx_ts_code'</span>].get(<span class="string">'unique'</span>, <span class="keyword">False</span>):</span><br><span class="line">         <span class="keyword">pass</span></span><br><span class="line">      <span class="keyword">else</span>:</span><br><span class="line">         t_codes.drop_index(<span class="string">"idx_ts_code"</span>)</span><br><span class="line">         t_codes.create_index([(<span class="string">"ts_code"</span>, <span class="number">1</span>)], name=<span class="string">'idx_ts_code'</span>, unique=<span class="keyword">True</span>, background=<span class="keyword">True</span>)</span><br><span class="line">   <span class="keyword">else</span>:</span><br><span class="line">      t_codes.create_index([(<span class="string">"ts_code"</span>, <span class="number">1</span>)], name=<span class="string">'idx_ts_code'</span>, unique=<span class="keyword">True</span>, background=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
 <h1 id="删除集合"><a href="#删除集合" class="headerlink" title="删除集合"></a>删除集合</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">t_codes = db[<span class="string">'codes'</span>]</span><br><span class="line">t_codes.drop()</span><br><span class="line"><span class="comment"># 这里可以重新插入数据，会创建新的集合</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 也可以使用 db 操作</span></span><br><span class="line">db.drop_collection(collection_name)</span><br></pre></td></tr></table></figure>
+<h1 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h1><h2 id="查询返回-datafram"><a href="#查询返回-datafram" class="headerlink" title="查询返回 datafram"></a>查询返回 datafram</h2><p>没有数据时返回 datafram 空值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">t_data = db[code[<span class="string">'ts_code'</span>]]</span><br><span class="line">   cursor_result = t_data.find(</span><br><span class="line">      &#123;<span class="string">'ts_code'</span>: code[<span class="string">'ts_code'</span>], <span class="string">'trade_date'</span>: &#123;<span class="string">'$gte'</span>: start_date.strftime(<span class="string">'%Y%m%d'</span>),</span><br><span class="line">                                                   <span class="string">'$lte'</span>: end_date.strftime(<span class="string">'%Y%m%d'</span>)&#125;&#125;).sort(<span class="string">'trade_date'</span>,</span><br><span class="line">                                                                                             pymongo.DESCENDING)</span><br><span class="line">   labels = [<span class="string">'ts_code'</span>, <span class="string">'trade_date'</span>, <span class="string">'open'</span>, <span class="string">'high'</span>, <span class="string">'low'</span>, <span class="string">'close'</span>, <span class="string">'vol'</span>, <span class="string">'amount'</span>]</span><br><span class="line">   df = pd.DataFrame(list(cursor_result), columns=labels)</span><br></pre></td></tr></table></figure>
+<h2 id="查询所有数据"><a href="#查询所有数据" class="headerlink" title="查询所有数据"></a>查询所有数据</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查询集合中的所有文档记录（表中的行记录）</span></span><br><span class="line">myColl.find() </span><br><span class="line"><span class="comment"># 返回一个查询结果的游标，可迭代对象</span></span><br><span class="line"></span><br><span class="line">results = t_codes.find().sort(<span class="string">'trade_date'</span>, pymongo.DESCENDING).limit(<span class="number">1</span>)</span><br><span class="line">start_trade_date = datetime.datetime.strptime(results[<span class="number">0</span>][<span class="string">'trade_date'</span>], <span class="string">'%Y%m%d'</span>)</span><br><span class="line"></span><br><span class="line">result = t_calender.find(</span><br><span class="line">        &#123;<span class="string">'cal_date'</span>: &#123;<span class="string">'$gte'</span>: pre_base_date.strftime(<span class="string">'%Y%m%d'</span>),</span><br><span class="line">                      <span class="string">'$lte'</span>: base_date.strftime(<span class="string">'%Y%m%d'</span>)&#125;&#125;).sort(<span class="string">'cal_date'</span>,</span><br><span class="line">                                                                   pymongo.DESCENDING)</span><br><span class="line"><span class="keyword">for</span> value <span class="keyword">in</span> result:</span><br><span class="line">   <span class="keyword">if</span> value[<span class="string">'is_open'</span>]:</span><br><span class="line">      <span class="keyword">return</span> datetime.datetime.strptime(value[<span class="string">'cal_date'</span>], <span class="string">'%Y%m%d'</span>)</span><br><span class="line">print(<span class="string">'Warning: xx'</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">b. 查询限定操作（也就是sql中的 where 语句)</span><br><span class="line">   i. myColl.find(&#123;<span class="string">'name'</span>:<span class="string">'liming'</span>&#125;) 查询集合中 字段 name = liming的记录</span><br><span class="line">      <span class="number">1</span>) 注意：括号内部是一个 字典，或者 json格式的数据（其实都一个卵样)</span><br><span class="line">      <span class="number">2</span>) 字典 key = 集合内文档的字段，value = 字段的值</span><br><span class="line">      <span class="number">3</span>) 相当于sql中：</span><br><span class="line">            select * </span><br><span class="line">            <span class="keyword">from</span> myColl </span><br><span class="line">            where name = <span class="string">'liming'</span></span><br><span class="line">   ii. 一些高级操作：</span><br><span class="line">      <span class="number">1</span>) 比较操作：</span><br><span class="line">            a) 小于比较：</span><br><span class="line">               i) myColl.find(&#123;<span class="string">'age'</span>:&#123;<span class="string">'$lt'</span>:<span class="number">30</span>&#125;&#125;</span><br><span class="line">               ii) 查询age字段值 小于<span class="number">30</span>的所有文档记录</span><br><span class="line">               iii) 注意：括号内是一个 字典</span><br><span class="line">               iv) 字典 key = 文档字段，value 是一个字典，其中 key = 比较操作符, value =比较值</span><br><span class="line">               v) 相当于sql中：</span><br><span class="line">                  select * </span><br><span class="line">                  <span class="keyword">from</span> myColl</span><br><span class="line">                  where age &lt; <span class="number">30</span></span><br><span class="line">            b) 其他比较操作符</span><br><span class="line">               $gt 大于</span><br><span class="line">               $gte    大于等于</span><br><span class="line">               $lt 小于</span><br><span class="line">               $lte    小于等于</span><br><span class="line">               $ne 不等于</span><br><span class="line">      <span class="number">2</span>) 组合查询：</span><br><span class="line">            a) 逻辑与 <span class="keyword">and</span> </span><br><span class="line">               i) myColl.find(&#123;<span class="string">'name'</span>:<span class="string">'liming'</span>,<span class="string">'age'</span>:<span class="number">30</span>&#125;)</span><br><span class="line">               ii) 查询 name = liming 和 age = <span class="number">30</span> 的所有文档记录</span><br><span class="line">               iii) 注意：括号内是一个字典，两个元素。用 逗号分隔开，key = 字段，value=字段值</span><br><span class="line">               iv) 相当于sql：</span><br><span class="line">                  select * </span><br><span class="line">                  <span class="keyword">from</span> myColl</span><br><span class="line">                  where name = <span class="string">'liming'</span> <span class="keyword">and</span> age = <span class="number">30</span></span><br><span class="line">            b) 逻辑或 <span class="keyword">or</span></span><br><span class="line">               i) myColl.find(&#123;<span class="string">'$or'</span>:[&#123;<span class="string">'name'</span>:<span class="string">'liming'</span>&#125;,&#123;<span class="string">'age'</span>:<span class="number">30</span>&#125;]&#125;)</span><br><span class="line">               ii) 查询name = <span class="string">'liming'</span> 或 age = <span class="number">30</span>的所有文档记录</span><br><span class="line">               iii) 注意：括号内是一个字典，key = <span class="string">'$or'</span> 逻辑或操作符，value = 一个列表</span><br><span class="line">                  列表内是两个字典，key = 字段，value=字段值</span><br><span class="line">               iv) 相当于sql：</span><br><span class="line">                  select * </span><br><span class="line">                  <span class="keyword">from</span> myColl</span><br><span class="line">                  where name = <span class="string">'liming'</span> <span class="keyword">or</span> age = <span class="number">30</span></span><br><span class="line">      <span class="number">3</span>) 对查询结果进行排序：</span><br><span class="line">            a) myColl.find().sort(<span class="string">'name'</span>,pymongo.DESCENDING)</span><br><span class="line">               i) 对查询结果按照字段 name进行排序，默认为升序，可以指定排序方向，</span><br><span class="line">                  DESCENDING是降序</span><br><span class="line">               ii) 相当于sql：</span><br><span class="line">                  select *</span><br><span class="line">                  <span class="keyword">from</span> myColl</span><br><span class="line">                  order by name DESC</span><br><span class="line">            b) myColl.find().sort([&#123;<span class="string">'name'</span>:pymongo.DESEDING<span class="string">',&#123;'</span>age<span class="string">':pymongo.DESEDING'</span>&#125;])</span><br><span class="line">               i) 对查询结果排序，指定排序方向为 降序，默认为升序。</span><br><span class="line">                  先按照name字段排序，在按照age字段排序</span><br><span class="line">               ii) 相当于sql：</span><br><span class="line">                  select * </span><br><span class="line">                  <span class="keyword">from</span> myColl</span><br><span class="line">                  order by name DESC ,age DESC</span><br><span class="line">               DESC关键字只适用于 DESC前面的字段，需要的话，可以对每个字段指定一次 DESC</span><br></pre></td></tr></table></figure>
           
         
       
@@ -896,7 +1052,8 @@
       
         
           
-            <p><a href="https://github.com/tyler2018/stocker.git" target="_blank" rel="noopener">github 链接</a></p>
+            <p><a href="http://zhenghanyun.top/index.php?share/file&amp;user=1&amp;sid=aGCpbQW9" target="_blank" rel="noopener">2019.06.28为止的sql完整数据</a></p>
+<p><a href="https://github.com/tyler2018/stocker.git" target="_blank" rel="noopener">github 链接</a></p>
 <h2 id="先获取-“股票代码表”"><a href="#先获取-“股票代码表”" class="headerlink" title="先获取 “股票代码表”"></a>先获取 “股票代码表”</h2><p>我这里是使用 mongodb 存储的。<br>项目有结构不方便放上来，这里是代码片段。具体请参见 github 仓库</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch_code</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    从接口获取代码，存入数据库，返回结构样例</span></span><br><span class="line"><span class="string">             ts_code  symbol  name      area industry list_date</span></span><br><span class="line"><span class="string">        0     000001.SZ  000001  平安银行   深圳       银行  19910403</span></span><br><span class="line"><span class="string">        1     000002.SZ  000002   万科A   深圳     全国地产  19910129</span></span><br><span class="line"><span class="string">        3541  603936.SH  603936  博敏电子   广东      元器件  20151209</span></span><br><span class="line"><span class="string">        3542  603937.SH  603937  丽岛新材   江苏        铝  20171102</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># 查询当前所有正常上市交易的股票列表</span></span><br><span class="line">    datas = ts_pro.query(<span class="string">'stock_basic'</span>, exchange=<span class="string">''</span>, list_status=<span class="string">'L'</span>, fields=<span class="string">'ts_code,symbol,name,area,industry,list_date'</span>)</span><br><span class="line">    dataArr = datas.to_dict(<span class="string">'records'</span>)</span><br><span class="line">    <span class="comment"># 创建集合，相当于表</span></span><br><span class="line">    t_codes = db[<span class="string">'codes'</span>]</span><br><span class="line">    t_codes.drop()</span><br><span class="line">    <span class="comment"># 插入获取的代码</span></span><br><span class="line">    result = t_codes.insert_many(dataArr)</span><br><span class="line">    <span class="keyword">if</span> len(result.inserted_ids) != len(dataArr):</span><br><span class="line">        <span class="keyword">assert</span> <span class="keyword">False</span></span><br><span class="line">        print(<span class="string">'插入代码表数据失败.请检查。'</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">"插入代码表数据成功"</span>)</span><br></pre></td></tr></table></figure>
 <h2 id="获取交易日历"><a href="#获取交易日历" class="headerlink" title="获取交易日历"></a>获取交易日历</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch_calender</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">        从接口获取有效交易日信息，存入数据库，返回结构样例</span></span><br><span class="line"><span class="string">                  exchange  cal_date  is_open</span></span><br><span class="line"><span class="string">        0           SSE  20180101        0</span></span><br><span class="line"><span class="string">        1           SSE  20180102        1</span></span><br><span class="line"><span class="string">        2           SSE  20180103        1</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    calender = ts_pro.trade_cal(start_date=<span class="string">'20190101'</span>, end_date=<span class="string">'20191231'</span>)</span><br><span class="line">    <span class="comment"># 创建集合，相当于表</span></span><br><span class="line">    t_calender = db[<span class="string">'calender'</span>]</span><br><span class="line">    dataArr = calender.to_dict(<span class="string">'records'</span>)</span><br><span class="line">    result = t_calender.insert_many(dataArr)</span><br><span class="line">    <span class="keyword">if</span> len(result.inserted_ids) != len(dataArr):</span><br><span class="line">        <span class="keyword">assert</span> <span class="keyword">False</span></span><br><span class="line">        print(<span class="string">'插入代码表数据失败.请检查。'</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">"插入代码表数据成功"</span>)</span><br></pre></td></tr></table></figure>
@@ -1694,152 +1851,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/06/24/语言相关/CPP/cpp-bind学习/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/06/24/语言相关/CPP/cpp-bind学习/" itemprop="url">cpp-bind学习</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-24T16:12:19+08:00">2019-06-24</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="http://blog.think-async.com/2010/04/bind-illustrated.html" target="_blank" rel="noopener">原文</a></p>
-<p>bind 可以用来将用户提供的需要一个参数的函数转换成不需要参数的函数对象。绑定的值（在这个例子中是123）存储在函数对象内并且会被自动传递给用户指定的函数：</p>
-<p><img alt="20190624_161458.png" src="/2019/06/24/语言相关/CPP/cpp-bind学习/20190624_161458.png" width="400" height=""></p>
-<p>参数绑定也可以用于将类成员函数转换成零参数的函数对象。非静态成员函数需要一个隐式的 this 参数。这意味着需要绑定一个合适的类实例指针到这个函数对象： </p>
-<p><img alt="20190624_161559.png" src="/2019/06/24/语言相关/CPP/cpp-bind学习/20190624_161559.png" width="400" height=""></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1891,7 +1902,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">815</span>
+                    <span class="site-state-item-count">814</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
