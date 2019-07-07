@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">814</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">815</span>
       </a>
 </li>
 
@@ -312,6 +312,163 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/29/学习笔记/区块链/primecoin/primecoin-pool-Implement/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/29/学习笔记/区块链/primecoin/primecoin-pool-Implement/" itemprop="url">primecoin pool Implement</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-29T14:23:47+08:00">2018-09-29</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>使用全节点的 RPC 命令来获取模板和提交新块。使用中间件做服务。<br>基于 primecoin-core 0.16.1 版本。</p>
+<p>需要修改一个地方就是，primecoin 限制每笔交易的 vout 数额不能小于 0.01xpm<br>Primecoin: minimul txout value.<br>static const CAmount MIN_TXOUT_AMOUNT = 1000000;</p>
+<p>支持 segwit 不能有这个限制。看代码 segwit 会在 coinbase 里面创建一个 0 value 的 txout 交易输出。<br>具体原因和作用暂时没看。先弄 pool 实现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">tyler@ubuntu16:~/Documents/primecoin-core-desktop-src$ ./src/primecoin-cli -rpcuser=user -rpcpassword=password getblocktemplate &apos;&#123;&quot;capabilities&quot;:[&quot;longpoll&quot;, &quot;coinbasetxn&quot;, &quot;coinbasevalue&quot;]&#125;&apos;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;capabilities&quot;: [</span><br><span class="line">    &quot;proposal&quot;</span><br><span class="line">  ],</span><br><span class="line">  &quot;version&quot;: 536870912,</span><br><span class="line">  &quot;rules&quot;: [</span><br><span class="line">  ],</span><br><span class="line">  &quot;vbavailable&quot;: &#123;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;vbrequired&quot;: 0,</span><br><span class="line">  &quot;previousblockhash&quot;: &quot;47124348127fb1d00daf5f1a62c1115fe8fc8a6226f91c042211834459d06567&quot;,</span><br><span class="line">  &quot;transactions&quot;: [</span><br><span class="line">  ],</span><br><span class="line">  &quot;coinbaseaux&quot;: &#123;</span><br><span class="line">    &quot;flags&quot;: &quot;&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;coinbasevalue&quot;: 734000000,</span><br><span class="line">  &quot;longpollid&quot;: &quot;47124348127fb1d00daf5f1a62c1115fe8fc8a6226f91c042211834459d06567230&quot;,</span><br><span class="line">  &quot;target&quot;: &quot;0000000000000000000000000000000000000000002937b40000000000000000&quot;,</span><br><span class="line">  &quot;mintime&quot;: 1539164867,</span><br><span class="line">  &quot;mutable&quot;: [</span><br><span class="line">    &quot;time&quot;,</span><br><span class="line">    &quot;transactions&quot;,</span><br><span class="line">    &quot;prevblock&quot;</span><br><span class="line">  ],</span><br><span class="line">  &quot;noncerange&quot;: &quot;00000000ffffffff&quot;,</span><br><span class="line">  &quot;sigoplimit&quot;: 20000,</span><br><span class="line">  &quot;sizelimit&quot;: 1000000,</span><br><span class="line">  &quot;curtime&quot;: 1539224387,</span><br><span class="line">  &quot;bits&quot;: &quot;0ba937b4&quot;,</span><br><span class="line">  &quot;height&quot;: 2875236</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面的作废，使用新思路</p>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>参考 madMax 的代码实现，引用库的升级，primecoin 版本使用 0.16.1。</p>
+<p>后面需要使用 bitcoin 的 depends 里面的 make 来编译。目前先手动操作。</p>
+<h2 id="Dependency"><a href="#Dependency" class="headerlink" title="Dependency"></a>Dependency</h2><p>boost 1.64<br>WT 4.0.4<br>postgresql 10.5</p>
+<p>zmq 4.2.2<br>czmq 4.1.1<br>lz4 1.8.3</p>
+<p>Boost 1.64 requires CMake 3.8 or newer.</p>
+<h2 id="Compile"><a href="#Compile" class="headerlink" title="Compile"></a>Compile</h2><h3 id="cmake-3-12-2"><a href="#cmake-3-12-2" class="headerlink" title="cmake 3.12.2"></a>cmake 3.12.2</h3><p>default directory: /usr/local/bin/<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./bootstrap</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure></p>
+<p>need close current console and open another one, type <code>cmake -version</code> check result</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/09/29/学习笔记/区块链/primecoin/primecoin-pool-Implement/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -1636,166 +1793,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/09/15/学习笔记/区块链/bitcoin/bitcoin-script/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/15/学习笔记/区块链/bitcoin/bitcoin-script/" itemprop="url">bitcoin-script</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-15T14:41:46+08:00">2018-09-15</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>scriptPubKey (“output script”)<br>pay2pubkey tx: <pubkey> OP_CHECKSIG<br>Pay2PubKeyHash Tx: OP_DUP OP_HASH160 <pubkeyhash> OP_EQUALVERIFY OP_CHECKSIG<br>Pay2ScriptHash Tx: OP_HASH160 <scripthash> OP_EQUAL</scripthash></pubkeyhash></pubkey></p>
-<p>When technical docs refer to the redeemScript, it is referring to the script in the ScriptSig (yet another poorly named element) of the input of a transactions.  There is only a redeemScript when redeeming a P2SH.</p>
-<p>scriptSig (“input script”)<br>Pay2PubKeyHash: <sig> <pubkey><br>Pay2ScriptHash: <sig-0> … <sig-n> <redeemscript></redeemscript></sig-n></sig-0></pubkey></sig></p>
-<p>P2SH <a href="https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki" target="_blank" rel="noopener">BIP16</a></p>
-<p>scriptSig:    [signature] {[pubkey] OP_CHECKSIG}<br>scriptPubKey: OP_HASH160 [20-byte-hash of {[pubkey] OP_CHECKSIG} ] OP_EQUAL</p>
-<ol>
-<li>[signature] and {[pubkey] OP_CHECKSIG} are pushed onto the stack</li>
-<li>OP_HASH160 hashes {[pubkey] OP_CHECKSIG}</li>
-<li>The same hash comes from the scriptPubKey onto the stack</li>
-<li>Consequently OP_EQUAL gives True</li>
-<li>The script is popped off the stack, leaving only [signature] on the stack.</li>
-<li>The deserialized script is added, leaving [signature] [pubkey] OP_CHECKSIG</li>
-<li>The transaction is validated again, that is, a normal signature verification occurs against the specified public key.</li>
-</ol>
-<h2 id="Provably-Unspendable-Prunable-Outputs"><a href="#Provably-Unspendable-Prunable-Outputs" class="headerlink" title="Provably Unspendable/Prunable Outputs"></a>Provably Unspendable/Prunable Outputs</h2><p>The standard way to mark a transaction as provably unspendable is with a scriptPubKey of the following form:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scriptPubKey: OP_RETURN &#123;zero or more ops&#125;</span><br></pre></td></tr></table></figure></p>
-<p>OP_RETURN tx<br><a href="https://bchain.info/BTC/tx/1a2e22a717d626fc5db363582007c46924ae6b28319f07cb1b907776bd8293fc" target="_blank" rel="noopener">https://bchain.info/BTC/tx/1a2e22a717d626fc5db363582007c46924ae6b28319f07cb1b907776bd8293fc</a></p>
-<p>txid 1a2e22a717d626fc5db363582007c46924ae6b28319f07cb1b907776bd8293fc<br>01000000015db413e8393e51026b492cb0547e5910afe81c72ea6008a357075a3ff1584075010000006a473044022055bcb36c829a614451787fe8c9bfb3798b683809b65b92037a015eccb5ff659702202461d2c708a4fd57c839e43634e8c02935d7b7d1db5b978432b0674c44645ed10121032c1ea520c25c4e66831cd395a3cd26f0e0a1472a3103fc8a4a63ef10e92d123cffffffff010000000000000000166a14215477656e74792062797465206469676573742e00000000</p>
-<p>“!Twenty byte digest.”</p>
-<h2 id="Freezing-funds-until-a-time-in-the-future"><a href="#Freezing-funds-until-a-time-in-the-future" class="headerlink" title="Freezing funds until a time in the future"></a>Freezing funds until a time in the future</h2><p>Using OP_CHECKLOCKTIMEVERIFY it is possible to make funds provably unspendable until a certain point in the future.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scriptPubKey: &lt;expiry time&gt; OP_CHECKLOCKTIMEVERIFY OP_DROP OP_DUP OP_HASH160 &lt;pubKeyHash&gt; OP_EQUALVERIFY OP_CHECKSIG</span><br><span class="line">scriptSig: &lt;sig&gt; &lt;pubKey&gt;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1847,7 +1844,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">814</span>
+                    <span class="site-state-item-count">815</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>

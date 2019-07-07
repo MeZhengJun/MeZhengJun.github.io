@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">814</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">815</span>
       </a>
 </li>
 
@@ -312,6 +312,161 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/01/05/语言相关/Rust/rust-string/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/05/语言相关/Rust/rust-string/" itemprop="url">rust string</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-05T16:09:19+08:00">2019-01-05</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>This type is allocated on the heap and as such is able to store an amount of text that is unknown to us at compile time.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">let s = String::from(&quot;hello&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">let mut s = String::from(&quot;hello&quot;);</span><br><span class="line"></span><br><span class="line">s.push_str(&quot;, world!&quot;); // push_str() appends a literal to a String</span><br><span class="line"></span><br><span class="line">println!(&quot;&#123;&#125;&quot;, s); // This will print `hello, world!`</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>release memory</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">&#123;</span><br><span class="line">    let s = String::from(&quot;hello&quot;); // s is valid from this point forward</span><br><span class="line"></span><br><span class="line">    // do stuff with s</span><br><span class="line">&#125;                                  // this scope is now over, and s is no</span><br><span class="line">                                   // longer valid</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>There is a natural point at which we can return the memory our String needs to the operating system: when s goes out of scope. When a variable goes out of scope, Rust calls a special function for us. This function is called drop, and it’s where the author of String can put the code to return the memory. Rust calls drop automatically at the closing curly bracket.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">let s1 = String::from(&quot;hello&quot;);</span><br><span class="line">let s2 = s1; //Rust considers s1 to no longer be valid</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img alt="6898585a.png" src="/2019/01/05/语言相关/Rust/rust-string/6898585a.png" width="" height=""><br><img alt="130473ca.png" src="/2019/01/05/语言相关/Rust/rust-string/130473ca.png" width="" height=""></p>
+<p>actually is a move operation<br><img alt="7e400833.png" src="/2019/01/05/语言相关/Rust/rust-string/7e400833.png" width="" height=""></p>
+<p>deep copy use <code>clone</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">let s1 = String::from(&quot;hello&quot;);</span><br><span class="line">let s2 = s1.clone();</span><br><span class="line"></span><br><span class="line">println!(&quot;s1 = &#123;&#125;, s2 = &#123;&#125;&quot;, s1, s2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>return value and scope<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">fn main() &#123;</span><br><span class="line">    let s1 = gives_ownership();         // gives_ownership moves its return</span><br><span class="line">                                        // value into s1</span><br><span class="line"></span><br><span class="line">    let s2 = String::from(&quot;hello&quot;);     // s2 comes into scope</span><br><span class="line"></span><br><span class="line">    let s3 = takes_and_gives_back(s2);  // s2 is moved into</span><br><span class="line">                                        // takes_and_gives_back, which also</span><br><span class="line">                                        // moves its return value into s3</span><br><span class="line">&#125; // Here, s3 goes out of scope and is dropped. s2 goes out of scope but was</span><br><span class="line">  // moved, so nothing happens. s1 goes out of scope and is dropped.</span><br><span class="line"></span><br><span class="line">fn gives_ownership() -&gt; String &#123;             // gives_ownership will move its</span><br><span class="line">                                             // return value into the function</span><br><span class="line">                                             // that calls it</span><br><span class="line"></span><br><span class="line">    let some_string = String::from(&quot;hello&quot;); // some_string comes into scope</span><br><span class="line"></span><br><span class="line">    some_string                              // some_string is returned and</span><br><span class="line">                                             // moves out to the calling</span><br><span class="line">                                             // function</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// takes_and_gives_back will take a String and return one</span><br><span class="line">fn takes_and_gives_back(a_string: String) -&gt; String &#123; // a_string comes into</span><br><span class="line">                                                      // scope</span><br><span class="line"></span><br><span class="line">    a_string  // a_string is returned and moves out to the calling function</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>return multiple value use tuple<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">fn main() &#123;</span><br><span class="line">    let s1 = String::from(&quot;hello&quot;);</span><br><span class="line"></span><br><span class="line">    let (s2, len) = calculate_length(s1);</span><br><span class="line"></span><br><span class="line">    println!(&quot;The length of &apos;&#123;&#125;&apos; is &#123;&#125;.&quot;, s2, len);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fn calculate_length(s: String) -&gt; (String, usize) &#123;</span><br><span class="line">    let length = s.len(); // len() returns the length of a String</span><br><span class="line"></span><br><span class="line">    (s, length)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="slice"><a href="#slice" class="headerlink" title="slice"></a>slice</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">let s = String::from(&quot;hello world&quot;);</span><br><span class="line"></span><br><span class="line">let hello = &amp;s[0..5];</span><br><span class="line">let world = &amp;s[6..11];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The <code>start..end</code> syntax is a range that begins at start and continues up to, but not including, end. If we wanted to include end, we can use <code>..=</code> instead of <code>..</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">let s = String::from(&quot;hello world&quot;);</span><br><span class="line"></span><br><span class="line">let hello = &amp;s[0..=4];</span><br><span class="line">let world = &amp;s[6..=10];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -1904,153 +2059,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/12/25/语言相关/CPP/cpp-template/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/25/语言相关/CPP/cpp-template/" itemprop="url">cpp-template</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-25T18:32:24+08:00">2018-12-25</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="奇异递归模板模式-CRTP-静态多态"><a href="#奇异递归模板模式-CRTP-静态多态" class="headerlink" title="奇异递归模板模式 CRTP 静态多态"></a>奇异递归模板模式 CRTP 静态多态</h1><p>（curiously recurring template pattern，CRTP）<br>静态多态（static polymorphism）<br>还是 静态多态这个名字比较好理解，在编译期决定调用函数</p>
-<p>优点：<br>由于静多态是在编译期完成的，因此效率较高，编译器也可以进行优化；<br>有很强的适配性和松耦合性，比如可以通过偏特化、全特化来处理特殊类型；<br>最重要一点是静态多态通过模板编程为C++带来了泛型设计的概念，比如强大的STL库。</p>
-<p>缺点：<br>由于是模板来实现静态多态，因此模板的不足也就是静多态的劣势，比如调试困难、编译耗时、代码膨胀、编译器支持的兼容性，不能够处理异质对象集合。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The Curiously Recurring Template Pattern (CRTP)</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="comment">// methods within Base can use template to access members of Derived</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derived</span> :</span> <span class="keyword">public</span> Base&lt;Derived&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">interface</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        <span class="keyword">static_cast</span>&lt;T*&gt;(<span class="keyword">this</span>)-&gt;implementation();</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">static_func</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        T::static_sub_func();</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Derived</span> :</span> Base&lt;Derived&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">implementation</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">static_sub_func</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>在上例中，Base<derived>::interface()，虽然是在struct Derived之前就被声明了，但未被编译器实例化直至它被实际调用，这发生于Derived声明之后，此时Derived::implementation()的声明是已知的。<br>这种技术获得了类似于虚函数的效果，并避免了动态多态的代价</derived></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2102,7 +2110,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">814</span>
+                    <span class="site-state-item-count">815</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
