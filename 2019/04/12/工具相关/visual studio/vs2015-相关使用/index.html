@@ -99,17 +99,17 @@
 
 
 
-  <meta name="description" content="no symbols have been loadedI hate this problem">
+  <meta name="description" content="no symbols have been loadedI hate this problem MD MT 的选择/MD 多线程、Release、DLL版本的运行时库/MT 多线程、Release 版本的运行时库  为什么选择/MD，不选/MT？ 程序就不需要静态链接运行时库，可以减小软件的大小； 所有的模块都采用/MD，使用的是同一个堆，不存在A堆申请，B堆释放的问题； 用户机器可能缺少我们编译时">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vs2015 相关使用">
 <meta property="og:url" content="http://zhengjunblog.top/2019/04/12/工具相关/visual studio/vs2015-相关使用/index.html">
 <meta property="og:site_name" content="郑君的学习笔记">
-<meta property="og:description" content="no symbols have been loadedI hate this problem">
+<meta property="og:description" content="no symbols have been loadedI hate this problem MD MT 的选择/MD 多线程、Release、DLL版本的运行时库/MT 多线程、Release 版本的运行时库  为什么选择/MD，不选/MT？ 程序就不需要静态链接运行时库，可以减小软件的大小； 所有的模块都采用/MD，使用的是同一个堆，不存在A堆申请，B堆释放的问题； 用户机器可能缺少我们编译时">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-12T10:22:02.000Z">
+<meta property="og:updated_time" content="2019-07-12T01:22:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="vs2015 相关使用">
-<meta name="twitter:description" content="no symbols have been loadedI hate this problem">
+<meta name="twitter:description" content="no symbols have been loadedI hate this problem MD MT 的选择/MD 多线程、Release、DLL版本的运行时库/MT 多线程、Release 版本的运行时库  为什么选择/MD，不选/MT？ 程序就不需要静态链接运行时库，可以减小软件的大小； 所有的模块都采用/MD，使用的是同一个堆，不存在A堆申请，B堆释放的问题； 用户机器可能缺少我们编译时">
 
 
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">815</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">832</span>
       </a>
 </li>
 
@@ -413,6 +413,27 @@
 
       
         <h1 id="no-symbols-have-been-loaded"><a href="#no-symbols-have-been-loaded" class="headerlink" title="no symbols have been loaded"></a>no symbols have been loaded</h1><p>I hate this problem</p>
+<h1 id="MD-MT-的选择"><a href="#MD-MT-的选择" class="headerlink" title="MD MT 的选择"></a>MD MT 的选择</h1><p>/MD 多线程、Release、DLL版本的运行时库<br>/MT 多线程、Release 版本的运行时库</p>
+<ol>
+<li>为什么选择/MD，不选/MT？<ul>
+<li>程序就不需要静态链接运行时库，可以减小软件的大小；</li>
+<li>所有的模块都采用/MD，使用的是同一个堆，不存在A堆申请，B堆释放的问题；</li>
+<li>用户机器可能缺少我们编译时使用的动态运行时库。（补充：如果我们软件有多个DLL，采用/MT体积增加太多，则可以考虑/MD + 自带系统运行时库）</li>
+</ul>
+</li>
+<li>为什么选择/MT，不选择/MD？<ul>
+<li>有些系统可能没有程序所需要版本的运行时库，程序必须把运行时库静态链接上。</li>
+<li>减少模块对外界的依赖。</li>
+</ul>
+</li>
+<li>多个模块，必须选择相同的运行时库。</li>
+</ol>
+<h2 id="选择-MD需要注意多个模块使用不同版本运行时库的问题"><a href="#选择-MD需要注意多个模块使用不同版本运行时库的问题" class="headerlink" title="选择/MD需要注意多个模块使用不同版本运行时库的问题"></a>选择/MD需要注意多个模块使用不同版本运行时库的问题</h2><p>多个dll被一个exe LoadLibrary加载，如果这些dll使用的运行时库是不同的，那么可能出现加载失败，原因可能是旧版本的运行时库已经在了，而某个dll它需要的是新版本的运行时库，旧版本不符合要求。</p>
+<h2 id="QA"><a href="#QA" class="headerlink" title="QA"></a>QA</h2><h3 id="error-LNK2005-new-and-delete-already-defined-in-LIBCMTD-lib-new-obj"><a href="#error-LNK2005-new-and-delete-already-defined-in-LIBCMTD-lib-new-obj" class="headerlink" title="error LNK2005: new and delete already defined in LIBCMTD.lib(new.obj)"></a>error LNK2005: new and delete already defined in LIBCMTD.lib(new.obj)</h3><p>I solve the problem by the following ways, please locate Project -&gt; Properties -&gt; Configuration Properties -&gt; Linker -&gt; Input at first.</p>
+<p>In Debug mode:</p>
+<p>Add uafxcwd.lib;Libcmtd.lib in Additional Dependencies.<br>Add uafxcwd.lib;Libcmtd.lib in Ignore Specific Default Libraries.<br>In Release mode:</p>
+<p>Add uafxcw.lib;Libcmt.lib in Additional Dependencies.<br>Add uafxcw.lib;Libcmt.lib in Ignore Specific Default Libraries.<br>Notice:</p>
+<p>Don’t miss the ; between the two .lib files.<br>A suffix -d must be added in the files in Debug mode.</p>
 
       
     </div>
@@ -559,7 +580,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">815</span>
+                    <span class="site-state-item-count">832</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1097,7 +1118,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">184</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">186</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -1154,7 +1179,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#no-symbols-have-been-loaded"><span class="nav-number">1.</span> <span class="nav-text">no symbols have been loaded</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#no-symbols-have-been-loaded"><span class="nav-number">1.</span> <span class="nav-text">no symbols have been loaded</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MD-MT-的选择"><span class="nav-number">2.</span> <span class="nav-text">MD MT 的选择</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#选择-MD需要注意多个模块使用不同版本运行时库的问题"><span class="nav-number">2.1.</span> <span class="nav-text">选择/MD需要注意多个模块使用不同版本运行时库的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#QA"><span class="nav-number">2.2.</span> <span class="nav-text">QA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#error-LNK2005-new-and-delete-already-defined-in-LIBCMTD-lib-new-obj"><span class="nav-number">2.2.1.</span> <span class="nav-text">error LNK2005: new and delete already defined in LIBCMTD.lib(new.obj)</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
