@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">832</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">856</span>
       </a>
 </li>
 
@@ -328,7 +328,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/09/读过的书/区块链核心算法解析/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/27/工具相关/diff格式学习/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -347,7 +347,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/09/读过的书/区块链核心算法解析/" itemprop="url">区块链核心算法解析</a></h1>
+                <a class="post-title-link" href="/2018/07/27/工具相关/diff格式学习/" itemprop="url">diff格式学习</a></h1>
         
 
         <div class="post-meta">
@@ -359,7 +359,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-09T21:43:07+08:00">2018-07-09</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-27T13:46:48+08:00">2018-07-27</time>
             
 
             
@@ -380,7 +380,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具相关/" itemprop="url" rel="index"><span itemprop="name">工具相关</span></a></span>
 
                 
                 
@@ -416,8 +416,19 @@
       
         
           
-            <p>这本书涉及到了一些原理性的概念，有点晦涩。<br>提到了 Paxos 算法，共识机制，拜占庭协定，最终一致性。<br>还是要看几遍的，中等推荐阅读。</p>
-<p><img alt="a71de16c.png" src="/2018/07/09/读过的书/区块链核心算法解析/a71de16c.png" width="" height=""></p>
+            <p>文件比较是最常用的功能了，beyondcompare 一直在用，下面了解一下 git 里面的源码比较<br>有三种格式：<br>正常格式（normal diff）<br>上下文格式（context diff）<br>合并格式（unified diff）</p>
+<h1 id="比较文件"><a href="#比较文件" class="headerlink" title="比较文件"></a>比较文件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">diff -y -W 50 -w --suppress-common-lines ./eostexas.abi ./eostexas.abibak</span><br><span class="line"></span><br><span class="line">-W或--width  在使用-y参数时，指定栏宽。</span><br><span class="line">--suppress-common-lines 在使用-y参数时，仅显示不同之处</span><br><span class="line">-y或--side-by-side  以并列的方式显示文件的异同之处。</span><br></pre></td></tr></table></figure>
+<p>“|”表示前后2个文件内容有不同<br>“&lt;”表示后面文件比前面文件少了1行内容<br>“&gt;”表示后面文件比前面文件多了1行内容</p>
+<h1 id="比较文件夹"><a href="#比较文件夹" class="headerlink" title="比较文件夹"></a>比较文件夹</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">diff -Nrq a b</span><br><span class="line"></span><br><span class="line">r 表示递归</span><br><span class="line">q 只输出不一样的文件</span><br></pre></td></tr></table></figure>
+<p><a href="https://www.gnu.org/software/diffutils/" target="_blank" rel="noopener">GNU Diffutils</a></p>
+<h1 id="合并格式的-diff"><a href="#合并格式的-diff" class="headerlink" title="合并格式的 diff"></a>合并格式的 diff</h1><p>现在都是这个格式的。 -u 表示 unified</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">diff -u f1 f2</span><br></pre></td></tr></table></figure>
+<p>变动的位置用两个@作为起首和结束。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@@ -1,7 +1,7 @@</span><br></pre></td></tr></table></figure></p>
+<p>前面的”-1,7”分成三个部分：减号表示第一个文件（即f1），”1”表示第1行，”7”表示连续7行。合在一起，就表示下面是第一个文件从第1行开始的连续7行。同样的，”+1,7”表示变动后，成为第二个文件从第1行开始的连续7行。</p>
+<h1 id="创建补丁"><a href="#创建补丁" class="headerlink" title="创建补丁"></a>创建补丁</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">diff -ruaN oldfile newfile &gt; patchfile.patch</span><br></pre></td></tr></table></figure>
+<p>-r: 递归遍历子目录<br>-u: 使用合并格式输出<br>-a: 将所有文件视为文本文件<br>-N: 将未出现的文件视为空文件（比较目录时有用）<br>oldfile及newfile可以是一个目录，配合-r参数使用就会递归比较这两个目录。</p>
+<h1 id="合并patch"><a href="#合并patch" class="headerlink" title="合并patch"></a>合并patch</h1><p>-p1表示去掉第一层路径分隔符，即./，此时得到的old文件夹位于当前路径中，于是就可以正确的打补丁了。<br>不用 p1 会提示<br><code>can&#39;t find file to patch at input</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">patch -p1 &lt; ./commit.diff</span><br></pre></td></tr></table></figure>
 
           
         
@@ -471,7 +482,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/07/生活小知识/防晒喷雾的选购/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/27/语言相关/CPP/cpp-容器类/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -490,7 +501,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/07/生活小知识/防晒喷雾的选购/" itemprop="url">防晒喷雾的选购</a></h1>
+                <a class="post-title-link" href="/2018/07/27/语言相关/CPP/cpp-容器类/" itemprop="url">cpp-容器类</a></h1>
         
 
         <div class="post-meta">
@@ -502,7 +513,889 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-07T22:25:30+08:00">2018-07-07</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-27T06:50:42+08:00">2018-07-27</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>List特点：元素有放入顺序，元素可重复，支持for循环，也就是通过下标来遍历，也可以用迭代器</p>
+<p>Set特点：元素无放入顺序，元素不可重复，重复元素会覆盖掉，（注意：元素虽然无放入顺序，但是元素在set中的位置是有该元素的HashCode决定的，其位置其实是固定的，加入Set 的Object必须定义equals()方法，只能用迭代，因为他无序，无法用下标来取得想要的值。</p>
+<p>Set：检索元素效率低下，删除和插入效率高，插入和删除不会引起元素位置改变。<br>List：和数组类似，List可以动态增长，查找元素效率高，插入删除元素效率低，因为会引起其他元素位置改变。</p>
+<p>Map适合储存键值对的数据</p>
+<p>线程安全集合类<br>Vector，HashTable，StringBuffer</p>
+<p>非线程安全集合类<br>LinkedList、ArrayList、HashSet，HashMap，StringBuilder</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/26/语言相关/CPP/CFLAGS-LDFLAGS-LIBS说明/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/26/语言相关/CPP/CFLAGS-LDFLAGS-LIBS说明/" itemprop="url">CFLAGS-LDFLAGS-LIBS说明</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-26T18:12:32+08:00">2018-07-26</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Makefile中的CFLAGS、CXXFLAGS、LDFLAGS、LIBS<br>CFLAGS： 指定头文件（.h文件）的路径，如：CFLAGS=-I/usr/include -I/path/include。<br>CXXFLAGS表达上与CFLAGS相同。<br>CFLAGS用于C代码，CXXFLAGS用于C++代码<br>对C文件 CFLAGS 和 CPPFLAGS 效果相同，对C++文件就只识别 CPPFLAGS<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make foo.o CPPFLAGS=&quot;-I/usr/include&quot;</span><br><span class="line">make foo.o CFLAGS=&quot;-I/usr/include&quot;</span><br></pre></td></tr></table></figure></p>
+<p>LDFLAGS：用于指定库文件的位置。用法：LDFLAGS=-L/usr/lib -L/path/to/your/lib。<br>LIBS：告诉链接器要链接哪些库文件，如LIBS = -lpthread -liconv</p>
+<p>有时候LDFLAGS指定-L虽然能让链接器找到库进行链接，但是运行时链接器却找不到这个库，如果要让软件运行时库文件的路径也得到扩展，那么我们需要增加这两个库给”-Wl,R”：</p>
+<p>LDFLAGS =-L/var/xxx/lib -L/opt/mysql/lib -Wl,R/var/xxx/lib -Wl,R/opt/mysql/lib</p>
+<p>如果在执行./configure以前设置环境变量export LDFLAGS=”-L/var/xxx/lib -L/opt/mysql/lib -Wl,R/var/xxx/lib -Wl,R/opt/mysql/lib” ，注意设置环境变量等号两边不可以有空格，而且要加上引号（shell的用法）。那么执行configure以后，Makefile将会设置这个选项，链接时会有这个参数，编译出来的可执行程序的库文件搜索路径就得到扩展了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export LDFLAGS=&quot;-L/opt/openssl/lib  -Wl,R/opt/openssl/lib&quot;</span><br><span class="line"></span><br><span class="line">LIBS=-lcrypto</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/26/开源库/boost/boost库编译/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/26/开源库/boost/boost库编译/" itemprop="url">boost库编译</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-26T10:40:31+08:00">2018-07-26</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="查看boost版本"><a href="#查看boost版本" class="headerlink" title="查看boost版本"></a>查看boost版本</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dpkg -s libboost-dev | grep &apos;Version&apos;</span><br><span class="line">or</span><br><span class="line">cat /usr/include/boost/version.hpp | grep &quot;BOOST_LIB_VERSION&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="编译-1-64-版"><a href="#编译-1-64-版" class="headerlink" title="编译 1.64 版"></a>编译 1.64 版</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 这里的东西可能需要，目前还没需要，这里为什么会有 libboost-all-dev 不确定</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install build-essential g++ python-dev autotools-dev libicu-dev build-essential libbz2-dev libboost-all-dev</span><br><span class="line"></span><br><span class="line">Download source file from: http://www.boost.org/users/history/version_1_64_0.html</span><br><span class="line">tar -xzvf boost_1_64_0.tar.gz</span><br><span class="line">cd boost_1_64_0</span><br><span class="line">./bootstrap.sh --prefix=/usr/local</span><br><span class="line">./b2</span><br><span class="line">./b2 install</span><br></pre></td></tr></table></figure>
+<h2 id="编译-1-41-版"><a href="#编译-1-41-版" class="headerlink" title="编译 1.41 版"></a>编译 1.41 版</h2><p>支持 thread 库编译</p>
+<p>在下面文件中查找 TIME_UTC 修改为 TIME_UTC_ 防止冲突<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">boost_1_41_0/boost/thread/xtime.hpp</span><br><span class="line">boost_1_41_0/libs/thread/src/pthread/timeconv.inl</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">找到下面文件 修改对应行 #ifdef __GLIBCXX__ // gcc 3.4 and greater:</span><br><span class="line">boost_1_41_0/boost/config/stdlib/libstdcpp3.hpp</span><br><span class="line"></span><br><span class="line">#ifdef __GLIBCXX__ // gcc 3.4 and greater:</span><br><span class="line">#  if defined(_GLIBCXX_HAVE_GTHR_DEFAULT) \</span><br><span class="line">        || defined(_GLIBCXX__PTHREADS) \</span><br><span class="line">        || defined(_GLIBCXX_HAS_GTHREADS)</span><br></pre></td></tr></table></figure>
+<p>修改一个 GCC 错误提示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">找到 unspecified_bool_type() 添加上面两行</span><br><span class="line">/Users/zhengjun/project/boost_1_41_0/boost/exception_ptr.hpp</span><br><span class="line"></span><br><span class="line">~exception_ptr() throw() &#123; &#125;</span><br><span class="line"></span><br><span class="line">operator unspecified_bool_type() const</span><br><span class="line">&#123;</span><br><span class="line">return _empty() ? 0 : &amp;exception_ptr::bad_alloc_;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>编译<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./bootstrap.sh</span><br><span class="line">./bjam install</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/25/语言相关/go/go-gui/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/25/语言相关/go/go-gui/" itemprop="url">go-gui</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-25T18:08:32+08:00">2018-07-25</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>开源库<br><a href="https://github.com/andlabs/ui" target="_blank" rel="noopener">andlabs/ui</a><br><a href="https://github.com/asticode/go-astilectron" target="_blank" rel="noopener">astilectron</a></p>
+<p>astilectron 是一个Electron应用程序，通过TCP套接字提供API，允许执行Electron的方法以及捕获Electron的事件。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/25/学习笔记/区块链/bitcoin/bitcoin-mempool/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/25/学习笔记/区块链/bitcoin/bitcoin-mempool/" itemprop="url">bitcoin-mempool</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-25T07:43:46+08:00">2018-07-25</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>bitcoin mempool 是保存一些等待网络确认的交易的。每次交易广播到网络后需要平均 10 分钟左右的确认时间。<br>根据 mempool 里面交易的多少，等待时间可能会较长</p>
+<p>每笔被网络校验过的交易都会放到 mempool 中，等待矿工的确认。当一个矿工验证一笔交易并且放入到区块中时，<br>会自动收到确认信息。</p>
+<p>每个节点都有自己的 mempool 并且可以独立设置合适的大小。当一个新区块被广播时，每个节点从 mempool 中<br>移除掉已被确认的交易。</p>
+<p>每个矿工根据手续费等条件排序处理未确认交易。 1M 的 mempool 说明没有积压。当 size 增大时，说明有交易处理积压了</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/24/语言相关/go/go-function/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/24/语言相关/go/go-function/" itemprop="url">golang-function</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-24T15:50:12+08:00">2018-07-24</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="函数定义"><a href="#函数定义" class="headerlink" title="函数定义"></a>函数定义</h2><h3 id="函数声明"><a href="#函数声明" class="headerlink" title="函数声明"></a>函数声明</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">func function_name( [parameter list] ) [return_types] &#123;</span><br><span class="line">   函数体</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/* 函数返回两个数的最大值 */</span><br><span class="line">func max(num1, num2 int) int &#123;...&#125;</span><br><span class="line"></span><br><span class="line">下面示例为 float64 基本类型扩充了方法IsEqual，该方法主要是解决精度问题。 其方法调用方式为： a.IsEqual(double) ，如果不扩充方法，我们只能使用函数IsEqual(a, b float64)</span><br><span class="line"></span><br><span class="line">//定义新的类型double，主要目的是给float64类型扩充方法</span><br><span class="line">type double float64</span><br><span class="line"></span><br><span class="line">//判断a是否等于b</span><br><span class="line">func (a double) IsEqual(b double) bool &#123;</span><br><span class="line">    var r = a - b</span><br><span class="line">    if r == 0.0 &#123;</span><br><span class="line">        return true</span><br><span class="line">    &#125; else if r &lt; 0.0 &#123;</span><br><span class="line">        return r &gt; -0.0001</span><br><span class="line">    &#125;</span><br><span class="line">    return r &lt; 0.0001</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//判断a是否等于b</span><br><span class="line">func IsEqual(a, b float64) bool &#123;</span><br><span class="line">    var r = a - b</span><br><span class="line">    if r == 0.0 &#123;</span><br><span class="line">        return true</span><br><span class="line">    &#125; else if r &lt; 0.0 &#123;</span><br><span class="line">        return r &gt; -0.0001</span><br><span class="line">    &#125;</span><br><span class="line">    return r &lt; 0.0001</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    var a double = 1.999999</span><br><span class="line">    var b double = 1.9999998</span><br><span class="line">    fmt.Println(a.IsEqual(b))</span><br><span class="line">    fmt.Println(a.IsEqual(3))</span><br><span class="line">    fmt.Println( IsEqual( (float64)(a), (float64)(b) ) )</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="函数返回多个值"><a href="#函数返回多个值" class="headerlink" title="函数返回多个值"></a>函数返回多个值</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func swap(x, y string) (string, string) &#123;</span><br><span class="line">   return y, x</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">   a, b := swap(&quot;Mahesh&quot;, &quot;Kumar&quot;)</span><br><span class="line">   fmt.Println(a, b)</span><br><span class="line">   // 有时候只关心某一个返回值，可以把其他的返回值赋给_</span><br><span class="line">   _, b:= swap(&quot;a&quot;,&quot;b&quot;)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>支持给返回值命名后，实际上就是省略了变量的声明，return时无需写成return n,err 而是将直接将值返回<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ReadFull</span><span class="params">(r Reader, buf []<span class="keyword">byte</span>)</span> <span class="params">(n <span class="keyword">int</span>, err error)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">len</span>(buf) &gt; <span class="number">0</span> &amp;&amp; err == <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> nr <span class="keyword">int</span></span><br><span class="line">        nr, err = r.Read(buf)</span><br><span class="line">        n += nr</span><br><span class="line">        buf = buf[nr:]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="值，引用传参"><a href="#值，引用传参" class="headerlink" title="值，引用传参"></a>值，引用传参</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">/* 定义交换值函数*/</span><br><span class="line">func swap(x *int, y *int) &#123;</span><br><span class="line">   var temp int</span><br><span class="line">   temp = *x    /* 保持 x 地址上的值 */</span><br><span class="line">   *x = *y      /* 将 y 值赋给 x */</span><br><span class="line">   *y = temp    /* 将 temp 值赋给 y */</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/* 调用 swap() 函数</span><br><span class="line">* &amp;a 指向 a 指针，a 变量的地址</span><br><span class="line">* &amp;b 指向 b 指针，b 变量的地址</span><br><span class="line">*/</span><br><span class="line">swap(&amp;a, &amp;b)</span><br></pre></td></tr></table></figure>
+<h3 id="一维数组传参"><a href="#一维数组传参" class="headerlink" title="一维数组传参"></a>一维数组传参</h3><p>下面两种方式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">void myFunction(param [10]int)</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void myFunction(param []int)</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="其他传参"><a href="#其他传参" class="headerlink" title="其他传参"></a>其他传参</h3><p>入参中，如果连续的参数类型一致，则可以省略连续多个参数的类型，只保留最后一个类型声明。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 入参a和b均是float64数据类型</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">IsEqual</span><span class="params">(a, b <span class="keyword">float64</span>)</span> <span class="title">bool</span></span></span><br><span class="line"><span class="function"><span class="title">func</span> <span class="title">IsEqual</span><span class="params">(a, b <span class="keyword">float64</span>, accuracy <span class="keyword">int</span>)</span> <span class="title">bool</span></span></span><br></pre></td></tr></table></figure></p>
+<p>变参：入参支持变参,即可接受不确定数量的同一类型的参数<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 参数args是的slice，其元素类型为int 。经常使用的fmt.Printf就是一个接受任意个数参数的函数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Sum</span><span class="params">(args ...<span class="keyword">int</span>)</span></span></span><br><span class="line"><span class="function"><span class="title">fmt</span>.<span class="title">Printf</span><span class="params">(format <span class="keyword">string</span>, args ...<span class="keyword">interface</span>&#123;&#125;)</span></span></span><br></pre></td></tr></table></figure></p>
+<h3 id="函数的使用"><a href="#函数的使用" class="headerlink" title="函数的使用"></a>函数的使用</h3><h4 id="函数作为值"><a href="#函数作为值" class="headerlink" title="函数作为值"></a>函数作为值</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">func main()&#123;</span><br><span class="line">   /* 声明函数变量 */</span><br><span class="line">   getSquareRoot := func(x float64) float64 &#123;</span><br><span class="line">      return math.Sqrt(x)</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   /* 使用函数 */</span><br><span class="line">   fmt.Println(getSquareRoot(9))</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="函数闭包"><a href="#函数闭包" class="headerlink" title="函数闭包"></a>函数闭包</h4><p>Go 语言支持匿名函数，可作为闭包。匿名函数是一个”内联”语句或表达式。匿名函数的优越性在于可以直接使用函数内的变量，不必申明。<br>以下实例中，我们创建了函数 getSequence() ，返回另外一个函数。该函数的目的是在闭包中递增 i 变量，代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">func getSequence() func() int &#123;</span><br><span class="line">   i:=0</span><br><span class="line">   return func() int &#123;</span><br><span class="line">      i+=1</span><br><span class="line">     return i  </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main()&#123;</span><br><span class="line">   /* nextNumber 为一个函数，函数 i 为 0 */</span><br><span class="line">   nextNumber := getSequence()  </span><br><span class="line"></span><br><span class="line">   /* 调用 nextNumber 函数，i 变量自增 1 并返回 */</span><br><span class="line">   fmt.Println(nextNumber())</span><br><span class="line">   fmt.Println(nextNumber())</span><br><span class="line">   fmt.Println(nextNumber())</span><br><span class="line"></span><br><span class="line">   /* 创建新的函数 nextNumber1，并查看结果 */</span><br><span class="line">   nextNumber1 := getSequence()  </span><br><span class="line">   fmt.Println(nextNumber1())</span><br><span class="line">   fmt.Println(nextNumber1())</span><br><span class="line">&#125;</span><br><span class="line">以上代码执行结果为：</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">1</span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+<h3 id="defer-延迟函数"><a href="#defer-延迟函数" class="headerlink" title="defer 延迟函数"></a>defer 延迟函数</h3><p>延迟执行，在声明时不会立即执行，而是在函数return后时按照后进先出的原则依次执行每一个defer。这样带来的好处是，能确保我们定义的函数能百分之百能够被执行到，这样就能做很多我们想做的事，如释放资源，清理数据，记录日志等</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/23/生活小知识/代茶饮-菊花茶/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/23/生活小知识/代茶饮-菊花茶/" itemprop="url">代茶饮-菊花茶</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-23T09:46:44+08:00">2018-07-23</time>
             
 
             
@@ -559,23 +1452,23 @@
       
         
           
-            <p>老婆和宝宝要来度暑假啦，之前在这边晒黑了。<br>所以略微做了点市场调查，准备好防护用品。</p>
-<p>直接说结果：Narisup娜丽丝高保湿防晒喷雾</p>
-<h2 id="防晒喷雾怎么用？"><a href="#防晒喷雾怎么用？" class="headerlink" title="防晒喷雾怎么用？"></a>防晒喷雾怎么用？</h2><ol>
-<li>直接喷。使用前先摇晃5-6次，在距离10-15CM的地方喷于需要防晒的部位，反复喷2-3次，可喷于面部和身体肌肤，脸部使用时，需要打好隔离霜，最后一步喷防晒，（不建议脸部素颜裸肤直接喷防晒）。最最重要的是可以喷于双手难于涂抹到的地方，后背、头发、脚趾。</li>
-<li>喷于手心涂抹。将喷雾摇匀直接喷于手心，取涂抹式防晒霜的使用量(一元硬币一张脸)，然后均匀的涂抹于需要防护的皮肤上。这种方法更适合用于上妆前的防晒。</li>
+            <p>菊花性寒，阳虚慎喝。怕冷、脾胃虚寒的人应少喝。无论哪种菊花，性质都偏寒，一般阳虚体质（平时怕冷）和脾胃虚寒（一吃凉东西就胃痛、胃不舒服）的人不宜多饮。<br>菊花气味清香、凉爽舒适，味辛、甘、苦，微寒，归肺、肝经。<br>对体寒体虚的人来说，菊花茶中加些冰糖，能稍微减弱一下寒性，更加适合他们的体质<br>而对于体热体壮的人，加冰糖就会减弱菊花茶清热的功效。</p>
+<h2 id="白菊花"><a href="#白菊花" class="headerlink" title="白菊花"></a>白菊花</h2><p>平肝、清肝明目宜用白菊花，可用于头痛眩晕等症状</p>
+<h2 id="黄菊花"><a href="#黄菊花" class="headerlink" title="黄菊花"></a>黄菊花</h2><p>疏散风热宜用，可防治风热感冒</p>
+<h2 id="金丝皇菊"><a href="#金丝皇菊" class="headerlink" title="金丝皇菊"></a>金丝皇菊</h2><p>皇菊，又叫金丝皇菊，用它来泡茶，具有“香、甜、润”三大特点。<br>具有极高含量的黄酮素（有提高免疫力，降低血压等功效），还含有丰富的多种氨基酸，维生素以及微量元素。<br>金丝皇菊的功效主要是两方面：散风热、护目明目</p>
+<h3 id="有哪几类人群适合饮用金丝皇菊呢"><a href="#有哪几类人群适合饮用金丝皇菊呢" class="headerlink" title="有哪几类人群适合饮用金丝皇菊呢"></a>有哪几类人群适合饮用金丝皇菊呢</h3><ol>
+<li>热毒盛，肝火盛，易上火者<br>因为金丝皇菊蕴含的清热解毒的特质，所以它可以清热毒，去火，还能加强人体的免疫力，对于防止和预防感冒病毒也是很有作用。</li>
+<li>经常盯着电子屏幕的人群<br>金丝皇菊则有清肝明目，缓解眼睛疲劳的作用，常喝还能保护视力哦。</li>
+<li>三高人群<br>作为高血压、高血脂以及高血糖人群，经常会面临各种问题，而大皇菊含有丰富的黄酮素，可以作为一种强抗氧化剂，能够减缓衰老速度、改善血液的循环，降低胆固醇等，对于改善三高人群的问题很有作用。</li>
 </ol>
-<p>防晒喷雾和防晒霜、乳、啫喱一样，不是涂一次就能一劳永逸了，都需要补涂。一般建议2个小时，如果流汗多，需要更短时间补涂一次。<br>【温馨提示】：1.切忌不要离的太近！如果离得很近很容易出现白色的泡沫。脸部使用时，请闭上双眼和嘴巴。2.用完之后记得盖上瓶盖，以免瓶内的液体挥发跑气减短使用寿命。3.每一瓶内都有一粒钢珠，摇晃时会发出叮当清脆的声音，钢珠的作用是为了让里面的液体不凝固，使用时配合上下摇晃，喷出更多丰富又薄的雾气。</p>
-<h2 id="防晒喷雾怎么补涂？"><a href="#防晒喷雾怎么补涂？" class="headerlink" title="防晒喷雾怎么补涂？"></a>防晒喷雾怎么补涂？</h2><p>一般先要去汗去油，无妆容用防晒霜/乳、防晒喷雾均可，淡妆选择防晒喷雾，浓妆选择防晒的散粉和粉饼。<br>防晒喷雾的补涂时间也大概是2个小时，如果是下水后，不管这款防晒喷雾所宣传的防水时间是多少，都应该马上进行补涂。</p>
-<h2 id="品牌介绍"><a href="#品牌介绍" class="headerlink" title="品牌介绍"></a>品牌介绍</h2><p>日本最好用的8大防晒喷雾的第一名</p>
-<h3 id="Narisup娜丽丝高保湿防晒喷雾"><a href="#Narisup娜丽丝高保湿防晒喷雾" class="headerlink" title="Narisup娜丽丝高保湿防晒喷雾"></a>Narisup娜丽丝高保湿防晒喷雾</h3><p>包装好粉嫩，外貌控不能错过！淡淡的玫瑰香气也很舒服~可以预防由日晒引起的干燥和肌肤敏感，防晒的同时还能帮助肌肤补充水分，喷出来是细细密密雾状的，很清爽~防水抗汗效果也很好！</p>
-<h3 id="安耐晒金瓶防晒喷雾"><a href="#安耐晒金瓶防晒喷雾" class="headerlink" title="安耐晒金瓶防晒喷雾"></a>安耐晒金瓶防晒喷雾</h3><p>今年安耐晒的一大亮点就是专为懒妹设计的喷雾式防晒！喷雾主打高防晒力和透明感，外出轻轻一喷就能轻松防晒，金色防水防汗能力非常好！清爽无感，轻轻一喷，非常方便补防晒！</p>
-<h3 id="城野医生防晒喷雾"><a href="#城野医生防晒喷雾" class="headerlink" title="城野医生防晒喷雾"></a>城野医生防晒喷雾</h3><p>城野医生家的东西我向来很信赖，这款喷雾能全面阻挡紫外线的侵害，亦配有美白、抗炎、抗氧化成份，呵护肌肤。<br>而且特设有飞散式的喷嘴，方便用于面积较大的手脚部位。不过注意，这款防晒喷雾含酒精含酒精含酒精！孕妇和对酒精过敏的妹子不要买！</p>
-<h3 id="高丝透明防晒喷雾"><a href="#高丝透明防晒喷雾" class="headerlink" title="高丝透明防晒喷雾"></a>高丝透明防晒喷雾</h3><p>使肌肤在高晒下达到持久抵御紫外线。能阻止黑色素形成，使肌肤白皙通透；<br>其独特的防水效果，能抑制汗水和皮脂对防晒效果产生的不良影响。<br>不但对长时间暴露在紫外线中的肌肤有很好的防护效果，更可以滋润、镇静和修复肌肤。<br>有效防止日晒引起肌肤干燥，使肌肤柔嫩光滑，充满弹性，同时抗氧化。</p>
-<h3 id="碧柔长效清爽防晒喷雾"><a href="#碧柔长效清爽防晒喷雾" class="headerlink" title="碧柔长效清爽防晒喷雾"></a>碧柔长效清爽防晒喷雾</h3><p>这款防晒喷雾也是一样清爽不油腻，超级实用，连头皮头发也可以喷！透明的颜色，毫无违和感，随时补擦防晒，妆后也一样使用哦~</p>
-<h3 id="艾杜纱玫瑰防晒喷雾"><a href="#艾杜纱玫瑰防晒喷雾" class="headerlink" title="艾杜纱玫瑰防晒喷雾"></a>艾杜纱玫瑰防晒喷雾</h3><p>喷在身体上非常好推开，而且不泛白，也是可以喷在头发上的防晒，淡淡的玫瑰香味可以持续好久，<br>用之前最好将身上的汗液擦拭干净~富含100%艾杜纱控油精制水！使用超高压乳化制法！使水中精华更易被吸收！<br>并在脸部表面形成保护膜，防止紫外线、强光对肌肤的损害！喷雾质地长久保持妆面的干净！</p>
-<h3 id="JILL-STUART防晒喷雾"><a href="#JILL-STUART防晒喷雾" class="headerlink" title="JILL STUART防晒喷雾"></a>JILL STUART防晒喷雾</h3><p>只需轻松喷洒即能预防紫外线，守护肌肤及秀发的限定款防晒香氛喷雾。头发、脸部、身体，全身皆可使用。重要的是很貌美~</p>
-<h3 id="乐敦SKIN-AQUA防晒喷雾"><a href="#乐敦SKIN-AQUA防晒喷雾" class="headerlink" title="乐敦SKIN AQUA防晒喷雾"></a>乐敦SKIN AQUA防晒喷雾</h3><p>这款防晒喷雾算是很冷门了，不油腻，不泛白，质感清爽柔顺，与皮肤自然融合！含保水因子，玻尿酸等滋润保湿肌肤，适合比较强的紫外线防护。</p>
+<h3 id="冲泡方法"><a href="#冲泡方法" class="headerlink" title="冲泡方法"></a>冲泡方法</h3><ol>
+<li><p>菊花山楂茶<br>材料：金丝皇菊5克，山楂5克，金银花5克。<br>做法：加入金丝皇菊等三种材料，用沸水冲泡，10分钟后即可饮用。<br>作用：适用于肥胖症、高血脂以及高血压等的患者，能够化瘀消脂、清凉降压、减肥瘦身。</p>
+</li>
+<li><p>菊花枸杞茶<br>材料：适量的大皇菊和枸杞<br>做法：将金丝皇菊和枸杞置入茶壶中，用沸水冲泡，十分钟即可饮用。<br>作用：可以缓解眼睛疲劳或干涩，对于经常熬夜上班或者长期学习的人群十分有用。</p>
+</li>
+<li><p>三花茶<br>材料：少量的金丝皇菊、金银花和茉莉花。<br>做法：将三种材料置入茶壶之中，用沸水冲泡，等待十分钟后即可。<br>作用：对于风热感冒能够有预防和治疗的作用，还可以对咽喉肿痛等有效果，经常食用可以起到降火，静心凝神。</p>
+</li>
+</ol>
 
           
         
@@ -629,7 +1522,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/07/学习笔记/区块链/通用/交易挖矿学习笔记/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/22/学习笔记/区块链/概念/区块链技术-分片技术/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -648,7 +1541,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/07/学习笔记/区块链/通用/交易挖矿学习笔记/" itemprop="url">交易挖矿学习笔记</a></h1>
+                <a class="post-title-link" href="/2018/07/22/学习笔记/区块链/概念/区块链技术-分片技术/" itemprop="url">区块链技术-分片技术</a></h1>
         
 
         <div class="post-meta">
@@ -660,7 +1553,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-07T20:49:34+08:00">2018-07-07</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-22T13:51:52+08:00">2018-07-22</time>
             
 
             
@@ -716,156 +1609,14 @@
 
       
         
-          
-            <p>交易就产生代币，一般会按交易手续费的总量，一定比例分配。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/07/学习笔记/加解密/CA服务器介绍/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/07/学习笔记/加解密/CA服务器介绍/" itemprop="url">CA服务器介绍</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-07T14:33:37+08:00">2018-07-07</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/加解密/" itemprop="url" rel="index"><span itemprop="name">加解密</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>很久之前了解过，当时很清晰，然后呢，用进废退，现在突然碰到这个概念发现模糊了。还是掌握的不扎实。</p>
-<p>先说直白的解释吧，CA 就是证明公钥所属的合法性的。</p>
-<h2 id="CA-Certificate-Authority"><a href="#CA-Certificate-Authority" class="headerlink" title="CA(Certificate Authority)"></a>CA(Certificate Authority)</h2><p>CA机构，又称为证书授证(Certificate Authority)中心，作为电子商务交易中受信任和具有权威性的第三方，承担公钥体系中公钥的合法性检验的责任。CA中心为每个使用公开密钥的客户发放数字证书，数字证书的作用是证明证书中列出的客户合法拥有证书中列出的公开密钥。CA机构的数字签名使得第三者不能伪造和篡改证书。它负责产生、分配并管理所有参与网上信息交换各方所需的数字证书，因此是安全电子信息交换的核心。</p>
-<p>每一张客户公钥证书都会有有效期，密钥对生命周期的长短由签发证书的CA中心来确定。各CA系统的证书有效期限有所不同，一般大约为2～3年。<br>证书的签发过程实际上是对申请数字证书的公钥做数字签名，其中还包含证书有效期验证</p>
-<p>CER编码(规范编码格式)：是数字证书的一种编码格式，它是BER(基本编码格式)的一个变种，比BER规定得更严格<br>DER(卓越编码格式)：同样是BER的一个变种，与CER的不同在于，DER使用定长模式，而CER使用变长模式。</p>
+          <p>“分片”（Sharding）是以太坊为了解决扩容问题而设计的一种技术方案。</p>
+<p>“分片”的大致设计思路是：将区块链网络中的每个区块变为一个子区块链，子区块链中可以容纳若干（目前为100个）打包了交易数据的Collation（大概可以称为“校验块”，为了在分片的情景中将其与区块的概念区分开），这些Collation最终组成一个在主链上区块；因为这些Collation是整体作为区块存在的，所以其数据必定是全部由某个特定的矿工所打包生成，本质上和现有协议中的区块没有区别，所以不再需要增加额外的网络确认。这样，每个区块的交易容量就大概扩大了100倍；而且这种设计还有利于未来的继续扩展，整个扩展计划目前也被大致分为4个阶段；</p>
+<p>分片技术承诺通过改变网络验证的方式来增加吞吐量。分片技术独特于其他解决扩容的链上技术的关键特性，就是它可以进行水平扩容，也就是说，网络的吞吐量随着挖矿网络的扩展而增加。这种特殊的特性可能使它成为推动区块链技术被快速采用的理想技术。</p>
+<p>分片技术是一种基于数据库分片传统概念的扩容技术，它将数据库分割成多个碎片并将这些碎片放置在不同的服务器上。在公共区块链的情境中，网络上的交易将被分成不同的碎片，其由网络上的不同节点组成。因此，每个节点只需处理一小部分传入的交易，并且通过与网络上的其他节点并行处理就能完成大量的验证工作。将网络分割为碎片会使得更多的交易同时被处理和验证。因此，随着网络的增长，区块链处理越来越多的交易将成为可能。这种属性也称为水平扩容。</p>
+<p>公共区块链平台今天面临的最大问题之一就是可扩展性。所有主流的平台都在努力提高每秒的交易量。事实上，当今的公共以太坊网络和比特币网络平均每秒可以处理7-10笔交易。这一数字远低于像Visa这样的集中支付处理器，后者平均每秒能处理约8000笔交易。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/07/07/学习笔记/加解密/CA服务器介绍/#more" rel="contents">
+            <a class="btn" href="/2018/07/22/学习笔记/区块链/概念/区块链技术-分片技术/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -921,7 +1672,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/06/生活小知识/支付宝不可靠了/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/22/生活小知识/LUNA洁面仪选购/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -940,7 +1691,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/06/生活小知识/支付宝不可靠了/" itemprop="url">支付宝不可靠了</a></h1>
+                <a class="post-title-link" href="/2018/07/22/生活小知识/LUNA洁面仪选购/" itemprop="url">LUNA洁面仪选购</a></h1>
         
 
         <div class="post-meta">
@@ -952,7 +1703,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-06T16:18:48+08:00">2018-07-06</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-22T08:19:04+08:00">2018-07-22</time>
             
 
             
@@ -973,7 +1724,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/公开/" itemprop="url" rel="index"><span itemprop="name">公开</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/健康/" itemprop="url" rel="index"><span itemprop="name">健康</span></a></span>
 
                 
                 
@@ -1009,738 +1760,15 @@
       
         
           
-            <p>一直没遇到问题的支付宝，最近出了安全问题，我的生活缴费里面都是通过煤水电的单据把账户输入进去的，然后也一直是在这里缴费。<br>直到 2018年6月25号 缴费之后，无意中才发现，我原来账户的位置不是我的账户，而是一个陌生人的账户。<br>我就很奇怪了，我都没有他的煤水电单据，怎么出来的账户。<br>支付宝客服给的答复是好友分享的，但是我又没有这个人的好友，我根本就不认识他。<br>分享给大家，注意一下自己的支付宝账户吧，不是那么安全可靠了。</p>
-<p><img alt="aed35fcb.png" src="/2018/07/06/生活小知识/支付宝不可靠了/aed35fcb.png" width="" height=""><br>他母亲的，我都替他交费了，还无权查看。<br><img alt="625c9864.png" src="/2018/07/06/生活小知识/支付宝不可靠了/625c9864.png" width="" height=""></p>
-<p><img alt="3438010b.png" src="/2018/07/06/生活小知识/支付宝不可靠了/3438010b.png" width="" height=""><br>这个陌生账户<br><img alt="32f218c5.png" src="/2018/07/06/生活小知识/支付宝不可靠了/32f218c5.png" width="" height=""></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/06/学习笔记/linux/unix自动编译autogen/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/06/学习笔记/linux/unix自动编译autogen/" itemprop="url">unix自动编译autogen</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-06T10:49:08+08:00">2018-07-06</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>自动编译工具</p>
-<h2 id="autogen-sh"><a href="#autogen-sh" class="headerlink" title="autogen.sh"></a>autogen.sh</h2><p>只需要补充上configure.ac和Makefile.am文件即可</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/04/读过的书/区块链金融/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/04/读过的书/区块链金融/" itemprop="url">区块链金融</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-04T07:41:08+08:00">2018-07-04</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>属于海量阅读收集资料的过程，这个书，大家可以不用看了，完全没价值。</p>
-<p><img alt="193f0afa.png" src="/2018/07/04/读过的书/区块链金融/193f0afa.png" width="" height=""></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/03/学习笔记/区块链/通用/burstcoin硬盘挖矿原理/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/03/学习笔记/区块链/通用/burstcoin硬盘挖矿原理/" itemprop="url">burstcoin硬盘挖矿原理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-03T18:09:18+08:00">2018-07-03</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><a href="https://www.burst-coin.org/" target="_blank" rel="noopener">Burstcoin</a><br><a href="https://github.com/PoC-Consortium/burstcoin" target="_blank" rel="noopener">github</a></p>
-<p>Proof-of-Capacity (PoC) consensus algorithm</p>
-<p>Block generator： 产生新区块的账号<br>Generation Signature：基于前一个块的 generation signature 和 block generator，用来产生新块的，长度 32 bytes<br>Block signature：每个区块都由产生者签名，使用 Sha256 and Curve25519 和私钥签名生成 64byte long hash</p>
-<p>平均每4分钟出一个块，一天 360 块，每 10800 块（大约30天），奖励减少 5%，</p>
-<p>Base target：从最后 24 块计算出来，用来调整难度，base target 越低，找到低的 deadline 的难度越大。<br>动态调整用来保证平均 4 分钟一个区块。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/07/03/学习笔记/区块链/通用/burstcoin硬盘挖矿原理/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/02/开源库/NSIS打包学习/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/02/开源库/NSIS打包学习/" itemprop="url">NSIS打包学习</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-02T17:11:18+08:00">2018-07-02</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>待续。。。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/02/开源库/minGW/MinGW学习/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/02/开源库/minGW/MinGW学习/" itemprop="url">MinGW学习</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-02T09:41:43+08:00">2018-07-02</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="MinGW32-和-MinGW-w64-区别"><a href="#MinGW32-和-MinGW-w64-区别" class="headerlink" title="MinGW32 和 MinGW-w64 区别"></a>MinGW32 和 MinGW-w64 区别</h2><p>MinGW32先开发，只能编译32位程序；<br>MinGW-w64从MinGW32发展而来，支持编译64和32位位程序，同时可以进行交叉编译。</p>
-<p>MinGW-w64类型:<br>x86_64: 支持在x64和x86上运行<br>i686: 支持在x86上运行</p>
-<p>i386/i686/x86_64区别</p>
-<p>i386 适用于intel和AMD所有32位的cpu，以及采用X86架构的32的cpu。<br>X86_64 适用于intel和AMD采用X86架构的64位cpu，兼容32位。</p>
-<p>关于mingw-w64-x86_64:<br>生成64位库只要用默认的参数编译即可,而生成32位库则要用-m32参数编译.</p>
-<p>对于mingw-w64-i686:默认生成32位程序</p>
-<h2 id="查看默认库的搜索路径"><a href="#查看默认库的搜索路径" class="headerlink" title="查看默认库的搜索路径"></a>查看默认库的搜索路径</h2><p>minGW 下面执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ld --verbose | grep SEARCH_DIR | tr -s &apos; ;&apos; \\012</span><br></pre></td></tr></table></figure></p>
-<h2 id="如何指定某个库的路径"><a href="#如何指定某个库的路径" class="headerlink" title="如何指定某个库的路径"></a>如何指定某个库的路径</h2><p>-llibrary<br><code>foo.o -lz bar.o</code> 搜索库 <code>z</code> 在 foo.o 之后。</p>
-<p>-Lsearchdir<br>–library-path=searchdir</p>
-<p>使用环境变量设置附加库的路径<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export LIBRARY_PATH</span><br><span class="line">LIBRARY_PATH=&quot;C:/mingw/local/lib;$LIBRARY_PATH&quot;</span><br></pre></td></tr></table></figure></p>
+            <p><a href="https://www.foreo.com/zh-hans/luna-2?id=1255" target="_blank" rel="noopener">官网</a><br>做所有护肤之前，最关键的就是彻底的清洁皮肤。这道理大家自然都懂，不把灰尘、油污、余妆和死去的角质洗干净，再贵的护肤品也好好没法吸收，黑头、闭口什么的也会随之而来。</p>
+<p>Luna是Foreo公司研发制造的，官方提供的原理和功效：LUNA™露娜™系列通过每分钟8000次T-sonic™透肤声波脉动，配合柔软温和的硅胶触点直接作用于肌肤表面，有效去除98.5%的污垢与杂质，比普通尼龙刷头卫生35倍。收缩毛孔，帮助淡化粉刺和痘痕，促进血液微循环，焕发肌肤光泽。<br>Luna的Foreo是家瑞典公司，得过很多国际美容设计奖项，也是第一个把医用硅胶应用到精密抗衰老仪和洗脸仪的公司。</p>
+<p><img alt="ad6d8bbd.png" src="/2018/07/22/生活小知识/LUNA洁面仪选购/ad6d8bbd.png" width="" height=""></p>
+<p>luna系列产品很多，如何选择？<br>很简单，当然要选择性价比最高的</p>
+<p>因为相对于1代luna，2代产品刷头和档位数有明显提升，我首先就排除了1代产品，直接在2代中选择。在2代产品里，有luna 2和luna mini 2。玩趣版的我就不专门介绍了，可以使用100分钟，约100次。</p>
+<p><img alt="bda4b691.png" src="/2018/07/22/生活小知识/LUNA洁面仪选购/bda4b691.png" width="" height=""></p>
+<h2 id="标准版"><a href="#标准版" class="headerlink" title="标准版"></a>标准版</h2><p>主要区别就是Luna 2贵一些，体积大，有12个档位，反面是波纹状，针对不同的肤质有不同的颜色</p>
+<h2 id="mini版"><a href="#mini版" class="headerlink" title="mini版"></a>mini版</h2><p>luna mini 2是8个档位，反面没有波纹，是更适合油性痘痘肌肤的粗胶粒，混合型皮肤可以用来清洁T区</p>
+<h2 id="如果选择"><a href="#如果选择" class="headerlink" title="如果选择"></a>如果选择</h2><p>选MINI还是标准？<br>我知道这是很多人会纠结的问题，所以来分别说下各型号特点：<br>无论1代或2代，MINI只是纯洗脸的，无导入按摩面，而且MINI不分颜色，全肤质通用。标准版都有导入按摩面，同时针对不同肤质有颜色区别，比如：<br>1代标准粉即适合敏感肌又适合中性肌。<br>2代标准粉只适合中性肌。<br>2代标准紫适合敏感肌。<br>2代湖绿适合油性肌。<br>等等……<br>还有使用次数的区别：<br>MINI充满一次电可使用300次左右。<br>标准充满一次电可使用450次左右。<br>所以看大家需求，只是洗脸用MINI即可，想方便天天用到导入按摩，就选标准！</p>
 
           
         
@@ -1783,7 +1811,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/38/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/38/">38</a><span class="page-number current">39</span><a class="page-number" href="/page/40/">40</a><span class="space">&hellip;</span><a class="page-number" href="/page/84/">84</a><a class="extend next" rel="next" href="/page/40/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/38/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/38/">38</a><span class="page-number current">39</span><a class="page-number" href="/page/40/">40</a><span class="space">&hellip;</span><a class="page-number" href="/page/86/">86</a><a class="extend next" rel="next" href="/page/40/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1830,7 +1858,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">832</span>
+                    <span class="site-state-item-count">856</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2372,7 +2400,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">186</span>
+                      
+                    
+                    <span class="site-state-item-count">187</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -2914,69 +2944,7 @@
         onPopupClose();
       }
     });
-  </script>
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-  
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-        
-      
-    
-      
-    
-      
-    
-  
-
-  
-    
-      <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-      var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -2995,7 +2963,44 @@
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->
 
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
     
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+
   
 
 
