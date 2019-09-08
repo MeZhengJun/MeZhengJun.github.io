@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">856</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">860</span>
       </a>
 </li>
 
@@ -312,6 +312,584 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/05/20/学习笔记/数据库/db-Access/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/20/学习笔记/数据库/db-Access/" itemprop="url">db-Access</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-20T13:45:53+08:00">2019-05-20</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><ol>
+<li>not support UTF8 sql string</li>
+<li>Access 2016版本之前不支持bitint</li>
+</ol>
+<p><a href="https://support.office.com/zh-cn/article/%E4%BD%BF%E7%94%A8%E5%A4%A7%E6%95%B0%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-5b623f6e-641d-4e97-8bdf-b77bae076f70" target="_blank" rel="noopener">https://support.office.com/zh-cn/article/%E4%BD%BF%E7%94%A8%E5%A4%A7%E6%95%B0%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-5b623f6e-641d-4e97-8bdf-b77bae076f70</a></p>
+<p>大数数据类型可存储非货币的数值，并与 ODBC 中的 SQL_BIGINT 数据类型兼容。请使用这种数据类型以高效计算大数。</p>
+<p>大数数据类型的范围<br>可将大数作为字段添加到 Access 表中。还可通过相应的数据类型（如 SQL Server bigint 数据类型）链接到数据库或从数据库导入。若要添加大数数据类型，需要 Access 2016（16.0.7812 或更高版本）。</p>
+<h1 id="where-条件"><a href="#where-条件" class="headerlink" title="where 条件"></a>where 条件</h1><p>如果想筛选Access数据表中 Null 和 “” 空字符串 以及 “ “ 空格的数据，则可以使用 trim(nz(字段名))=””</p>
+<h1 id="报错-用户-‘admin’-以独占方式的锁定数据表"><a href="#报错-用户-‘admin’-以独占方式的锁定数据表" class="headerlink" title="报错: 用户 ‘admin’ 以独占方式的锁定数据表"></a>报错: 用户 ‘admin’ 以独占方式的锁定数据表</h1><p>还没找到好的处理方法.暂时捕获异常,延迟,然后重新执行.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">skip_retry:</span><br><span class="line">TRY&#123;</span><br><span class="line">    <span class="comment">// some sql process</span></span><br><span class="line">&#125;CATCH(CDBException, e) &#123;</span><br><span class="line">		<span class="keyword">char</span> buf[<span class="number">1024</span>] = &#123; <span class="string">'\0'</span> &#125;;</span><br><span class="line">		e-&gt;GetErrorMessage(&amp;buf[<span class="number">0</span>], <span class="number">1024</span>);</span><br><span class="line">		<span class="keyword">if</span> (<span class="literal">nullptr</span> != <span class="built_in">strstr</span>(buf, <span class="string">"独占方式"</span>))</span><br><span class="line">		&#123;</span><br><span class="line">			Sleep(<span class="number">500</span>);</span><br><span class="line">			<span class="keyword">goto</span> skip_retry;</span><br><span class="line">		&#125;</span><br><span class="line">		ASSERT(FALSE);</span><br><span class="line">		<span class="keyword">if</span> (g_bWriteLog)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">string</span> strLog = <span class="string">"1biao6shi: manForce Database error: "</span> + e-&gt;m_strError;</span><br><span class="line">			OutputDebugString(strLog.c_str());</span><br><span class="line">			<span class="keyword">if</span> (g_logger)</span><br><span class="line">			&#123;</span><br><span class="line">				g_logger-&gt;error(strLog);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	END_CATCH;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/05/19/Web开发/php服务端开发/php-pdo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/19/Web开发/php服务端开发/php-pdo/" itemprop="url">php-pdo</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-19T22:52:38+08:00">2019-05-19</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/服务端/" itemprop="url" rel="index"><span itemprop="name">服务端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>PHP 数据对象PDO扩展为PHP访问数据库定义了一个轻量级的一致接口。PDO 提供了一个数据访问抽象层，这意味着，不管使用哪种数据库，都可以用相同的函数（方法）来查询和获取数据。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/05/19/Web开发/php服务端开发/php-sqlite/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/19/Web开发/php服务端开发/php-sqlite/" itemprop="url">php-sqlite</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-19T18:54:28+08:00">2019-05-19</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/服务端/" itemprop="url" rel="index"><span itemprop="name">服务端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="connect"><a href="#connect" class="headerlink" title="connect"></a>connect</h2><pre><code>
+</code></pre>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/05/19/功能分类/database/sqlite/sqlite-command-line-usage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/19/功能分类/database/sqlite/sqlite-command-line-usage/" itemprop="url">sqlite-command line usage</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-19T16:16:01+08:00">2019-05-19</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="创建-打开数据库"><a href="#创建-打开数据库" class="headerlink" title="创建/打开数据库"></a>创建/打开数据库</h2><p><code>sqlite3 DatabaseName.db</code></p>
+<h2 id="查询表"><a href="#查询表" class="headerlink" title="查询表"></a>查询表</h2><p>命令行输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.tables</span><br><span class="line">select * from t_account;</span><br></pre></td></tr></table></figure>
+<h2 id="退出"><a href="#退出" class="headerlink" title="退出"></a>退出</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.exit</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -1218,585 +1796,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/05/15/读过的书/个人投资者交易心里/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/05/15/读过的书/个人投资者交易心里/" itemprop="url">个人投资者交易心里</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-15T05:48:28+08:00">2019-05-15</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>推荐阅读。</p>
-<p>这本涉及行为金融学的书终于感觉到有收获了，还要再看几遍。</p>
-<p><img alt="20190515_055101.png" src="/2019/05/15/读过的书/个人投资者交易心里/20190515_055101.png" width="200" height=""></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/05/14/学习笔记/windows/MFC/CTreeCtrl-study/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/05/14/学习笔记/windows/MFC/CTreeCtrl-study/" itemprop="url">CTreeCtrl study</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-14T14:23:31+08:00">2019-05-14</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="常用接口"><a href="#常用接口" class="headerlink" title="常用接口"></a>常用接口</h1><h1 id="SetItemImage"><a href="#SetItemImage" class="headerlink" title="SetItemImage"></a>SetItemImage</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BOOL <span class="title">SetItemImage</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    HTREEITEM hItem,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">int</span> nImage,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">int</span> nSelectedImage)</span></span>;</span><br></pre></td></tr></table></figure>
-<h1 id="Notify"><a href="#Notify" class="headerlink" title="Notify"></a>Notify</h1><h2 id="NM-CLICK"><a href="#NM-CLICK" class="headerlink" title="NM_CLICK"></a>NM_CLICK</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">ON_NOTIFY(NM_CLICK, <span class="number">4</span>, &amp;CFolderView::OnNMClickTree)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnNMClickTree</span><span class="params">(NMHDR *pNMHDR, LRESULT *pResult)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> CFolderView::OnNMClickTree(NMHDR *pNMHDR, LRESULT *pResult)</span><br><span class="line">&#123;</span><br><span class="line">     g_pwndMain-&gt;m_spWndFileList-&gt;ActivateFrame();</span><br><span class="line">    *pResult = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">tagNMHDR</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    HWND     hwndFrom;</span><br><span class="line">    UINT_PTR idFrom;</span><br><span class="line">    UINT     code;</span><br><span class="line">&#125; NMHDR;</span><br></pre></td></tr></table></figure>
-<h2 id="TVN-SELCHANGING"><a href="#TVN-SELCHANGING" class="headerlink" title="TVN_SELCHANGING"></a>TVN_SELCHANGING</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ON_NOTIFY(TVN_SELCHANGING, <span class="number">4</span>, &amp;CFolderView::OnTvnSelchangingFolder)</span><br><span class="line"></span><br><span class="line"><span class="function">afx_msg <span class="keyword">void</span> <span class="title">OnTvnSelchangingFolder</span><span class="params">(NMHDR *pNMHDR, LRESULT *pResult)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> CFolderView::OnTvnSelchangingFolder(NMHDR *pNMHDR, LRESULT *pResult)</span><br><span class="line">&#123;</span><br><span class="line">	LPNMTREEVIEW pNMTreeView = <span class="keyword">reinterpret_cast</span>&lt;LPNMTREEVIEW&gt;(pNMHDR);</span><br><span class="line">	<span class="comment">// <span class="doctag">TODO:</span> Add your control notification handler code here</span></span><br><span class="line">	*pResult = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="TVN-SELCHANGED"><a href="#TVN-SELCHANGED" class="headerlink" title="TVN_SELCHANGED"></a>TVN_SELCHANGED</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">ON_NOTIFY(TVN_SELCHANGED, <span class="number">4</span>, &amp;CFolderView::OnTvnSelchangedFolder)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnTvnSelchangedFolder</span><span class="params">(NMHDR *pNMHDR, LRESULT *pResult)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> CFolderView::OnTvnSelchangedFolder(NMHDR *pNMHDR, LRESULT *pResult)</span><br><span class="line">&#123;</span><br><span class="line">    LPNMTREEVIEW pNMTreeView = <span class="keyword">reinterpret_cast</span>&lt;LPNMTREEVIEW&gt;(pNMHDR);</span><br><span class="line">    HTREEITEM hItem = pNMTreeView-&gt;itemNew.hItem;</span><br><span class="line">    <span class="keyword">if</span> (hItem == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (hItem != m_curDbRootItem)</span><br><span class="line">    &#123;</span><br><span class="line">        m_wndTree.SetItemImage(hItem, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">if</span> (pNMTreeView-&gt;itemOld.hItem != m_curDbRootItem)</span><br><span class="line">    &#123;</span><br><span class="line">        m_wndTree.SetItemImage(pNMTreeView-&gt;itemOld.hItem, <span class="number">2</span>, <span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    m_wndTree.Expand(pNMTreeView-&gt;itemNew.hItem, TVE_EXPAND);</span><br><span class="line">    </span><br><span class="line">    *pResult = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/05/10/语言相关/python/python-file/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/05/10/语言相关/python/python-file/" itemprop="url">python-file</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-10T22:27:10+08:00">2019-05-10</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="utf8"><a href="#utf8" class="headerlink" title="utf8"></a>utf8</h1><p>注意跳过开头 3 个字节的 BOM</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> codecs.open(filePath, <span class="string">'r+'</span>, <span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">   content = f.read()</span><br><span class="line">   f.seek(<span class="number">3</span>, <span class="number">0</span>)</span><br><span class="line">   f.write(statisticStr + content)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/05/09/功能分类/debug/debug-dump/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/05/09/功能分类/debug/debug-dump/" itemprop="url">debug-dump</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-09T11:33:26+08:00">2019-05-09</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">// 包含minidump.h</span></span><br><span class="line"><span class="comment">// 然后在最开始的地方调用如下函数即可，会在应用目录下生成crash.dat文件</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//设置异常处理回调函数</span></span><br><span class="line"><span class="comment">RunCrashHandler();</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">== == == == == == == == == == ==</span></span><br><span class="line"><span class="comment">minidump.h</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;imagehlp.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;tchar.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib, <span class="meta-string">"dbghelp.lib"</span>)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> BOOL <span class="title">IsDataSectionNeeded</span><span class="params">(<span class="keyword">const</span> WCHAR* pModuleName)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (pModuleName == <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> FALSE;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	WCHAR szFileName[_MAX_FNAME] = <span class="string">L""</span>;</span><br><span class="line">	_wsplitpath(pModuleName, <span class="literal">NULL</span>, <span class="literal">NULL</span>, szFileName, <span class="literal">NULL</span>);</span><br><span class="line">	<span class="keyword">if</span> (wcsicmp(szFileName, <span class="string">L"ntdll"</span>) == <span class="number">0</span>)</span><br><span class="line">		<span class="keyword">return</span> TRUE;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> FALSE;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> BOOL CALLBACK <span class="title">MiniDumpCallback</span><span class="params">(PVOID                            pParam,</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">const</span> PMINIDUMP_CALLBACK_INPUT   pInput,</span></span></span><br><span class="line"><span class="function"><span class="params">	PMINIDUMP_CALLBACK_OUTPUT        pOutput)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (pInput == <span class="number">0</span> || pOutput == <span class="number">0</span>)</span><br><span class="line">		<span class="keyword">return</span> FALSE;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">switch</span> (pInput-&gt;CallbackType)</span><br><span class="line">	&#123;</span><br><span class="line">	<span class="keyword">case</span> ModuleCallback:</span><br><span class="line">		<span class="keyword">if</span> (pOutput-&gt;ModuleWriteFlags &amp; ModuleWriteDataSeg)</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> (!IsDataSectionNeeded(pInput-&gt;Module.FullPath))</span><br><span class="line"></span><br><span class="line">				pOutput-&gt;ModuleWriteFlags &amp;= (~ModuleWriteDataSeg);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">case</span> IncludeModuleCallback:</span><br><span class="line">	<span class="keyword">case</span> IncludeThreadCallback:</span><br><span class="line">	<span class="keyword">case</span> ThreadCallback:</span><br><span class="line">	<span class="keyword">case</span> ThreadExCallback:</span><br><span class="line">		<span class="keyword">return</span> TRUE;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">default</span>:;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> FALSE;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建Dump文件</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">CreateMiniDump</span><span class="params">(EXCEPTION_POINTERS* pep, LPCTSTR strFileName)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	HANDLE hFile = CreateFile(strFileName, GENERIC_WRITE, <span class="number">0</span>, <span class="literal">NULL</span>, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, <span class="literal">NULL</span>);</span><br><span class="line">	<span class="keyword">if</span> ((hFile != <span class="literal">NULL</span>) &amp;&amp; (hFile != INVALID_HANDLE_VALUE))</span><br><span class="line">	&#123;</span><br><span class="line">		MINIDUMP_EXCEPTION_INFORMATION mdei;</span><br><span class="line">		mdei.ThreadId = GetCurrentThreadId();</span><br><span class="line">		mdei.ExceptionPointers = pep;</span><br><span class="line">		mdei.ClientPointers = FALSE;</span><br><span class="line">		MINIDUMP_CALLBACK_INFORMATION mci;</span><br><span class="line">		mci.CallbackRoutine = (MINIDUMP_CALLBACK_ROUTINE)MiniDumpCallback;</span><br><span class="line">		mci.CallbackParam = <span class="number">0</span>;</span><br><span class="line">		MINIDUMP_TYPE mdt = (MINIDUMP_TYPE)<span class="number">0x0000ffff</span>;</span><br><span class="line">		MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hFile, MiniDumpNormal, &amp;mdei, <span class="literal">NULL</span>, &amp;mci);</span><br><span class="line"></span><br><span class="line">		CloseHandle(hFile);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">LPTOP_LEVEL_EXCEPTION_FILTER WINAPI <span class="title">MyDummySetUnhandledExceptionFilter</span><span class="params">(LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">BOOL <span class="title">PreventSetUnhandledExceptionFilter</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	HMODULE hKernel32 = LoadLibraryA((<span class="string">"kernel32.dll"</span>));</span><br><span class="line">	<span class="keyword">if</span> (hKernel32 == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span> FALSE;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">void</span> *pOrgEntry = GetProcAddress(hKernel32, <span class="string">"SetUnhandledExceptionFilter"</span>);</span><br><span class="line">	<span class="keyword">if</span> (pOrgEntry == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span> FALSE;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span> newJump[<span class="number">100</span>];</span><br><span class="line">	DWORD dwOrgEntryAddr = (DWORD)pOrgEntry;</span><br><span class="line">	dwOrgEntryAddr += <span class="number">5</span>; <span class="comment">// add 5 for 5 op-codes for jmp far</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">void</span> *pNewFunc = &amp;MyDummySetUnhandledExceptionFilter;</span><br><span class="line">	DWORD dwNewEntryAddr = (DWORD)pNewFunc;</span><br><span class="line">	DWORD dwRelativeAddr = dwNewEntryAddr - dwOrgEntryAddr;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	newJump[<span class="number">0</span>] = <span class="number">0xE9</span>;  <span class="comment">// JMP absolute</span></span><br><span class="line">	<span class="built_in">memcpy</span>(&amp;newJump[<span class="number">1</span>], &amp;dwRelativeAddr, <span class="keyword">sizeof</span>(pNewFunc));</span><br><span class="line">	SIZE_T bytesWritten;</span><br><span class="line">	BOOL bRet = WriteProcessMemory(GetCurrentProcess(), pOrgEntry, newJump, <span class="keyword">sizeof</span>(pNewFunc) + <span class="number">1</span>, &amp;bytesWritten);</span><br><span class="line">	<span class="keyword">return</span> bRet;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function">LONG WINAPI <span class="title">UnhandledExceptionFilterEx</span><span class="params">(struct _EXCEPTION_POINTERS *pException)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	TCHAR szMbsFile[MAX_PATH] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	::GetModuleFileName(<span class="literal">NULL</span>, szMbsFile, MAX_PATH);</span><br><span class="line">	TCHAR* pFind = _tcsrchr(szMbsFile, <span class="string">'\\'</span>);</span><br><span class="line">	<span class="keyword">if</span> (pFind)</span><br><span class="line">	&#123;</span><br><span class="line">		*(pFind + <span class="number">1</span>) = <span class="number">0</span>;</span><br><span class="line">		_tcscat(szMbsFile, _T(<span class="string">"crash.dat"</span>));</span><br><span class="line">		CreateMiniDump(pException, szMbsFile);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">// <span class="doctag">TODO:</span> MiniDumpWriteDump</span></span><br><span class="line">	FatalAppExit(<span class="number">-1</span>, _T(<span class="string">"Fatal Error"</span>));</span><br><span class="line">	<span class="keyword">return</span> EXCEPTION_CONTINUE_SEARCH;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//运行异常处理</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">RunCrashHandler</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	SetUnhandledExceptionFilter(UnhandledExceptionFilterEx);</span><br><span class="line">	PreventSetUnhandledExceptionFilter();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1848,7 +1847,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">856</span>
+                    <span class="site-state-item-count">860</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>

@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">856</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">860</span>
       </a>
 </li>
 
@@ -312,6 +312,606 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/01/05/语言相关/Rust/rust-functional/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/05/语言相关/Rust/rust-functional/" itemprop="url">rust functional</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-05T18:10:38+08:00">2019-01-05</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>Closures, a function-like construct you can store in a variable</li>
+<li>Iterators, a way of processing a series of elements</li>
+<li>How to use these two features to improve the I/O project in Chapter 12</li>
+<li>The performance of these two features (Spoiler alert: they’re faster than you might think!)</li>
+</ul>
+<h1 id="Closure"><a href="#Closure" class="headerlink" title="Closure"></a>Closure</h1><p>Closures: Anonymous Functions that Can Capture Their Environment</p>
+<p>Rust’s closures are anonymous functions you can save in a variable or pass as arguments to other functions. You can create the closure in one place and then call the closure to evaluate it in a different context. Unlike functions, closures can capture values from the scope in which they’re defined.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">use std::thread;</span><br><span class="line">use std::time::Duration;</span><br><span class="line"></span><br><span class="line">let expensive_closure = |num| &#123;</span><br><span class="line">    println!(&quot;calculating slowly...&quot;);</span><br><span class="line">    thread::sleep(Duration::from_secs(2));</span><br><span class="line">    num</span><br><span class="line">&#125;;</span><br><span class="line">expensive_closure(5);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>if has multiple parameter<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">|param1, param2|</span><br></pre></td></tr></table></figure></p>
+<p>can add annotation for clarity<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">use std::thread;</span><br><span class="line">use std::time::Duration;</span><br><span class="line"></span><br><span class="line">let expensive_closure = |num: u32| -&gt; u32 &#123;</span><br><span class="line">    println!(&quot;calculating slowly...&quot;);</span><br><span class="line">    thread::sleep(Duration::from_secs(2));</span><br><span class="line">    num</span><br><span class="line">&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="generic-parameter"><a href="#generic-parameter" class="headerlink" title="generic parameter"></a>generic parameter</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">struct Cacher&lt;T&gt;</span><br><span class="line">    where T: Fn(u32) -&gt; u32</span><br><span class="line">&#123;</span><br><span class="line">    calculation: T,</span><br><span class="line">    value: Option&lt;u32&gt;,</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The <code>Cacher</code> struct has a <code>calculation</code> field of the generic type <code>T</code>. The trait bounds on <code>T</code> specify that it’s a closure by using the <code>Fn</code> trait. Any closure we want to store in the <code>calculation</code> field must have one <code>u32</code> parameter (specified within the parentheses after <code>Fn</code>) and must return a <code>u32</code> (specified after the <code>-&gt;</code>).</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/01/05/语言相关/Rust/rust-error/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/05/语言相关/Rust/rust-error/" itemprop="url">rust error</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-05T17:55:30+08:00">2019-01-05</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Rust groups errors into two major categories: recoverable and unrecoverable errors.</p>
+<p>Rust doesn’t have exceptions. Instead, it has the type Result&lt;T, E&gt; for recoverable errors and the panic! macro that stops execution when the program encounters an unrecoverable error.</p>
+<p>By default, when a panic occurs, the program starts unwinding, which means Rust walks back up the stack and cleans up the data from each function it encounters. But this walking back and cleanup is a lot of work.<br>If in your project you need to make the resulting binary as small as possible, you can switch from unwinding to aborting<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[profile.release]</span><br><span class="line">panic = &apos;abort&apos;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/01/05/语言相关/Rust/rust-struct/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/05/语言相关/Rust/rust-struct/" itemprop="url">rust struct</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-05T17:18:28+08:00">2019-01-05</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">struct User &#123;</span><br><span class="line">    username: String,</span><br><span class="line">    email: String,</span><br><span class="line">    sign_in_count: u64,</span><br><span class="line">    active: bool,</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">struct User &#123;</span><br><span class="line">    username: String,</span><br><span class="line">    email: String,</span><br><span class="line">    sign_in_count: u64,</span><br><span class="line">    active: bool,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let user1 = User &#123;</span><br><span class="line">    email: String::from(&quot;someone@example.com&quot;),</span><br><span class="line">    username: String::from(&quot;someusername123&quot;),</span><br><span class="line">    active: true,</span><br><span class="line">    sign_in_count: 1,</span><br><span class="line">&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">struct User &#123;</span><br><span class="line">    username: String,</span><br><span class="line">    email: String,</span><br><span class="line">    sign_in_count: u64,</span><br><span class="line">    active: bool,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let mut user1 = User &#123;</span><br><span class="line">    email: String::from(&quot;someone@example.com&quot;),</span><br><span class="line">    username: String::from(&quot;someusername123&quot;),</span><br><span class="line">    active: true,</span><br><span class="line">    sign_in_count: 1,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">user1.email = String::from(&quot;anotheremail@example.com&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">struct User &#123;</span><br><span class="line">    username: String,</span><br><span class="line">    email: String,</span><br><span class="line">    sign_in_count: u64,</span><br><span class="line">    active: bool,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fn build_user(email: String, username: String) -&gt; User &#123;</span><br><span class="line">    User &#123;</span><br><span class="line">        email,</span><br><span class="line">        username,</span><br><span class="line">        active: true,</span><br><span class="line">        sign_in_count: 1,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">struct User &#123;</span><br><span class="line">    username: String,</span><br><span class="line">    email: String,</span><br><span class="line">    sign_in_count: u64,</span><br><span class="line">    active: bool,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let user1 = User &#123;</span><br><span class="line">    email: String::from(&quot;someone@example.com&quot;),</span><br><span class="line">    username: String::from(&quot;someusername123&quot;),</span><br><span class="line">    active: true,</span><br><span class="line">    sign_in_count: 1,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">let user2 = User &#123;</span><br><span class="line">    email: String::from(&quot;another@example.com&quot;),</span><br><span class="line">    username: String::from(&quot;anotherusername567&quot;),</span><br><span class="line">    ..user1</span><br><span class="line">&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="method"><a href="#method" class="headerlink" title="method"></a>method</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#[derive(Debug)]</span><br><span class="line">struct Rectangle &#123;</span><br><span class="line">    width: u32,</span><br><span class="line">    height: u32,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">impl Rectangle &#123;</span><br><span class="line">    fn area(&amp;self) -&gt; u32 &#123;</span><br><span class="line">        self.width * self.height</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fn main() &#123;</span><br><span class="line">    let rect1 = Rectangle &#123; width: 30, height: 50 &#125;;</span><br><span class="line"></span><br><span class="line">    println!(</span><br><span class="line">        &quot;The area of the rectangle is &#123;&#125; square pixels.&quot;,</span><br><span class="line">        rect1.area()</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/01/05/语言相关/Rust/rust-string/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/05/语言相关/Rust/rust-string/" itemprop="url">rust string</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-05T16:09:19+08:00">2019-01-05</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>This type is allocated on the heap and as such is able to store an amount of text that is unknown to us at compile time.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">let s = String::from(&quot;hello&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">let mut s = String::from(&quot;hello&quot;);</span><br><span class="line"></span><br><span class="line">s.push_str(&quot;, world!&quot;); // push_str() appends a literal to a String</span><br><span class="line"></span><br><span class="line">println!(&quot;&#123;&#125;&quot;, s); // This will print `hello, world!`</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>release memory</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">&#123;</span><br><span class="line">    let s = String::from(&quot;hello&quot;); // s is valid from this point forward</span><br><span class="line"></span><br><span class="line">    // do stuff with s</span><br><span class="line">&#125;                                  // this scope is now over, and s is no</span><br><span class="line">                                   // longer valid</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>There is a natural point at which we can return the memory our String needs to the operating system: when s goes out of scope. When a variable goes out of scope, Rust calls a special function for us. This function is called drop, and it’s where the author of String can put the code to return the memory. Rust calls drop automatically at the closing curly bracket.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">let s1 = String::from(&quot;hello&quot;);</span><br><span class="line">let s2 = s1; //Rust considers s1 to no longer be valid</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img alt="6898585a.png" src="/2019/01/05/语言相关/Rust/rust-string/6898585a.png" width="" height=""><br><img alt="130473ca.png" src="/2019/01/05/语言相关/Rust/rust-string/130473ca.png" width="" height=""></p>
+<p>actually is a move operation<br><img alt="7e400833.png" src="/2019/01/05/语言相关/Rust/rust-string/7e400833.png" width="" height=""></p>
+<p>deep copy use <code>clone</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">let s1 = String::from(&quot;hello&quot;);</span><br><span class="line">let s2 = s1.clone();</span><br><span class="line"></span><br><span class="line">println!(&quot;s1 = &#123;&#125;, s2 = &#123;&#125;&quot;, s1, s2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>return value and scope<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">fn main() &#123;</span><br><span class="line">    let s1 = gives_ownership();         // gives_ownership moves its return</span><br><span class="line">                                        // value into s1</span><br><span class="line"></span><br><span class="line">    let s2 = String::from(&quot;hello&quot;);     // s2 comes into scope</span><br><span class="line"></span><br><span class="line">    let s3 = takes_and_gives_back(s2);  // s2 is moved into</span><br><span class="line">                                        // takes_and_gives_back, which also</span><br><span class="line">                                        // moves its return value into s3</span><br><span class="line">&#125; // Here, s3 goes out of scope and is dropped. s2 goes out of scope but was</span><br><span class="line">  // moved, so nothing happens. s1 goes out of scope and is dropped.</span><br><span class="line"></span><br><span class="line">fn gives_ownership() -&gt; String &#123;             // gives_ownership will move its</span><br><span class="line">                                             // return value into the function</span><br><span class="line">                                             // that calls it</span><br><span class="line"></span><br><span class="line">    let some_string = String::from(&quot;hello&quot;); // some_string comes into scope</span><br><span class="line"></span><br><span class="line">    some_string                              // some_string is returned and</span><br><span class="line">                                             // moves out to the calling</span><br><span class="line">                                             // function</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// takes_and_gives_back will take a String and return one</span><br><span class="line">fn takes_and_gives_back(a_string: String) -&gt; String &#123; // a_string comes into</span><br><span class="line">                                                      // scope</span><br><span class="line"></span><br><span class="line">    a_string  // a_string is returned and moves out to the calling function</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>return multiple value use tuple<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">fn main() &#123;</span><br><span class="line">    let s1 = String::from(&quot;hello&quot;);</span><br><span class="line"></span><br><span class="line">    let (s2, len) = calculate_length(s1);</span><br><span class="line"></span><br><span class="line">    println!(&quot;The length of &apos;&#123;&#125;&apos; is &#123;&#125;.&quot;, s2, len);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fn calculate_length(s: String) -&gt; (String, usize) &#123;</span><br><span class="line">    let length = s.len(); // len() returns the length of a String</span><br><span class="line"></span><br><span class="line">    (s, length)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="slice"><a href="#slice" class="headerlink" title="slice"></a>slice</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">let s = String::from(&quot;hello world&quot;);</span><br><span class="line"></span><br><span class="line">let hello = &amp;s[0..5];</span><br><span class="line">let world = &amp;s[6..11];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The <code>start..end</code> syntax is a range that begins at start and continues up to, but not including, end. If we wanted to include end, we can use <code>..=</code> instead of <code>..</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">let s = String::from(&quot;hello world&quot;);</span><br><span class="line"></span><br><span class="line">let hello = &amp;s[0..=4];</span><br><span class="line">let world = &amp;s[6..=10];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -1443,614 +2043,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/01/01/语言相关/英语学习/English-2018-百词斩年终总结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/01/语言相关/英语学习/English-2018-百词斩年终总结/" itemprop="url">English-2018 百词斩年终总结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-01T11:17:00+08:00">2019-01-01</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>今年累计备了 7037 个单词，坚持打卡 281 天，超过 2，998 万人。<br>算上就饭吃的单词，应该在 6000 左右，看英文文档感觉比以前轻松了，查字典的次数也越来越少了。<br>下一个难点应该是语法了。单词继续巩固，把语法放到前面。</p>
-<table>
-<thead>
-<tr>
-<th><img alt="8eb6cb4c.png" src="/2019/01/01/语言相关/英语学习/English-2018-百词斩年终总结/8eb6cb4c.png" width="300" height=""></th>
-<th><img alt="2681384c.png" src="/2019/01/01/语言相关/英语学习/English-2018-百词斩年终总结/2681384c.png" width="300" height=""></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><img alt="9790c985.png" src="/2019/01/01/语言相关/英语学习/English-2018-百词斩年终总结/9790c985.png" width="300" height=""></td>
-<td><img alt="c1f42f61.png" src="/2019/01/01/语言相关/英语学习/English-2018-百词斩年终总结/c1f42f61.png" width="300" height=""></td>
-</tr>
-<tr>
-<td><img alt="985fe48e.png" src="/2019/01/01/语言相关/英语学习/English-2018-百词斩年终总结/985fe48e.png" width="300" height=""></td>
-<td><img alt="3f635387.png" src="/2019/01/01/语言相关/英语学习/English-2018-百词斩年终总结/3f635387.png" width="300" height=""></td>
-</tr>
-</tbody>
-</table>
-<p><img alt="4e01ee51.png" src="/2019/01/01/语言相关/英语学习/English-2018-百词斩年终总结/4e01ee51.png" width="300" height=""></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/12/28/语言相关/CPP/cpp-右值引用相关概念/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/28/语言相关/CPP/cpp-右值引用相关概念/" itemprop="url">cpp-右值引用相关概念</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-28T15:25:45+08:00">2018-12-28</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://www.debugself.com/archives/54" target="_blank" rel="noopener">参考</a></p>
-<p>C++11引入了右值引用，用 <code>&amp;&amp;</code> 表示右值引用，如 <code>int &amp;&amp;a = add(1,2)</code><br>什么是左值和右值</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
-<p>等号 “=” 左边的 a 为左值，右边的 10 为右值；具体地说就是较难获取到具体地址的值，大多数都是临时变量。地址是不确定的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 硬编码的字面量，如int a =10中的10，char *s = &quot;hello world&quot;中的“hello world”都是右值</span><br><span class="line">2. 函数的返回值，如add(1,2)的返回值3也是右值，这里的3是临时值</span><br><span class="line">3. 表达式的计算值，如int a =1,b =2;int c = a+b;中的a+b的值也是右值，这里a+b的值也是临时值</span><br></pre></td></tr></table></figure>
-<h1 id="移动构造函数：转移类成员的所有权"><a href="#移动构造函数：转移类成员的所有权" class="headerlink" title="移动构造函数：转移类成员的所有权"></a>移动构造函数：转移类成员的所有权</h1><h1 id="std-move：把一个左值引用“强制转换”为右值引用。"><a href="#std-move：把一个左值引用“强制转换”为右值引用。" class="headerlink" title="std::move：把一个左值引用“强制转换”为右值引用。"></a>std::move：把一个左值引用“强制转换”为右值引用。</h1><h1 id="emplace-back"><a href="#emplace-back" class="headerlink" title="emplace_back"></a>emplace_back</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">template&lt; class... Args &gt;</span><br><span class="line">void emplace_back( Args&amp;&amp;... args );</span><br></pre></td></tr></table></figure>
-<p>从函数声明中，我们看到其参数是右值引用，右值引用可以用来干什么？移动元素的所有权！</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;A&gt; vec;</span><br><span class="line">A a(10);</span><br><span class="line">vec.emplace_back(std::move(a));</span><br><span class="line">//输出结果为：</span><br><span class="line">constructor</span><br><span class="line">move constructor</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/12/25/学习笔记/区块链/Graphene/graphene-代码解析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/25/学习笔记/区块链/Graphene/graphene-代码解析/" itemprop="url">graphene-代码解析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-25T19:03:23+08:00">2018-12-25</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><img alt="e1aee8e0.png" src="/2018/12/25/学习笔记/区块链/Graphene/graphene-代码解析/e1aee8e0.png" width="" height=""></p>
-<ul>
-<li>应用层Executables：最下层的可执行程序有见证节点witness_node，独立钱包cli_wallet和构造创世区块的工具genesis_util。应用层是对插件库、核心API库以及通用工具库的调用组合，实现其业务功能。</li>
-<li>插件层Plugin-Ins：插件对核心API进行封装以提供较为完整独立的服务，譬如区块链查询，交易验证执行，打包区块，P2P网络通信等服务。</li>
-<li>核心API层API/Core: 实现了基础核心业务功能组件，譬如网络、数据库，钱包相关功能（签名，私钥生成，验证），区块打包计算。</li>
-<li>通用工具库FC utilities：提供业务无关的基础功能工具。</li>
-</ul>
-<p>石墨烯的关键技术之一就是高度模块化，将内部节点间的分布式通信能力封装成插件（plugins），由上层的应用程序（DAPP）动态加载调用，使得应用开发者无需关注区块链底层细节，极大降低了开发难度，同时更具可扩展性。</p>
-<p>石墨烯架构采用DPoS（Delegated proof of stake）共识算法，使得处理性能可以媲美传统的中心化架构。</p>
-<h1 id="对象-ID-类型"><a href="#对象-ID-类型" class="headerlink" title="对象 ID 类型"></a>对象 ID 类型</h1><p>object 类中还有三个重要的属性:<br>每个对象的标识都有三部分组成: space_id, type_id, 和 sequence_id<br>Graphene 中的对象 ID 总共 64 位, space id 占最高 8 位, type id 占中间 8 位, 最低 48 位是 sequence_id.<br>在 bitshares 钱包或者区块链浏览器看到过 1.2.12376 这样的标识, 这里 type_id 是 2, 代表的就是对象类型, 12376 代表这个账户是链上的第几个被创建的账户</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/12/25/语言相关/CPP/cpp-template/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/25/语言相关/CPP/cpp-template/" itemprop="url">cpp-template</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-25T18:32:24+08:00">2018-12-25</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="奇异递归模板模式-CRTP-静态多态"><a href="#奇异递归模板模式-CRTP-静态多态" class="headerlink" title="奇异递归模板模式 CRTP 静态多态"></a>奇异递归模板模式 CRTP 静态多态</h1><p>（curiously recurring template pattern，CRTP）<br>静态多态（static polymorphism）<br>还是 静态多态这个名字比较好理解，在编译期决定调用函数</p>
-<p>优点：<br>由于静多态是在编译期完成的，因此效率较高，编译器也可以进行优化；<br>有很强的适配性和松耦合性，比如可以通过偏特化、全特化来处理特殊类型；<br>最重要一点是静态多态通过模板编程为C++带来了泛型设计的概念，比如强大的STL库。</p>
-<p>缺点：<br>由于是模板来实现静态多态，因此模板的不足也就是静多态的劣势，比如调试困难、编译耗时、代码膨胀、编译器支持的兼容性，不能够处理异质对象集合。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The Curiously Recurring Template Pattern (CRTP)</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="comment">// methods within Base can use template to access members of Derived</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derived</span> :</span> <span class="keyword">public</span> Base&lt;Derived&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">interface</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        <span class="keyword">static_cast</span>&lt;T*&gt;(<span class="keyword">this</span>)-&gt;implementation();</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">static_func</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        T::static_sub_func();</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Derived</span> :</span> Base&lt;Derived&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">implementation</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">static_sub_func</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>在上例中，Base<derived>::interface()，虽然是在struct Derived之前就被声明了，但未被编译器实例化直至它被实际调用，这发生于Derived声明之后，此时Derived::implementation()的声明是已知的。<br>这种技术获得了类似于虚函数的效果，并避免了动态多态的代价</derived></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2102,7 +2094,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">856</span>
+                    <span class="site-state-item-count">860</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
