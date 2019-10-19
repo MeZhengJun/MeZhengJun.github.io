@@ -107,7 +107,7 @@
 <meta property="og:site_name" content="郑君的学习笔记">
 <meta property="og:description" content="interface不能保存interface。   空interface空interface(interface{})不包含任何的method，正因为如此，所有的类型都实现了空interface。空interface对于描述起不到任何的作用(因为它不包含任何的method），但是空interface在我们需要存储任意类型的数值的时候相当有用，因为它可以存储任意类型的数值。它有点类似于C语言的voi">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-23T08:36:38.000Z">
+<meta property="og:updated_time" content="2019-09-25T05:15:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="go-interface">
 <meta name="twitter:description" content="interface不能保存interface。   空interface空interface(interface{})不包含任何的method，正因为如此，所有的类型都实现了空interface。空interface对于描述起不到任何的作用(因为它不包含任何的method），但是空interface在我们需要存储任意类型的数值的时候相当有用，因为它可以存储任意类型的数值。它有点类似于C语言的voi">
@@ -236,7 +236,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">72</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">73</span>
       </a>
 </li>
 
@@ -246,7 +246,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">860</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">880</span>
       </a>
 </li>
 
@@ -419,8 +419,9 @@
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> MyInterface <span class="keyword">interface</span>&#123;</span><br><span class="line">    Print()</span><br><span class="line">&#125;</span><br><span class="line"> <span class="function"><span class="keyword">func</span> <span class="title">TestFunc</span><span class="params">(x MyInterface)</span></span> &#123;&#125;</span><br><span class="line"> <span class="keyword">type</span> MyStruct <span class="keyword">struct</span> &#123;&#125;</span><br><span class="line"> <span class="function"><span class="keyword">func</span> <span class="params">(t *MyStruct)</span> <span class="title">Print</span><span class="params">()</span></span> &#123;&#125;</span><br><span class="line"> <span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">      <span class="keyword">var</span> me MyStruct</span><br><span class="line">      TestFunc(me)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义a为空接口</span></span><br><span class="line"><span class="keyword">var</span> a <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line"><span class="keyword">var</span> i <span class="keyword">int</span> = <span class="number">5</span></span><br><span class="line">s := <span class="string">"Hello world"</span></span><br><span class="line"><span class="comment">// a可以存储任意类型的数值</span></span><br><span class="line">a = i</span><br><span class="line">a = s</span><br></pre></td></tr></table></figure>
+<h2 id="转为-string"><a href="#转为-string" class="headerlink" title="转为 string"></a>转为 string</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> x <span class="keyword">interface</span>&#123;&#125; = <span class="string">"abc"</span></span><br><span class="line">str := fmt.Sprintf(<span class="string">"%v"</span>, x)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> x <span class="keyword">interface</span>&#123;&#125; = []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br><span class="line">str := fmt.Sprintf(<span class="string">"%v"</span>, x)</span><br><span class="line">fmt.Println(str)</span><br><span class="line"><span class="comment">// Output: [1 2 3]</span></span><br></pre></td></tr></table></figure>
 <h2 id="interface变量存储的类型"><a href="#interface变量存储的类型" class="headerlink" title="interface变量存储的类型"></a>interface变量存储的类型</h2><p>我们知道interface的变量里面可以存储任意类型的数值(该类型实现了interface)。那么我们怎么反向知道这个变量里面实际保存了的是哪个类型的对象呢？目前常用的有两种方法：  </p>
-<h3 id="switch测试"><a href="#switch测试" class="headerlink" title="switch测试"></a>switch测试</h3><p>这里有一点需要强调的是：<code>element.(type)</code>语法不能在switch外的任何逻辑里面使用，如果你要在switch外面判断一个类型就使用<code>comma-ok</code>。</p>
+<h3 id="switch-测试"><a href="#switch-测试" class="headerlink" title="switch 测试"></a>switch 测试</h3><p>这里有一点需要强调的是：<code>element.(type)</code>语法不能在switch外的任何逻辑里面使用，如果你要在switch外面判断一个类型就使用<code>comma-ok</code>。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">        <span class="string">"fmt"</span></span><br><span class="line">		<span class="string">"strconv"</span></span><br><span class="line">	)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">type</span> Element <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">	<span class="keyword">type</span> List []Element</span><br><span class="line"></span><br><span class="line">	<span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</span><br><span class="line">		name <span class="keyword">string</span></span><br><span class="line">		age <span class="keyword">int</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//打印</span></span><br><span class="line">	<span class="function"><span class="keyword">func</span> <span class="params">(p Person)</span> <span class="title">String</span><span class="params">()</span> <span class="title">string</span></span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"(name: "</span> + p.name + <span class="string">" - age: "</span>+strconv.Itoa(p.age)+ <span class="string">" years)"</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">		list := <span class="built_in">make</span>(List, <span class="number">3</span>)</span><br><span class="line">		list[<span class="number">0</span>] = <span class="number">1</span> <span class="comment">//an int</span></span><br><span class="line">		list[<span class="number">1</span>] = <span class="string">"Hello"</span> <span class="comment">//a string</span></span><br><span class="line">		list[<span class="number">2</span>] = Person&#123;<span class="string">"Dennis"</span>, <span class="number">70</span>&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> index, element := <span class="keyword">range</span> list&#123;</span><br><span class="line">			<span class="keyword">switch</span> value := element.(<span class="keyword">type</span>) &#123;</span><br><span class="line">				<span class="keyword">case</span> <span class="keyword">int</span>:</span><br><span class="line">					fmt.Printf(<span class="string">"list[%d] is an int and its value is %d\n"</span>, index, value)</span><br><span class="line">				<span class="keyword">case</span> <span class="keyword">string</span>:</span><br><span class="line">					fmt.Printf(<span class="string">"list[%d] is a string and its value is %s\n"</span>, index, value)</span><br><span class="line">				<span class="keyword">case</span> Person:</span><br><span class="line">					fmt.Printf(<span class="string">"list[%d] is a Person and its value is %s\n"</span>, index, value)</span><br><span class="line">				<span class="keyword">default</span>:</span><br><span class="line">					fmt.Println(<span class="string">"list[%d] is of a different type"</span>, index)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="Comma-ok断言"><a href="#Comma-ok断言" class="headerlink" title="Comma-ok断言"></a>Comma-ok断言</h4><p>Go语言里面有一个语法，可以直接判断是否是该类型的变量： value, ok = element.(T)，这里value就是变量的值，ok是一个bool类型，element是interface变量，T是断言的类型。</p>
 <p>如果element里面确实存储了T类型的数值，那么ok返回true，否则返回false。</p>
@@ -584,7 +585,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">860</span>
+                    <span class="site-state-item-count">880</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -741,7 +742,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">72</span>
+                      
+                    
+                    <span class="site-state-item-count">73</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -1128,7 +1131,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">187</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">189</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -1185,7 +1192,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#空interface"><span class="nav-number">1.</span> <span class="nav-text">空interface</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#interface变量存储的类型"><span class="nav-number">1.1.</span> <span class="nav-text">interface变量存储的类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#switch测试"><span class="nav-number">1.1.1.</span> <span class="nav-text">switch测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Comma-ok断言"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">Comma-ok断言</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#嵌入interface"><span class="nav-number">1.1.2.</span> <span class="nav-text">嵌入interface</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#空interface"><span class="nav-number">1.</span> <span class="nav-text">空interface</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#转为-string"><span class="nav-number">1.1.</span> <span class="nav-text">转为 string</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#interface变量存储的类型"><span class="nav-number">1.2.</span> <span class="nav-text">interface变量存储的类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#switch-测试"><span class="nav-number">1.2.1.</span> <span class="nav-text">switch 测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Comma-ok断言"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Comma-ok断言</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#嵌入interface"><span class="nav-number">1.2.2.</span> <span class="nav-text">嵌入interface</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

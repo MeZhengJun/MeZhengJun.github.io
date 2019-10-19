@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">72</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">73</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">860</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">880</span>
       </a>
 </li>
 
@@ -328,7 +328,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/07/11/开源库/zmq/nanomsg-study/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/13/语言相关/CPP/cpp-插件相关开发/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -347,7 +347,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/07/11/开源库/zmq/nanomsg-study/" itemprop="url">nanomsg-study</a></h1>
+                <a class="post-title-link" href="/2019/08/13/语言相关/CPP/cpp-插件相关开发/" itemprop="url">cpp-插件相关开发</a></h1>
         
 
         <div class="post-meta">
@@ -359,7 +359,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-11T14:12:44+08:00">2019-07-11</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-13T15:25:56+08:00">2019-08-13</time>
             
 
             
@@ -380,14 +380,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
 
                 
                 
@@ -423,233 +416,7 @@
       
         
           
-            <p>Release 0.1 alpha (20,08,2013)<br>MIT licensed</p>
-<h1 id="协议模式"><a href="#协议模式" class="headerlink" title="协议模式"></a>协议模式</h1><h2 id="目前可用的可扩展性协议有："><a href="#目前可用的可扩展性协议有：" class="headerlink" title="目前可用的可扩展性协议有："></a>目前可用的可扩展性协议有：</h2><ul>
-<li>PAIR - 简单的一对一沟通</li>
-<li>BUS - 简单的多对多通信</li>
-<li>REQREP - 允许构建无状态服务集群来处理用户请求</li>
-<li>PUBSUB - 将消息分发给订阅消息的用户</li>
-<li>PIPELINE - 汇总来自多个来源的消息，并在许多目的点之间进行负载平衡</li>
-<li>SURVEY - 允许一次查询多个应用程序的状态</li>
-</ul>
-<p>对于pull/push，客户端为push，其send数据后，server端会立即接收到</p>
-<p>对于rep/req，客户端为req，其send数据后，客户端并不会立即发送给client，客户端必须再执行recv调用后，才会真正send数据</p>
-<h2 id="可扩展性协议分层在传输层之上的网络堆栈中，目前nanomsg-library支持以下传输机制："><a href="#可扩展性协议分层在传输层之上的网络堆栈中，目前nanomsg-library支持以下传输机制：" class="headerlink" title="可扩展性协议分层在传输层之上的网络堆栈中，目前nanomsg library支持以下传输机制："></a>可扩展性协议分层在传输层之上的网络堆栈中，目前nanomsg library支持以下传输机制：</h2><ul>
-<li>INPROC - 进程内的传输（线程，模块等之间）</li>
-<li>IPC - 在单个机器上的进程间传输</li>
-<li>TCP - 通过TCP的网络传输</li>
-</ul>
-<h2 id="One-to-one-protocol"><a href="#One-to-one-protocol" class="headerlink" title="One-to-one protocol"></a>One-to-one protocol</h2><p>只能一对一通信，为通讯双向。 NN_PAIR</p>
-<h2 id="REQREP-（Request-reply）-protocol"><a href="#REQREP-（Request-reply）-protocol" class="headerlink" title="REQREP （Request/reply） protocol"></a>REQREP （Request/reply） protocol</h2><p>请求/回复协议，由请求端发起请求，然后等待回应端应答，一般是一个REP多个REQ；关键字：NN_REP,NN_REQ。<br>发送后必须等待接收，是阻塞的<br>允许构建集群的无状态服务来处理用户请求。每个req请求都需要rep响应，类似http协议(一应一答)。</p>
-<p>特点:</p>
-<ol>
-<li>和pair模式不同的是这种模式下客户端socket可以连接多个server</li>
-<li>客户端请求会被交替发送到server组的server</li>
-</ol>
-<p>要注意的2个地方：</p>
-<ol>
-<li>客户端的 socket zmq.REQ 发送后会被阻塞直到新消息到来</li>
-<li>服务端的 socket zmq.REP 会阻塞直到新请求到来 </li>
-</ol>
-<p>然后保证：Each Request/Reply is paired and has to be successful.</p>
-<p>一对一的场景：</p>
-<p><img alt="20190711_160614.png" src="/2019/07/11/开源库/zmq/nanomsg-study/20190711_160614.png" width="400" height=""></p>
-<p><img alt="20190712_173604.png" src="/2019/07/11/开源库/zmq/nanomsg-study/20190712_173604.png" width="400" height=""></p>
-<p>多对多的场景：<br>Broker<br>引入broker后，之前的问题解决了，当增加server端时，不需要修改所有的client端，只需要更新一下broker就好了。</p>
-<p><img alt="20190711_160702.png" src="/2019/07/11/开源库/zmq/nanomsg-study/20190711_160702.png" width="400" height=""></p>
-<h2 id="Publish-subscribe-protocol"><a href="#Publish-subscribe-protocol" class="headerlink" title="Publish/subscribe protocol"></a>Publish/subscribe protocol</h2><p>发布订阅协议，将消息广播到多个目的地，消息从NN_PUB发送，并且只会由订阅了匹配主题的NN_SUB接收；这种模式只会发布给在线的订阅端，如果发布端开始发布消息时，订阅端尚未连接，则这些消息会被直接丢弃；同时订阅端只负责接收不能反馈；关键字：NN_PUB，NN_SUB。</p>
-<p><img alt="20190712_173447.png" src="/2019/07/11/开源库/zmq/nanomsg-study/20190712_173447.png" width="400" height=""></p>
-<h2 id="Survey-protocol"><a href="#Survey-protocol" class="headerlink" title="Survey protocol"></a>Survey protocol</h2><p>allows to query state of multiple applications in a single go。</p>
-<p>调查协议，允许向多个地点广播调查并收集响应，关键字：NN_SURVEYOR，NN_RESPONDENT。</p>
-<p><img alt="20190712_173517.png" src="/2019/07/11/开源库/zmq/nanomsg-study/20190712_173517.png" width="400" height=""></p>
-<h2 id="Pipeline-protocol"><a href="#Pipeline-protocol" class="headerlink" title="Pipeline protocol"></a>Pipeline protocol</h2><p>通过一系列步骤传递任务的的协议，这个协议是可扩展的（官方原文：scalability protocol for passing tasks through a series of processing steps.）；它可以公平的对来自先前的处理步骤的消息进行排队，并在下一个处理步骤的实例中对它进行负载均衡；关键字，NN_PUSH，NN_PULL。</p>
-<h2 id="Message-bus-protocol"><a href="#Message-bus-protocol" class="headerlink" title="Message bus protocol"></a>Message bus protocol</h2><p>simple many-to-many communication。</p>
-<p>消息总线（message bus），将消息从任何节点广播到拓扑中的所有其他节点，自身不会收到自己发出去的消息；这种模式只能缩放到本地级别（单个机器或者单个局域网），如果尝试进一步扩展可能会导致单个节点消息过载；关键字：NN_BUS。</p>
-<p><img alt="20190712_173539.png" src="/2019/07/11/开源库/zmq/nanomsg-study/20190712_173539.png" width="400" height=""></p>
-<p>Polyamorous Pair (nng only)</p>
-<p>Star (mangos only)</p>
-<h1 id="Advantages"><a href="#Advantages" class="headerlink" title="Advantages"></a>Advantages</h1><ol>
-<li>Aims POSIX full-compliance</li>
-<li>Written in C</li>
-<li>API for integrating new protocols and transports</li>
-<li>command-line tools (nanocat)</li>
-</ol>
-<h2 id="Goodbye-context"><a href="#Goodbye-context" class="headerlink" title="Goodbye context !"></a>Goodbye context !</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* with zeromq */</span></span><br><span class="line"><span class="keyword">void</span> *ctx = zmq_ctx_new ();</span><br><span class="line"><span class="keyword">void</span> *s = zmq_socket (ctx, ZMQ_PUSH);</span><br><span class="line">zmq_connect (s, <span class="string">"tcp://192.168.0.111:5555"</span>);</span><br><span class="line">zmq_send (s, <span class="string">"ABC"</span>, <span class="number">3</span>, <span class="number">0</span>);</span><br><span class="line">zmq_close (s);</span><br><span class="line">zmq_ctx_destroy (ctx);</span><br><span class="line"><span class="comment">/* with nanomsg */</span></span><br><span class="line"><span class="keyword">int</span> s = nn_msg(AF_SP, NN_PUSH);</span><br><span class="line">nn_connect(s, <span class="string">"tcp://192.168.0.111:5555"</span>);</span><br><span class="line">nn_send(s, <span class="string">"ABC"</span>, <span class="number">3</span>, <span class="number">0</span>);</span><br><span class="line">nn_close(s);  <span class="comment">/* attention, appel désormais bloquant */</span></span><br></pre></td></tr></table></figure>
-<h2 id="Performances-and-safety"><a href="#Performances-and-safety" class="headerlink" title="Performances and safety ?"></a>Performances and safety ?</h2><ol>
-<li>In C</li>
-<li>Use intrusive containers instead of STL</li>
-<li>Use IOCP on Windows</li>
-<li>Level-triggered polling</li>
-<li>Objects are no more tied to a thread</li>
-<li>Interactions are now associated to state machines</li>
-<li>Asynchronous DNS calls</li>
-</ol>
-<h2 id="Really-zero-copy"><a href="#Really-zero-copy" class="headerlink" title="Really zero-copy"></a>Really zero-copy</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> *buf = nn_allocmsg(<span class="number">12</span>, <span class="number">0</span>);</span><br><span class="line"><span class="built_in">memcpy</span>(buf, <span class="string">"Hello world!"</span>, <span class="number">12</span>);</span><br><span class="line">nn_send(s, &amp;buf, NN_MSG, <span class="number">0</span>);</span><br><span class="line">nn_recv(s, &amp;buf, NN_MSG, <span class="number">0</span>);</span><br><span class="line">nn_freemsg(buf);</span><br></pre></td></tr></table></figure>
-<h2 id="nanocat"><a href="#nanocat" class="headerlink" title="nanocat"></a>nanocat</h2><ol>
-<li>command line tool for testing and debugging purpose</li>
-<li>provides many symlinks to simplify user interface</li>
-<li>supports msgpack</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># server-side</span></span><br><span class="line">nanocat --rep --bind tcp:<span class="comment">//127.0.0.1:8000 --format ascii --data pong</span></span><br><span class="line"><span class="meta"># client side</span></span><br><span class="line">nanocat --req --connect tcp:<span class="comment">//127.0.0.1:8000 --format ascii --data ping</span></span><br><span class="line"></span><br><span class="line">!bash nanocat --pub --connect tcp:<span class="comment">//darthsidious --data "My liege !" --interval 10</span></span><br></pre></td></tr></table></figure>
-<p>transport://address</p>
-<h2 id="调用流程"><a href="#调用流程" class="headerlink" title="调用流程"></a>调用流程</h2><p>服务端：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> buf[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">int</span> s = nn_socket(AF_SP, NN_REP);</span><br><span class="line">nn_bind(s, <span class="string">"tcp://*:5555"</span>);</span><br><span class="line">nn_recv(s, buf, <span class="number">10</span>, <span class="number">0</span>);</span><br><span class="line">nn_send(s, <span class="string">"World"</span>, <span class="number">5</span>, <span class="number">0</span>);</span><br><span class="line">nn_close(s);</span><br></pre></td></tr></table></figure>
-<p>客户端：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> buf[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">int</span> s = nn_socket(AF_SP, NN_REQ);</span><br><span class="line">nn_connect(s, <span class="string">"tcp://localhost:5555"</span>);</span><br><span class="line">nn_send(s, <span class="string">"Hello"</span>, <span class="number">5</span>, <span class="number">0</span>);</span><br><span class="line">nn_recv(s, buf, <span class="number">10</span>, <span class="number">0</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"Hello %sn"</span>, buf);</span><br><span class="line">nn_close(s);</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/07/11/开源库/zmq/nng-study/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/11/开源库/zmq/nng-study/" itemprop="url">nng-study</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-11T10:38:51+08:00">2019-07-11</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://github.com/nanomsg/nng" target="_blank" rel="noopener">github</a></p>
-<p>NNG 是 nanomsg 的继任版本，而 nanomsg 则是流行的 ZMQ 的 C 重写版。</p>
-<p>整体上看，NNG 的 API 很简约，主要是 4 个，open/recv/send/close，open 根据协议不同使用的函数会不同。配置则是 setopt/getopt，与 UNIX API 类似。API 中没有上下文环境（context-less）依赖，只需要一个 nng_socket，</p>
-<p>使用 CMAKE 构建项目</p>
-<h2 id="NNG-支持的通信协议主要有以下几种："><a href="#NNG-支持的通信协议主要有以下几种：" class="headerlink" title="NNG 支持的通信协议主要有以下几种："></a>NNG 支持的通信协议主要有以下几种：</h2><p>PAIR 一对一双向通信。<br>PIPELINE(PUSH/PULL) 单向通信，类似与生产者消费者模型的消息队列。<br>PUB/SUB 单向广播。<br>REQ/REP 请求-应答模式，类似与 RPC 模式。<br>BUS 网状连接通信，每个加入节点都可以发送/接受广播消息。<br>SURVEY 用于多节点表决或者服务发现。</p>
-<h2 id="NNG-支持的传输模式主要有以下三种常用，其他还有tcp附加tls-1-2加密的tls传输和基于WebSocket的ws传输："><a href="#NNG-支持的传输模式主要有以下三种常用，其他还有tcp附加tls-1-2加密的tls传输和基于WebSocket的ws传输：" class="headerlink" title="NNG 支持的传输模式主要有以下三种常用，其他还有tcp附加tls 1.2加密的tls传输和基于WebSocket的ws传输："></a>NNG 支持的传输模式主要有以下三种常用，其他还有tcp附加tls 1.2加密的tls传输和基于WebSocket的ws传输：</h2><p>inproc 进程内线程间传输<br>ipc 主机内进程间传输<br>tcp 网络内主机间传输</p>
-<p>通信协议里除了 PAIR 之外，基本都是一对多的通信模式</p>
+            <p>使用 DLL 方式实现</p>
 
           
         
@@ -703,7 +470,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/07/10/学习笔记/windows/MFC/CMenu/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/06/功能分类/database/sqlite/sqlite-其他操作/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -722,7 +489,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/07/10/学习笔记/windows/MFC/CMenu/" itemprop="url">CMenu</a></h1>
+                <a class="post-title-link" href="/2019/08/06/功能分类/database/sqlite/sqlite-其他操作/" itemprop="url">sqlite-其他操作</a></h1>
         
 
         <div class="post-meta">
@@ -734,155 +501,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-10T10:09:55+08:00">2019-07-10</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="右键菜单"><a href="#右键菜单" class="headerlink" title="右键菜单"></a>右键菜单</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> CChildView::OnContextMenu(CWnd* <span class="comment">/*pWnd*/</span>, CPoint point)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (point.x == <span class="number">-1</span> &amp;&amp; point.y == <span class="number">-1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//keystroke invocation</span></span><br><span class="line">        CRect rect;</span><br><span class="line">        GetClientRect(rect);</span><br><span class="line">        ClientToScreen(rect);</span><br><span class="line"></span><br><span class="line">        point = rect.TopLeft();</span><br><span class="line">        point.Offset(<span class="number">5</span>, <span class="number">5</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    CMenu menu;</span><br><span class="line">    VERIFY(menu.LoadMenu(IDR_RMENU));</span><br><span class="line"></span><br><span class="line">    CMenu* pPopup = menu.GetSubMenu(<span class="number">0</span>);</span><br><span class="line">    ASSERT(pPopup != <span class="literal">NULL</span>);</span><br><span class="line">    CWnd* pWndPopupOwner = <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (pWndPopupOwner-&gt;GetStyle() &amp; WS_CHILD)</span><br><span class="line">        pWndPopupOwner = pWndPopupOwner-&gt;GetParent();</span><br><span class="line"></span><br><span class="line">    pPopup-&gt;TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y,</span><br><span class="line">        pWndPopupOwner);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/07/09/功能分类/database/sqlite/sqlite-select/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/09/功能分类/database/sqlite/sqlite-select/" itemprop="url">sqlite-select</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-09T19:00:00+08:00">2019-07-09</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-06T16:17:13+08:00">2019-08-06</time>
             
 
             
@@ -939,191 +558,11 @@
       
         
           
-            <p>参考网页。<br><a href="https://www.guru99.com/sqlite-query.html#4" target="_blank" rel="noopener">https://www.guru99.com/sqlite-query.html#4</a></p>
-<h1 id="limit-offset"><a href="#limit-offset" class="headerlink" title="limit,offset"></a>limit,offset</h1><p>跳过前 4 行，最多返回 3 行</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Students <span class="keyword">LIMIT</span> <span class="number">4</span>,<span class="number">3</span>;</span><br></pre></td></tr></table></figure>
-<h1 id="选出最新的一行"><a href="#选出最新的一行" class="headerlink" title="选出最新的一行"></a>选出最新的一行</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> COMPANY <span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="keyword">NAME</span> <span class="keyword">DESC</span> <span class="keyword">limit</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-<h1 id="选择非空的行"><a href="#选择非空的行" class="headerlink" title="选择非空的行"></a>选择非空的行</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> f_ui_id,f_param <span class="keyword">from</span> t_user <span class="keyword">where</span> f_param <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">and</span> f_param !=<span class="string">''</span></span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/07/09/开源库/RPC/rpc相关技术调研/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/09/开源库/RPC/rpc相关技术调研/" itemprop="url">rpc相关技术调研</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-09T09:56:54+08:00">2019-07-09</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>REST：无状态的数据传输结构，适用于通用、快速迭代和标准化语义的场景。<br>gRPC：轻量的传输方式，特殊适合对性能高要求或者环境苛刻的场景，比如 IOT。<br>GraphQL: 请求者可以自定义返回格式，某些程度上可以减少前后端联调成本。<br>Webhooks: 推送服务，主要用于服务器主动更新客户端资源的场景。</p>
-<h2 id="nanomsg"><a href="#nanomsg" class="headerlink" title="nanomsg"></a>nanomsg</h2><p><a href="https://nanomsg.org/index.html" target="_blank" rel="noopener">website</a></p>
-<p>zmq作者重新设计的一个框架，解决了一些zmq的问题。</p>
-<p>作者的博客<br><a href="http://250bpm.com/" target="_blank" rel="noopener">http://250bpm.com/</a></p>
-<h3 id="go-实现"><a href="#go-实现" class="headerlink" title="go 实现"></a>go 实现</h3><p><a href="">github</a></p>
-<p><a href="https://bravenewgeek.com/fast-scalable-networking-in-go-with-mangos/" target="_blank" rel="noopener">https://bravenewgeek.com/fast-scalable-networking-in-go-with-mangos/</a></p>
-<h3 id="scalability-protocols-are-currently-available"><a href="#scalability-protocols-are-currently-available" class="headerlink" title="scalability protocols are currently available"></a>scalability protocols are currently available</h3><ul>
-<li>PAIR - simple one-to-one communication</li>
-<li>BUS - simple many-to-many communication</li>
-<li>REQREP - allows to build clusters of stateless services to process user requests</li>
-<li>PUBSUB - distributes messages to large sets of interested subscribers</li>
-<li>PIPELINE - aggregates messages from multiple sources and load balances them among many destinations</li>
-<li>SURVEY - allows to query state of multiple applications in a single go</li>
-</ul>
-<h3 id="transports-mechanisms"><a href="#transports-mechanisms" class="headerlink" title="transports mechanisms"></a>transports mechanisms</h3><ul>
-<li>INPROC - transport within a process (between threads, modules etc.)</li>
-<li>IPC - transport between processes on a single machine</li>
-<li>TCP - network transport via TCP</li>
-<li>WS - websockets over TCP</li>
-</ul>
-<h2 id="gRPC"><a href="#gRPC" class="headerlink" title="gRPC"></a>gRPC</h2><p>The grpc library uses HTTP2 as a transport layer and provides a code generator based on the protocol buffer syntax making it very simple to use.</p>
-<h2 id="GraphQL"><a href="#GraphQL" class="headerlink" title="GraphQL"></a>GraphQL</h2><p>GraphQL 不是 REST 的替代品，而是另一种交互形式：前端决定后端的返回结果。</p>
-<p>GraphQL 带来的最大好处是精简请求响应内容，不会出现冗余字段，前端可以决定后端返回什么数据。但要注意的是，前端的决定权取决于后端支持什么数据，因此 GraphQL 更像是精简了返回值的 REST，而后端接口也可以一次性定义完所有功能，而不需要逐个开发。</p>
-<p>GraphQL 需要配套<br>GraphQL 不是 REST 的替代品，所以不要想着团队从 Http 接口迁移到 GraphQL 就能提升 X% 的开发效率。GraphQL 方案是一种新的前后端交互约定，所以上手成本会比较高，同时，为了方便前端同学拼 query，等于把一部分后端工作量转移给了前端，如果此时没有一个足够好用的平台快速查阅、生成、维护这些定义，开发效率可能不升反降。</p>
-<p>总的来说，对外开放 API 或者拥有完整配套的场景，使用 GraphQL 是比较理想的，但对于快速迭代，平台又不够成熟的团队，继续使用标准 Http 接口可以更快完成项目。</p>
-<h2 id="Protocol-Buffers-vs-json"><a href="#Protocol-Buffers-vs-json" class="headerlink" title="Protocol Buffers vs json"></a>Protocol Buffers vs json</h2><p>优点：</p>
-<ul>
-<li>資料輕量化：資料非常輕量，省去了不必要的 { 或 : 累贅。</li>
-<li>混淆性：在一般人眼中無法輕易地猜測出資料結構為何，因為有經過編碼。</li>
-<li>效能高：處理速度很快。</li>
-<li>極具方便性：結構就是你的資料模型，你能夠直接在程式中使用這些結構，而不用建立新的物件來接納、映射（Mapping）這些資料。</li>
-<li>清晰明瞭、無需文件：.proto 檔案本身就是你的文件，不需要額外撰寫 API 或結構文件來告訴別人你接受怎樣的資料。</li>
-</ul>
-<p>适合使用 json 的场景：</p>
-<ul>
-<li>當你希望資料是人類可解讀的時候。</li>
-<li>你不打算直接把接收到的資料拿來處理，你希望從中拿取部分資料作為處理。</li>
-<li>你希望在純文字、終端機的情況下就能夠與伺服器溝通。</li>
-<li>不想經過任何特殊處理，想直接在瀏覽器中解讀。</li>
-</ul>
+            <h2 id="判断表是否存在"><a href="#判断表是否存在" class="headerlink" title="判断表是否存在"></a>判断表是否存在</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//判断表是否存在</span></span><br><span class="line">select count(*) from sqlite_master where type = 'table' and name = 'T_test'</span><br></pre></td></tr></table></figure>
+<h2 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h2><p>注意，如果使用了 int64 的整形，需要明确指定长度。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE IF NOT EXISTS main.tableName (f_id INTEGER PRIMARY KEY AUTOINCREMENT NOT <span class="literal">NULL</span>, f_datetime TEXT DEFAULT CURRENT_TIMESTAMP NOT <span class="literal">NULL</span>, f_id_name INTEGER(<span class="number">8</span>) NOT <span class="literal">NULL</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="获取记录总数"><a href="#获取记录总数" class="headerlink" title="获取记录总数"></a>获取记录总数</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">获取记录总数</span><br><span class="line"><span class="function">select <span class="title">count</span><span class="params">(*)</span> from <span class="title">t_info</span> <span class="params">(f_id INTEGER PRIMARY KEY AUTOINCREMENT NOT <span class="literal">NULL</span>, f_attr_id INTEGER NOT <span class="literal">NULL</span>, f_datatime TEXT DEFAULT CURRENT_TIMESTAMP NOT NUL<span class="string">L");</span></span></span></span><br></pre></td></tr></table></figure>
+<p>f_id_noise integer 0<br>select * from t_3764846313_5539326756021866496 where f_id_noise=1476754630 ORDER BY f_datetime DESC LIMIT 1</p>
 
           
         
@@ -1177,7 +616,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/07/06/读过的书/投机的艺术/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/06/功能分类/database/sqlite/sqlite-insert/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1196,7 +635,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/07/06/读过的书/投机的艺术/" itemprop="url">投机的艺术</a></h1>
+                <a class="post-title-link" href="/2019/08/06/功能分类/database/sqlite/sqlite-insert/" itemprop="url">sqlite-insert</a></h1>
         
 
         <div class="post-meta">
@@ -1208,296 +647,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-06T17:25:17+08:00">2019-07-06</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>一本花了一早上就看完的书，没啥收获。表示看不懂。都是在讲一些故事之类的。</p>
-<p><img alt="20190706_172710.png" src="/2019/07/06/读过的书/投机的艺术/20190706_172710.png" width="400" height=""></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/06/30/开源库/tushare/tushare-学习笔记003-选股策略均线多头排列/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/06/30/开源库/tushare/tushare-学习笔记003-选股策略均线多头排列/" itemprop="url">tushare-学习笔记003-选股策略均线多头排列</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-30T09:02:44+08:00">2019-06-30</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>均线天数自定义，数量自定义，选出符合多头排列的股票。<br>增加索引，选股结果保存到 .csv 文件中</p>
-<p>思路比较简单，根据选股策略，准备数据，然后执行策略，保存结果。</p>
-<p><a href="https://github.com/tyler2018/stocker.git" target="_blank" rel="noopener">github 链接</a></p>
-<p>下面是部分代码。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置选股日期为最后一个有效交易日</span></span><br><span class="line">valid_screen_date = get_last_valid_trade_date()</span><br><span class="line"><span class="comment"># [[func,param],[func,param]]</span></span><br><span class="line">strategies = [[name_filter, [<span class="string">'ST'</span>]], [close_filter, <span class="number">25</span>], [ma_divergency, [<span class="number">10</span>, <span class="number">25</span>, <span class="number">43</span>, <span class="number">60</span>]]]</span><br><span class="line"><span class="comment"># 市场,选股日期,[[func,param],[func,param]]</span></span><br><span class="line">pickup_list = screen_stock(<span class="string">'ALL'</span>, valid_screen_date, strategies)</span><br><span class="line">print(<span class="string">'选股策略执行完毕'</span>)</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">screen_stock</span><span class="params">(market, screen_date, strategies)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    负责根据策略选股操作</span></span><br><span class="line"><span class="string">    :param market: 选股的市场，目前支持 ALL，SH，SZ 三种</span></span><br><span class="line"><span class="string">    :param screen_date: 指定选股日期</span></span><br><span class="line"><span class="string">    :param strategies: 指定选股策略</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># 如果数据为准备好，根据选股策略，获取对应的数据</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> g_is_data_prepared:</span><br><span class="line">        <span class="comment"># 20秒</span></span><br><span class="line">        <span class="comment"># start = time.clock()</span></span><br><span class="line">        datas = prepare_data(market, screen_date, strategies)</span><br><span class="line">        <span class="comment"># end = time.clock()</span></span><br><span class="line">        <span class="comment"># print('CPU执行时间: ', end - start)</span></span><br><span class="line"></span><br><span class="line">    pickup_list = []</span><br><span class="line">    <span class="keyword">for</span> data <span class="keyword">in</span> datas:</span><br><span class="line">        bFound = <span class="keyword">True</span></span><br><span class="line">        <span class="keyword">for</span> row <span class="keyword">in</span> strategies:</span><br><span class="line">            <span class="comment"># 股票名称过滤策略在获取数据的时候应用，这里不需要执行</span></span><br><span class="line">            <span class="keyword">if</span> row[<span class="number">0</span>] == name_filter:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="comment"># print(row)</span></span><br><span class="line">            pickup = row[<span class="number">0</span>](data, row[<span class="number">1</span>])</span><br><span class="line">            <span class="keyword">if</span> pickup <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">                bFound = <span class="keyword">False</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">if</span> bFound:</span><br><span class="line">            <span class="comment"># print(pickup)</span></span><br><span class="line">            pickup_list.append(pickup)</span><br><span class="line">    <span class="keyword">return</span> pickup_list</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/06/29/学习笔记/数据库/mongoDB/pymongo学习/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/06/29/学习笔记/数据库/mongoDB/pymongo学习/" itemprop="url">pymongo学习</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-29T10:37:07+08:00">2019-06-29</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-06T13:57:03+08:00">2019-08-06</time>
             
 
             
@@ -1554,20 +704,7 @@
       
         
           
-            <p>use PyMongo</p>
-<h1 id="Getting-a-Database"><a href="#Getting-a-Database" class="headerlink" title="Getting a Database"></a>Getting a Database</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># attribute style access</span></span><br><span class="line">db = client.test_database</span><br><span class="line"></span><br><span class="line"><span class="comment"># dictionary style access</span></span><br><span class="line">db = client[<span class="string">'test-database'</span>]</span><br></pre></td></tr></table></figure>
-<h1 id="Getting-a-Collection"><a href="#Getting-a-Collection" class="headerlink" title="Getting a Collection"></a>Getting a Collection</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">collection = db.test_collection</span><br><span class="line">collection = db[<span class="string">'test-collection'</span>]</span><br></pre></td></tr></table></figure>
-<h1 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">collection.insert(&#123;<span class="string">'code'</span>: code, <span class="string">'startDate'</span>: start_date, <span class="string">'endDate'</span>: end_date, <span class="string">'klines'</span>: klines&#125;)</span><br></pre></td></tr></table></figure>
-<h1 id="Error"><a href="#Error" class="headerlink" title="Error"></a>Error</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">解决bson.errors.InvalidDocument: Cannot encode object:错误的一种方法</span><br><span class="line">这是因为pandas库在读取数值型值时返回的结果不是整型或者浮点型，而是numpy.int64类型的一个对象，mongodb是无法对一个对象进行编码存储的，所以这里需要对读取到的结果进行强制类型转换</span><br><span class="line">dates = []</span><br><span class="line">for i in range(0, 2):</span><br><span class="line">   print(cal.iloc[i][&apos;cal_date&apos;], cal.iloc[i][&apos;is_open&apos;])</span><br><span class="line">   print(cal.iloc[i][&apos;cal_date&apos;] + &apos; %d&apos; %cal.iloc[i][&apos;is_open&apos;])</span><br><span class="line">   a = int(cal.iloc[i][&apos;is_open&apos;])</span><br><span class="line">   print(type(a))</span><br><span class="line">   dates.append(&#123;&apos;cal_date&apos;:cal.iloc[i][&apos;cal_date&apos;], &apos;is_open&apos;:int(cal.iloc[i][&apos;is_open&apos;])&#125;)</span><br><span class="line"></span><br><span class="line">result = calender.insert_many(dates)</span><br><span class="line">print(result)</span><br><span class="line">print(result.inserted_ids)</span><br></pre></td></tr></table></figure>
-<h1 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pymongo</span><br><span class="line">conn = pymongo.MongoClient(<span class="string">'127.0.0.1'</span>, <span class="number">27017</span>)</span><br><span class="line"><span class="comment"># database name is stock</span></span><br><span class="line">db = conn[<span class="string">'stock'</span>]</span><br></pre></td></tr></table></figure>
-<h1 id="单条插入"><a href="#单条插入" class="headerlink" title="单条插入"></a>单条插入</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">result = collection.insert_one(student)</span><br><span class="line">print(result)</span><br><span class="line">print(result.inserted_id)</span><br></pre></td></tr></table></figure>
-<h1 id="批量插入"><a href="#批量插入" class="headerlink" title="批量插入"></a>批量插入</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment"># 创建集合，相当于表</span></span><br><span class="line">t_codes = db[<span class="string">'codes'</span>]</span><br><span class="line"><span class="comment"># 插入获取的代码</span></span><br><span class="line">result = t_codes.insert_many(dataArr)</span><br><span class="line">print(result)</span><br><span class="line">print(result.inserted_ids)</span><br></pre></td></tr></table></figure>
-<h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">t_codes = db[<span class="string">'codes'</span>]</span><br><span class="line">   <span class="comment"># 获取所有索引</span></span><br><span class="line">   all_index = t_codes.index_information()</span><br><span class="line">   <span class="comment"># print(list(all_index))</span></span><br><span class="line">   <span class="comment"># 判断有无索引</span></span><br><span class="line">   has_id_index = all_index.get(<span class="string">"idx_ts_code"</span>, <span class="keyword">False</span>)</span><br><span class="line">   <span class="keyword">if</span> has_id_index:</span><br><span class="line">      <span class="comment"># 是否为唯一索引</span></span><br><span class="line">      <span class="keyword">if</span> all_index[<span class="string">'idx_ts_code'</span>].get(<span class="string">'unique'</span>, <span class="keyword">False</span>):</span><br><span class="line">         <span class="keyword">pass</span></span><br><span class="line">      <span class="keyword">else</span>:</span><br><span class="line">         t_codes.drop_index(<span class="string">"idx_ts_code"</span>)</span><br><span class="line">         t_codes.create_index([(<span class="string">"ts_code"</span>, <span class="number">1</span>)], name=<span class="string">'idx_ts_code'</span>, unique=<span class="keyword">True</span>, background=<span class="keyword">True</span>)</span><br><span class="line">   <span class="keyword">else</span>:</span><br><span class="line">      t_codes.create_index([(<span class="string">"ts_code"</span>, <span class="number">1</span>)], name=<span class="string">'idx_ts_code'</span>, unique=<span class="keyword">True</span>, background=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
-<h1 id="删除集合"><a href="#删除集合" class="headerlink" title="删除集合"></a>删除集合</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">t_codes = db[<span class="string">'codes'</span>]</span><br><span class="line">t_codes.drop()</span><br><span class="line"><span class="comment"># 这里可以重新插入数据，会创建新的集合</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 也可以使用 db 操作</span></span><br><span class="line">db.drop_collection(collection_name)</span><br></pre></td></tr></table></figure>
-<h1 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h1><h2 id="查询返回-datafram"><a href="#查询返回-datafram" class="headerlink" title="查询返回 datafram"></a>查询返回 datafram</h2><p>没有数据时返回 datafram 空值</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">t_data = db[code[<span class="string">'ts_code'</span>]]</span><br><span class="line">   cursor_result = t_data.find(</span><br><span class="line">      &#123;<span class="string">'ts_code'</span>: code[<span class="string">'ts_code'</span>], <span class="string">'trade_date'</span>: &#123;<span class="string">'$gte'</span>: start_date.strftime(<span class="string">'%Y%m%d'</span>),</span><br><span class="line">                                                   <span class="string">'$lte'</span>: end_date.strftime(<span class="string">'%Y%m%d'</span>)&#125;&#125;).sort(<span class="string">'trade_date'</span>,</span><br><span class="line">                                                                                             pymongo.DESCENDING)</span><br><span class="line">   labels = [<span class="string">'ts_code'</span>, <span class="string">'trade_date'</span>, <span class="string">'open'</span>, <span class="string">'high'</span>, <span class="string">'low'</span>, <span class="string">'close'</span>, <span class="string">'vol'</span>, <span class="string">'amount'</span>]</span><br><span class="line">   df = pd.DataFrame(list(cursor_result), columns=labels)</span><br></pre></td></tr></table></figure>
-<h2 id="查询所有数据"><a href="#查询所有数据" class="headerlink" title="查询所有数据"></a>查询所有数据</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查询集合中的所有文档记录（表中的行记录）</span></span><br><span class="line">myColl.find() </span><br><span class="line"><span class="comment"># 返回一个查询结果的游标，可迭代对象</span></span><br><span class="line"></span><br><span class="line">results = t_codes.find().sort(<span class="string">'trade_date'</span>, pymongo.DESCENDING).limit(<span class="number">1</span>)</span><br><span class="line">start_trade_date = datetime.datetime.strptime(results[<span class="number">0</span>][<span class="string">'trade_date'</span>], <span class="string">'%Y%m%d'</span>)</span><br><span class="line"></span><br><span class="line">result = t_calender.find(</span><br><span class="line">        &#123;<span class="string">'cal_date'</span>: &#123;<span class="string">'$gte'</span>: pre_base_date.strftime(<span class="string">'%Y%m%d'</span>),</span><br><span class="line">                      <span class="string">'$lte'</span>: base_date.strftime(<span class="string">'%Y%m%d'</span>)&#125;&#125;).sort(<span class="string">'cal_date'</span>,</span><br><span class="line">                                                                   pymongo.DESCENDING)</span><br><span class="line"><span class="keyword">for</span> value <span class="keyword">in</span> result:</span><br><span class="line">   <span class="keyword">if</span> value[<span class="string">'is_open'</span>]:</span><br><span class="line">      <span class="keyword">return</span> datetime.datetime.strptime(value[<span class="string">'cal_date'</span>], <span class="string">'%Y%m%d'</span>)</span><br><span class="line">print(<span class="string">'Warning: xx'</span>)</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">b. 查询限定操作（也就是sql中的 where 语句)</span><br><span class="line">   i. myColl.find(&#123;<span class="string">'name'</span>:<span class="string">'liming'</span>&#125;) 查询集合中 字段 name = liming的记录</span><br><span class="line">      <span class="number">1</span>) 注意：括号内部是一个 字典，或者 json格式的数据（其实都一个卵样)</span><br><span class="line">      <span class="number">2</span>) 字典 key = 集合内文档的字段，value = 字段的值</span><br><span class="line">      <span class="number">3</span>) 相当于sql中：</span><br><span class="line">            select * </span><br><span class="line">            <span class="keyword">from</span> myColl </span><br><span class="line">            where name = <span class="string">'liming'</span></span><br><span class="line">   ii. 一些高级操作：</span><br><span class="line">      <span class="number">1</span>) 比较操作：</span><br><span class="line">            a) 小于比较：</span><br><span class="line">               i) myColl.find(&#123;<span class="string">'age'</span>:&#123;<span class="string">'$lt'</span>:<span class="number">30</span>&#125;&#125;</span><br><span class="line">               ii) 查询age字段值 小于<span class="number">30</span>的所有文档记录</span><br><span class="line">               iii) 注意：括号内是一个 字典</span><br><span class="line">               iv) 字典 key = 文档字段，value 是一个字典，其中 key = 比较操作符, value =比较值</span><br><span class="line">               v) 相当于sql中：</span><br><span class="line">                  select * </span><br><span class="line">                  <span class="keyword">from</span> myColl</span><br><span class="line">                  where age &lt; <span class="number">30</span></span><br><span class="line">            b) 其他比较操作符</span><br><span class="line">               $gt 大于</span><br><span class="line">               $gte    大于等于</span><br><span class="line">               $lt 小于</span><br><span class="line">               $lte    小于等于</span><br><span class="line">               $ne 不等于</span><br><span class="line">      <span class="number">2</span>) 组合查询：</span><br><span class="line">            a) 逻辑与 <span class="keyword">and</span> </span><br><span class="line">               i) myColl.find(&#123;<span class="string">'name'</span>:<span class="string">'liming'</span>,<span class="string">'age'</span>:<span class="number">30</span>&#125;)</span><br><span class="line">               ii) 查询 name = liming 和 age = <span class="number">30</span> 的所有文档记录</span><br><span class="line">               iii) 注意：括号内是一个字典，两个元素。用 逗号分隔开，key = 字段，value=字段值</span><br><span class="line">               iv) 相当于sql：</span><br><span class="line">                  select * </span><br><span class="line">                  <span class="keyword">from</span> myColl</span><br><span class="line">                  where name = <span class="string">'liming'</span> <span class="keyword">and</span> age = <span class="number">30</span></span><br><span class="line">            b) 逻辑或 <span class="keyword">or</span></span><br><span class="line">               i) myColl.find(&#123;<span class="string">'$or'</span>:[&#123;<span class="string">'name'</span>:<span class="string">'liming'</span>&#125;,&#123;<span class="string">'age'</span>:<span class="number">30</span>&#125;]&#125;)</span><br><span class="line">               ii) 查询name = <span class="string">'liming'</span> 或 age = <span class="number">30</span>的所有文档记录</span><br><span class="line">               iii) 注意：括号内是一个字典，key = <span class="string">'$or'</span> 逻辑或操作符，value = 一个列表</span><br><span class="line">                  列表内是两个字典，key = 字段，value=字段值</span><br><span class="line">               iv) 相当于sql：</span><br><span class="line">                  select * </span><br><span class="line">                  <span class="keyword">from</span> myColl</span><br><span class="line">                  where name = <span class="string">'liming'</span> <span class="keyword">or</span> age = <span class="number">30</span></span><br><span class="line">      <span class="number">3</span>) 对查询结果进行排序：</span><br><span class="line">            a) myColl.find().sort(<span class="string">'name'</span>,pymongo.DESCENDING)</span><br><span class="line">               i) 对查询结果按照字段 name进行排序，默认为升序，可以指定排序方向，</span><br><span class="line">                  DESCENDING是降序</span><br><span class="line">               ii) 相当于sql：</span><br><span class="line">                  select *</span><br><span class="line">                  <span class="keyword">from</span> myColl</span><br><span class="line">                  order by name DESC</span><br><span class="line">            b) myColl.find().sort([&#123;<span class="string">'name'</span>:pymongo.DESEDING<span class="string">',&#123;'</span>age<span class="string">':pymongo.DESEDING'</span>&#125;])</span><br><span class="line">               i) 对查询结果排序，指定排序方向为 降序，默认为升序。</span><br><span class="line">                  先按照name字段排序，在按照age字段排序</span><br><span class="line">               ii) 相当于sql：</span><br><span class="line">                  select * </span><br><span class="line">                  <span class="keyword">from</span> myColl</span><br><span class="line">                  order by name DESC ,age DESC</span><br><span class="line">               DESC关键字只适用于 DESC前面的字段，需要的话，可以对每个字段指定一次 DESC</span><br></pre></td></tr></table></figure>
+            <h2 id="一次插入多行"><a href="#一次插入多行" class="headerlink" title="一次插入多行"></a>一次插入多行</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">sql = "<span class="keyword">INSERT</span> <span class="keyword">INTO</span> t_outlet (<span class="keyword">id</span>,parentId) <span class="keyword">VALUES</span> (<span class="literal">null</span>,?),<span class="string">";</span></span><br><span class="line"><span class="string">for (int i = 0; i &lt; 7; ++i)</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    sql += "</span> (<span class="literal">null</span>,?),<span class="string">";</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">sql.remove(sql.length() - 1, 1);</span></span><br><span class="line"><span class="string">for (int i = 0; i &lt; 8; ++i)</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    m_pDb-&gt;setSqlParam(dbID);</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">if (m_pDb-&gt;exec(sql.toStdWString().c_str()) || m_pDb-&gt;changes() != 8)</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    m_lastErrorString = m_pDb-&gt;getLastError();</span></span><br><span class="line"><span class="string">    return -1;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
           
         
       
@@ -1620,7 +757,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/06/29/开源库/tushare/tushare-学习笔记002-获取基本数据/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/05/功能分类/database/sqlite/sqlite-参数化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1639,7 +776,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/06/29/开源库/tushare/tushare-学习笔记002-获取基本数据/" itemprop="url">tushare-学习笔记002-获取基本数据</a></h1>
+                <a class="post-title-link" href="/2019/08/05/功能分类/database/sqlite/sqlite-参数化/" itemprop="url">sqlite-参数化</a></h1>
         
 
         <div class="post-meta">
@@ -1651,7 +788,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-29T09:10:46+08:00">2019-06-29</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-05T16:44:52+08:00">2019-08-05</time>
             
 
             
@@ -1672,7 +809,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
 
                 
                 
@@ -1708,14 +845,299 @@
       
         
           
-            <p><a href="http://zhenghanyun.top/index.php?share/file&amp;user=1&amp;sid=aGCpbQW9" target="_blank" rel="noopener">2019.06.28为止的sql完整数据</a></p>
-<p><a href="https://github.com/tyler2018/stocker.git" target="_blank" rel="noopener">github 链接</a></p>
-<h2 id="先获取-“股票代码表”"><a href="#先获取-“股票代码表”" class="headerlink" title="先获取 “股票代码表”"></a>先获取 “股票代码表”</h2><p>我这里是使用 mongodb 存储的。<br>项目有结构不方便放上来，这里是代码片段。具体请参见 github 仓库</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch_code</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    从接口获取代码，存入数据库，返回结构样例</span></span><br><span class="line"><span class="string">             ts_code  symbol  name      area industry list_date</span></span><br><span class="line"><span class="string">        0     000001.SZ  000001  平安银行   深圳       银行  19910403</span></span><br><span class="line"><span class="string">        1     000002.SZ  000002   万科A   深圳     全国地产  19910129</span></span><br><span class="line"><span class="string">        3541  603936.SH  603936  博敏电子   广东      元器件  20151209</span></span><br><span class="line"><span class="string">        3542  603937.SH  603937  丽岛新材   江苏        铝  20171102</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># 查询当前所有正常上市交易的股票列表</span></span><br><span class="line">    datas = ts_pro.query(<span class="string">'stock_basic'</span>, exchange=<span class="string">''</span>, list_status=<span class="string">'L'</span>, fields=<span class="string">'ts_code,symbol,name,area,industry,list_date'</span>)</span><br><span class="line">    dataArr = datas.to_dict(<span class="string">'records'</span>)</span><br><span class="line">    <span class="comment"># 创建集合，相当于表</span></span><br><span class="line">    t_codes = db[<span class="string">'codes'</span>]</span><br><span class="line">    t_codes.drop()</span><br><span class="line">    <span class="comment"># 插入获取的代码</span></span><br><span class="line">    result = t_codes.insert_many(dataArr)</span><br><span class="line">    <span class="keyword">if</span> len(result.inserted_ids) != len(dataArr):</span><br><span class="line">        <span class="keyword">assert</span> <span class="keyword">False</span></span><br><span class="line">        print(<span class="string">'插入代码表数据失败.请检查。'</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">"插入代码表数据成功"</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="获取交易日历"><a href="#获取交易日历" class="headerlink" title="获取交易日历"></a>获取交易日历</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch_calender</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">        从接口获取有效交易日信息，存入数据库，返回结构样例</span></span><br><span class="line"><span class="string">                  exchange  cal_date  is_open</span></span><br><span class="line"><span class="string">        0           SSE  20180101        0</span></span><br><span class="line"><span class="string">        1           SSE  20180102        1</span></span><br><span class="line"><span class="string">        2           SSE  20180103        1</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    calender = ts_pro.trade_cal(start_date=<span class="string">'20190101'</span>, end_date=<span class="string">'20191231'</span>)</span><br><span class="line">    <span class="comment"># 创建集合，相当于表</span></span><br><span class="line">    t_calender = db[<span class="string">'calender'</span>]</span><br><span class="line">    dataArr = calender.to_dict(<span class="string">'records'</span>)</span><br><span class="line">    result = t_calender.insert_many(dataArr)</span><br><span class="line">    <span class="keyword">if</span> len(result.inserted_ids) != len(dataArr):</span><br><span class="line">        <span class="keyword">assert</span> <span class="keyword">False</span></span><br><span class="line">        print(<span class="string">'插入代码表数据失败.请检查。'</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">"插入代码表数据成功"</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="获取历史数据"><a href="#获取历史数据" class="headerlink" title="获取历史数据"></a>获取历史数据</h2><p>代码有些多，看 github 吧<br>每个股票代码作为一个集合保存数据。从数据库中取出代码，然后遍历获取数据</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_code</span><span class="params">(market)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">     获取股票代码表</span></span><br><span class="line"><span class="string">    market [in] string</span></span><br><span class="line"><span class="string">        SH 上海,SZ 深圳,ALL 所有市场</span></span><br><span class="line"><span class="string">    output:</span></span><br><span class="line"><span class="string">        &#123;'ts_code': '600000.SH', 'symbol': '600000', 'name': '浦发银行', 'list_date': '19991110'&#125;</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># 打开代码表集合</span></span><br><span class="line">    t_codes = db[<span class="string">'codes'</span>]</span><br><span class="line">    <span class="keyword">if</span> market == <span class="string">'ALL'</span>:</span><br><span class="line">        codes = list(t_codes.find(&#123;&#125;, &#123;<span class="string">"_id"</span>: <span class="number">0</span>, <span class="string">"ts_code"</span>: <span class="number">1</span>, <span class="string">"symbol"</span>: <span class="number">1</span>, <span class="string">"name"</span>: <span class="number">1</span>, <span class="string">"industry"</span>: <span class="number">1</span>, <span class="string">"list_date"</span>: <span class="number">1</span>&#125;))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        codes = list(t_codes.find(&#123;<span class="string">"ts_code"</span>: &#123;<span class="string">"$regex"</span>: <span class="string">".&#123;&#125;"</span>.format(market)&#125;&#125;,</span><br><span class="line">                             &#123;<span class="string">"_id"</span>: <span class="number">0</span>, <span class="string">"ts_code"</span>: <span class="number">1</span>, <span class="string">"symbol"</span>: <span class="number">1</span>, <span class="string">"name"</span>: <span class="number">1</span>, <span class="string">"industry"</span>: <span class="number">1</span>, <span class="string">"list_date"</span>: <span class="number">1</span>&#125;))</span><br><span class="line">    <span class="keyword">return</span> codes</span><br></pre></td></tr></table></figure>
-<p>到这里基本数据就准备完毕了，在下一个笔记就可以选股操作了。</p>
+            <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> sql = <span class="string">"select count(*) from t_user where f_name=? and f_pwd=?"</span>;</span><br><span class="line">iRet = sqlite3_bind_text(pStmt, i + <span class="number">1</span>, m_param.at(i).typeChar, <span class="number">-1</span>, SQLITE_STATIC);</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/01/语言相关/CPP/cpp-随机数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/01/语言相关/CPP/cpp-随机数/" itemprop="url">cpp-随机数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-01T13:10:47+08:00">2019-08-01</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>随机数生成算法有很多，C++11之前的C/C++只用了一种。C++11则提供下面三种可供选择：</p>
+<ul>
+<li>linear_congruential_engine线性同余法</li>
+<li>mersenne_twister_engine梅森旋转法</li>
+<li>substract_with_carry_engine滞后Fibonacci</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生成随机模拟数据</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;random&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::default_random_engine random;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">20</span>; ++i)</span><br><span class="line">    <span class="keyword">int</span> i = random();</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生成 0- 100范围内的</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;random&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;time.h&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">cout</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">cin</span>;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::uniform_real_distribution&lt;<span class="keyword">double</span>&gt; dis2(<span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">    <span class="comment">// obtain a seed from the system clock:</span></span><br><span class="line">        <span class="keyword">unsigned</span> seed1 = <span class="built_in">std</span>::chrono::system_clock::now().time_since_epoch().count();</span><br><span class="line">        <span class="built_in">std</span>::<span class="function">default_random_engine <span class="title">random</span><span class="params">(seed1)</span></span>;</span><br><span class="line">        <span class="built_in">std</span>::uniform_int_distribution&lt;<span class="keyword">int</span>&gt; dis1(<span class="number">0</span>, <span class="number">100</span>);</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;dis1(random)&lt;&lt;<span class="string">' '</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i)</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;dis2(random)&lt;&lt;<span class="string">' '</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在uniform_int_distribution的构造函数中，参数说明了随机数的范围。uniform_int_distribution的随机数的范围不是半开范围[  )，而是[  ]，对于uniform_real_distribution却是半开范围[  )。也是就是说上面的例子中，能产生100，但不会产生1.0。不得不说，这颠覆了之前的认识。对于default_random_engine来说，其产生的随机数范围是在[min()， max()]之间，其中min()和max()为它的两个成员函数。同样，也是非半开范围。对于浮点数，如果真的是想产生[0.0, 1.0]范围的数，可以使用</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cfloat&gt;</span></span></span><br><span class="line"><span class="built_in">std</span>::uniform_real_distribution&lt;<span class="keyword">double</span>&gt; dis2(<span class="number">0</span>, <span class="built_in">std</span>::nextafter(<span class="number">1</span>,DBL_MAX));</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/07/30/语言相关/CPP/cpp-atomic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/30/语言相关/CPP/cpp-atomic/" itemprop="url">cpp-atomic</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-30T17:20:26+08:00">2019-07-30</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>C++11中的原子操作</p>
+<p>原子操作, 它表示在多个线程访问同一个全局资源的时候, 能够确保所有其他的线程都不在同一时间内访问相同的资源. 也就是他确保了在同一时刻只有唯一的线程对这个资源进行访问. 这有点类似互斥对象对共享资源的访问的保护, 但是原子操作更加接近底层, 因而效率更高.</p>
 
           
         
@@ -1769,7 +1191,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/06/28/开源库/rapidJson/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/07/30/学习笔记/算法/算法-分布式id生成int64-SnowFlake/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1788,7 +1210,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/06/28/开源库/rapidJson/" itemprop="url">rapidJson</a></h1>
+                <a class="post-title-link" href="/2019/07/30/学习笔记/算法/算法-分布式id生成int64-SnowFlake/" itemprop="url">算法-分布式id生成int64_SnowFlake</a></h1>
         
 
         <div class="post-meta">
@@ -1800,7 +1222,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-28T15:23:34+08:00">2019-06-28</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-30T16:28:35+08:00">2019-07-30</time>
             
 
             
@@ -1821,14 +1243,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/算法/" itemprop="url" rel="index"><span itemprop="name">算法</span></a></span>
 
                 
                 
@@ -1864,11 +1279,478 @@
       
         
           
-            <p>目前还不知道如何访问，下面类型的数据</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">    &#123;&#125;,&#123;&#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<h1 id="解析字符串"><a href="#解析字符串" class="headerlink" title="解析字符串"></a>解析字符串</h1><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"key"</span>:[&#123;&#125;,&#123;&#125;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Document doc;</span><br><span class="line">doc.Parse(strConfig.c_str());</span><br><span class="line"><span class="function">ParseErrorCode <span class="title">error</span><span class="params">(kParseErrorNone)</span></span>;</span><br><span class="line">error = doc.GetParseError();  </span><br><span class="line"><span class="keyword">if</span> (error != kParseErrorNone)  </span><br><span class="line">&#123; </span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (!doc.HasMember(<span class="string">"dev_th"</span>) || !doc[<span class="string">"dev_th"</span>].IsArray())</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line">Value &amp; arrAlarmHost = doc[<span class="string">"dev_th"</span>];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; arrAlarmHost.Size(); ++index)</span><br><span class="line">&#123;</span><br><span class="line">    Value &amp;objDev = arrAlarmHost[index];</span><br><span class="line">    <span class="keyword">if</span> (!objDev.HasMember(<span class="string">"port"</span>) || !objDev[<span class="string">"port"</span>].IsInt())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="构建-json"><a href="#构建-json" class="headerlink" title="构建 json"></a>构建 json</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Document docHuminity; <span class="comment">// Null</span></span><br><span class="line">docHuminity.SetArray();</span><br><span class="line">rapidjson::Document::AllocatorType&amp; allocatorHuminity = docHuminity.GetAllocator();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> it = m_mapDevInfo[id_cmd_chan].listChartDataTemperature.begin();it != m_mapDevInfo[id_cmd_chan].listChartDataTemperature.end();++it)</span><br><span class="line">&#123;</span><br><span class="line">    rapidjson::Value obj;</span><br><span class="line">    obj.SetObject();</span><br><span class="line">    obj.AddMember(<span class="string">"name"</span>,rapidjson::StringRef(it-&gt;strName.c_str()),allocatorHuminity);</span><br><span class="line"></span><br><span class="line">    rapidjson::<span class="function">Value <span class="title">arr</span><span class="params">(rapidjson::kArrayType)</span></span>;</span><br><span class="line">    arr.PushBack(rapidjson::StringRef(it-&gt;strDatetime.c_str()), allocatorHuminity);</span><br><span class="line">    arr.PushBack(rapidjson::StringRef(it-&gt;strValue.c_str()), allocatorHuminity);</span><br><span class="line"></span><br><span class="line">    obj.AddMember(<span class="string">"value"</span>,arr,allocatorHuminity);</span><br><span class="line">    docHuminity.PushBack(obj,allocatorHuminity);</span><br><span class="line">&#125;</span><br><span class="line">rapidjson::StringBuffer bufferH;</span><br><span class="line">rapidjson::Writer&lt;rapidjson::StringBuffer&gt; writerH(bufferH);</span><br><span class="line">docHuminity.Accept(writerH);</span><br><span class="line">strChartHumidity = bufferH.GetString();</span><br></pre></td></tr></table></figure>
+            <p>SnowFlake算法生成id的结果是一个64bit大小的整数，它的结构如下图：</p>
+<p><img alt="20190730_162938.png" src="/2019/07/30/学习笔记/算法/算法-分布式id生成int64-SnowFlake/20190730_162938.png" width="400" height=""></p>
+<ul>
+<li>1位，不用。二进制中最高位为1的都是负数，但是我们生成的id一般都使用整数，所以这个最高位固定是0</li>
+<li>41位，用来记录时间戳（毫秒）。</li>
+</ul>
+<p>41位可以表示$2^{41}-1$个数字，<br>如果只用来表示正整数（计算机中正数包含0），可以表示的数值范围是：0 至 $2^{41}-1$，减1是因为可表示的数值范围是从0开始算的，而不是1。<br>也就是说41位可以表示$2^{41}-1$个毫秒的值，转化成单位年则是$(2^{41}-1) / (1000 <em> 60 </em> 60 <em> 24 </em> 365) = 69$年<br>注意, 这里存储的不是当前的时间戳，而是存储时间戳的差值(当前时间截 - 开始时间截), 可以表示69年的时间.</p>
+<ul>
+<li>10位，用来记录工作机器id。</li>
+</ul>
+<p>可以部署在$2^{10} = 1024$个节点，包括5位datacenterId和5位workerId<br>5位（bit）可以表示的最大正整数是$2^{5}-1 = 31$，即可以用0、1、2、3、….31这32个数字，来表示不同的datecenterId或workerId</p>
+<ul>
+<li>12位，序列号，用来记录同毫秒内产生的不同id。</li>
+</ul>
+<p>12位（bit）可以表示的最大正整数是$2^{12}-1 = 4095$，即可以用0、1、2、3、….4094这4095个数字，来表示同一机器同一时间截（毫秒)内产生的4095个ID序号</p>
+<p>SnowFlake可以保证：</p>
+<p>所有生成的id按时间趋势递增<br>整个分布式系统内不会产生重复id（因为有datacenterId和workerId来做区分）</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/07/30/语言相关/CPP/cpp-move/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/30/语言相关/CPP/cpp-move/" itemprop="url">cpp-move</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-30T11:08:56+08:00">2019-07-30</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>std::move 并不会真正地移动对象，真正的移动操作是在移动构造函数、移动赋值函数等完成的，std::move 只是将参数转换为右值引用而已（相当于一个 static_cast）</p>
+<p>std::move函数可以以非常简单的方式将左值引用转换为右值引用。</p>
+<p>通过std::move，可以避免不必要的拷贝操作。</p>
+<p>std::move是为性能而生。</p>
+<p>std::move是将对象的状态或者所有权从一个对象转移到另一个对象，只是转移，没有内存的搬迁或者内存拷贝。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/07/26/学习笔记/数据库/postgreSQL/postgreSQL-介绍/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/26/学习笔记/数据库/postgreSQL/postgreSQL-介绍/" itemprop="url">postgreSQL-介绍</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-26T13:01:16+08:00">2019-07-26</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="PostgreSQL-的优点"><a href="#PostgreSQL-的优点" class="headerlink" title="PostgreSQL 的优点"></a>PostgreSQL 的优点</h1><p>开源且遵从SQL标准<br>PostgreSQL 是一款开源的、免费的、功能非常强大的关系型数据库。</p>
+<p>强大的社区<br>由一个忠实的、经验丰富的社区支持，用户可以通过知识库和 Q&amp;A 网站获得全天候的免费服务。</p>
+<p>强有力的第三方支持<br>除了非常先进的特性之外，PostgreSQL 还有很多优秀的、开源的第三方工具可以辅助系统的设计、管理和使用。</p>
+<p>可扩展<br>可以通过存储过程扩展 PostgreSQL 的功能。</p>
+<p>面向对象<br>PostgreSQL 不仅是一个关系型数据库，它还是一个面向对象的数据库——支持嵌套等功能。</p>
+<h1 id="PostgreSQL-的缺点"><a href="#PostgreSQL-的缺点" class="headerlink" title="PostgreSQL 的缺点"></a>PostgreSQL 的缺点</h1><p>性能:<br>对于简单繁重的读取操作，使用 PostgreSQL 可能有点小题大做，同时性能也比 MySQL 这样的同类产品要差。</p>
+<p>流行程度<br>尽管有大量的部署，但是鉴于该数据库的性质，它的受欢迎程序并不高。</p>
+<h1 id="何时应该使用-PostgreSQL"><a href="#何时应该使用-PostgreSQL" class="headerlink" title="何时应该使用 PostgreSQL"></a>何时应该使用 PostgreSQL</h1><p>数据完整性<br>当绝对需要可靠性和数据完整性的时候，PostgreSQL 是更好的选择。</p>
+<p>复杂的定制程序<br>如果需要数据库执行定制程序，那么可扩展的 PostgreSQL 是更好的选择。</p>
+<p>集成:<br>如果将来可能需要将整个数据库迁移到其他合适的解决方案上（例如 Oracle），那么 PostgreSQL 可能兼容性最好也更容易切换。</p>
+<p>复杂的设计<br>与其他开源且免费的数据库相比，对于复杂的数据库设计 PostgreSQL 在功能方面最全面，潜力最大，不需要你放弃其他有价值的资产。</p>
+<h1 id="何时不应该使用-PostgreSQL"><a href="#何时不应该使用-PostgreSQL" class="headerlink" title="何时不应该使用 PostgreSQL"></a>何时不应该使用 PostgreSQL</h1><p>速度<br>如果你只需要快速读取操作，那么 PostgreSQL 并不合适。</p>
+<p>简单<br>除非你需要绝对的数据完整性，ACID 遵从性或者设计复杂，否则 PostgreSQL 对于简单的场景而言有点多余。</p>
+<p>复制<br>对于缺少数据库和系统管理经验的人而言使用 MySQL 实现复制要更简单，除非你愿意花费时间、精力和资源。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/07/26/功能分类/database/sqlite/sqlite-相关信息/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/26/功能分类/database/sqlite/sqlite-相关信息/" itemprop="url">sqlite-相关信息</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-26T12:53:02+08:00">2019-07-26</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://www.sqlite.org/limits.html" target="_blank" rel="noopener">官网-相关限制定义</a></p>
+<p>sqlite理论最大可以到140TB。（当然官网也承认目前没人把数据库搞到这么大，就是 “untested”）</p>
+<p>属于本地数据库多用于读多写少，100W以下的数据压力不大，不支持分布式。</p>
+<h1 id="何时不应该使用-SQLite"><a href="#何时不应该使用-SQLite" class="headerlink" title="何时不应该使用 SQLite"></a>何时不应该使用 SQLite</h1><p>多用户应用程序<br>如果有多个客户端需要访问并使用同一个数据库，那么最好使用功能完整的关系型数据库（例如 MySQL），而不是选择 SQLite。</p>
+<p>需要高写入量的应用程序<br>写操作是 SQLite 的一个局限。该 DBMS 在同一时刻仅允许一个写操作，因而也限制了其吞吐量。</p>
+<h1 id="sqlite-sequence表"><a href="#sqlite-sequence表" class="headerlink" title="sqlite_sequence表"></a>sqlite_sequence表</h1><p>sqlite_sequence表也是SQLite的系统表。该表用来保存其他表的RowID的最大值。数据库被创建时，sqlite_sequence表会被自动创建。该表包括两列。第一列为name，用来存储表的名称。第二列为seq，用来保存表对应的RowID的最大值。该值最大值为9223372036854775807。当对应的表增加记录，该表会自动更新。当表删除，该表对应的记录也会自动删除。如果该值超过最大值，会引起SQL_FULL错误。所以，一旦发现该错误，用户不仅要检查SQLite文件所在的磁盘空间是否不足，还需要检查是否有表的ROWID达到最大值。</p>
+<h1 id="多线程写入"><a href="#多线程写入" class="headerlink" title="多线程写入"></a>多线程写入</h1><p>SQLite 支持三种线程模式：</p>
+<ol>
+<li>单线程模式<br> 这种模式下，没有进行互斥，多线程使用不安全</li>
+<li>多线程模式<br> 这种模式下，在多线程中使用单个数据库连接是不安全的，否则就是安全的。（译注：即不能在多个线程中共享数据库连接）</li>
+<li>串行模式<br> 这种模式下，sqlite是线程安全的。</li>
+</ol>
+
           
         
       
@@ -1910,7 +1792,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/86/">86</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/88/">88</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1957,7 +1839,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">860</span>
+                    <span class="site-state-item-count">880</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2114,7 +1996,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">72</span>
+                      
+                    
+                    <span class="site-state-item-count">73</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -2501,7 +2385,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">187</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">189</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

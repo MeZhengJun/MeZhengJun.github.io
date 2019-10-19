@@ -108,7 +108,7 @@
 <meta property="og:description" content="学习go的一些笔记，便于查阅。 数据类型   类型 描述 例子     布尔型 常量 true 或者 false var b bool = true   数字类型 u/int8/16/32/64,uintptr,float32,64,complex64,128    字符串 UTF-8编码    派生 (a) 指针类型（Pointer）  (b) 数组类型(c) 结构化类型(struct) (d)">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://zhengjunblog.top/2017/11/14/语言相关/go/go语法/16dac5ec.png">
-<meta property="og:updated_time" content="2018-07-28T09:27:53.000Z">
+<meta property="og:updated_time" content="2019-10-09T01:41:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="go语法">
 <meta name="twitter:description" content="学习go的一些笔记，便于查阅。 数据类型   类型 描述 例子     布尔型 常量 true 或者 false var b bool = true   数字类型 u/int8/16/32/64,uintptr,float32,64,complex64,128    字符串 UTF-8编码    派生 (a) 指针类型（Pointer）  (b) 数组类型(c) 结构化类型(struct) (d)">
@@ -238,7 +238,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">72</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">73</span>
       </a>
 </li>
 
@@ -248,7 +248,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">860</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">880</span>
       </a>
 </li>
 
@@ -471,7 +471,8 @@
 <h3 id="指针数组"><a href="#指针数组" class="headerlink" title="指针数组"></a>指针数组</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const MAX int = 3</span><br><span class="line">var ptr [MAX]*int;</span><br><span class="line"></span><br><span class="line">for  i = 0; i &lt; MAX; i++ &#123;</span><br><span class="line">  ptr[i] = &amp;a[i] /* 整数地址赋值给指针数组 */</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="指向指针的指针"><a href="#指向指针的指针" class="headerlink" title="指向指针的指针"></a>指向指针的指针</h3><p>如果一个指针变量存放的又是另一个指针变量的地址，则称这个指针变量为指向指针的指针变量。<br>当定义一个指向指针的指针变量时，第一个指针存放第二个指针的地址，第二个指针存放变量的地址：<br><img alt="16dac5ec.png" src="/2017/11/14/语言相关/go/go语法/16dac5ec.png" width="" height="">  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var ptr *int</span><br><span class="line">var pptr **int</span><br><span class="line"></span><br><span class="line">a = 3000</span><br><span class="line"></span><br><span class="line">/* 指针 ptr 地址 */</span><br><span class="line">ptr = &amp;a</span><br><span class="line"></span><br><span class="line">/* 指向指针 ptr 地址 */</span><br><span class="line">pptr = &amp;ptr</span><br></pre></td></tr></table></figure>
-<h2 id="切片-Slice"><a href="#切片-Slice" class="headerlink" title="切片(Slice)"></a>切片(Slice)</h2><p>Go 语言切片是对数组的抽象。<br>Go 数组的长度不可改变，在特定场景中这样的集合就不太适用，Go中提供了一种灵活，功能强悍的内置类型切片(“动态数组”),与数组相比切片的长度是不固定的，可以追加元素，在追加时可能使切片的容量增大。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义Slice</span></span><br><span class="line"><span class="keyword">var</span> identifier []<span class="keyword">type</span></span><br><span class="line"><span class="comment">// user make create slice; len 是数组的长度并且也是切片的初始长度</span></span><br><span class="line">slice1 := <span class="built_in">make</span>([]<span class="keyword">type</span>, <span class="built_in">len</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//也可以指定容量，其中capacity为可选参数。</span></span><br><span class="line"><span class="built_in">make</span>([]T, length, capacity)</span><br><span class="line"></span><br><span class="line"><span class="comment">//直接初始化切片，[]表示是切片类型，&#123;1,2,3&#125;初始化值依次是1,2,3.其cap=len=3</span></span><br><span class="line">s :=[] <span class="keyword">int</span> &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//初始化切片s,是数组arr的引用, 用法和python类似</span></span><br><span class="line">s := arr[startIndex:endIndex]</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 同时添加多个元素 */</span></span><br><span class="line">numbers = <span class="built_in">append</span>(numbers, <span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>)</span><br></pre></td></tr></table></figure></p>
+<h2 id="切片-Slice"><a href="#切片-Slice" class="headerlink" title="切片(Slice)"></a>切片(Slice)</h2><p>Go 语言切片是对数组的抽象。<br>Go 数组的长度不可改变，在特定场景中这样的集合就不太适用，Go中提供了一种灵活，功能强悍的内置类型切片(“动态数组”),与数组相比切片的长度是不固定的，可以追加元素，在追加时可能使切片的容量增大。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义Slice</span></span><br><span class="line"><span class="keyword">var</span> identifier []<span class="keyword">type</span></span><br><span class="line"><span class="comment">// user make create slice; len 是数组的长度并且也是切片的初始长度</span></span><br><span class="line">slice1 := <span class="built_in">make</span>([]<span class="keyword">type</span>, <span class="built_in">len</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//也可以指定容量，其中capacity为可选参数。</span></span><br><span class="line"><span class="built_in">make</span>([]T, length, capacity)</span><br><span class="line"></span><br><span class="line"><span class="comment">//直接初始化切片，[]表示是切片类型，&#123;1,2,3&#125;初始化值依次是1,2,3.其cap=len=3</span></span><br><span class="line">s :=[] <span class="keyword">int</span> &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//初始化切片s,是数组arr的引用, 用法和python类似</span></span><br><span class="line">s := arr[startIndex:endIndex]</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 同时添加多个元素 */</span></span><br><span class="line">numbers = <span class="built_in">append</span>(numbers, <span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
 <h2 id="范围-Range"><a href="#范围-Range" class="headerlink" title="范围(Range)"></a>范围(Range)</h2><p>Go 语言中 range 关键字用于for循环中迭代数组(array)、切片(slice)、通道(channel)或集合(map)的元素。<br>返回index和value</p>
 <p>在Go的for…range循环中，Go始终使用值拷贝的方式代替被遍历的元素本身，<br>就是说for…range中那个value，是一个值拷贝，而不是元素本身。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">nums := []<span class="keyword">int</span>&#123;<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> index, value := <span class="keyword">range</span> nums &#123;</span><br><span class="line">		fmt.Println(<span class="string">"index: "</span> + strconv.Itoa(index))</span><br><span class="line">		fmt.Println(<span class="string">"value: "</span> + strconv.Itoa(value))</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这里不使用index的情况，使用下划线来占位</span></span><br><span class="line"><span class="keyword">for</span> _, value := <span class="keyword">range</span> nums &#123;</span><br><span class="line">		fmt.Println(<span class="string">"value: "</span> + strconv.Itoa(value))</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
@@ -642,7 +643,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">860</span>
+                    <span class="site-state-item-count">880</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -799,7 +800,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">72</span>
+                      
+                    
+                    <span class="site-state-item-count">73</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -1186,7 +1189,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">187</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">189</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

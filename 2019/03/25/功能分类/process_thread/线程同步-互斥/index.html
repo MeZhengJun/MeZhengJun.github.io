@@ -99,18 +99,18 @@
 
 
 
-  <meta name="description" content="临界区本身不是内核对象，它是工作在用户态的，所以速度快一些互斥量、信号量、事件都是Windows的内核对象，当程序对这些对象进行控制时会自动转换到核心态。 1234CMutex Mutex;CSingleLock SingleLock(&amp;amp;Mutex);SingleLock.Lock(); 123456789CRITICAL_SECTION cs;InitializeCriticalSect">
+  <meta name="description" content="临界区本身不是内核对象，它是工作在用户态的，所以速度快一些互斥量、信号量、事件都是Windows的内核对象，当程序对这些对象进行控制时会自动转换到核心态。 C++ 方式1234567/// 实例容器锁mutable std::mutex mutMapInst;&amp;#123;    std::lock_guard&amp;lt;std::mutex&amp;gt;lk(m_devInfo.mutMapInst);">
 <meta name="keywords" content="进程,线程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="线程同步-互斥">
 <meta property="og:url" content="http://zhengjunblog.top/2019/03/25/功能分类/process_thread/线程同步-互斥/index.html">
 <meta property="og:site_name" content="郑君的学习笔记">
-<meta property="og:description" content="临界区本身不是内核对象，它是工作在用户态的，所以速度快一些互斥量、信号量、事件都是Windows的内核对象，当程序对这些对象进行控制时会自动转换到核心态。 1234CMutex Mutex;CSingleLock SingleLock(&amp;amp;Mutex);SingleLock.Lock(); 123456789CRITICAL_SECTION cs;InitializeCriticalSect">
+<meta property="og:description" content="临界区本身不是内核对象，它是工作在用户态的，所以速度快一些互斥量、信号量、事件都是Windows的内核对象，当程序对这些对象进行控制时会自动转换到核心态。 C++ 方式1234567/// 实例容器锁mutable std::mutex mutMapInst;&amp;#123;    std::lock_guard&amp;lt;std::mutex&amp;gt;lk(m_devInfo.mutMapInst);">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-25T02:40:06.000Z">
+<meta property="og:updated_time" content="2019-09-12T01:32:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线程同步-互斥">
-<meta name="twitter:description" content="临界区本身不是内核对象，它是工作在用户态的，所以速度快一些互斥量、信号量、事件都是Windows的内核对象，当程序对这些对象进行控制时会自动转换到核心态。 1234CMutex Mutex;CSingleLock SingleLock(&amp;amp;Mutex);SingleLock.Lock(); 123456789CRITICAL_SECTION cs;InitializeCriticalSect">
+<meta name="twitter:description" content="临界区本身不是内核对象，它是工作在用户态的，所以速度快一些互斥量、信号量、事件都是Windows的内核对象，当程序对这些对象进行控制时会自动转换到核心态。 C++ 方式1234567/// 实例容器锁mutable std::mutex mutMapInst;&amp;#123;    std::lock_guard&amp;lt;std::mutex&amp;gt;lk(m_devInfo.mutMapInst);">
 
 
 
@@ -236,7 +236,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">72</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">73</span>
       </a>
 </li>
 
@@ -246,7 +246,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">860</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">880</span>
       </a>
 </li>
 
@@ -414,8 +414,9 @@
 
       
         <p>临界区本身不是内核对象，它是工作在用户态的，所以速度快一些<br>互斥量、信号量、事件都是Windows的内核对象，当程序对这些对象进行控制时会自动转换到核心态。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CMutex Mutex;</span><br><span class="line"></span><br><span class="line"><span class="function">CSingleLock <span class="title">SingleLock</span><span class="params">(&amp;Mutex)</span></span>;</span><br><span class="line">SingleLock.Lock();</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CRITICAL_SECTION cs;</span><br><span class="line"></span><br><span class="line">InitializeCriticalSection(&amp;m_curInfo.cs);</span><br><span class="line"></span><br><span class="line">EnterCriticalSection(&amp;m_curInfo.cs);</span><br><span class="line">m_curInfo.timeCmp = time(<span class="literal">NULL</span>);</span><br><span class="line">LeaveCriticalSection(&amp;m_curInfo.cs);</span><br><span class="line"></span><br><span class="line">DeleteCriticalSection(&amp;m_curInfo.cs);</span><br></pre></td></tr></table></figure>
+<h2 id="C-方式"><a href="#C-方式" class="headerlink" title="C++ 方式"></a>C++ 方式</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 实例容器锁</span></span><br><span class="line"><span class="keyword">mutable</span> <span class="built_in">std</span>::mutex mutMapInst;</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">std</span>::lock_guard&lt;<span class="built_in">std</span>::mutex&gt;lk(m_devInfo.mutMapInst);</span><br><span class="line">    m_devInfo.mapInst.emplace(make_pair(instId, &amp;dev));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="MFC-方式"><a href="#MFC-方式" class="headerlink" title="MFC 方式"></a>MFC 方式</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CMutex Mutex;</span><br><span class="line"></span><br><span class="line"><span class="function">CSingleLock <span class="title">SingleLock</span><span class="params">(&amp;Mutex)</span></span>;</span><br><span class="line">SingleLock.Lock();</span><br></pre></td></tr></table></figure>
+<h2 id="Win32-方式"><a href="#Win32-方式" class="headerlink" title="Win32 方式"></a>Win32 方式</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CRITICAL_SECTION cs;</span><br><span class="line"></span><br><span class="line">InitializeCriticalSection(&amp;m_curInfo.cs);</span><br><span class="line"></span><br><span class="line">EnterCriticalSection(&amp;m_curInfo.cs);</span><br><span class="line">m_curInfo.timeCmp = time(<span class="literal">NULL</span>);</span><br><span class="line">LeaveCriticalSection(&amp;m_curInfo.cs);</span><br><span class="line"></span><br><span class="line">DeleteCriticalSection(&amp;m_curInfo.cs);</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -541,8 +542,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -561,7 +571,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">860</span>
+                    <span class="site-state-item-count">880</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -718,7 +728,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">72</span>
+                      
+                    
+                    <span class="site-state-item-count">73</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -1105,7 +1117,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">187</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">189</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -1152,6 +1168,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#C-方式"><span class="nav-number">1.</span> <span class="nav-text">C++ 方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MFC-方式"><span class="nav-number">2.</span> <span class="nav-text">MFC 方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Win32-方式"><span class="nav-number">3.</span> <span class="nav-text">Win32 方式</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

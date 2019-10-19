@@ -107,7 +107,7 @@
 <meta property="og:site_name" content="郑君的学习笔记">
 <meta property="og:description" content="nxlog4go log4golog4go  Log to console Log to file, support rotate by size or time log to network, support tcp and udp Support Json style configuration Add Category for log Classify your logs for diffe">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-30T07:43:10.000Z">
+<meta property="og:updated_time" content="2019-09-17T01:21:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="go-logging">
 <meta name="twitter:description" content="nxlog4go log4golog4go  Log to console Log to file, support rotate by size or time log to network, support tcp and udp Support Json style configuration Add Category for log Classify your logs for diffe">
@@ -236,7 +236,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">72</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">73</span>
       </a>
 </li>
 
@@ -246,7 +246,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">860</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">880</span>
       </a>
 </li>
 
@@ -432,7 +432,7 @@
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"console"</span>: &#123;</span><br><span class="line">        "enable": true,		// wether output the log</span><br><span class="line">        "level": "FINE"		// log level: FINE, DEBUG, TRACE, INFO, WARNING,ERROR, CRITICAL</span><br><span class="line">    &#125;,  </span><br><span class="line">    "files": [&#123;</span><br><span class="line">        "enable": true,</span><br><span class="line">        "level": "DEBUG",</span><br><span class="line">        "filename":"./test.log",</span><br><span class="line">        "category": "Test",			// different category log to different files</span><br><span class="line">        "pattern": "[%D %T] [%C] [%L] (%S) %M"		// log output formmat</span><br><span class="line">    &#125;,&#123;</span><br><span class="line">        "enable": false,</span><br><span class="line">        "level": "DEBUG",</span><br><span class="line">        "filename":"rotate_test.log",</span><br><span class="line">        "category": "TestRotate",</span><br><span class="line">        "pattern": "[%D %T] [%C] [%L] (%S) %M",</span><br><span class="line">        "rotate": true,								// wether rotate the log</span><br><span class="line">        "maxsize": "500M",</span><br><span class="line">        "maxlines": "10K",</span><br><span class="line">        "daily": true</span><br><span class="line">    &#125;],</span><br><span class="line">    "sockets": [&#123;</span><br><span class="line">        "enable": false,</span><br><span class="line">        "level": "DEBUG",</span><br><span class="line">        "category": "TestSocket",</span><br><span class="line">        "pattern": "[%D %T] [%C] [%L] (%S) %M",</span><br><span class="line">        "addr": "127.0.0.1:12124",</span><br><span class="line">        "protocol":"udp"</span><br><span class="line">    &#125;]  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>使用样例</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	log <span class="string">"github.com/jeanphorn/log4go"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// load config file, it's optional</span></span><br><span class="line">	<span class="comment">// or log.LoadConfiguration("./example.json", "json")</span></span><br><span class="line">	<span class="comment">// config file could be json or xml</span></span><br><span class="line">	log.LoadConfiguration(<span class="string">"./example.json"</span>)</span><br><span class="line"></span><br><span class="line">	log.LOGGER(<span class="string">"Test"</span>).Info(<span class="string">"category Test info test ..."</span>)</span><br><span class="line">	log.LOGGER(<span class="string">"Test"</span>).Info(<span class="string">"category Test info test message: %s"</span>, <span class="string">"new test msg"</span>)</span><br><span class="line">	log.LOGGER(<span class="string">"Test"</span>).Debug(<span class="string">"category Test debug test ..."</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Other category not exist, test</span></span><br><span class="line">	log.LOGGER(<span class="string">"Other"</span>).Debug(<span class="string">"category Other debug test ..."</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// socket log test</span></span><br><span class="line">	log.LOGGER(<span class="string">"TestSocket"</span>).Debug(<span class="string">"category TestSocket debug test ..."</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// original log4go test</span></span><br><span class="line">	log.Info(<span class="string">"nomal info test ..."</span>)</span><br><span class="line">	log.Debug(<span class="string">"nomal debug test ..."</span>)</span><br><span class="line"></span><br><span class="line">	log.Close()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	log <span class="string">"github.com/jeanphorn/log4go"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// load config file, it's optional</span></span><br><span class="line">	<span class="comment">// or log.LoadConfiguration("./example.json", "json")</span></span><br><span class="line">	<span class="comment">// config file could be json or xml</span></span><br><span class="line">	log.LoadConfiguration(<span class="string">"./example.json"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这里的 Test 是配置文件里面的 category 定义的</span></span><br><span class="line">    log.LOGGER(<span class="string">"Test"</span>).Info(<span class="string">"category Test info test ..."</span>)</span><br><span class="line">    log.LOGGER(<span class="string">"Test"</span>).Info(<span class="string">"category Test info test ... %d"</span>, <span class="number">123</span>)</span><br><span class="line">	log.LOGGER(<span class="string">"Test"</span>).Info(<span class="string">"category Test info test message: %s"</span>, <span class="string">"new test msg"</span>)</span><br><span class="line">	log.LOGGER(<span class="string">"Test"</span>).Debug(<span class="string">"category Test debug test ..."</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Other category not exist, test</span></span><br><span class="line">	log.LOGGER(<span class="string">"Other"</span>).Debug(<span class="string">"category Other debug test ..."</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// socket log test</span></span><br><span class="line">	log.LOGGER(<span class="string">"TestSocket"</span>).Debug(<span class="string">"category TestSocket debug test ..."</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// original log4go test</span></span><br><span class="line">	log.Info(<span class="string">"nomal info test ..."</span>)</span><br><span class="line">	log.Debug(<span class="string">"nomal debug test ..."</span>)</span><br><span class="line"></span><br><span class="line">	log.Close()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>输出样例</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[2017/11/15 14:35:11 CST] [Test] [INFO] (main.main:15) category Test info test ...</span><br><span class="line">[2017/11/15 14:35:11 CST] [Test] [INFO] (main.main:16) category Test info test message: new test msg</span><br><span class="line">[2017/11/15 14:35:11 CST] [Test] [DEBG] (main.main:17) category Test debug test ...</span><br><span class="line">[2017/11/15 14:35:11 CST] [DEFAULT] [INFO] (main.main:26) nomal info test ...</span><br><span class="line">[2017/11/15 14:35:11 CST] [DEFAULT] [DEBG] (main.main:27) nomal debug test ...</span><br></pre></td></tr></table></figure>
@@ -597,7 +597,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">860</span>
+                    <span class="site-state-item-count">880</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -754,7 +754,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">72</span>
+                      
+                    
+                    <span class="site-state-item-count">73</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -1141,7 +1143,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">187</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">189</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

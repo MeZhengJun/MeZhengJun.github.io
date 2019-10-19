@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">72</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">73</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">860</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">880</span>
       </a>
 </li>
 
@@ -328,7 +328,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/16/学习笔记/区块链/bitcoin/使用lldb调试bitcoin/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/03/语言相关/go/go-test/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -347,7 +347,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/16/学习笔记/区块链/bitcoin/使用lldb调试bitcoin/" itemprop="url">使用lldb调试bitcoin</a></h1>
+                <a class="post-title-link" href="/2018/08/03/语言相关/go/go-test/" itemprop="url">go-test</a></h1>
         
 
         <div class="post-meta">
@@ -359,307 +359,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-16T17:16:21+08:00">2018-07-16</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>ubuntu 16.04 安装 LLDB<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install LLDB</span><br></pre></td></tr></table></figure></p>
-<p>如果提示缺少 six 包，需要使用 python 安装一下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// install pip</span><br><span class="line">curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py</span><br><span class="line">python get-pip.py</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install six</span><br></pre></td></tr></table></figure>
-<p>注意 docker 里面使用的时候，需要使用 –privileged 参数创建容器</p>
-<h2 id="config-file-默认配置文件"><a href="#config-file-默认配置文件" class="headerlink" title="config file 默认配置文件"></a>config file 默认配置文件</h2><p>放入喜欢的命令，会在启动的时候执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">~/.lldbinit</span><br><span class="line">type format add --format hex int</span><br><span class="line">type format add --format hex &quot;char&quot;</span><br><span class="line">type format add --format hex &quot;unsigned char&quot;</span><br><span class="line">set set stop-line-count-before 20</span><br><span class="line">set set stop-line-count-after 15</span><br><span class="line">settings set target.max-string-summary-length 16384</span><br><span class="line">command alias brpos breakpoint set -f %1 -l %2</span><br><span class="line">settings set target.process.thread.step-in-avoid-nodebug false</span><br><span class="line">settings set target.skip-prologue false</span><br><span class="line">settings set target.x86-disassembly-flavor intel</span><br><span class="line">settings set stop-disassembly-count 8</span><br></pre></td></tr></table></figure></p>
-<h2 id="lldb-使用样例"><a href="#lldb-使用样例" class="headerlink" title="lldb 使用样例"></a>lldb 使用样例</h2><p>命令格式：</p>
-<p><noun>命令、<verb>命令操作、options命令选项、argument参数。命令各个元素之间用空格隔开，如果参数之中有空格则需要加上双引号。如果参数中带有反斜杠和双引号，则需要在其前面加上反斜杠。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;noun&gt; &lt;verb&gt; [-options [option-value]] [argument [argument...]]</span><br></pre></td></tr></table></figure></verb></noun></p>
-<p>options命令选项可以放在命令行的任何地方，但是如果argument参数以“-”开头，那么必须在option后面添加“–”结束标志进行区分，从而确定option的正确位置。例如你想启动一程序，“process launch”命令的option为“–stop-at-entry”，同时希望命令的argument为“-program_arg value”，你应该输入的命令为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(lldb) process launch --stop-at-entry -- -program_arg value</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/07/16/学习笔记/区块链/bitcoin/使用lldb调试bitcoin/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/16/学习笔记/区块链/bitcoin/bitcoind命令行参数/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/16/学习笔记/区块链/bitcoin/bitcoind命令行参数/" itemprop="url">bitcoind命令行参数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-16T13:16:10+08:00">2018-07-16</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>通过命令行查询<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bitcoind --help</span><br></pre></td></tr></table></figure></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/07/16/学习笔记/区块链/bitcoin/bitcoind命令行参数/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/12/语言相关/go/go-常用代码段/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/12/语言相关/go/go-常用代码段/" itemprop="url">go-常用代码段</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-12T16:07:18+08:00">2018-07-12</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-03T09:43:33+08:00">2018-08-03</time>
             
 
             
@@ -716,7 +416,7 @@
       
         
           
-            <h2 id="获取当前应用路径"><a href="#获取当前应用路径" class="headerlink" title="获取当前应用路径"></a>获取当前应用路径</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getCurrentDirectory</span><span class="params">()</span> <span class="title">string</span></span> &#123;</span><br><span class="line">   dir, err := filepath.Abs(filepath.Dir(os.Args[<span class="number">0</span>]))  <span class="comment">//返回绝对路径  filepath.Dir(os.Args[0])去除最后一个元素的路径</span></span><br><span class="line">   <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">      log.Fatal(err)</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> strings.Replace(dir, <span class="string">"\\"</span>, <span class="string">"/"</span>, <span class="number">-1</span>) <span class="comment">//将\替换成/</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <p>use concen<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> 文件名必须是_test.<span class="keyword">go</span>结尾的，这样在执行<span class="keyword">go</span> test的时候才会执行到相应的代码</span><br><span class="line"><span class="number">2.</span> 你必须<span class="keyword">import</span> testing这个包</span><br><span class="line"><span class="number">3.</span> 所有的测试用例函数必须是Test开头</span><br><span class="line"><span class="number">4.</span> 测试用例会按照源代码中写的顺序依次执行</span><br><span class="line"><span class="number">5.</span> 测试函数TestXxx()的参数是testing.T，我们可以使用该类型来记录错误或者是测试状态</span><br><span class="line"><span class="number">6.</span> 测试格式：<span class="function"><span class="keyword">func</span> <span class="title">TestXxx</span> <span class="params">(t *testing.T)</span>,<span class="title">Xxx</span>部分可以为任意的字母数字的组合，但是首字母不能是小写字母[<span class="title">a</span>-<span class="title">z</span>]，例如<span class="title">Testintdiv</span>是错误的函数名。</span></span><br><span class="line"><span class="function">7. 函数中通过调用<span class="title">testing</span>.<span class="title">T</span>的<span class="title">Error</span>, <span class="title">Errorf</span>, <span class="title">FailNow</span>, <span class="title">Fatal</span>, <span class="title">FatalIf</span>方法，说明测试不通过，调用<span class="title">Log</span>方法用来记录测试的信息。</span></span><br></pre></td></tr></table></figure></p>
 
           
         
@@ -770,7 +470,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/12/学习笔记/数据库/levelDB接触/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/03/学习笔记/区块链/bitcoin/bitcoin-WIF钱包秘钥相关/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -789,7 +489,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/12/学习笔记/数据库/levelDB接触/" itemprop="url">levelDB接触</a></h1>
+                <a class="post-title-link" href="/2018/08/03/学习笔记/区块链/bitcoin/bitcoin-WIF钱包秘钥相关/" itemprop="url">bitcoin-WIF钱包秘钥相关</a></h1>
         
 
         <div class="post-meta">
@@ -801,7 +501,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-12T14:47:23+08:00">2018-07-12</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-03T07:49:39+08:00">2018-08-03</time>
             
 
             
@@ -822,7 +522,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
 
                 
                 
@@ -857,20 +557,20 @@
 
       
         
-          <p><a href="https://draveness.me/bigtable-leveldb" target="_blank" rel="noopener">参考</a><br><a href="http://leveldb.org/" target="_blank" rel="noopener">官网</a><br><a href="https://github.com/hxoht/ldb" target="_blank" rel="noopener">cli工具</a><br><a href="https://github.com/syndtr/goleveldb" target="_blank" rel="noopener">go impl</a></p>
-<h2 id="leveldb是什么"><a href="#leveldb是什么" class="headerlink" title="leveldb是什么"></a>leveldb是什么</h2><p>一个单机的 Key,Value 数据库，适合写多读少，支持持久化，支持故障恢复，支持二进制数据<br>LevelDb是能够处理十亿级别规模Key-Value型数据持久性存储的C++ 程序库<br>官方网站报道其随机写性能达到40万条记录每秒，而随机读性能达到6万条记录每秒。<br>总体来说，LevelDb的写操作要大大快于读操作，而顺序读写操作则大大快于随机读写操作。</p>
-<p>样例接口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class DB &#123;</span><br><span class="line"> public:</span><br><span class="line">  virtual Status Put(const WriteOptions&amp; options, const Slice&amp; key, const Slice&amp; value) = 0;</span><br><span class="line">  virtual Status Delete(const WriteOptions&amp; options, const Slice&amp; key) = 0;</span><br><span class="line">  virtual Status Write(const WriteOptions&amp; options, WriteBatch* updates) = 0;</span><br><span class="line">  virtual Status Get(const ReadOptions&amp; options, const Slice&amp; key, std::string* value) = 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>记录几个概念，有需要在深入了解</p>
-<ol>
-<li>memtable</li>
-<li>Imuable memtable（其实我跟1是亲兄弟啦）</li>
-<li>sstable</li>
-<li>log</li>
-<li>filter</li>
+          <p><a href="https://en.bitcoin.it/wiki/Wallet_import_format" target="_blank" rel="noopener">ref</a></p>
+<p>Wallet Import Format (WIF, also known as Wallet Export Format)<br>is a way of encoding a private ECDSA key so as to make it easier to copy.</p>
+<h2 id="Private-key-to-WIF"><a href="#Private-key-to-WIF" class="headerlink" title="Private key to WIF"></a>Private key to WIF</h2><ol>
+<li>Take a private key<br><code>0C28FCA386C7A227600B2FE50B7CAE_SAMPLE_PRIVATE_KEY_DO_NOT_IMPORT_11EC86D3BF1FBE471BE89827E19D72AA1D</code></li>
+<li>Add a 0x80 byte in front of it for mainnet addresses or 0xef for testnet addresses. Also add a 0x01 byte at the end if the private key will correspond to a compressed public key<br><code>800C28FCA386C7A227600B2FE50B7C_SAMPLE_PRIVATE_KEY_DO_NOT_IMPORT_AE11EC86D3BF1FBE471BE89827E19D72AA1D</code></li>
+<li>Perform SHA-256 hash on the extended key<br><code>8147786C4D15106333BF278D71DADAF1079EF2D2440A4DDE37D747DED5403592</code></li>
+<li>Perform SHA-256 hash on result of SHA-256 hash<br><code>507A5B8DFED0FC6FE8801743720CEDEC06AA5C6FCA72B07C49964492FB98A714</code></li>
+<li>Take the first 4 bytes of the second SHA-256 hash, this is the checksum<br><code>507A5B8D</code></li>
+<li>Add the 4 checksum bytes from point 5 at the end of the extended key from point 2<br><code>800C28FCA386C7A227600B2FE50B7CAE11EC8_SAMPLE_PRIVATE_KEY_DO_NOT_IMPORT_6D3BF1FBE471BE89827E19D72AA1D507A5B8D</code></li>
+<li>Convert the result from a byte string into a base58 string using <a href="https://en.bitcoin.it/wiki/Base58Check_encoding" target="_blank" rel="noopener">Base58Check encoding</a>. This is the Wallet Import Format<br><code>5HueCGU8rMjxEXxiPuD5BDk_SAMPLE_PRIVATE_KEY_DO_NOT_IMPORT_u4MkFqeZyd4dZ1jvhTVqvbTLvyTJ</code></li>
 </ol>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/07/12/学习笔记/数据库/levelDB接触/#more" rel="contents">
+            <a class="btn" href="/2018/08/03/学习笔记/区块链/bitcoin/bitcoin-WIF钱包秘钥相关/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -926,7 +626,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/11/学习笔记/区块链/bitcoin/bitcoin-blk-dat文件解析/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/02/学习笔记/区块链/bitcoin/bitcoin-交易结构/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -945,7 +645,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/11/学习笔记/区块链/bitcoin/bitcoin-blk-dat文件解析/" itemprop="url">bitcoin-blk*.dat文件解析</a></h1>
+                <a class="post-title-link" href="/2018/08/02/学习笔记/区块链/bitcoin/bitcoin-交易结构/" itemprop="url">bitcoin-交易结构</a></h1>
         
 
         <div class="post-meta">
@@ -957,7 +657,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-11T19:23:31+08:00">2018-07-11</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-02T22:45:43+08:00">2018-08-02</time>
             
 
             
@@ -1013,40 +713,301 @@
 
       
         
-          <p><a href="https://blog.csdn.net/lazypiggy/article/details/79414709" target="_blank" rel="noopener">参考1</a><br><a href="https://blog.csdn.net/u013137970/article/details/69891985" target="_blank" rel="noopener">参考2</a></p>
-<p>除非特殊说明，否则字节序都是 Little-Endian 的。<br>文件是由多个 block 组成的，每个 block 结构如下：</p>
-<p><img alt="77a7947c.png" src="/2018/07/11/学习笔记/区块链/bitcoin/bitcoin-blk-dat文件解析/77a7947c.png" width="" height=""></p>
-<p><img alt="94a1b129.png" src="/2018/07/11/学习笔记/区块链/bitcoin/bitcoin-blk-dat文件解析/94a1b129.png" width="" height=""></p>
-<table>
-<thead>
-<tr>
-<th>字节数</th>
-<th>内容</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>4字节</td>
-<td>0xF9 0xBE 0xB4 0xD9</td>
-<td>Magic Number，用于确认block开始</td>
-</tr>
-<tr>
-<td>4字节</td>
-<td>Block Length</td>
-<td>unsigned int</td>
-</tr>
-<tr>
-<td>Block Length</td>
-<td>CBlock类序列化后的数据</td>
-<td>CBlock类定义在block.h文件中</td>
-</tr>
-</tbody>
-</table>
-<p>CBlock 数据包括 CBlockHeader 以及一些列的 CTransaction 数据，<br>其中 CBlockHeader 80 bytes 包括：</p>
+          
+            <p>COutPoint<br>这个类含有两个属性<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class COutPoint&#123;</span><br><span class="line">public:</span><br><span class="line">    uint256 hash;</span><br><span class="line">    unsigned int n;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p><img alt="025e8961.png" src="/2018/08/02/学习笔记/区块链/bitcoin/bitcoin-交易结构/025e8961.png" width="" height=""></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/30/学习笔记/windows/win10-使用linux终端/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/30/学习笔记/windows/win10-使用linux终端/" itemprop="url">win10-使用linux终端</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-30T10:19:37+08:00">2018-07-30</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="开发者模式"><a href="#开发者模式" class="headerlink" title="开发者模式"></a>开发者模式</h2><p>设置–更新和安全–针对开发人员–选中“开发人员模式”。</p>
+<h2 id="启用“适用于Linux的Windows子系统-Beta-”"><a href="#启用“适用于Linux的Windows子系统-Beta-”" class="headerlink" title="启用“适用于Linux的Windows子系统(Beta)”"></a>启用“适用于Linux的Windows子系统(Beta)”</h2><p>控制面板–程序–启用或关闭Windows功能–勾选“适用于Linux的Windows子系统(Beta)”，点击确定等待开启成功，然后重启电脑。</p>
+<h2 id="下载linux系统"><a href="#下载linux系统" class="headerlink" title="下载linux系统"></a>下载linux系统</h2><p>打开管理员模式命令提示符并输入 bash 回车，然后输入 Y 下载 Ubuntu。</p>
+<h2 id="挂载移动硬盘"><a href="#挂载移动硬盘" class="headerlink" title="挂载移动硬盘"></a>挂载移动硬盘</h2><p>插上后，直接通过 /mnt/盘符 就能看到</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/29/工具相关/docker/docker-基本使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/29/工具相关/docker/docker-基本使用/" itemprop="url">docker-基本使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-29T07:14:06+08:00">2018-07-29</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>问题：connect: permission denied<br>当前用户添加到docker属组即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo groupadd docker</span><br><span class="line">sudo gpasswd -a $&#123;USER&#125; docker</span><br><span class="line">// 重启 docker 服务</span><br><span class="line">sudo service docker restart</span><br><span class="line">// 切换当前会话到新 group 或者重启 X 会话</span><br><span class="line">newgrp - docker</span><br></pre></td></tr></table></figure></p>
+<h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><p>Docker 是服务器—-客户端架构<br>本机需要有服务运行，如果没有运行使用下面命令启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># service 命令的用法</span><br><span class="line">$ sudo service docker start</span><br><span class="line"></span><br><span class="line"># systemctl 命令的用法</span><br><span class="line">$ sudo systemctl start docker</span><br></pre></td></tr></table></figure></p>
+<p>container 本身也是个文件，停止运行不会删除，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 列出本机正在运行的容器</span><br><span class="line">$ docker ps</span><br><span class="line"></span><br><span class="line"># 列出本机所有容器，包括终止运行的容器</span><br><span class="line">$ docker ps -a</span><br><span class="line"></span><br><span class="line">删除</span><br><span class="line">$ docker container rm [containerID]</span><br></pre></td></tr></table></figure></p>
+<h2 id="查看容器信息"><a href="#查看容器信息" class="headerlink" title="查看容器信息"></a>查看容器信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect containerID</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/07/11/学习笔记/区块链/bitcoin/bitcoin-blk-dat文件解析/#more" rel="contents">
+            <a class="btn" href="/2018/07/29/工具相关/docker/docker-基本使用/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1102,7 +1063,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/11/学习笔记/区块链/bitcoin/ubuntu14-04编译bitcoin0-16-1/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/27/工具相关/diff格式学习/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1121,7 +1082,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/11/学习笔记/区块链/bitcoin/ubuntu14-04编译bitcoin0-16-1/" itemprop="url">ubuntu14.04编译bitcoin0.16.1</a></h1>
+                <a class="post-title-link" href="/2018/07/27/工具相关/diff格式学习/" itemprop="url">diff格式学习</a></h1>
         
 
         <div class="post-meta">
@@ -1133,7 +1094,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-11T14:47:43+08:00">2018-07-11</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-27T13:46:48+08:00">2018-07-27</time>
             
 
             
@@ -1154,7 +1115,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具相关/" itemprop="url" rel="index"><span itemprop="name">工具相关</span></a></span>
 
                 
                 
@@ -1190,9 +1151,19 @@
       
         
           
-            <p>据说这个版本的 ubuntu 编译问题少<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get upgrade</span><br><span class="line"></span><br><span class="line">sudo apt-get install build-essential libtool autotools-dev autoconf pkg-config libssl-dev</span><br><span class="line">sudo apt-get install libboost-all-dev</span><br><span class="line">sudo apt-get install libqt5gui5 libqt5core5 libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler</span><br><span class="line">sudo apt-get install libqrencode-dev</span><br><span class="line">sudo apt-get install libminiupnpc-dev</span><br><span class="line">sudo apt-get install libevent-dev</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br><span class="line">mkdir bitcoin/db4/</span><br><span class="line"></span><br><span class="line">wget &apos;http://download.oracle.com/berkeley-db/db-4.8.30.NC.tar.gz&apos;</span><br><span class="line">tar -xzvf db-4.8.30.NC.tar.gz</span><br><span class="line">cd db-4.8.30.NC/build_unix/</span><br><span class="line">../dist/configure --enable-cxx --disable-shared --with-pic --prefix=/home/your——name/bitcoin/db4/</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cd ~/bitcoin/</span><br><span class="line">./autogen.sh</span><br><span class="line">./configure LDFLAGS=&quot;-L/home/tyler/Documents/db4/lib/&quot; CPPFLAGS=&quot;-I/home/tyler/Documents/db4/include/&quot;</span><br><span class="line">free</span><br><span class="line">sudo dd if=/dev/zero of=/var/swap.img bs=1024k count=1000</span><br><span class="line">sudo mkswap /var/swap.img</span><br><span class="line">sudo swapon /var/swap.img</span><br><span class="line">free</span><br><span class="line">make -f Makefile</span><br></pre></td></tr></table></figure>
+            <p>文件比较是最常用的功能了，beyondcompare 一直在用，下面了解一下 git 里面的源码比较<br>有三种格式：<br>正常格式（normal diff）<br>上下文格式（context diff）<br>合并格式（unified diff）</p>
+<h1 id="比较文件"><a href="#比较文件" class="headerlink" title="比较文件"></a>比较文件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">diff -y -W 50 -w --suppress-common-lines ./eostexas.abi ./eostexas.abibak</span><br><span class="line"></span><br><span class="line">-W或--width  在使用-y参数时，指定栏宽。</span><br><span class="line">--suppress-common-lines 在使用-y参数时，仅显示不同之处</span><br><span class="line">-y或--side-by-side  以并列的方式显示文件的异同之处。</span><br></pre></td></tr></table></figure>
+<p>“|”表示前后2个文件内容有不同<br>“&lt;”表示后面文件比前面文件少了1行内容<br>“&gt;”表示后面文件比前面文件多了1行内容</p>
+<h1 id="比较文件夹"><a href="#比较文件夹" class="headerlink" title="比较文件夹"></a>比较文件夹</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">diff -Nrq a b</span><br><span class="line"></span><br><span class="line">r 表示递归</span><br><span class="line">q 只输出不一样的文件</span><br></pre></td></tr></table></figure>
+<p><a href="https://www.gnu.org/software/diffutils/" target="_blank" rel="noopener">GNU Diffutils</a></p>
+<h1 id="合并格式的-diff"><a href="#合并格式的-diff" class="headerlink" title="合并格式的 diff"></a>合并格式的 diff</h1><p>现在都是这个格式的。 -u 表示 unified</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">diff -u f1 f2</span><br></pre></td></tr></table></figure>
+<p>变动的位置用两个@作为起首和结束。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@@ -1,7 +1,7 @@</span><br></pre></td></tr></table></figure></p>
+<p>前面的”-1,7”分成三个部分：减号表示第一个文件（即f1），”1”表示第1行，”7”表示连续7行。合在一起，就表示下面是第一个文件从第1行开始的连续7行。同样的，”+1,7”表示变动后，成为第二个文件从第1行开始的连续7行。</p>
+<h1 id="创建补丁"><a href="#创建补丁" class="headerlink" title="创建补丁"></a>创建补丁</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">diff -ruaN oldfile newfile &gt; patchfile.patch</span><br></pre></td></tr></table></figure>
+<p>-r: 递归遍历子目录<br>-u: 使用合并格式输出<br>-a: 将所有文件视为文本文件<br>-N: 将未出现的文件视为空文件（比较目录时有用）<br>oldfile及newfile可以是一个目录，配合-r参数使用就会递归比较这两个目录。</p>
+<h1 id="合并patch"><a href="#合并patch" class="headerlink" title="合并patch"></a>合并patch</h1><p>-p1表示去掉第一层路径分隔符，即./，此时得到的old文件夹位于当前路径中，于是就可以正确的打补丁了。<br>不用 p1 会提示<br><code>can&#39;t find file to patch at input</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">patch -p1 &lt; ./commit.diff</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1246,7 +1217,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/11/学习笔记/区块链/bitcoin/bitcoin-rpc部分/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/27/语言相关/CPP/cpp-容器类/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1265,7 +1236,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/11/学习笔记/区块链/bitcoin/bitcoin-rpc部分/" itemprop="url">bitcoin学习rpc部分</a></h1>
+                <a class="post-title-link" href="/2018/07/27/语言相关/CPP/cpp-容器类/" itemprop="url">cpp-容器类</a></h1>
         
 
         <div class="post-meta">
@@ -1277,7 +1248,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-11T10:41:34+08:00">2018-07-11</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-27T06:50:42+08:00">2018-07-27</time>
             
 
             
@@ -1298,158 +1269,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><a href="https://www.jsonrpc.org/specification_v1" target="_blank" rel="noopener">JSON-RPC</a><br><a href="https://bitcoin.org/en/developer-reference#rpc-quick-reference" target="_blank" rel="noopener">RPC引用</a></p>
-<p>涉及到的主要的文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">httprpc.h</span><br><span class="line">rawtransaction.cpp</span><br><span class="line">validation.h</span><br></pre></td></tr></table></figure></p>
-<p>字节序列为大端表示<br>举例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; bitcoin-cli getblock</span><br><span class="line">&lt; 000000000000000082ccf8f1557c5d40b21edabb18d2d691cfbf87118bac7254</span><br><span class="line"></span><br><span class="line">显示的 hash 值如下</span><br><span class="line">5472ac8b1187bfcf91d6d218bbda1eb2405d7c55f1f8cc820000000000000000</span><br></pre></td></tr></table></figure></p>
-<p>RPC 服务用来支持管理，钱包，查询（网路，区块数据）<br>如果使用 <code>bitcoin-qt</code> 默认 RPC 服务是关闭的。可以在配置文件 <code>bitcoin.conf</code> 中设置 <code>server=1</code><br>或者启动时添加参数 <code>-server</code><br>如果使用 <code>bitcoind</code> 默认 RPC 服务是开启的。<br>使用 RPC 服务需要认证，通过 <code>rpcuser</code>，<code>rpcpassword</code> 提供。<br><code>bitcoin-cli</code> 是客户端命令行工具用来访问 RPC 服务</p>
-<p>RPC 服务监听端口mainnet <code>8332</code>， testnet,regtest mode <code>18332</code>，只支持 <code>POST</code> 操作<br>可以使用 <code>rpcport</code> 设置，默认监听本地端口，外部不能访问<br>使用 HTTP basic authentication 认证。 <code>Content-Type=text/plain</code>， <code>Content-Length</code> 设置为请求体长度<br>遵循 JSON-RPC 规范，</p>
-<p>下面是目前了解到的所有命令。总共 101 个命令<br></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/07/11/学习笔记/区块链/bitcoin/bitcoin-rpc部分/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/11/学习笔记/区块链/bitcoin/macos编译bitcoin0-16-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/11/学习笔记/区块链/bitcoin/macos编译bitcoin0-16-1/" itemprop="url">macos编译bitcoin0.16.1</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-11T09:25:58+08:00">2018-07-11</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
 
                 
                 
@@ -1485,13 +1305,12 @@
       
         
           
-            <h2 id="安装命令行工具"><a href="#安装命令行工具" class="headerlink" title="安装命令行工具"></a>安装命令行工具</h2><p><code>xcode-select --install</code></p>
-<h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><p><code>brew install automake berkeley-db4 libtool boost miniupnpc openssl pkg-config protobuf python qt libevent qrencode</code></p>
-<h2 id="如果需要编译-dmg"><a href="#如果需要编译-dmg" class="headerlink" title="如果需要编译.dmg"></a>如果需要编译.dmg</h2><p><code>brew install librsvg</code></p>
-<h2 id="处理-libevent-相关"><a href="#处理-libevent-相关" class="headerlink" title="处理 libevent 相关"></a>处理 libevent 相关</h2><p>查看库的路径<br><code>pkg-config --list-all | grep libevent</code></p>
-<p>如果没有输出，配置的时候会提示错误。configure: error: libevent not found.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">brew install libevent</span><br><span class="line">如果提示已经安装，需要连接</span><br><span class="line">brew link libevent --overwrite</span><br><span class="line">如果提示有权限问题，添加 brew 访问 /usr/local 的权限，然后在执行上面的 link 命令</span><br><span class="line">sudo chown -R $USER $(brew --prefix)</span><br><span class="line"></span><br><span class="line">现在执行 pkg-config --list-all | grep libevent 应该可以看到输出了</span><br></pre></td></tr></table></figure></p>
-<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./autogen.sh</span><br><span class="line">./configure</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
-<h2 id="一些命令"><a href="#一些命令" class="headerlink" title="一些命令"></a>一些命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./src/bitcoind -daemon # Starts the bitcoin daemon.</span><br><span class="line">./src/bitcoin-cli --help # Outputs a list of command-line options.</span><br><span class="line">./src/bitcoin-cli help # Outputs a list of RPC commands when the daemon is running.</span><br></pre></td></tr></table></figure>
+            <p>List特点：元素有放入顺序，元素可重复，支持for循环，也就是通过下标来遍历，也可以用迭代器</p>
+<p>Set特点：元素无放入顺序，元素不可重复，重复元素会覆盖掉，（注意：元素虽然无放入顺序，但是元素在set中的位置是有该元素的HashCode决定的，其位置其实是固定的，加入Set 的Object必须定义equals()方法，只能用迭代，因为他无序，无法用下标来取得想要的值。</p>
+<p>Set：检索元素效率低下，删除和插入效率高，插入和删除不会引起元素位置改变。<br>List：和数组类似，List可以动态增长，查找元素效率高，插入删除元素效率低，因为会引起其他元素位置改变。</p>
+<p>Map适合储存键值对的数据</p>
+<p>线程安全集合类<br>Vector，HashTable，StringBuffer</p>
+<p>非线程安全集合类<br>LinkedList、ArrayList、HashSet，HashMap，StringBuilder</p>
 
           
         
@@ -1545,7 +1364,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/09/读过的书/区块链核心算法解析/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/26/语言相关/CPP/CFLAGS-LDFLAGS-LIBS说明/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1564,7 +1383,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/09/读过的书/区块链核心算法解析/" itemprop="url">区块链核心算法解析</a></h1>
+                <a class="post-title-link" href="/2018/07/26/语言相关/CPP/CFLAGS-LDFLAGS-LIBS说明/" itemprop="url">CFLAGS-LDFLAGS-LIBS说明</a></h1>
         
 
         <div class="post-meta">
@@ -1576,7 +1395,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-09T21:43:07+08:00">2018-07-09</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-26T18:12:32+08:00">2018-07-26</time>
             
 
             
@@ -1597,7 +1416,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
 
                 
                 
@@ -1633,8 +1452,12 @@
       
         
           
-            <p>这本书涉及到了一些原理性的概念，有点晦涩。<br>提到了 Paxos 算法，共识机制，拜占庭协定，最终一致性。<br>还是要看几遍的，中等推荐阅读。</p>
-<p><img alt="a71de16c.png" src="/2018/07/09/读过的书/区块链核心算法解析/a71de16c.png" width="" height=""></p>
+            <p>Makefile中的CFLAGS、CXXFLAGS、LDFLAGS、LIBS<br>CFLAGS： 指定头文件（.h文件）的路径，如：CFLAGS=-I/usr/include -I/path/include。<br>CXXFLAGS表达上与CFLAGS相同。<br>CFLAGS用于C代码，CXXFLAGS用于C++代码<br>对C文件 CFLAGS 和 CPPFLAGS 效果相同，对C++文件就只识别 CPPFLAGS<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make foo.o CPPFLAGS=&quot;-I/usr/include&quot;</span><br><span class="line">make foo.o CFLAGS=&quot;-I/usr/include&quot;</span><br></pre></td></tr></table></figure></p>
+<p>LDFLAGS：用于指定库文件的位置。用法：LDFLAGS=-L/usr/lib -L/path/to/your/lib。<br>LIBS：告诉链接器要链接哪些库文件，如LIBS = -lpthread -liconv</p>
+<p>有时候LDFLAGS指定-L虽然能让链接器找到库进行链接，但是运行时链接器却找不到这个库，如果要让软件运行时库文件的路径也得到扩展，那么我们需要增加这两个库给”-Wl,R”：</p>
+<p>LDFLAGS =-L/var/xxx/lib -L/opt/mysql/lib -Wl,R/var/xxx/lib -Wl,R/opt/mysql/lib</p>
+<p>如果在执行./configure以前设置环境变量export LDFLAGS=”-L/var/xxx/lib -L/opt/mysql/lib -Wl,R/var/xxx/lib -Wl,R/opt/mysql/lib” ，注意设置环境变量等号两边不可以有空格，而且要加上引号（shell的用法）。那么执行configure以后，Makefile将会设置这个选项，链接时会有这个参数，编译出来的可执行程序的库文件搜索路径就得到扩展了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export LDFLAGS=&quot;-L/opt/openssl/lib  -Wl,R/opt/openssl/lib&quot;</span><br><span class="line"></span><br><span class="line">LIBS=-lcrypto</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1688,7 +1511,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/07/生活小知识/防晒喷雾的选购/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/26/开源库/boost/boost库编译/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1707,7 +1530,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/07/生活小知识/防晒喷雾的选购/" itemprop="url">防晒喷雾的选购</a></h1>
+                <a class="post-title-link" href="/2018/07/26/开源库/boost/boost库编译/" itemprop="url">boost库编译</a></h1>
         
 
         <div class="post-meta">
@@ -1719,7 +1542,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-07T22:25:30+08:00">2018-07-07</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-26T10:40:31+08:00">2018-07-26</time>
             
 
             
@@ -1740,7 +1563,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/健康/" itemprop="url" rel="index"><span itemprop="name">健康</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
 
                 
                 
@@ -1776,23 +1599,156 @@
       
         
           
-            <p>老婆和宝宝要来度暑假啦，之前在这边晒黑了。<br>所以略微做了点市场调查，准备好防护用品。</p>
-<p>直接说结果：Narisup娜丽丝高保湿防晒喷雾</p>
-<h2 id="防晒喷雾怎么用？"><a href="#防晒喷雾怎么用？" class="headerlink" title="防晒喷雾怎么用？"></a>防晒喷雾怎么用？</h2><ol>
-<li>直接喷。使用前先摇晃5-6次，在距离10-15CM的地方喷于需要防晒的部位，反复喷2-3次，可喷于面部和身体肌肤，脸部使用时，需要打好隔离霜，最后一步喷防晒，（不建议脸部素颜裸肤直接喷防晒）。最最重要的是可以喷于双手难于涂抹到的地方，后背、头发、脚趾。</li>
-<li>喷于手心涂抹。将喷雾摇匀直接喷于手心，取涂抹式防晒霜的使用量(一元硬币一张脸)，然后均匀的涂抹于需要防护的皮肤上。这种方法更适合用于上妆前的防晒。</li>
-</ol>
-<p>防晒喷雾和防晒霜、乳、啫喱一样，不是涂一次就能一劳永逸了，都需要补涂。一般建议2个小时，如果流汗多，需要更短时间补涂一次。<br>【温馨提示】：1.切忌不要离的太近！如果离得很近很容易出现白色的泡沫。脸部使用时，请闭上双眼和嘴巴。2.用完之后记得盖上瓶盖，以免瓶内的液体挥发跑气减短使用寿命。3.每一瓶内都有一粒钢珠，摇晃时会发出叮当清脆的声音，钢珠的作用是为了让里面的液体不凝固，使用时配合上下摇晃，喷出更多丰富又薄的雾气。</p>
-<h2 id="防晒喷雾怎么补涂？"><a href="#防晒喷雾怎么补涂？" class="headerlink" title="防晒喷雾怎么补涂？"></a>防晒喷雾怎么补涂？</h2><p>一般先要去汗去油，无妆容用防晒霜/乳、防晒喷雾均可，淡妆选择防晒喷雾，浓妆选择防晒的散粉和粉饼。<br>防晒喷雾的补涂时间也大概是2个小时，如果是下水后，不管这款防晒喷雾所宣传的防水时间是多少，都应该马上进行补涂。</p>
-<h2 id="品牌介绍"><a href="#品牌介绍" class="headerlink" title="品牌介绍"></a>品牌介绍</h2><p>日本最好用的8大防晒喷雾的第一名</p>
-<h3 id="Narisup娜丽丝高保湿防晒喷雾"><a href="#Narisup娜丽丝高保湿防晒喷雾" class="headerlink" title="Narisup娜丽丝高保湿防晒喷雾"></a>Narisup娜丽丝高保湿防晒喷雾</h3><p>包装好粉嫩，外貌控不能错过！淡淡的玫瑰香气也很舒服~可以预防由日晒引起的干燥和肌肤敏感，防晒的同时还能帮助肌肤补充水分，喷出来是细细密密雾状的，很清爽~防水抗汗效果也很好！</p>
-<h3 id="安耐晒金瓶防晒喷雾"><a href="#安耐晒金瓶防晒喷雾" class="headerlink" title="安耐晒金瓶防晒喷雾"></a>安耐晒金瓶防晒喷雾</h3><p>今年安耐晒的一大亮点就是专为懒妹设计的喷雾式防晒！喷雾主打高防晒力和透明感，外出轻轻一喷就能轻松防晒，金色防水防汗能力非常好！清爽无感，轻轻一喷，非常方便补防晒！</p>
-<h3 id="城野医生防晒喷雾"><a href="#城野医生防晒喷雾" class="headerlink" title="城野医生防晒喷雾"></a>城野医生防晒喷雾</h3><p>城野医生家的东西我向来很信赖，这款喷雾能全面阻挡紫外线的侵害，亦配有美白、抗炎、抗氧化成份，呵护肌肤。<br>而且特设有飞散式的喷嘴，方便用于面积较大的手脚部位。不过注意，这款防晒喷雾含酒精含酒精含酒精！孕妇和对酒精过敏的妹子不要买！</p>
-<h3 id="高丝透明防晒喷雾"><a href="#高丝透明防晒喷雾" class="headerlink" title="高丝透明防晒喷雾"></a>高丝透明防晒喷雾</h3><p>使肌肤在高晒下达到持久抵御紫外线。能阻止黑色素形成，使肌肤白皙通透；<br>其独特的防水效果，能抑制汗水和皮脂对防晒效果产生的不良影响。<br>不但对长时间暴露在紫外线中的肌肤有很好的防护效果，更可以滋润、镇静和修复肌肤。<br>有效防止日晒引起肌肤干燥，使肌肤柔嫩光滑，充满弹性，同时抗氧化。</p>
-<h3 id="碧柔长效清爽防晒喷雾"><a href="#碧柔长效清爽防晒喷雾" class="headerlink" title="碧柔长效清爽防晒喷雾"></a>碧柔长效清爽防晒喷雾</h3><p>这款防晒喷雾也是一样清爽不油腻，超级实用，连头皮头发也可以喷！透明的颜色，毫无违和感，随时补擦防晒，妆后也一样使用哦~</p>
-<h3 id="艾杜纱玫瑰防晒喷雾"><a href="#艾杜纱玫瑰防晒喷雾" class="headerlink" title="艾杜纱玫瑰防晒喷雾"></a>艾杜纱玫瑰防晒喷雾</h3><p>喷在身体上非常好推开，而且不泛白，也是可以喷在头发上的防晒，淡淡的玫瑰香味可以持续好久，<br>用之前最好将身上的汗液擦拭干净~富含100%艾杜纱控油精制水！使用超高压乳化制法！使水中精华更易被吸收！<br>并在脸部表面形成保护膜，防止紫外线、强光对肌肤的损害！喷雾质地长久保持妆面的干净！</p>
-<h3 id="JILL-STUART防晒喷雾"><a href="#JILL-STUART防晒喷雾" class="headerlink" title="JILL STUART防晒喷雾"></a>JILL STUART防晒喷雾</h3><p>只需轻松喷洒即能预防紫外线，守护肌肤及秀发的限定款防晒香氛喷雾。头发、脸部、身体，全身皆可使用。重要的是很貌美~</p>
-<h3 id="乐敦SKIN-AQUA防晒喷雾"><a href="#乐敦SKIN-AQUA防晒喷雾" class="headerlink" title="乐敦SKIN AQUA防晒喷雾"></a>乐敦SKIN AQUA防晒喷雾</h3><p>这款防晒喷雾算是很冷门了，不油腻，不泛白，质感清爽柔顺，与皮肤自然融合！含保水因子，玻尿酸等滋润保湿肌肤，适合比较强的紫外线防护。</p>
+            <h2 id="查看boost版本"><a href="#查看boost版本" class="headerlink" title="查看boost版本"></a>查看boost版本</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dpkg -s libboost-dev | grep &apos;Version&apos;</span><br><span class="line">or</span><br><span class="line">cat /usr/include/boost/version.hpp | grep &quot;BOOST_LIB_VERSION&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="编译-1-64-版"><a href="#编译-1-64-版" class="headerlink" title="编译 1.64 版"></a>编译 1.64 版</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 这里的东西可能需要，目前还没需要，这里为什么会有 libboost-all-dev 不确定</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install build-essential g++ python-dev autotools-dev libicu-dev build-essential libbz2-dev libboost-all-dev</span><br><span class="line"></span><br><span class="line">Download source file from: http://www.boost.org/users/history/version_1_64_0.html</span><br><span class="line">tar -xzvf boost_1_64_0.tar.gz</span><br><span class="line">cd boost_1_64_0</span><br><span class="line">./bootstrap.sh --prefix=/usr/local</span><br><span class="line">./b2</span><br><span class="line">./b2 install</span><br></pre></td></tr></table></figure>
+<h2 id="编译-1-41-版"><a href="#编译-1-41-版" class="headerlink" title="编译 1.41 版"></a>编译 1.41 版</h2><p>支持 thread 库编译</p>
+<p>在下面文件中查找 TIME_UTC 修改为 TIME_UTC_ 防止冲突<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">boost_1_41_0/boost/thread/xtime.hpp</span><br><span class="line">boost_1_41_0/libs/thread/src/pthread/timeconv.inl</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">找到下面文件 修改对应行 #ifdef __GLIBCXX__ // gcc 3.4 and greater:</span><br><span class="line">boost_1_41_0/boost/config/stdlib/libstdcpp3.hpp</span><br><span class="line"></span><br><span class="line">#ifdef __GLIBCXX__ // gcc 3.4 and greater:</span><br><span class="line">#  if defined(_GLIBCXX_HAVE_GTHR_DEFAULT) \</span><br><span class="line">        || defined(_GLIBCXX__PTHREADS) \</span><br><span class="line">        || defined(_GLIBCXX_HAS_GTHREADS)</span><br></pre></td></tr></table></figure>
+<p>修改一个 GCC 错误提示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">找到 unspecified_bool_type() 添加上面两行</span><br><span class="line">/Users/zhengjun/project/boost_1_41_0/boost/exception_ptr.hpp</span><br><span class="line"></span><br><span class="line">~exception_ptr() throw() &#123; &#125;</span><br><span class="line"></span><br><span class="line">operator unspecified_bool_type() const</span><br><span class="line">&#123;</span><br><span class="line">return _empty() ? 0 : &amp;exception_ptr::bad_alloc_;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>编译<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./bootstrap.sh</span><br><span class="line">./bjam install</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/07/25/语言相关/go/go-gui/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/25/语言相关/go/go-gui/" itemprop="url">go-gui</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-25T18:08:32+08:00">2018-07-25</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>开源库<br><a href="https://github.com/andlabs/ui" target="_blank" rel="noopener">andlabs/ui</a><br><a href="https://github.com/asticode/go-astilectron" target="_blank" rel="noopener">astilectron</a></p>
+<p>astilectron 是一个Electron应用程序，通过TCP套接字提供API，允许执行Electron的方法以及捕获Electron的事件。</p>
 
           
         
@@ -1835,7 +1791,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/40/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><span class="page-number current">41</span><a class="page-number" href="/page/42/">42</a><span class="space">&hellip;</span><a class="page-number" href="/page/86/">86</a><a class="extend next" rel="next" href="/page/42/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/40/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><span class="page-number current">41</span><a class="page-number" href="/page/42/">42</a><span class="space">&hellip;</span><a class="page-number" href="/page/88/">88</a><a class="extend next" rel="next" href="/page/42/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1882,7 +1838,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">860</span>
+                    <span class="site-state-item-count">880</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2039,7 +1995,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">72</span>
+                      
+                    
+                    <span class="site-state-item-count">73</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -2426,7 +2384,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">187</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">189</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

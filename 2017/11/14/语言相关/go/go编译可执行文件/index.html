@@ -107,7 +107,7 @@
 <meta property="og:site_name" content="郑君的学习笔记">
 <meta property="og:description" content="交叉编译工具gox Golang 交叉编译跨平台的可执行程序 (Mac、Linux、Windows )Golang支持交叉编译，也就是说你在32位平台的机器上开发，可以编译生成64位平台上的可执行程序.mac 下可以编译linux 下的执行程序 又或者windows下的执行程序交叉编译依赖下面几个环境变量：$GOARCH 目标平台（编译后的目标平台）的处理器架构（386、amd64、arm）$GO">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-14T12:33:49.000Z">
+<meta property="og:updated_time" content="2019-09-20T06:06:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="go编译可执行文件">
 <meta name="twitter:description" content="交叉编译工具gox Golang 交叉编译跨平台的可执行程序 (Mac、Linux、Windows )Golang支持交叉编译，也就是说你在32位平台的机器上开发，可以编译生成64位平台上的可执行程序.mac 下可以编译linux 下的执行程序 又或者windows下的执行程序交叉编译依赖下面几个环境变量：$GOARCH 目标平台（编译后的目标平台）的处理器架构（386、amd64、arm）$GO">
@@ -236,7 +236,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">72</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">73</span>
       </a>
 </li>
 
@@ -246,7 +246,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">860</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">880</span>
       </a>
 </li>
 
@@ -415,6 +415,7 @@
       
         <p>交叉编译工具<a href="https://github.com/mitchellh/gox" target="_blank" rel="noopener">gox</a></p>
 <h2 id="Golang-交叉编译跨平台的可执行程序-Mac、Linux、Windows"><a href="#Golang-交叉编译跨平台的可执行程序-Mac、Linux、Windows" class="headerlink" title="Golang 交叉编译跨平台的可执行程序 (Mac、Linux、Windows )"></a>Golang 交叉编译跨平台的可执行程序 (Mac、Linux、Windows )</h2><p>Golang支持交叉编译，也就是说你在32位平台的机器上开发，可以编译生成64位平台上的可执行程序.mac 下可以编译linux 下的执行程序 又或者windows下的执行程序<br>交叉编译依赖下面几个环境变量：<br>$GOARCH 目标平台（编译后的目标平台）的处理器架构（386、amd64、arm）<br>$GOOS 目标平台（编译后的目标平台）的操作系统（darwin、freebsd、linux、windows）  </p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 查看支持的平台</span></span><br><span class="line"><span class="keyword">go</span> tool dist list</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <table>
 <thead>
@@ -449,12 +450,14 @@
 </table>
 <p>不带前面参数的 <code>go build</code> 只是编译出开发环境适用的执行文件。</p>
 <p>windows 下面的专有参数，去掉运行后的 dos 黑窗口<br>go build -ldflags=”-H windowsgui”</p>
+<p>使用 <code>go env</code> 命令,查看系统的配置环境,可以看到GOARCH(当前系统)是amd64<br>执行 <code>set GOARCH=386</code> 配置go输出系统平台为32位,此时再用go env命令查看系统的配置环境<br>然后编译就是 32 位的程序了</p>
+<p>默认是带有调试信息的，如果想获得小的 size 可以去掉调试信息<br>By default, go build combines symbol and debug info with binary files. However, you can remove the symbol and debug info with <code>go build -ldflags=-w prog.go</code></p>
 <p>Mac 下编译 Linux 和 Windows 64位可执行程序</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build main.go</span><br><span class="line">CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build main.go</span><br><span class="line">CGO_ENABLED=0 GOOS=windows GOARCH=386 go build main.go</span><br><span class="line"></span><br><span class="line">//编译目录</span><br><span class="line">CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build</span><br></pre></td></tr></table></figure>
 <p>Linux 下编译 Mac 和 Windows 64位可执行程序</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build main.go</span><br><span class="line">CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build main.go</span><br></pre></td></tr></table></figure>
 <p>Windows 下编译 Mac 和 Linux 64位可执行程序</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SET CGO_ENABLED=0</span><br><span class="line">SET GOOS=darwin</span><br><span class="line">SET GOARCH=amd64</span><br><span class="line">go build main.go</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SET CGO_ENABLED=0</span><br><span class="line">SET GOOS=darwin</span><br><span class="line">SET GOARCH=amd64</span><br><span class="line">go build main.go</span><br><span class="line"></span><br><span class="line"># windows上编译mac和linux二进制</span><br><span class="line">SET CGO_ENABLED=0 SET GOOS=darwin SET GOARCH=amd64 go build main.go</span><br><span class="line">SET CGO_ENABLED=0 SET GOOS=linux SET GOARCH=amd64 go build main.go</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SET CGO_ENABLED=0</span><br><span class="line">SET GOOS=linux</span><br><span class="line">SET GOARCH=amd64</span><br><span class="line">go build main.go</span><br></pre></td></tr></table></figure>
 <p>静态编译 zmq<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CGO_CPPFLAGS=&quot;-I/usr/include&quot; \</span><br><span class="line">CGO_LDFLAGS=&quot;-L/usr/lib -L/usr/lib/z86_64-linux-gnu -lzmq -lpthread -lsodium -lrt -lstdc++ -lm -lc -lgcc&quot; \</span><br><span class="line">go get --ldflags &apos;-extldflags &quot;-static&quot;&apos; -a myapp/usingzmq4</span><br></pre></td></tr></table></figure></p>
 
@@ -609,7 +612,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">860</span>
+                    <span class="site-state-item-count">880</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -766,7 +769,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">72</span>
+                      
+                    
+                    <span class="site-state-item-count">73</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -1153,7 +1158,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">187</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">189</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

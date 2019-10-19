@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">72</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">73</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">860</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">880</span>
       </a>
 </li>
 
@@ -328,7 +328,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/04/10/功能分类/process_thread/multi-thread/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/04/25/学习笔记/windows/messagebox/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -347,7 +347,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/10/功能分类/process_thread/multi-thread/" itemprop="url">multi-thread</a></h1>
+                <a class="post-title-link" href="/2019/04/25/学习笔记/windows/messagebox/" itemprop="url">messagebox</a></h1>
         
 
         <div class="post-meta">
@@ -359,7 +359,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-10T15:59:53+08:00">2019-04-10</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-25T09:52:07+08:00">2019-04-25</time>
             
 
             
@@ -415,30 +415,9 @@
 
       
         
-          <h1 id="win32-方式"><a href="#win32-方式" class="headerlink" title="win32 方式"></a>win32 方式</h1><h1 id="C-14"><a href="#C-14" class="headerlink" title="C++ 14"></a>C++ 14</h1><p>注意：可被 joinable 的 std::thread 对象必须在他们销毁之前被主线程 join 或者将其设置为 detached.</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::thread m_threadHttpServer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (FLAG_HTTP_SERVER_RUNNING != (g_iFlag&amp;FLAG_HTTP_SERVER_RUNNING))</span><br><span class="line">&#123;</span><br><span class="line">  m_threadHttpServer = <span class="built_in">std</span>::thread(threadHttpServer, (<span class="keyword">this</span>), <span class="number">2</span>,<span class="string">"other param"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">g_iFlag |= FLAG_EXIT_HTTP_SERVER;</span><br><span class="line"><span class="keyword">while</span> (FLAG_HTTP_SERVER_RUNNING == (g_iFlag&amp;FLAG_HTTP_SERVER_RUNNING))</span><br><span class="line">&#123;</span><br><span class="line">  Sleep(<span class="number">200</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (m_threadHttpServer.joinable())</span><br><span class="line">&#123;</span><br><span class="line">  m_threadHttpServer.join();</span><br><span class="line">&#125;</span><br><span class="line">g_iFlag &amp;= (~FLAG_EXIT_HTTP_SERVER);</span><br></pre></td></tr></table></figure>
-<p><a href="https://hackernoon.com/learn-c-multi-threading-in-5-minutes-8b881c92941f" target="_blank" rel="noopener">ref.</a></p>
-<p>A thread can be created in several ways:</p>
-<ol>
-<li>Using a function pointer</li>
-<li>Using a functor</li>
-<li>Using a lambda function</li>
-</ol>
-<p>c++11<br>lock_guard is no longer recommended.</p>
-<p>c++ 17<br>unique_lock and scoped_lock are recommended.</p>
-<p>对于判断线程是否执行完毕,可以通过自己设置 flag 来判断.</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// thread example</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;       // std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;         // std::thread</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		str.Format(<span class="string">L"foo %d\n"</span>, i);</span><br><span class="line">		OutputDebugString(str);</span><br><span class="line">		Sleep(<span class="number">1000</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bar</span><span class="params">(<span class="keyword">int</span>&amp; x, <span class="keyword">int</span>&amp; out)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> m = <span class="number">0</span>;</span><br><span class="line">	CString str;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		m += x;</span><br><span class="line">		str.Format(<span class="string">L"bar %d\n"</span>, i);</span><br><span class="line">		OutputDebugString(str);</span><br><span class="line">		Sleep(<span class="number">1000</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	out = m;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  CString str;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">std</span>::<span class="function">thread <span class="title">first</span><span class="params">(foo)</span></span>;     <span class="comment">// spawn new thread that calls foo()</span></span><br><span class="line">	<span class="keyword">int</span> out = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> in = <span class="number">10</span>;</span><br><span class="line">	std::thread second(bar, ref(in),ref(out));  // spawn new thread that calls bar(0)</span><br><span class="line"></span><br><span class="line">	OutputDebugString(<span class="string">L"main, foo and bar now execute concurrently...\n"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// synchronize threads:</span></span><br><span class="line">	first.join();                <span class="comment">// pauses until first finishes</span></span><br><span class="line">	second.join();               <span class="comment">// pauses until second finishes</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	str.Format(<span class="string">L"foo and bar completed. out:%d\n"</span>, out);</span><br><span class="line"></span><br><span class="line">	OutputDebugString(str);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>std::ref<br>主要是考虑函数式编程（如std::bind）在使用时，是对参数直接拷贝，而不是引用。</p>
-<p>warning: all parameters is passing default by value unless you wrap them in std::ref.</p>
-<h1 id="c-方式"><a href="#c-方式" class="headerlink" title="c++ 方式"></a>c++ 方式</h1><p>CPP RunTime Library<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_beginthreadex, _endthreadex</span><br><span class="line">_endthreadex need calling the Win32 CloseHandle API</span><br></pre></td></tr></table></figure></p>
-<p>注意：在使用了MFC的程序中不能够使用该函数创建线程，而应该使用MFC提供的线程函数<br>MFC relies on some thread - local variables and state.AfxBeginThread<br>initializes those, then calls <code>_beginthreadex</code> for you.Just part of the<br>preconditions for using the library.If you don’t use <code>AfxBeginThread</code>  some<br>of your calls to MFC functions could encounter uninitialized pointers.</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/04/10/功能分类/process_thread/multi-thread/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
+            <h1 id="topmost-显示"><a href="#topmost-显示" class="headerlink" title="topmost 显示"></a>topmost 显示</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MessageBox(<span class="literal">NULL</span>,</span><br><span class="line"><span class="string">"your message"</span>,</span><br><span class="line"><span class="string">"box title"</span>,</span><br><span class="line">MB_ICONERROR | MB_OK | MB_SETFOREGROUND | MB_TOPMOST);</span><br></pre></td></tr></table></figure>
+          
         
       
     </div>
@@ -490,7 +469,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/04/05/开源库/MQTT/MQTT/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/04/24/功能分类/UI系列笔记/ui笔记0001-sdl-环境搭建/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -509,7 +488,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/05/开源库/MQTT/MQTT/" itemprop="url">MQTT</a></h1>
+                <a class="post-title-link" href="/2019/04/24/功能分类/UI系列笔记/ui笔记0001-sdl-环境搭建/" itemprop="url">ui笔记-sdl 环境搭建</a></h1>
         
 
         <div class="post-meta">
@@ -521,7 +500,896 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-05T22:05:24+08:00">2019-04-05</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-24T22:24:25+08:00">2019-04-24</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="vscode-cpp-插件"><a href="#vscode-cpp-插件" class="headerlink" title="vscode cpp 插件"></a>vscode cpp 插件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ext install cpptools</span><br></pre></td></tr></table></figure>
+<h1 id="环境搭建-mac"><a href="#环境搭建-mac" class="headerlink" title="环境搭建 mac"></a>环境搭建 mac</h1><p>vscode，sdl2，macbook 10.14.1 (18B75)</p>
+<p>brew install sdl2</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mkdir myproject</span><br><span class="line">cd myproject</span><br><span class="line">touch main.cpp</span><br><span class="line">touch Makefile</span><br><span class="line">mkdir include</span><br><span class="line">mkdir lib</span><br></pre></td></tr></table></figure>
+<p>main.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;SDL2/SDL.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Hello World!"</span>;</span><br><span class="line">    SDL_Init(SDL_INIT_VIDEO);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>把 /usr/local/Cellar/sdl2 下面的 include 和 lib 拷贝到 myproject 下面</p>
+<p>Makefile 的内容</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">game:</span><br><span class="line">    g++ main.cpp -o play -I include -L lib -l SDL2<span class="number">-2.0</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
+<p><code>-I</code> (i as in include) tells it additional include directories you want to add<br><code>-L</code> tells it additional library directories you want to add<br><code>-l</code> (lowercase l as in lib) tells it specific library binaries you want to add</p>
+<p>编译项目<br>make game</p>
+<p>运行，看到 “Hello World!” 输出表示 SDL 可用了<br>./play</p>
+<h1 id="环境搭建-linux-尚未验证"><a href="#环境搭建-linux-尚未验证" class="headerlink" title="环境搭建 linux -尚未验证"></a>环境搭建 linux -尚未验证</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install libsdl2-2.0.0 libsl2-dbg libsdl2-dev</span><br><span class="line">libsdl2-image-2.0-0 libsdl2-image-dbg libsdl2-image-dev</span><br></pre></td></tr></table></figure>
+<h1 id="环境搭建-windows"><a href="#环境搭建-windows" class="headerlink" title="环境搭建 windows"></a>环境搭建 windows</h1>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/04/24/学习笔记/windows/MFC/CCombobox/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/24/学习笔记/windows/MFC/CCombobox/" itemprop="url">CCombobox</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-24T15:29:40+08:00">2019-04-24</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="获取当前文字"><a href="#获取当前文字" class="headerlink" title="获取当前文字"></a>获取当前文字</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CString str;</span><br><span class="line">m_comboPath.GetLBText(m_comboPath.GetCurSel(), str);</span><br></pre></td></tr></table></figure>
+<h2 id="删除所有项目"><a href="#删除所有项目" class="headerlink" title="删除所有项目"></a>删除所有项目</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m_cmb_force_type.ResetContent();</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/04/24/学习笔记/windows/MFC/tab控件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/24/学习笔记/windows/MFC/tab控件/" itemprop="url">tab控件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-24T14:23:42+08:00">2019-04-24</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">声明控件变量</span><br><span class="line">CTabCtrl m_ctrl_tab;</span><br><span class="line">声明两个对话口类</span><br><span class="line">CReceipt m_dlgReceipt;</span><br><span class="line">CRefund  m_dlgRefund;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//添加选项卡</span></span><br><span class="line">m_ctrl_tab.InsertItem(<span class="number">0</span>, _T(<span class="string">"收款"</span>));</span><br><span class="line">m_ctrl_tab.InsertItem(<span class="number">1</span>, _T(<span class="string">"退款"</span>));</span><br><span class="line">m_ctrl_tab.InsertItem(<span class="number">2</span>, _T(<span class="string">"交易查询"</span>));</span><br><span class="line">m_ctrl_tab.InsertItem(<span class="number">3</span>, _T(<span class="string">"统计查询"</span>));</span><br><span class="line"></span><br><span class="line">m_dlgReceipt.Create(IDD_RECEIPT, &amp;m_ctrl_tab);</span><br><span class="line">m_dlgRefund.Create(IDD_REFUND, &amp;m_ctrl_tab);</span><br><span class="line">m_dlgTradeQuery.Create(IDD_TRADEQUERY, &amp;m_ctrl_tab);</span><br><span class="line">m_dlgStatisticsQuery.Create(IDD_STATISTICSQUERY, &amp;m_ctrl_tab);</span><br><span class="line">m_dlgConfig.Create(IDD_CONFIG, &amp;m_ctrl_tab);</span><br><span class="line"></span><br><span class="line"><span class="comment">//获得IDC_TABTEST客户区大小 </span></span><br><span class="line">CRect rect;</span><br><span class="line">m_ctrl_tab.GetClientRect(&amp;rect);</span><br><span class="line"><span class="comment">//this-&gt;ScreenToClient(&amp;rect);//转换为对话框上的客户坐标</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//调整子对话框在父窗口中的位置 </span></span><br><span class="line">rect.top += <span class="number">22</span>;</span><br><span class="line"></span><br><span class="line">m_dlgReceipt.MoveWindow(&amp;rect);</span><br><span class="line">m_dlgRefund.MoveWindow(&amp;rect);</span><br><span class="line">m_dlgTradeQuery.MoveWindow(&amp;rect);</span><br><span class="line">m_dlgStatisticsQuery.MoveWindow(&amp;rect);</span><br><span class="line">m_dlgConfig.MoveWindow(&amp;rect);</span><br><span class="line"></span><br><span class="line"><span class="comment">//分别设置隐藏和显示 </span></span><br><span class="line">m_dlgReceipt.ShowWindow(SW_SHOW);</span><br><span class="line">m_dlgRefund.ShowWindow(SW_HIDE);</span><br><span class="line">m_dlgTradeQuery.ShowWindow(SW_HIDE);</span><br><span class="line">m_dlgStatisticsQuery.ShowWindow(SW_HIDE);</span><br><span class="line">m_dlgConfig.ShowWindow(SW_HIDE);</span><br><span class="line"></span><br><span class="line">m_ctrl_tab.SetCurSel(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> CDlgPayMain::OnTcnSelchangeTab1(NMHDR *pNMHDR, LRESULT *pResult)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">int</span> CurSel = m_ctrl_tab.GetCurSel();</span><br><span class="line">	<span class="keyword">switch</span> (CurSel)</span><br><span class="line">	&#123;</span><br><span class="line">	<span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">		m_dlgReceipt.ShowWindow(SW_SHOW);</span><br><span class="line">		m_dlgRefund.ShowWindow(SW_HIDE);</span><br><span class="line">		m_dlgTradeQuery.ShowWindow(SW_HIDE);</span><br><span class="line">		m_dlgStatisticsQuery.ShowWindow(SW_HIDE);</span><br><span class="line">		m_dlgConfig.ShowWindow(SW_HIDE);</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">		m_dlgReceipt.ShowWindow(SW_HIDE);</span><br><span class="line">		m_dlgRefund.ShowWindow(SW_SHOW);</span><br><span class="line">		m_dlgTradeQuery.ShowWindow(SW_HIDE);</span><br><span class="line">		m_dlgStatisticsQuery.ShowWindow(SW_HIDE);</span><br><span class="line">		m_dlgConfig.ShowWindow(SW_HIDE);</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">		m_dlgReceipt.ShowWindow(SW_HIDE);</span><br><span class="line">		m_dlgRefund.ShowWindow(SW_HIDE);</span><br><span class="line">		m_dlgTradeQuery.ShowWindow(SW_SHOW);</span><br><span class="line">		m_dlgStatisticsQuery.ShowWindow(SW_HIDE);</span><br><span class="line">		m_dlgConfig.ShowWindow(SW_HIDE);</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	*pResult = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/04/23/工具相关/android-studio-代理设置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/23/工具相关/android-studio-代理设置/" itemprop="url">android studio 代理设置</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-23T21:48:41+08:00">2019-04-23</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具相关/" itemprop="url" rel="index"><span itemprop="name">工具相关</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Mac-系统"><a href="#Mac-系统" class="headerlink" title="Mac 系统"></a>Mac 系统</h1><p>Mac 下，~/.gradle 文件夹下打开/新建 gradle.properties 文件,设置代理.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">systemProp.http.nonProxyHosts=*.xcompany.com|localhost</span><br><span class="line">systemProp.http.proxyHost=127.0.0.1</span><br><span class="line">systemProp.http.proxyPort=1087</span><br><span class="line">systemProp.https.nonProxyHosts=*.xcompany.com|localhost</span><br><span class="line">systemProp.https.proxyHost=127.0.0.1</span><br><span class="line">systemProp.https.proxyPort=1087</span><br><span class="line"></span><br><span class="line">systemProp.http.proxyUser=userid</span><br><span class="line">systemProp.http.proxyPassword=password</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/04/23/学习笔记/windows/MFC/mfc-获取客户端大小/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/23/学习笔记/windows/MFC/mfc-获取客户端大小/" itemprop="url">mfc-获取客户端大小</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-23T18:23:06+08:00">2019-04-23</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">RECT rect;</span><br><span class="line">::GetClientRect(<span class="keyword">this</span>-&gt;m_hWndOwner, &amp;rect);</span><br><span class="line"><span class="keyword">int</span> cxClient = rect.right - rect.left;  <span class="comment">// 获得客户区宽度</span></span><br><span class="line"><span class="keyword">int</span> cyClient = rect.bottom - rect.top;  <span class="comment">// 获得客户区高度</span></span><br><span class="line">SetWindowPos(<span class="literal">NULL</span>, <span class="number">0</span>, <span class="number">0</span>, cxClient, cyClient, SWP_NOZORDER | SWP_NOSIZE);</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/04/19/语言相关/CPP/cpp-list/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/19/语言相关/CPP/cpp-list/" itemprop="url">cpp-list</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-19T16:37:47+08:00">2019-04-19</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>顺序容器<br>list是一个双向链表，因此它的内存空间是可以不连续的，通过指针来进行数据的访问，这使list的随机存储变得非常低效，因此list没有提供[]操作符的重载。但list可以很好地支持任意地方的插入和删除，只需移动相应的指针即可。</p>
+<p>1) 如果你需要高效的随即存取，而不在乎插入和删除的效率，使用vector<br>2) 如果你需要大量的插入和删除，而不关心随即存取，则应使用list<br>3) 如果你需要随即存取，而且关心两端数据的插入和删除，则应使用deque</p>
+<h1 id="forward-list"><a href="#forward-list" class="headerlink" title="forward_list"></a>forward_list</h1><p>相对于 list 来说, 因为是单向链表,所以节省空间,增加效率.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;forward_list&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h1 id="random-access"><a href="#random-access" class="headerlink" title="random access"></a>random access</h1><p>use iterator</p>
+<p>std::next<br>std::advance</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v&#123; <span class="number">3</span>, <span class="number">1</span>, <span class="number">4</span> &#125;;</span><br><span class="line">    <span class="keyword">auto</span> it = v.begin();</span><br><span class="line">    <span class="keyword">auto</span> nx = <span class="built_in">std</span>::next(it, <span class="number">2</span>);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; *it &lt;&lt; <span class="string">' '</span> &lt;&lt; *nx &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/04/18/开源库/vcpkg/cpp-library-manage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/18/开源库/vcpkg/cpp-library-manage/" itemprop="url">cpp library manage</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-18T20:35:27+08:00">2019-04-18</time>
             
 
             
@@ -584,164 +1452,8 @@
 
       
         
-          <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>It is a very light weight and binary protocol<br><em>MQTT excels when transferring data over the wire in comparison to protocols like HTTP</em></p>
-<p>“MQTT is a Client Server publish/subscribe messaging transport protocol. It is light weight, open, simple, and designed so as to be easy to implement. These characteristics make it ideal for use in many situations, including constrained environments such as for communication in Machine to Machine (M2M) and Internet of Things (IoT) contexts where a small code footprint is required and/or network bandwidth is at a premium.”</p>
-<p>Citation from the official MQTT 3.1.1 specification</p>
-<p>The MQTT protocol was invented in 1999 by Andy Stanford-Clark (IBM) and Arlen Nipper (Arcom, now Cirrus Link).<br>The two inventors specified several requirements for the future protocol:</p>
-<ul>
-<li>Simple implementation</li>
-<li>Quality of Service data delivery</li>
-<li>Lightweight and bandwidth efficient</li>
-<li>Data agnostic</li>
-<li>Continuous session awareness</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/04/05/开源库/MQTT/MQTT/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/04/05/语言相关/Rust/rust-ide/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/05/语言相关/Rust/rust-ide/" itemprop="url">rust-ide</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-05T09:27:50+08:00">2019-04-05</time>
-            
-
-            
-            
-
-            
-          </span>
-
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>use vscode as ide.</p>
+            <p><a href="https://github.com/Microsoft/vcpkg" target="_blank" rel="noopener">https://github.com/Microsoft/vcpkg</a></p>
 
           
         
@@ -795,7 +1507,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/04/05/语言相关/Rust/rust-library/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/04/18/工具相关/vscode/vscode-markdown/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -814,7 +1526,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/05/语言相关/Rust/rust-library/" itemprop="url">rust-library</a></h1>
+                <a class="post-title-link" href="/2019/04/18/工具相关/vscode/vscode-markdown/" itemprop="url">vscode-markdown</a></h1>
         
 
         <div class="post-meta">
@@ -826,437 +1538,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-05T07:28:05+08:00">2019-04-05</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>create static or dynamic library for other languages or platforms.</p>
-<p>add to your project’s cargo.toml<br>and then compile with cargo build –lib (if you have bin together with your lib, I had it so so I could test it right away, there may be better ways though) or just cargo build if you have only lib. Your dll will be in target/(debug or release) folder.</p>
-<p>The cargo build should just build everything, including a library.<br>Try using the same compiler options that produce a .so file on Linux and see what happens.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[lib]</span><br><span class="line">name = &quot;mylib&quot;</span><br><span class="line">crate-type = [&quot;dylib&quot;]</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/04/03/开源库/libcurl/libcurl使用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/03/开源库/libcurl/libcurl使用/" itemprop="url">libcurl使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-03T16:06:11+08:00">2019-04-03</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>static build need define macro CURL_STATICLIB in use project</p>
-<p>libcurl.lib ws2_32.lib winmm.lib wldap32.lib</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MemoryStruct</span> &#123;</span></span><br><span class="line">	<span class="keyword">char</span> *memory;</span><br><span class="line">	<span class="keyword">size_t</span> size;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> size_t <span class="title">WriteMemoryCallback</span><span class="params">(<span class="keyword">void</span> *contents, <span class="keyword">size_t</span> size, <span class="keyword">size_t</span> nmemb, <span class="keyword">void</span> *userp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">size_t</span> realsize = size * nmemb;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">MemoryStruct</span> *<span class="title">mem</span> = (<span class="title">struct</span> <span class="title">MemoryStruct</span> *)<span class="title">userp</span>;</span></span><br><span class="line"></span><br><span class="line">	mem-&gt;memory = (<span class="keyword">char</span>*)<span class="built_in">realloc</span>(mem-&gt;memory, mem-&gt;size + realsize + <span class="number">1</span>);</span><br><span class="line">	<span class="keyword">if</span>(mem-&gt;memory == <span class="literal">NULL</span>) &#123;</span><br><span class="line">		<span class="comment">/* out of memory! */</span> </span><br><span class="line">		OutputDebugString(_T(<span class="string">"yGPC:not enough memory (realloc returned NULL)\n"</span>));</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">memcpy</span>(&amp;(mem-&gt;memory[mem-&gt;size]), contents, realsize);</span><br><span class="line">	mem-&gt;size += realsize;</span><br><span class="line">	mem-&gt;memory[mem-&gt;size] = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> realsize;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">HTTP/1.1 200 OK</span></span><br><span class="line"><span class="comment">Server: Apache-Coyote/1.1</span></span><br><span class="line"><span class="comment">Content-Type: application/json;charset=UTF-8</span></span><br><span class="line"><span class="comment">Transfer-Encoding: chunked</span></span><br><span class="line"><span class="comment">Date: Fri, 30 Sep 2016 07:34:51 GMT</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">&#123;"head":&#123;"errorCode":"000000","errorMsg":"success"&#125;,"body":&#123;"commands":null&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">int</span> CMainDlg::httpPost(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp; strUrl, <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp; strPostField, <span class="built_in">std</span>::<span class="built_in">string</span> &amp; strRet)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">std</span>::wstring str = _T(<span class="string">"yGPC: CMainDlg::httpPost strUrl:"</span>);</span><br><span class="line">	str += m_ut.s2w(strUrl) + _T(<span class="string">" postField: "</span>);</span><br><span class="line">	str += m_ut.s2w(strPostField);</span><br><span class="line">	m_ut.strRemoveByParam(str, _T(<span class="string">"\r\n"</span>));</span><br><span class="line">	OutputDebugString(str.c_str());</span><br><span class="line"></span><br><span class="line">	CURL *curl; </span><br><span class="line">	CURLcode res; </span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">curl_slist</span> *<span class="title">http_header</span> = <span class="title">NULL</span>;</span> </span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">MemoryStruct</span> <span class="title">chunk</span>;</span></span><br><span class="line">	chunk.memory = (<span class="keyword">char</span>*)<span class="built_in">malloc</span>(<span class="number">1</span>);  <span class="comment">/* will be grown as needed by realloc above */</span> </span><br><span class="line">	chunk.size = <span class="number">0</span>;    <span class="comment">/* no data at this point */</span> </span><br><span class="line"></span><br><span class="line">	curl_global_init(CURL_GLOBAL_ALL);</span><br><span class="line">	curl = curl_easy_init(); </span><br><span class="line">	<span class="keyword">if</span> (!curl) </span><br><span class="line">	&#123; </span><br><span class="line">		OutputDebugString(_T(<span class="string">"yGPC:curl init failed\n"</span>));</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>; </span><br><span class="line">	&#125; </span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span>  strUrlEncode = boost::locale::conv::to_utf&lt;<span class="keyword">char</span>&gt;(strUrl,<span class="string">"GBK"</span>);</span><br><span class="line">	curl_easy_setopt(curl,CURLOPT_URL,strUrlEncode.c_str()); <span class="comment">//url地址</span></span><br><span class="line">	curl_easy_setopt(curl,CURLOPT_POSTFIELDS,strPostField.c_str()); <span class="comment">//post参数</span></span><br><span class="line">	curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,WriteMemoryCallback); <span class="comment">//对返回的数据进行操作的函数地址</span></span><br><span class="line">	curl_easy_setopt(curl,CURLOPT_WRITEDATA,(<span class="keyword">void</span> *)&amp;chunk); <span class="comment">//这是write_data的第四个参数值</span></span><br><span class="line">	curl_easy_setopt(curl,CURLOPT_POST,<span class="number">1</span>); <span class="comment">//设置问非表示本次操作为post </span></span><br><span class="line">	curl_easy_setopt(curl,CURLOPT_VERBOSE,<span class="number">1</span>); <span class="comment">//打印调试信息</span></span><br><span class="line"><span class="comment">//	curl_easy_setopt(curl,CURLOPT_HEADER,1); //将响应头信息和相应体一起传给write_data </span></span><br><span class="line">	curl_easy_setopt(curl,CURLOPT_FOLLOWLOCATION,<span class="number">1</span>); <span class="comment">//设置为非,响应头信息location </span></span><br><span class="line">	curl_easy_setopt(curl,CURLOPT_COOKIEFILE,<span class="string">"/curlposttest.cookie"</span>); </span><br><span class="line">	curl_easy_setopt(curl,CURLOPT_TIMEOUT,<span class="number">10</span>); </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	res = curl_easy_perform(curl); </span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (res != CURLE_OK) </span><br><span class="line">	&#123; </span><br><span class="line">		<span class="keyword">switch</span>(res) </span><br><span class="line">		&#123; </span><br><span class="line">		<span class="keyword">case</span> CURLE_UNSUPPORTED_PROTOCOL: </span><br><span class="line">			OutputDebugString(_T(<span class="string">"yGPC:CURLE_UNSUPPORTED_PROTOCOL\n"</span>));</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> CURLE_COULDNT_CONNECT: </span><br><span class="line">			OutputDebugString(_T(<span class="string">"yGPC:CURLE_COULDNT_CONNECT\n"</span>));</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> CURLE_HTTP_RETURNED_ERROR: </span><br><span class="line">			OutputDebugString(_T(<span class="string">"yGPC:CURLE_HTTP_RETURNED_ERROR\n"</span>));</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> CURLE_READ_ERROR: </span><br><span class="line">			OutputDebugString(_T(<span class="string">"yGPC:CURLE_READ_ERROR\n"</span>));</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">default</span>: </span><br><span class="line">			&#123;</span><br><span class="line">				<span class="built_in">std</span>::<span class="built_in">string</span> str = (<span class="string">"yGPC:"</span>);</span><br><span class="line">				str += (<span class="string">"return code:"</span>);</span><br><span class="line">				str += m_ut.w2s(m_ut.number2str(res,_T(<span class="string">"%x"</span>)));</span><br><span class="line">				OutputDebugString(_T(<span class="string">"yGPC:CURLE_READ_ERROR\n"</span>));</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125; </span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>; </span><br><span class="line">	&#125; <span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		strRet = chunk.memory;</span><br><span class="line">	&#125;</span><br><span class="line">	curl_easy_cleanup(curl); </span><br><span class="line">	<span class="built_in">free</span>(chunk.memory);</span><br><span class="line">	<span class="comment">/* we're done with libcurl, so clean it up */</span> </span><br><span class="line">	curl_global_cleanup();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">jo[<span class="string">"signature"</span>] = genSignature(strTimestamp,strRandom).c_str();</span><br><span class="line">		jo[<span class="string">"timestamp"</span>] = strTimestamp.c_str();</span><br><span class="line">		jo[<span class="string">"requestTime"</span>] = strTimestamp.c_str();</span><br><span class="line">		jo[<span class="string">"nonce"</span>] = strRandom.c_str();</span><br><span class="line">		jsonRoot[<span class="string">"head"</span>] = jo;</span><br><span class="line"></span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">string</span> param = <span class="string">"msg="</span>;</span><br><span class="line">		param += jsonRoot.toStyledString();</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">string</span>  strUrlEncode = boost::locale::conv::to_utf&lt;<span class="keyword">char</span>&gt;(param,<span class="string">"GBK"</span>);</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">string</span> strRet;</span><br><span class="line">		pwnd-&gt;httpPost(url,strUrlEncode,strRet);</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/04/02/学习笔记/windows/Win32/win32-dialog/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/02/学习笔记/windows/Win32/win32-dialog/" itemprop="url">win32-dialog</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-02T19:00:00+08:00">2019-04-02</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="获取对话框控件句柄"><a href="#获取对话框控件句柄" class="headerlink" title="获取对话框控件句柄"></a>获取对话框控件句柄</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">HWND hWndBtn;</span><br><span class="line">hWndBtn = GetDlgItem(hwndDlg, IDC_BTN_CONFIGDATACHANNEL);</span><br><span class="line">EnableWindow(hWndBtn, FALSE);</span><br></pre></td></tr></table></figure>
-<h1 id="判断HWND是否有效"><a href="#判断HWND是否有效" class="headerlink" title="判断HWND是否有效"></a>判断HWND是否有效</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通知配置对话框，完成设备信息初始化。</span></span><br><span class="line"><span class="keyword">if</span> (FALSE == IsWindow(*g_pParent-&gt;m_phwndConfigDlg))</span><br><span class="line">&#123;</span><br><span class="line">    OutputDebugString(<span class="string">"HA360AMS: config dialog handle invalide"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    ::PostMessage(*g_pParent-&gt;m_phwndConfigDlg, MSG_GET_ALL_DEVINFO_DONE, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/03/29/工具相关/vs2015-post-event/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/29/工具相关/vs2015-post-event/" itemprop="url">vs2015_post event</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-29T12:49:40+08:00">2019-03-29</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-18T18:04:03+08:00">2019-04-18</time>
             
 
             
@@ -1313,10 +1595,14 @@
       
         
           
-            <p>通常使用命令整理输出文件</p>
-<p>copy $(OutDir)logmand.lib $(SolutionDir)lib<br>copy $(ProjectDir)logman.h $(SolutionDir)include</p>
-<p>mkdir ..........\xxx\$(Configuration)\xx<br>mkdir ..........\xx\$(Configuration)\xx<br>copy $(OutDir)\xx.exe ........\Dll\$(Configuration)\xx.exe</p>
-<p>copy ........\Dll\$(Configuration)\xx.exe ..........\xx\$(Configuration)\xx.exe</p>
+            <p>终于有了个好用的图片插件，完全符合我的需求。终于可以把 atom 扔掉了。</p>
+<p>安装 node.js<br>安装 hexo<br>安装插件</p>
+<h1 id="图片插件"><a href="#图片插件" class="headerlink" title="图片插件"></a>图片插件</h1><p>Paste Image</p>
+<p>Paste Image: Base Path<br>${currentFileDir}/${currentFileNameWithoutExt}</p>
+<p>Paste Image: Default Name<br>YYYYMMDD_HHmmss</p>
+<p>Paste Image: Insert Pattern<br><img alt="${imageFileName}" src="/2019/04/18/工具相关/vscode/vscode-markdown/${imageFileName}" width="500" height=""></p>
+<p>Paste Image: Path<br>${currentFileDir}/${currentFileNameWithoutExt}</p>
+<h1 id="markdown-插件"><a href="#markdown-插件" class="headerlink" title="markdown 插件"></a>markdown 插件</h1><p>markdown all in one<br>markdown preview github styling</p>
 
           
         
@@ -1370,7 +1656,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/03/29/开源库/doxygen/doxygen/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/04/17/工具相关/git/git-搭建git私有仓库/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1389,7 +1675,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/03/29/开源库/doxygen/doxygen/" itemprop="url">doxygen</a></h1>
+                <a class="post-title-link" href="/2019/04/17/工具相关/git/git-搭建git私有仓库/" itemprop="url">git-搭建git私有仓库</a></h1>
         
 
         <div class="post-meta">
@@ -1401,231 +1687,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-29T10:02:07+08:00">2019-03-29</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="http://www.doxygen.nl/index.html" target="_blank" rel="noopener">website</a></p>
-<h1 id="简单注释"><a href="#简单注释" class="headerlink" title="简单注释"></a>简单注释</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">单行注释：<span class="comment">///或者//!</span></span><br><span class="line">多行注释：<span class="comment">/**或者/*!</span></span><br></pre></td></tr></table></figure>
-<h1 id="文件注释"><a href="#文件注释" class="headerlink" title="文件注释"></a>文件注释</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* @file      BaseDevCommon.h </span></span><br><span class="line"><span class="comment">* @brief     设备接口定义</span></span><br><span class="line"><span class="comment">* @details	 定义每个设备必须实现的接口，大部分设备可以继承 CBaseDevCommon 后开发</span></span><br><span class="line"><span class="comment">* @author    Zheng Jun</span></span><br><span class="line"><span class="comment">* @email     tylerwork@qq.com</span></span><br><span class="line"><span class="comment">* @version	 v2019.07.22beta</span></span><br><span class="line"><span class="comment">* @date      2019.07.22</span></span><br><span class="line"><span class="comment">* @par Copyright (c): 睿网电子有限公司</span></span><br><span class="line"><span class="comment">* @par History:</span></span><br><span class="line"><span class="comment">*   version: author, date, desc\n</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-<h1 id="类注释"><a href="#类注释" class="headerlink" title="类注释"></a>类注释</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief 测试类</span></span><br><span class="line"><span class="comment"> * 主要用来演示Doxygen类的注释方式</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">Test</span>&#123;</span></span><br><span class="line"> &#125;;</span><br></pre></td></tr></table></figure>
-<p><img alt="20190722_142001.png" src="/2019/03/29/开源库/doxygen/doxygen/20190722_142001.png" width="400" height=""></p>
-<h1 id="常量-变量的注释"><a href="#常量-变量的注释" class="headerlink" title="常量/变量的注释"></a>常量/变量的注释</h1><p>常量/变量包括以下几种类型</p>
-<p>全局常量变量<br>宏定义<br>类/结构体/联合体的成员变量<br>枚举类型的成员</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 注释</span></span><br><span class="line">常量/变量</span><br><span class="line"></span><br><span class="line"><span class="comment">/// 缓存大小</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> BUFSIZ 1024*4</span></span><br></pre></td></tr></table></figure>
-<p><img alt="20190722_142927.png" src="/2019/03/29/开源库/doxygen/doxygen/20190722_142927.png" width="400" height=""></p>
-<h1 id="函数注释"><a href="#函数注释" class="headerlink" title="函数注释"></a>函数注释</h1><p>简约注释<br>函数注释主要包含函数简介(@brief)、参数说明(‘@param’)、返回说明(@return)和返回值说明(@retval)四部分。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief 函数简介</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param 形参 参数说明</span></span><br><span class="line"><span class="comment"> * @param 形参 参数说明</span></span><br><span class="line"><span class="comment"> * @return 返回说明</span></span><br><span class="line"><span class="comment"> *   @retval 返回值说明</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
-<p>详细注释<br>可以根据需要添加详细说明(@detail)、注解(@note)、注意(@attention)、警告(@warning)或者异常(@exception)等。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief 函数简介</span></span><br><span class="line"><span class="comment"> * @detail 详细说明</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * @param 形参 参数说明</span></span><br><span class="line"><span class="comment"> * @param 形参 参数说明</span></span><br><span class="line"><span class="comment"> * @return 返回说明</span></span><br><span class="line"><span class="comment"> *   @retval 返回值说明</span></span><br><span class="line"><span class="comment"> * @note 注解</span></span><br><span class="line"><span class="comment"> * @attention 注意</span></span><br><span class="line"><span class="comment"> * @warning 警告</span></span><br><span class="line"><span class="comment"> * @exception 异常</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* @brief 主函数</span></span><br><span class="line"><span class="comment">* @details 程序唯一入口</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* @param argc 命令参数个数</span></span><br><span class="line"><span class="comment">* @param argv 命令参数指针数组</span></span><br><span class="line"><span class="comment">* @return 程序执行成功与否</span></span><br><span class="line"><span class="comment">*     @retval 0 程序执行成功</span></span><br><span class="line"><span class="comment">*     @retval 1 程序执行失败</span></span><br><span class="line"><span class="comment">* @note 这里只是一个简单的例子</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span></span></span><br></pre></td></tr></table></figure>
-<p><img alt="20190722_143046.png" src="/2019/03/29/开源库/doxygen/doxygen/20190722_143046.png" width="400" height=""></p>
-<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><table>
-<thead>
-<tr>
-<th>命令</th>
-<th>生成字段名</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>@see</td>
-<td>参考</td>
-<td></td>
-</tr>
-<tr>
-<td>@class</td>
-<td>引用类</td>
-<td>用于文档生成连接</td>
-</tr>
-<tr>
-<td>@var</td>
-<td>引用变量</td>
-<td>用于文档生成连接</td>
-</tr>
-<tr>
-<td>@enum</td>
-<td>引用枚举</td>
-<td>用于文档生成连接</td>
-</tr>
-<tr>
-<td>@code</td>
-<td>代码块开始</td>
-<td>与@endcode成对使用</td>
-</tr>
-<tr>
-<td>@endcode</td>
-<td>代码块结束</td>
-<td>与@code成对使用</td>
-</tr>
-<tr>
-<td>@bug</td>
-<td>缺陷</td>
-<td>链接到所有缺陷汇总的缺陷列表</td>
-</tr>
-<tr>
-<td>@todo</td>
-<td>TODO</td>
-<td>链接到所有TODO 汇总的TODO 列表</td>
-</tr>
-<tr>
-<td>@example</td>
-<td>使用例子说明    </td>
-</tr>
-<tr>
-<td>@remarks</td>
-<td>备注说明    </td>
-</tr>
-<tr>
-<td>@pre</td>
-<td>函数前置条件    </td>
-</tr>
-<tr>
-<td>@deprecated</td>
-<td>函数过时说明</td>
-</tr>
-</tbody>
-</table>
-<h1 id="GUI-使用"><a href="#GUI-使用" class="headerlink" title="GUI 使用"></a>GUI 使用</h1><p><img alt="20190722_144910.png" src="/2019/03/29/开源库/doxygen/doxygen/20190722_144910.png" width="400" height=""><br><img alt="20190722_144924.png" src="/2019/03/29/开源库/doxygen/doxygen/20190722_144924.png" width="400" height=""><br><img alt="20190722_145510.png" src="/2019/03/29/开源库/doxygen/doxygen/20190722_145510.png" width="400" height=""></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/03/28/工具相关/vmware相关问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/28/工具相关/vmware相关问题/" itemprop="url">vmware相关问题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-28T09:30:30+08:00">2019-03-28</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-17T09:52:06+08:00">2019-04-17</time>
             
 
             
@@ -1682,153 +1744,7 @@
       
         
           
-            <h1 id="无法在宿主环境与虚拟环境之间复制粘贴"><a href="#无法在宿主环境与虚拟环境之间复制粘贴" class="headerlink" title="无法在宿主环境与虚拟环境之间复制粘贴"></a>无法在宿主环境与虚拟环境之间复制粘贴</h1><p>注意如果执行完 remove 后无法连接网络了。先处理网络问题<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get autoremove open-vm-tools</span><br><span class="line">sudo apt-get install open-vm-tools</span><br><span class="line">sudo apt-get install open-vm-tools-desktop</span><br></pre></td></tr></table></figure></p>
-<p>重启就可以了</p>
-<h1 id="突然无法连接网络"><a href="#突然无法连接网络" class="headerlink" title="突然无法连接网络"></a>突然无法连接网络</h1><p>将模式调整为“主机模式”<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo service network-manager stop</span><br><span class="line">sudo rm /var/lib/NetworkManager/NetworkManager.state </span><br><span class="line">sudo service network-manager start</span><br></pre></td></tr></table></figure></p>
-<p>再次输入ifconfig ，之前的静态IP重新出现了。问题解决，可以联网了。</p>
-<p>下面的处理没做，因为可以联网了，这里留着备用<br>修改NetworkManager.conf文件，然后重启网络</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$sudo vi /etc/NetworkManager/NetworkManager.conf</span><br><span class="line">[main]</span><br><span class="line">NetworkingEnabled=false</span><br><span class="line">WirelessEnabled=true</span><br><span class="line">WWANEnabled=true</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/03/27/学习笔记/跨平台UI开发/vscode搭建C-开发环境/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/27/学习笔记/跨平台UI开发/vscode搭建C-开发环境/" itemprop="url">vscode搭建C++开发环境</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-27T18:17:44+08:00">2019-03-27</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/跨平台GUI/" itemprop="url" rel="index"><span itemprop="name">跨平台GUI</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>待续。。。先使用clion</p>
+            <p>Gitea 快捷方便，先记录一下，尚未使用</p>
 
           
         
@@ -1871,7 +1787,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/13/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/86/">86</a><a class="extend next" rel="next" href="/page/15/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/13/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/88/">88</a><a class="extend next" rel="next" href="/page/15/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1918,7 +1834,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">860</span>
+                    <span class="site-state-item-count">880</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2075,7 +1991,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">72</span>
+                      
+                    
+                    <span class="site-state-item-count">73</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -2462,7 +2380,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">187</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">189</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
