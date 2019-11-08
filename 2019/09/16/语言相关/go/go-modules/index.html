@@ -99,20 +99,20 @@
 
 
 
-  <meta name="description" content="摘录至 在 GoLand 2019.1.3 中使用 Go Modules 需要进行两个设置： Preferences -&amp;gt; Go -&amp;gt; Go Modules (vgo)，勾选 Enable Go Modules (vgo) integration 以启用 Go Modules，并在 Proxy 输入框中输入 https://goproxy.io。如图所示：  Preferences -">
+  <meta name="description" content="use vscode1234567891011/* 设置 GO111MODULE GO111MODULE 有三个值：off, on和auto（默认值）。GO111MODULE=off，go命令行将不会支持module功能，寻找依赖包的方式将会沿用旧版本那种通过vendor目录或者GOPATH模式来查找。GO111MODULE=on，go命令行会使用modules，而一点也不会去GOPATH目录下查">
 <meta name="keywords" content="go">
 <meta property="og:type" content="article">
 <meta property="og:title" content="go-modules">
 <meta property="og:url" content="http://zhengjunblog.top/2019/09/16/语言相关/go/go-modules/index.html">
 <meta property="og:site_name" content="郑君的学习笔记">
-<meta property="og:description" content="摘录至 在 GoLand 2019.1.3 中使用 Go Modules 需要进行两个设置： Preferences -&amp;gt; Go -&amp;gt; Go Modules (vgo)，勾选 Enable Go Modules (vgo) integration 以启用 Go Modules，并在 Proxy 输入框中输入 https://goproxy.io。如图所示：  Preferences -">
+<meta property="og:description" content="use vscode1234567891011/* 设置 GO111MODULE GO111MODULE 有三个值：off, on和auto（默认值）。GO111MODULE=off，go命令行将不会支持module功能，寻找依赖包的方式将会沿用旧版本那种通过vendor目录或者GOPATH模式来查找。GO111MODULE=on，go命令行会使用modules，而一点也不会去GOPATH目录下查">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://zhengjunblog.top/2019/09/16/语言相关/go/go-modules/20190916_142859.png">
 <meta property="og:image" content="http://zhengjunblog.top/2019/09/16/语言相关/go/go-modules/20190916_142910.png">
-<meta property="og:updated_time" content="2019-09-16T06:29:36.000Z">
+<meta property="og:updated_time" content="2019-10-21T08:10:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="go-modules">
-<meta name="twitter:description" content="摘录至 在 GoLand 2019.1.3 中使用 Go Modules 需要进行两个设置： Preferences -&amp;gt; Go -&amp;gt; Go Modules (vgo)，勾选 Enable Go Modules (vgo) integration 以启用 Go Modules，并在 Proxy 输入框中输入 https://goproxy.io。如图所示：  Preferences -">
+<meta name="twitter:description" content="use vscode1234567891011/* 设置 GO111MODULE GO111MODULE 有三个值：off, on和auto（默认值）。GO111MODULE=off，go命令行将不会支持module功能，寻找依赖包的方式将会沿用旧版本那种通过vendor目录或者GOPATH模式来查找。GO111MODULE=on，go命令行会使用modules，而一点也不会去GOPATH目录下查">
 <meta name="twitter:image" content="http://zhengjunblog.top/2019/09/16/语言相关/go/go-modules/20190916_142859.png">
 
 
@@ -249,7 +249,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">880</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">897</span>
       </a>
 </li>
 
@@ -416,7 +416,55 @@
       
 
       
-        <p>摘录至<a href="https://juejin.im/post/5d0b865c6fb9a07f050a6f45" target="_blank" rel="noopener"></a></p>
+        <h2 id="use-vscode"><a href="#use-vscode" class="headerlink" title="use vscode"></a>use vscode</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 设置 GO111MODULE GO111MODULE 有三个值：off, on和auto（默认值）。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">GO111MODULE=off，go命令行将不会支持module功能，寻找依赖包的方式将会沿用旧版本那种通过vendor目录或者GOPATH模式来查找。</span></span><br><span class="line"><span class="comment">GO111MODULE=on，go命令行会使用modules，而一点也不会去GOPATH目录下查找。</span></span><br><span class="line"><span class="comment">GO111MODULE=auto，默认值，go命令行将会根据当前目录来决定是否启用module功能。这种情况下可以分为两种情形：</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">当前目录在GOPATH/src之外且该目录包含go.mod文件</span></span><br><span class="line"><span class="comment">当前文件在包含go.mod文件的目录下面。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">当modules 功能启用时，依赖包的存放位置变更为$GOPATH/pkg，允许同一个package多个版本并存，且多个项目可以共享缓存的 module。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p>golang 提供了 <code>go mod</code> 命令来管理包。</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>download</td>
+<td>download modules to local cache(下载依赖包)</td>
+</tr>
+<tr>
+<td>edit</td>
+<td>edit go.mod from tools or scripts（编辑go.mod</td>
+</tr>
+<tr>
+<td>graph</td>
+<td>print module requirement graph (打印模块依赖图)</td>
+</tr>
+<tr>
+<td>init</td>
+<td>initialize new module in current directory（在当前目录初始化mod）</td>
+</tr>
+<tr>
+<td>tidy</td>
+<td>add missing and remove unused modules(拉取缺少的模块，移除不用的模块)</td>
+</tr>
+<tr>
+<td>vendor</td>
+<td>make vendored copy of dependencies(将依赖复制到vendor下)</td>
+</tr>
+<tr>
+<td>verify</td>
+<td>verify dependencies have expected content (验证依赖是否正确）</td>
+</tr>
+<tr>
+<td>why</td>
+<td>explain why packages or modules are needed(解释为什么需要依赖)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="创建一个新项目"><a href="#创建一个新项目" class="headerlink" title="创建一个新项目"></a>创建一个新项目</h3><p>在 GOPATH 目录之外新建一个目录，并使用 <code>go mod init</code> 初始化生成go.mod 文件<br>go.mod文件一旦创建后，它的内容将会被go toolchain全面掌控。go toolchain会在各类命令执行时，比如go get、go build、go mod等修改和维护go.mod文件。</p>
+<p>项目名 hello</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span> mod init hello</span><br></pre></td></tr></table></figure>
+<p>执行 go run server.go 运行代码会发现 go mod 会自动查找依赖自动下载：<br>go module 安装 package 的原則是先拉最新的 release tag，若无tag则拉最新的commit，详见 Modules官方介绍。 go 会自动生成一个 go.sum 文件来记录 dependency tree：</p>
+<h2 id="goland"><a href="#goland" class="headerlink" title="goland"></a>goland</h2><p>摘录至<a href="https://juejin.im/post/5d0b865c6fb9a07f050a6f45" target="_blank" rel="noopener"></a></p>
 <p>在 GoLand 2019.1.3 中使用 Go Modules 需要进行两个设置：</p>
 <p>Preferences -&gt; Go -&gt; Go Modules (vgo)，勾选 Enable Go Modules (vgo) integration 以启用 Go Modules，并在 Proxy 输入框中输入 <a href="https://goproxy.io。如图所示：" target="_blank" rel="noopener">https://goproxy.io。如图所示：</a></p>
 <p><img alt="20190916_142859.png" src="/2019/09/16/语言相关/go/go-modules/20190916_142859.png" width="500" height=""></p>
@@ -546,8 +594,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -566,7 +623,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">880</span>
+                    <span class="site-state-item-count">897</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1116,7 +1173,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">189</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">191</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -1163,6 +1224,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#use-vscode"><span class="nav-number">1.</span> <span class="nav-text">use vscode</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个新项目"><span class="nav-number">1.1.</span> <span class="nav-text">创建一个新项目</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#goland"><span class="nav-number">2.</span> <span class="nav-text">goland</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
