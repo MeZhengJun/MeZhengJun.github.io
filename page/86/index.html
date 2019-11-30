@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">897</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">903</span>
       </a>
 </li>
 
@@ -312,6 +312,936 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/10/11/语言相关/python/后端/flask学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/11/语言相关/python/后端/flask学习笔记/" itemprop="url">flask学习笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-11T21:44:59+08:00">2017-10-11</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端/" itemprop="url" rel="index"><span itemprop="name">后端</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li><p>创建flask虚拟环境</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conda create --name gisPy36 python=3.6</span><br><span class="line">source activate gisPy36</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装flask，和相关扩展</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">pip install flask</span><br><span class="line">数据库操作，这个是py3的库，配置及相关操作参考flask学习笔记-数据库相关</span><br><span class="line">pip install PyMySQL</span><br><span class="line">数据库ORM扩展包</span><br><span class="line">pip install flask-sqlalchemy</span><br><span class="line">数据库迁移扩展包</span><br><span class="line">pip install flask-migrate</span><br><span class="line">使用bootstrap</span><br><span class="line">pip install flask-bootstrap</span><br><span class="line"></span><br><span class="line">暂时不使用JWT，因为涉及的知识点太多，花的时间比较多。</span><br><span class="line">JWT登录验证，这里先使用PyJWT 1.4.0，后面在看看flask-jwt扩展</span><br><span class="line">pip install PyJWT</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>jsonify返回一个Response对象，可以用来设置cookie</p>
+<p>项目结构：<br>使用Blueprint来规划。<br>两点需要注意的地方：  </p>
+<ol>
+<li><p>路由装饰器由Blueprint提供。下面是举例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@main.app_errorhandler(404)</span><br><span class="line">def page_not_found(e):</span><br><span class="line">    return render_template(&apos;404.html&apos;), 404</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>url_for的使用略有不同<br>默认Blueprint会带有一个命名空间，就是构造函数的第一个参数。如果命名空间是mian,那么index的注册端点是main.index。<br>其URL使用url_for(‘main.index’)获取。如果是当前Blueprint可以省略空间名写成url_for(‘.index’)。否则必须带有空间名</p>
+</li>
+</ol>
+<h3 id="g环境变量"><a href="#g环境变量" class="headerlink" title="g环境变量"></a>g环境变量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">需要导入</span><br><span class="line">from flask import g  </span><br><span class="line">添加属性并赋值</span><br><span class="line">g.name = &apos;John&apos;  </span><br><span class="line">获取属性</span><br><span class="line">name = g.get(&apos;name&apos;,&apos;no name&apos;)  </span><br><span class="line">判断属性是否存在</span><br><span class="line">if hasattr(g, &apos;needLogin&apos;):</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+<h3 id="返回模板和cookie"><a href="#返回模板和cookie" class="headerlink" title="返回模板和cookie"></a>返回模板和cookie</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">resp = make_response(render_template(<span class="string">"index.html"</span>, cls=<span class="string">'ShowLoginModal'</span>))</span><br><span class="line">        <span class="keyword">return</span> resp</span><br></pre></td></tr></table></figure>
+<h3 id="日志处理"><a href="#日志处理" class="headerlink" title="日志处理"></a>日志处理</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import logging</span><br><span class="line">from logging.handlers import RotatingFileHandler</span><br><span class="line"></span><br><span class="line"># 1024*1024*10</span><br><span class="line">handler = RotatingFileHandler(&apos;emails.log&apos;, encoding=&apos;UTF-8&apos;,maxBytes=1024*1024*10,backupCount=50)</span><br><span class="line">handler.setLevel(logging.DEBUG)</span><br><span class="line"># logging的级别主要有NOTSET、DEBUG、INFO、WARNING、ERROR和CRITICAL</span><br><span class="line">logging_format = logging.Formatter(</span><br><span class="line">    &apos;%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(lineno)s - %(message)s&apos;)</span><br><span class="line">handler.setFormatter(logging_format)</span><br><span class="line">app.logger.addHandler(handler)</span><br></pre></td></tr></table></figure>
+<h3 id="获取当前项目路径"><a href="#获取当前项目路径" class="headerlink" title="获取当前项目路径"></a>获取当前项目路径</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curPath = os.path.split(os.path.realpath(__file__))[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/10/11/语言相关/python/python学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/11/语言相关/python/python学习笔记/" itemprop="url">python学习笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-11T20:07:01+08:00">2017-10-11</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="查看版本"><a href="#查看版本" class="headerlink" title="查看版本"></a>查看版本</h3><p><code>python -V</code></p>
+<h3 id="导出依赖包"><a href="#导出依赖包" class="headerlink" title="导出依赖包"></a>导出依赖包</h3><p>requirements.txt可以通过pip命令自动生成和安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">生成requirements.txt文件</span><br><span class="line">pip freeze &gt; requirements.txt</span><br><span class="line">安装requirements.txt依赖</span><br><span class="line">sudo pip install -r requirements.txt</span><br><span class="line">如果是虚拟环境下不需要使用sudo，否则会安装到系统路径下面的python里面</span><br></pre></td></tr></table></figure>
+<h3 id="查看已安装包，升级"><a href="#查看已安装包，升级" class="headerlink" title="查看已安装包，升级"></a>查看已安装包，升级</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 查看已安装的包</span><br><span class="line">pip list</span><br><span class="line"># 列出可升级的包</span><br><span class="line">pip list --outdate</span><br><span class="line"># 升级指定的包</span><br><span class="line">pip install --upgrade requests  // mac,linux,unix 在命令前加 sudo -H</span><br></pre></td></tr></table></figure>
+<h3 id="环境管理"><a href="#环境管理" class="headerlink" title="环境管理"></a>环境管理</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">查看所有安装的环境</span><br><span class="line">conda env list</span><br><span class="line"></span><br><span class="line">基于python3.6版本创建一个名字为gisPy36的环境</span><br><span class="line">conda create --name gisPy36 python=3.6</span><br><span class="line"></span><br><span class="line">激活环境</span><br><span class="line">source activate gisPy36</span><br><span class="line"></span><br><span class="line">退出当前环境</span><br><span class="line">source deactivate</span><br><span class="line"></span><br><span class="line">删除该环境</span><br><span class="line">conda env remove  -n gisPy36</span><br></pre></td></tr></table></figure>
+<h3 id="多版本时pip指定版本安装"><a href="#多版本时pip指定版本安装" class="headerlink" title="多版本时pip指定版本安装"></a>多版本时pip指定版本安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">安装setuptools包</span><br><span class="line">pip install -t /usr/local/lib/python2.7/site-packages/ setuptools</span><br></pre></td></tr></table></figure>
+<h3 id="有用的库"><a href="#有用的库" class="headerlink" title="有用的库"></a>有用的库</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[pefile](https://github.com/erocarrera/pefile)获取pe文件相关信息，例如版本信息。跨平台的</span><br><span class="line"></span><br><span class="line">[tabulate](https://pypi.python.org/pypi/tabulate)</span><br><span class="line"><span class="comment"># 格式化dataframe</span></span><br><span class="line"><span class="keyword">print</span> tabulate(df.head(<span class="number">5</span>), headers=<span class="string">'keys'</span>, tablefmt=<span class="string">'psql'</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="控制台相关"><a href="#控制台相关" class="headerlink" title="控制台相关"></a>控制台相关</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">想要print始终显示在同一行，本身是在最后加上逗号即可，即：</span><br><span class="line">print &quot;xxx&quot;,</span><br><span class="line">然后又想要实现，新打印的一行，冲掉之前旧的一行，达到显示出下载文件大小一点点增加，但是却始终保持同行，那么就再打印的内容最后添加上\r即可：</span><br><span class="line">print &quot;xxx\r&quot;,</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/10/10/语言相关/javascript/jQuery/jQuery学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/10/语言相关/javascript/jQuery/jQuery学习笔记/" itemprop="url">jQuery学习笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-10T09:14:16+08:00">2017-10-10</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="脚本的执行流程"><a href="#脚本的执行流程" class="headerlink" title="脚本的执行流程"></a>脚本的执行流程</h2><p>浏览器输入一个URL地址，服务器找到所请求的文件(可以是多个)发送给浏览器。<br>浏览器加载文件显示给用户。<br>在加载文件的时候会解析html结构如果发现<script></script>标记，就调用javaScript解释器执行标记块里面的脚本。<br>javaScript并不改变原来的html和css文件，他只是改变浏览器内存中页面的DOM表示<br>下面的脚本是当web夜幕文件准备就绪的时候执行相关的操作。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">$(<span class="built_in">document</span>).ready(...);</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>$符号是jQuery的简写方式。jQuery()简写为$()，这就是jQuery函数，主要任务是获取括号中指定的元素。元素可以是css选择器，javascript对象，html。</p>
+<h2 id="选择元素的方式"><a href="#选择元素的方式" class="headerlink" title="选择元素的方式"></a>选择元素的方式</h2><p>和CSS的选择器操作一样，CSS选择元素增加样式，javascript选择元素增加行为<br>注意：javascript的选择器采用字符串的形式。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">元素选择器，隐藏所有h1元素</span><br><span class="line">$(<span class="string">"h1"</span>).hide();</span><br><span class="line">类选择器使用.开始，所有my_class成员都向上滑动</span><br><span class="line">$(<span class="string">".my_class"</span>).slideUp();</span><br><span class="line">id选择器使用#开始，所有my_id的元素淡出。</span><br><span class="line">$(<span class="string">"#my_id"</span>).fadeOut();</span><br><span class="line"></span><br><span class="line">举例：</span><br><span class="line">$(<span class="string">"#myTop"</span>).css(&#123;<span class="string">"background-color"</span>:<span class="string">"blue"</span>&#125;);</span><br><span class="line">把id为myTop的元素的css规则里面的背景色设置为蓝色。</span><br><span class="line"></span><br><span class="line">$(<span class="string">"span.Italian"</span>).toggle();</span><br><span class="line">处理span里面的类为Italian的元素</span><br><span class="line">&lt;span <span class="class"><span class="keyword">class</span></span>=<span class="string">"Italian"</span>&gt;test text&lt;<span class="regexp">/span&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">$("p#mytext").show();</span></span><br><span class="line"><span class="regexp">处理段落里面id为mytext的元素</span></span><br><span class="line"><span class="regexp">&lt;p id="mytext"&gt;test text&lt;/</span>p&gt;</span><br><span class="line"></span><br><span class="line">类型+id选择</span><br><span class="line">$(<span class="string">"button#btn1"</span>).click(...);</span><br><span class="line">$(<span class="string">"button#btn2"</span>).click(...);</span><br><span class="line"></span><br><span class="line">表示当前正在处理的元素，依赖于上下文。</span><br><span class="line">$(<span class="keyword">this</span>)</span><br><span class="line"></span><br><span class="line">后代选择器, 左边是父元素，右边是子元素，中间有个空格</span><br><span class="line">选择div元素中所有的p元素</span><br><span class="line">$(<span class="string">"div p"</span>)</span><br><span class="line">类和ID选择器与后代选择器结合使用</span><br><span class="line">选择div元素中id为my_id的p元素</span><br><span class="line">$(<span class="string">"div p#my_id"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="页面事件"><a href="#页面事件" class="headerlink" title="页面事件"></a>页面事件</h2><ol>
+<li>为元素绑定一个事件。</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">方法一,在页面加载时为元素增加事件</span><br><span class="line">$(<span class="string">"#myElement"</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;...&#125;);</span><br><span class="line"></span><br><span class="line">方法二，可以在页面加载后为元素增加事件</span><br><span class="line">$(<span class="string">"#myElement"</span>).bind(<span class="string">'click'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;...&#125;);</span><br><span class="line"></span><br><span class="line">这里方法一和二最明显的区别在于方法一只有在DOM已经存在时才可以使用。</span><br><span class="line">对于代码中新创建的元素就只能使用方法二来增加事件。</span><br></pre></td></tr></table></figure>
+<p>整个浏览器都是事件型的。<br>浏览器事件：error,resize,scroll<br>键盘事件：keydown, keypress, keyup<br>表单事件： blur,change,focus,select,submit<br>文档加载: load,ready,unload<br>鼠标事件： click, hover, focusin, focusout,mouseout,mouseover..</p>
+<ol>
+<li>删除一个事件</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">从myElement删除click事件</span><br><span class="line">$(<span class="string">"#myElement"</span>).unbind(<span class="string">'click'</span>)</span><br><span class="line">从myElement删除所有事件</span><br><span class="line">$(<span class="string">"#myElement"</span>).unbind()</span><br></pre></td></tr></table></figure>
+<p>迭代器each,遍历元素,为每个元素执行操作</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">".nav_item"</span>).each(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  $(<span class="keyword">this</span>).hide();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<ol>
+<li>代码触发事件</li>
+</ol>
+<p>结合选择器使用.trigger方法<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"button:first"</span>).trigger(<span class="string">'click'</span>);</span><br><span class="line">$(<span class="string">"form"</span>).trigger(<span class="string">'submit'</span>);</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>函数</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">name</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  code here</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>函数表达式</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myFunc2 = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  $(<span class="string">"div"</span>).show();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myFunc1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  $(<span class="string">"div"</span>).hide();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">调用函数，这里需要括号</span><br><span class="line">myFunc1();</span><br><span class="line">作为处理函数调用时，函数不需要括号</span><br><span class="line">$(<span class="string">"#myElement"</span>).click(myFunc2);</span><br></pre></td></tr></table></figure>
+<p>匿名函数<br>也叫自执行函数，一旦在代码中遇到匿名函数就会立即执行。函数中的变量只有在运行时才可用。</p>
+<p>条件判断语句，web事件</p>
+<ol>
+<li>修改DOM</li>
+</ol>
+<p>移除元素<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">remove 从DOM中删除</span><br><span class="line">detach 从DOM中取出，但是还会维护，可以重新关联</span><br><span class="line"></span><br><span class="line">向上选择使用parent方法，左右选择使用prev和next方法，向下选择使用children方法</span><br><span class="line">可以使用方法链进一步查找。</span><br><span class="line">$(<span class="string">".fish"</span>).parent().parent();</span><br><span class="line"></span><br><span class="line">删除元素中的内容</span><br><span class="line">$(<span class="string">"p"</span>).empty();</span><br><span class="line"></span><br><span class="line">使用parents方法遍历所有的父元素</span><br><span class="line">使用siblings方法遍历兄弟元素</span><br><span class="line">选择距离所选元素最近的父元素使用closest方法</span><br><span class="line">$(<span class="string">"li"</span>).closest(<span class="string">"ul"</span>)</span><br><span class="line"></span><br><span class="line">可以使用变量存储元素。用于删除和恢复,需要在变量钱添加$符号，类型是数组</span><br><span class="line">$f = $(<span class="string">".fish"</span>).parent().parent().detach();</span><br><span class="line"></span><br><span class="line">替换DOM元素，一对一替换可以使用</span><br><span class="line">$(<span class="string">"h2"</span>).replaceWith(<span class="string">"&lt;h1&gt;My Menu&lt;/h1&gt;"</span>);</span><br></pre></td></tr></table></figure></p>
+<p>多对一的替换分两步</p>
+<ol>
+<li>把新类插入旧类后面，这里有before和after两个位置一前一后</li>
+<li>删除旧类</li>
+</ol>
+<p>使用过滤器缩小选择范围<br>first 第一个元素， last最后一个元素，eq根据索引选择<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">元素索引为<span class="number">1</span>的元素</span><br><span class="line">#(".menuList").children().qu(1);</span><br><span class="line"></span><br><span class="line">slice切片选择元素</span><br><span class="line">filter过滤选择</span><br><span class="line">not过滤掉不匹配的元素</span><br></pre></td></tr></table></figure></p>
+<h2 id="获取，修改元素文本"><a href="#获取，修改元素文本" class="headerlink" title="获取，修改元素文本"></a>获取，修改元素文本</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> realPay = $(<span class="string">"#realPayment"</span>).text();</span><br><span class="line">$(<span class="string">'#moreTime'</span>).text(<span class="string">"5年"</span>);</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/10/10/语言相关/英语学习/百词斩学习总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/10/语言相关/英语学习/百词斩学习总结/" itemprop="url">百词斩学习总结</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-10T08:46:12+08:00">2017-10-10</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="2017年年终总结"><a href="#2017年年终总结" class="headerlink" title="2017年年终总结"></a>2017年年终总结</h1><center><br><img alt="7c7c51ee.png" src="/2017/10/10/语言相关/英语学习/百词斩学习总结/7c7c51ee.png" width="300" height=""><br><img alt="fdb8c155.png" src="/2017/10/10/语言相关/英语学习/百词斩学习总结/fdb8c155.png" width="300" height=""><br><img alt="a73cb930.png" src="/2017/10/10/语言相关/英语学习/百词斩学习总结/a73cb930.png" width="300" height=""><br></center>
+
+<h2 id="季度总结"><a href="#季度总结" class="headerlink" title="季度总结"></a>季度总结</h2><center><br><img alt="677d7d0a.png" src="/2017/10/10/语言相关/英语学习/百词斩学习总结/677d7d0a.png" width="300" height=""><br><img alt="31af670e.png" src="/2017/10/10/语言相关/英语学习/百词斩学习总结/31af670e.png" width="300" height=""><br></center>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/10/10/随笔/杂记/支付宝的第一棵树/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/10/随笔/杂记/支付宝的第一棵树/" itemprop="url">支付宝的第一棵树</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-10T08:41:29+08:00">2017-10-10</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/随笔/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>记录一下吧。</p>
+<center><br><img alt="eb92c2d3.png" src="/2017/10/10/随笔/杂记/支付宝的第一棵树/eb92c2d3.png" width="100" height=""><br></center>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/10/09/语言相关/javascript/java-script学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/09/语言相关/javascript/java-script学习笔记/" itemprop="url">java script学习笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-09T18:27:00+08:00">2017-10-09</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>总结一下自己学习javaScript过程中掌握的知识点和代码片段。<br>随时更新<br></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/09/语言相关/javascript/java-script学习笔记/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -898,952 +1828,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/09/30/随笔/旅游/天津之行/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/30/随笔/旅游/天津之行/" itemprop="url">天津之行</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-30T08:25:51+08:00">2017-09-30</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/旅游/" itemprop="url" rel="index"><span itemprop="name">旅游</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>赶上十一假期，正好可以和老婆，宝宝见见面。选择了一个没去过的城市，体验一下不同的生活。</p>
-<p>我之前接触过一个天津的人，特喜欢他们说话的口音，听着就不由自主的想笑。注：这里没有任何不敬的意思。</p>
-<h2 id="day-1"><a href="#day-1" class="headerlink" title="day 1"></a>day 1</h2><p>第一天飞到天津，中午下的飞机。话说天津似乎不大，飞机场到市中心的地方，坐地铁才9站好像。<br>出了地铁闸机，对面就是一个商场入口，正好饿了，吃完饭。旁边有个超市，顺便买点水果，矿泉水什么的。<br>结果被坑了。三个苹果居然要16.3元。好吧，我在上海买7-8个也才12元。矿泉水最小瓶的7元。瞬间觉得自己的脑袋好大。后来才知道这个是个精品超市，矿泉水是进口的，这个我也可以理解，可是苹果是国产的呢！！</p>
-<center><br><img alt="0627b196.png" src="/2017/09/30/随笔/旅游/天津之行/0627b196.png" width="300" height=""><br></center>
-
-<p>拿着高价苹果去酒店办理入住，路上看到的一个大楼景色不错，可惜摄影技术还不到位，似乎体现的不太理想。</p>
-<center><br><img alt="315d1132.png" src="/2017/09/30/随笔/旅游/天津之行/315d1132.png" width="300" height=""><br></center>
-
-<p>哦，对了，一到天津还看到个熟人，不容易，在上海总看到她。</p>
-<center><br><img alt="1923fc63.png" src="/2017/09/30/随笔/旅游/天津之行/1923fc63.png" width="300" height=""><br></center>
-
-<p>路上看到个卖螃蟹的摊位，旁边还摆着香蕉，猜猜这么大一串多少钱。^_^ 5块钱。哈哈，他说他是代卖的。当时还以为自己听错了，半信半疑的拿出5元钱，他把香蕉递给了我。和刚刚的苹果反差太大了，受不了这刺激。<br>旁边是个菜场，看来买水果是方便了。</p>
-<center><br><img alt="f7e0f950.png" src="/2017/09/30/随笔/旅游/天津之行/f7e0f950.png" width="300" height=""><br></center>
-
-<p>天津西开教堂。<br>外面就是一堆商场，还真热闹。院子里面弄得像寺庙一样，不太喜欢。没有感受到教堂的那种独特的氛围和气质。</p>
-<center><br><img alt="04fa79b1.png" src="/2017/09/30/随笔/旅游/天津之行/04fa79b1.png" width="300" height=""><br></center>
-
-
-<h2 id="day-2"><a href="#day-2" class="headerlink" title="day 2"></a>day 2</h2><p>去了天津科技馆，天津美术馆，天津自然博物馆。为啥这么厉害一天去了三个馆，因为他们都在一起。哈哈<br>天津这边想的太周到了，还有图书馆也在这边，只是累了就没去。<br>美术馆是最没意思的，里面什么都没有，只有十九大相关的一个楼层，还有个不认识的画家的展览一个楼层。别的就都没内容了。<br>科技馆不错，里面有一些新鲜的，上海科技馆没有的东东。正好赶上一堆小学生也去参观，人比较多，好在中午的时候都走了。</p>
-<p>天津的交通真实吓人呀。基本上是”天天堵”，从这个红绿灯堵到下一个红绿灯。而且人车混行，这里的共享自行车太危险了。</p>
-<p>出去了一天，电话已经没电了，肿么办，先去吃饭吧，吃完饭回旅馆。碰巧在吃饭的地方看到了共享充电宝，救星呀，头一次还不知道怎么用，说是先扫二维码，习惯性的拿出微信扫了一下，然后提示需要99元押金，这个不喜欢，我记得支付宝里面有信用租借来着。于是使用支付宝扫了二维码，然后就看到了可以信用免押金的地方，我的信用第一次有了使用的价值。充电宝头30分钟免费，然后1个小时1元钱。这东西怎么赚钱呢？想不通，我拿着充电宝去吃了个饭，然后回来，没超过30分钟，充到了60%的电量，也够了。所以本次免费。</p>
-<p>自然博物馆挺好玩的，比较有特色。<br>看，天太热了。哈哈</p>
-<center><br><img alt="e3e2dfa2.png" src="/2017/09/30/随笔/旅游/天津之行/e3e2dfa2.png" width="300" height=""><br></center><br><center><br><img alt="a96f1c31.png" src="/2017/09/30/随笔/旅游/天津之行/a96f1c31.png" width="300" height=""><br></center><br>总体来说非常不错，因为都是免费的。<br>哦，有一点很重要，自然博物馆在参观的馆里面没有卫生间，要到外面的走廊两侧才可以，这个不是很方便。要是走到一半想去卫生间就尴尬了。<br><br>还有就是天津路边没有24小时的便利店，也不是很方便。<br>科技馆的泡泡曲面好有趣。<br><center><br><embed src="http://player.youku.com/player.php/sid/XMzA1Nzg0NDU5Mg==/v.swf" allowfullscreen="true" quality="high" width="480" height="400" align="middle" allowscriptaccess="always" type="application/x-shockwave-flash"><br></center>
-
-<center><br><embed src="http://player.youku.com/player.php/sid/XMzA1Nzg1NjY4MA==/v.swf" allowfullscreen="true" quality="high" width="480" height="400" align="middle" allowscriptaccess="always" type="application/x-shockwave-flash"><br></center>
-
-<center><br><embed src="http://player.youku.com/player.php/sid/XMzA1Nzg2NjM0NA==/v.swf" allowfullscreen="true" quality="high" width="480" height="400" align="middle" allowscriptaccess="always" type="application/x-shockwave-flash"><br></center>
-
-<center><br><embed src="http://player.youku.com/player.php/sid/XMzA1Nzg2NDI5Ng==/v.swf" allowfullscreen="true" quality="high" width="480" height="400" align="middle" allowscriptaccess="always" type="application/x-shockwave-flash"><br></center>
-
-<h2 id="day-3"><a href="#day-3" class="headerlink" title="day 3"></a>day 3</h2><p>五大道风景区是最坑的地方，可以不用去了。因为就是一些名人的旧居，而且只能在外面看，就是座个马车走一圈，有个讲解说一下，这是谁的房子，不能进去看的。最好的游览方式是，共享单车跟着马车骑一圈。有个民园广场旁边有些小商贩，要是时间充裕没地方去了，可以考虑去一下，否则别去了。</p>
-<h2 id="day-4"><a href="#day-4" class="headerlink" title="day 4"></a>day 4</h2><p>天津古文化街风景区，里面有一些小店很有特色，卖一些手工艺品和一些小的装饰品。喜欢小玩意儿的可以去看看。<br>意大利风情街也不错，里面有一些有创意的小东西。</p>
-<h2 id="day-5"><a href="#day-5" class="headerlink" title="day 5"></a>day 5</h2><p>天津自然博物馆，人真多排队排了老长了。<br>天津有一点很好，就是场馆比较集中，天津科学技术馆，自然博物馆，天津博物馆，天津图书馆，都在一个地方。如果时间比较紧的话，这些场馆也能走一遍。并且都是免费的。只要用身份证换票就可以了，自然博物馆直接刷身份证进入，很方便。</p>
-<p><font color="red" style="font-size:15pt;font-weight:bold">友情提示：</font><br>上面场馆的开馆时间如下：  </p>
-<ul>
-<li>参观时间：09：00——16：30 （16：00停止入馆）。  </li>
-<li>每周二至周日免费开放,每周一闭馆</li>
-</ul>
-<h2 id="day-6"><a href="#day-6" class="headerlink" title="day 6"></a>day 6</h2><p>天津之眼，排队的人更多了，晚上去了都是人，而且票也卖完了。有时间限制的。想要做的要早点去了。</p>
-<p><center><br><img alt="be05e50b.png" src="/2017/09/30/随笔/旅游/天津之行/be05e50b.png" width="" height=""><br></center><br>回来的时候去退天津城市一卡通，结果看到了如下提示。这个有点坑呀。买票的时候说可以退，结果要9号才可以退。</p>
-<p><center><br><img alt="a7f4ece6.png" src="/2017/09/30/随笔/旅游/天津之行/a7f4ece6.png" width="" height=""><br></center><br>还要有两个公交站点可以办理退卡，一个人最多可以退2张，要退三张还要复印身份证，这什么规定。有什么意义在里面。而且这里还没有复印机。幸好不远的街口有一家复印社，按照官僚程序走一圈，100多元总算退回来了。</p>
-<p>滨海文化中心图书馆-下地铁要走20分钟的路，还好有共享单车。<br>这个全景图人太多，也懒得修图了，里面会有细节问题，直接pass就好了^_^!</p>
-<p><center><br><img alt="d9c21972.png" src="/2017/09/30/随笔/旅游/天津之行/d9c21972.png" width="" height=""><br></center><br>造型很不错，看起来比较有冲击感，但是实用性不大，台阶14岁以下的不让上，需要做电梯上二楼，而且好多书都是摆在楼梯侧面的，很不方便查找，并且侧面的书架旁边就是楼梯，非常危险，如果找书的时候一不留心，那就从二楼直接滚到一楼了。<br>这里办读者证非常方便，使用身份证就可以自助办理了，非常好，这一点比上海要好些，不用再多带一张卡，还节省成本，身份证本来就应该发挥自己的作用。<br>还有这个图书馆不可以带水，食物，照相机，打火机，安检堪比飞机场。<br>里面有自习室，但是电源的位置并不是为了自习的人提供的，在地上，所以有的还可以，有的位置不方便不能用。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>天津作为直辖市，大型商场不少，但是还没形成商业圈，街头巷尾偶见几位老人在玩耍蟋蟀。交通比较乱，指示牌不清晰，并且没有南北等方向指示。共享单车在这里有的路段很危险，行人，单车，汽车混行。地铁里面的指示牌就更坑人了。公交站牌也坑人。<br>从上海出来后，有了对比也就有了追求。一线城市比其他城市最明显的就是“舒服”。生活中的琐事中最能体现出政府的服务态度和成果。  </p>
-<p>总体来说，硬件上天津也算可以了，但是软件差距较大，在这里服务还没体现出来，只看到了各种官僚规定。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/09/28/读过的书/松浦弥太郎的人生信条-001/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/28/读过的书/松浦弥太郎的人生信条-001/" itemprop="url">松浦弥太郎的人生信条-001</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-28T22:02:08+08:00">2017-09-28</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <center><br><img alt="松浦弥太郎的人生信条-100个基本-ab6cc408.png" src="/2017/09/28/读过的书/松浦弥太郎的人生信条-001/松浦弥太郎的人生信条-001-ab6cc408.png" width="150" height=""><br></center>
-
-<p>猫空看到的一本书，看了几页试读之后，决定买下来慢慢看。<br>需要不断的领悟，反复的参透。</p>
-<p>我的得到时光书签也有了一个好的归宿。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/09/28/读过的书/松浦弥太郎的人生信条-001/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/09/28/语言相关/javascript/CSS学习笔记-常用属性/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/28/语言相关/javascript/CSS学习笔记-常用属性/" itemprop="url">CSS学习笔记-常用属性</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-28T21:44:53+08:00">2017-09-28</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>总结一下自己学习CSS过程中掌握的知识点和代码片段<br>随时更新<br></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/09/28/语言相关/javascript/CSS学习笔记-常用属性/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/09/28/生活小知识/行动清单/清单-欧洲旅游/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/28/生活小知识/行动清单/清单-欧洲旅游/" itemprop="url">清单-欧洲旅游</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-28T07:20:44+08:00">2017-09-28</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/清单/" itemprop="url" rel="index"><span itemprop="name">清单</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="得到清单笔记"><a href="#得到清单笔记" class="headerlink" title="得到清单笔记"></a>得到清单笔记</h2><p>这个清单的作者，曾花了12年时间游历欧美，他的私家心得，帮你的这趟旅程跟“普通人”拉开距离。建议收藏，只要有一城一处用得上，就值回票价。</p>
-<p><img alt="561f4ebb.png" src="/2017/09/28/生活小知识/行动清单/清单-欧洲旅游/561f4ebb.png" width="" height=""><br></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/09/28/生活小知识/行动清单/清单-欧洲旅游/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/09/27/语言相关/Java/后端/Spring-Boot-Kotlin-Web开发CRUD/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/27/语言相关/Java/后端/Spring-Boot-Kotlin-Web开发CRUD/" itemprop="url">Spring Boot Kotlin Web开发 CRUD</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-27T19:27:22+08:00">2017-09-27</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端/" itemprop="url" rel="index"><span itemprop="name">后端</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端/Kotlin/" itemprop="url" rel="index"><span itemprop="name">Kotlin</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端/Kotlin/Spring-Boot/" itemprop="url" rel="index"><span itemprop="name">Spring Boot</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>整个操作过程的视频已经上传了。<br><a href="http://v.youku.com/v_show/id_XMzA1MTc1MzU3Mg==.html?f=51138812" target="_blank" rel="noopener">youku视频</a><br><a href="https://youtu.be/N9tSgJbacIw" target="_blank" rel="noopener">youtub视频</a></p>
-<p>项目地址：<a href="https://github.com/aslucky/springBoot-kotlin-crud.git" target="_blank" rel="noopener">https://github.com/aslucky/springBoot-kotlin-crud.git</a></p>
-<h2 id="建立项目"><a href="#建立项目" class="headerlink" title="建立项目"></a>建立项目</h2><p>使用IDEA开发Spring Boot + Kotlin搭建后端Restful服务<br>Java 1.8<br>File-New project- Spring initializr下一步，语言选择Kotlin，其他根据需要选择，这里使用maven。<br>下一步，依赖里面选择Web-Web其他的暂时不选，下一步设置项目名称，完毕。<br>大致如下：</p>
-<p><center><br><img alt="30f395b9.png" src="/2017/09/27/语言相关/Java/后端/Spring-Boot-Kotlin-Web开发CRUD/30f395b9.png" width="" height=""><br></center><br>DemoApplication.kt文件里面是main入口函数。</p>
-<h2 id="添加控制器代码"><a href="#添加控制器代码" class="headerlink" title="添加控制器代码"></a>添加控制器代码</h2><p>新建一个Kotlin类controllerTopic<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">controllerTopic</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    @RequestMapping(value = <span class="string">"/"</span>,method = arrayOf(RequestMethod.GET))</span><br><span class="line">    fun index():<span class="built_in">String</span> = <span class="string">"hi there"</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>在DemoApplication.kt文件上右键-debug…一般情况下会成功启动服务<br>使用Postman发送请求Get <a href="http://localhost:8080/" target="_blank" rel="noopener">http://localhost:8080/</a><br>会看到回复<code>hi there</code>。</p>
-<h2 id="实现CRUD接口"><a href="#实现CRUD接口" class="headerlink" title="实现CRUD接口"></a>实现CRUD接口</h2><p>添加一个数据类Topic，设置了默认值。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">data class <span class="title">Topic</span> <span class="params">(val id:String=<span class="string">""</span>, val name:String=<span class="string">""</span>, val description:String=<span class="string">""</span>)</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>添加一个服务类TopicService，实现CRUD服务，这里暂时先使用一个可写列表作为数据源。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">@Service</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TopicService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    private <span class="keyword">var</span> topics = mutableListOf(</span><br><span class="line">            Topic(<span class="string">"spring"</span>, <span class="string">"spring framework"</span>, <span class="string">"spring description"</span>),</span><br><span class="line">            Topic(<span class="string">"java"</span>, <span class="string">"java framework"</span>, <span class="string">"java description"</span>),</span><br><span class="line">            Topic(<span class="string">"java script"</span>, <span class="string">"java script framework"</span>, <span class="string">"java script description"</span>)</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    fun getAll(): List&lt;Topic&gt; = topics</span><br><span class="line"></span><br><span class="line">    fun getTopic(id: <span class="built_in">String</span>) = topics.filter(&#123; it -&gt; it.id == id &#125;).firstOrNull()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// return Boolean. true success otherwise failed</span></span><br><span class="line">    fun addTopic(topic: Topic) = topics.add(topic)</span><br><span class="line"></span><br><span class="line">    fun updateTopic(id: <span class="built_in">String</span>, <span class="attr">topic</span>: Topic):Int &#123;</span><br><span class="line">        <span class="keyword">var</span> list = topics.filter(&#123; it -&gt; it.id == id &#125;).firstOrNull()</span><br><span class="line">        <span class="keyword">if</span> (list == <span class="literal">null</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            topics.set(topics.indexOf(list), topic)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//true : success otherwise false</span></span><br><span class="line">    fun deleteTopic(id: <span class="built_in">String</span>): <span class="built_in">Boolean</span>&#123;</span><br><span class="line">        val ret = topics.removeIf(&#123; it -&gt; it.id.equals(id) &#125;)</span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>创建一个用来返回信息的数据类ProcResp<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data class procResp(var code:Int, var message:String,var data:Any? = null)</span><br></pre></td></tr></table></figure></p>
-<p>处理控制器的操作</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">class controllerTopic(val topicService: TopicService) &#123;</span><br><span class="line"></span><br><span class="line">    @RequestMapping(value = <span class="string">"/"</span>,method = arrayOf(RequestMethod.GET))</span><br><span class="line">    fun index():<span class="built_in">String</span> = <span class="string">"hi there"</span></span><br><span class="line"></span><br><span class="line">    @RequestMapping(value = <span class="string">"/topics"</span>,method = arrayOf(RequestMethod.GET))</span><br><span class="line">    fun getAllTopic(): procResp&#123;</span><br><span class="line">        <span class="keyword">var</span> resp = procResp(<span class="number">0</span>,<span class="string">"success"</span>)</span><br><span class="line">        resp.data = topicService.getAll()</span><br><span class="line">        <span class="keyword">return</span> resp</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @RequestMapping(value = <span class="string">"topics/&#123;id&#125;"</span>,method = arrayOf(RequestMethod.GET))</span><br><span class="line">    fun getTopic(@PathVariable id: <span class="built_in">String</span>) : procResp</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> resp = procResp(<span class="number">0</span>,<span class="string">"success"</span>)</span><br><span class="line">        resp.data = topicService.getTopic(id)</span><br><span class="line">        <span class="keyword">return</span> resp</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @RequestMapping(value = <span class="string">"topics"</span>,method = arrayOf(RequestMethod.POST))</span><br><span class="line">    fun addTopic(@RequestBody topic:Topic):procResp&#123;</span><br><span class="line">        <span class="keyword">var</span> resp = procResp(<span class="keyword">if</span> (topicService.addTopic(topic)) <span class="number">0</span> <span class="keyword">else</span> <span class="number">-1</span>,<span class="string">"success"</span>)</span><br><span class="line">        <span class="keyword">return</span> resp</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @RequestMapping(value = <span class="string">"topics/&#123;id&#125;"</span>,method = arrayOf(RequestMethod.PUT))</span><br><span class="line">    fun updateTopic(@RequestBody topic:Topic, @PathVariable id:<span class="built_in">String</span>):procResp&#123;</span><br><span class="line">        val ret = topicService.updateTopic(id, topic)</span><br><span class="line">        <span class="keyword">var</span> resp = procResp(ret,<span class="keyword">if</span> (ret != <span class="number">0</span>) <span class="string">"error"</span> <span class="keyword">else</span> <span class="string">"success"</span>)</span><br><span class="line">        <span class="keyword">return</span> resp</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @RequestMapping(value = <span class="string">"topics/&#123;id&#125;"</span>,method = arrayOf(RequestMethod.DELETE))</span><br><span class="line">    fun deleteTopic(@PathVariable id: <span class="built_in">String</span>) : procResp&#123;</span><br><span class="line">        val ret = <span class="keyword">if</span> (topicService.deleteTopic(id)) <span class="number">0</span> <span class="keyword">else</span> <span class="number">-1</span></span><br><span class="line">        <span class="keyword">var</span> resp = procResp(ret ,<span class="keyword">if</span> (ret != <span class="number">0</span>) <span class="string">"error"</span> <span class="keyword">else</span> <span class="string">"success"</span>)</span><br><span class="line">        <span class="keyword">return</span> resp</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>现在就可以运行起来了。照比我之前用spring mvc写的CRUD简单的太多了。<br>和python的flask很像。能自动处理的部分都屏蔽掉了，比较人性化。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/09/27/语言相关/Kotlin/Kotlin常用操作/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/27/语言相关/Kotlin/Kotlin常用操作/" itemprop="url">Kotlin常用操作</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-27T13:52:27+08:00">2017-09-27</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>常用的函数说明，方便查阅。</p>
-<p><a href="http://kotlinlang.org/api/latest/jvm/stdlib/index.html" target="_blank" rel="noopener">官方规范</a></p>
-<h2 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h2><h3 id="List"><a href="#List" class="headerlink" title="List"></a>List</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">val count=list.size     <span class="comment">//集合中元素的数量  Int</span></span><br><span class="line">val isNull=list.isEmpty()   <span class="comment">//判断集合是否为空  Boolean</span></span><br><span class="line">val isContains=list.contains(<span class="string">"xyz"</span>)  <span class="comment">//判断集合中是否包含某种元素     Boolean</span></span><br></pre></td></tr></table></figure>
-<h3 id="MutableList"><a href="#MutableList" class="headerlink" title="MutableList"></a>MutableList</h3><p><a href="http://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html" target="_blank" rel="noopener">官方规范</a><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">abstract</span> fun <span class="title">add</span><span class="params">(element: E)</span>: Boolean</span></span><br><span class="line"><span class="function"><span class="keyword">abstract</span> fun <span class="title">add</span><span class="params">(index: Int, element: E)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">val isClearOk </span>= mutableList.clear()   <span class="comment">//清空集合中得元素 Unit</span></span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/85/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/85/">85</a><span class="page-number current">86</span><a class="page-number" href="/page/87/">87</a><span class="space">&hellip;</span><a class="page-number" href="/page/90/">90</a><a class="extend next" rel="next" href="/page/87/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/85/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/85/">85</a><span class="page-number current">86</span><a class="page-number" href="/page/87/">87</a><span class="space">&hellip;</span><a class="page-number" href="/page/91/">91</a><a class="extend next" rel="next" href="/page/87/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1890,7 +1879,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">897</span>
+                    <span class="site-state-item-count">903</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2444,7 +2433,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">191</span>
+                      
+                    
+                    <span class="site-state-item-count">192</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
