@@ -107,7 +107,7 @@
 <meta property="og:site_name" content="郑君的学习笔记">
 <meta property="og:description" content="github NNG 是 nanomsg 的继任版本，而 nanomsg 则是流行的 ZMQ 的 C 重写版。 整体上看，NNG 的 API 很简约，主要是 4 个，open/recv/send/close，open 根据协议不同使用的函数会不同。配置则是 setopt/getopt，与 UNIX API 类似。API 中没有上下文环境（context-less）依赖，只需要一个 nng_sock">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-07-11T05:38:34.000Z">
+<meta property="og:updated_time" content="2019-11-13T02:01:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="nng-study">
 <meta name="twitter:description" content="github NNG 是 nanomsg 的继任版本，而 nanomsg 则是流行的 ZMQ 的 C 重写版。 整体上看，NNG 的 API 很简约，主要是 4 个，open/recv/send/close，open 根据协议不同使用的函数会不同。配置则是 setopt/getopt，与 UNIX API 类似。API 中没有上下文环境（context-less）依赖，只需要一个 nng_sock">
@@ -246,7 +246,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">902</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">914</span>
       </a>
 </li>
 
@@ -424,9 +424,14 @@
 <p>NNG 是 nanomsg 的继任版本，而 nanomsg 则是流行的 ZMQ 的 C 重写版。</p>
 <p>整体上看，NNG 的 API 很简约，主要是 4 个，open/recv/send/close，open 根据协议不同使用的函数会不同。配置则是 setopt/getopt，与 UNIX API 类似。API 中没有上下文环境（context-less）依赖，只需要一个 nng_socket，</p>
 <p>使用 CMAKE 构建项目</p>
-<h2 id="NNG-支持的通信协议主要有以下几种："><a href="#NNG-支持的通信协议主要有以下几种：" class="headerlink" title="NNG 支持的通信协议主要有以下几种："></a>NNG 支持的通信协议主要有以下几种：</h2><p>PAIR 一对一双向通信。<br>PIPELINE(PUSH/PULL) 单向通信，类似与生产者消费者模型的消息队列。<br>PUB/SUB 单向广播。<br>REQ/REP 请求-应答模式，类似与 RPC 模式。<br>BUS 网状连接通信，每个加入节点都可以发送/接受广播消息。<br>SURVEY 用于多节点表决或者服务发现。</p>
+<h2 id="NNG-支持的通信协议主要有以下几种："><a href="#NNG-支持的通信协议主要有以下几种：" class="headerlink" title="NNG 支持的通信协议主要有以下几种："></a>NNG 支持的通信协议主要有以下几种：</h2><p>PAIR 一对一双向通信。<br>PIPELINE(PUSH/PULL) 单向通信，类似与生产者消费者模型的消息队列。<br>PUB/SUB 单向广播。<br>REQ/REP 请求-应答模式，类似于 RPC 模式。<br>BUS 网状连接通信，每个加入节点都可以发送/接受广播消息。<br>SURVEY 用于多节点表决或者服务发现。</p>
 <h2 id="NNG-支持的传输模式主要有以下三种常用，其他还有tcp附加tls-1-2加密的tls传输和基于WebSocket的ws传输："><a href="#NNG-支持的传输模式主要有以下三种常用，其他还有tcp附加tls-1-2加密的tls传输和基于WebSocket的ws传输：" class="headerlink" title="NNG 支持的传输模式主要有以下三种常用，其他还有tcp附加tls 1.2加密的tls传输和基于WebSocket的ws传输："></a>NNG 支持的传输模式主要有以下三种常用，其他还有tcp附加tls 1.2加密的tls传输和基于WebSocket的ws传输：</h2><p>inproc 进程内线程间传输<br>ipc 主机内进程间传输<br>tcp 网络内主机间传输</p>
 <p>通信协议里除了 PAIR 之外，基本都是一对多的通信模式</p>
+<h2 id="编译使用"><a href="#编译使用" class="headerlink" title="编译使用"></a>编译使用</h2><p>使用 cmake 创建2015工程后，编译出错：win_thread.obj : error LNK2019: unresolved external symbol _InterlockedDecrementRelease64 referenced in function _nni_atomic_dec64_nv</p>
+<p>使用release v1.1.1编译通过，master分支不行</p>
+<p>同机进程间通信：”ipc:///rep_service”</p>
+<p>下面的问题没遇到，直接运行成功。<br>The libraries you would need to add for windows are:</p>
+<p>ws2_32<br>mswsock<br>advapi32</p>
 
       
     </div>
@@ -581,7 +586,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">902</span>
+                    <span class="site-state-item-count">914</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1137,7 +1142,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">192</span>
+                      
+                    
+                    <span class="site-state-item-count">193</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -1194,7 +1201,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#NNG-支持的通信协议主要有以下几种："><span class="nav-number">1.</span> <span class="nav-text">NNG 支持的通信协议主要有以下几种：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NNG-支持的传输模式主要有以下三种常用，其他还有tcp附加tls-1-2加密的tls传输和基于WebSocket的ws传输："><span class="nav-number">2.</span> <span class="nav-text">NNG 支持的传输模式主要有以下三种常用，其他还有tcp附加tls 1.2加密的tls传输和基于WebSocket的ws传输：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#NNG-支持的通信协议主要有以下几种："><span class="nav-number">1.</span> <span class="nav-text">NNG 支持的通信协议主要有以下几种：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NNG-支持的传输模式主要有以下三种常用，其他还有tcp附加tls-1-2加密的tls传输和基于WebSocket的ws传输："><span class="nav-number">2.</span> <span class="nav-text">NNG 支持的传输模式主要有以下三种常用，其他还有tcp附加tls 1.2加密的tls传输和基于WebSocket的ws传输：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译使用"><span class="nav-number">3.</span> <span class="nav-text">编译使用</span></a></li></ol></div>
             
 
           </div>
@@ -1219,7 +1226,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

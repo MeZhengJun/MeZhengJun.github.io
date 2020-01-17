@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">902</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">914</span>
       </a>
 </li>
 
@@ -328,7 +328,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/14/功能分类/database/sqlite/sqlite-update/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/09/02/开源库/RPC/gRPC-study/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -347,7 +347,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/08/14/功能分类/database/sqlite/sqlite-update/" itemprop="url">sqlite-update</a></h1>
+                <a class="post-title-link" href="/2019/09/02/开源库/RPC/gRPC-study/" itemprop="url">gRPC study</a></h1>
         
 
         <div class="post-meta">
@@ -359,7 +359,313 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-14T16:43:21+08:00">2019-08-14</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-02T14:21:16+08:00">2019-09-02</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>gRPC主要有4种请求／响应模式，分别是：</p>
+<p>(1) 简单模式（Simple RPC）</p>
+<p>这种模式最为传统，即客户端发起一次请求，服务端响应一个数据，这和大家平时熟悉的RPC没有什么大的区别，所以不再详细介绍。</p>
+<p>(2) 服务端数据流模式（Server-side streaming RPC）</p>
+<p>这种模式是客户端发起一次请求，服务端返回一段连续的数据流。典型的例子是客户端向服务端发送一个股票代码，服务端就把该股票的实时数据源源不断的返回给客户端。</p>
+<p>(3) 客户端数据流模式（Client-side streaming RPC）</p>
+<p>与服务端数据流模式相反，这次是客户端源源不断的向服务端发送数据流，而在发送结束后，由服务端返回一个响应。典型的例子是物联网终端向服务器报送数据。</p>
+<p>(4) 双向数据流模式（Bidirectional streaming RPC）</p>
+<p>顾名思义，这是客户端和服务端都可以向对方发送数据流，这个时候双方的数据可以同时互相发送，也就是可以实现实时交互。典型的例子是聊天机器人。</p>
+<h1 id="use-c"><a href="#use-c" class="headerlink" title="use c++"></a>use c++</h1><h2 id="windows"><a href="#windows" class="headerlink" title="windows"></a>windows</h2><p>To prepare for cmake + Microsoft Visual C++ compiler build</p>
+<p>Install Visual Studio 2015 or 2017 (Visual C++ compiler will be used).<br>Install Git.<br>Install CMake.<br>Install Active State Perl (choco install activeperl) - required by boringssl<br>Install Go (choco install golang) - required by boringssl<br>Install yasm and add it to PATH (choco install yasm) - required by boringssl<br>(Optional) Install Ninja (choco install ninja)</p>
+<p>下载指定版本<br><a href="https://github.com/grpc/grpc/releases" target="_blank" rel="noopener">gRPC</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone --recursive -b v1.23.0 https://github.com/grpc/grpc</span><br><span class="line"></span><br><span class="line">// 如果有子模块失败，使用下面命令更新</span><br><span class="line">git submodule update --init --recursive</span><br></pre></td></tr></table></figure>
+<p>// 编译软件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">md .build</span><br><span class="line">cd .build</span><br><span class="line">cmake .. -G &quot;Visual Studio 14 2015&quot;</span><br><span class="line">cmake --build . --config Release</span><br></pre></td></tr></table></figure></p>
+<h2 id="生成代码"><a href="#生成代码" class="headerlink" title="生成代码"></a>生成代码</h2><p>route_guide.pb.h - 消息类的头文件<br>route_guide.pb.cc - 其中包含消息类的实现<br>route_guide.grpc.pb.h - 服务类的头文件<br>route_guide.grpc.pb.cc - 其中包含服务类的实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&quot;protoc.exe&quot; -I=&quot;D:\project\rpcDemo\rpcDemo&quot; --grpc_out=&quot;D:\project\rpcDemo\rpcDemo&quot; --plugin=protoc-gen-grpc=&quot;grpc_cpp_plugin.exe&quot; &quot;D:\project\rpcDemo\rpcDemo\\rpc_api.proto&quot;</span><br><span class="line"></span><br><span class="line">&quot;D:\\project\\grpc\\.build\\third_party\\protobuf\\Release\\protoc.exe&quot; -I=&quot;D:\project\rpcDemo\rpcDemo&quot; --cpp_out=&quot;D:\project\rpcDemo\rpcDemo&quot; &quot;D:\project\rpcDemo\rpcDemo\rpc_api.proto&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">protoc -I ../../protos --grpc_out=. --plugin=protoc-gen-grpc=`which grpc_cpp_plugin` ../../protos/route_guide.proto</span><br><span class="line"></span><br><span class="line">protoc –grpc_out=. –plugin=protoc-gen-grpc=grpc_cpp_plugin.exe ./rpc_api.proto</span><br><span class="line"></span><br><span class="line">protoc -I ../../protos --cpp_out=. ../../protos/route_guide.proto</span><br></pre></td></tr></table></figure>
+<h2 id="rpcClient"><a href="#rpcClient" class="headerlink" title="rpcClient"></a>rpcClient</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// for rpc client</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;grpcpp/grpcpp.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> grpc::Channel;</span><br><span class="line"><span class="keyword">using</span> grpc::ClientContext;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">rpcClient</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	rpcClient(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Channel&gt; channel)</span><br><span class="line">		: stub_(apiService::apiService::NewStub(channel)) &#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Assembles the client's payload, sends it and presents the response back</span></span><br><span class="line">	<span class="comment">// from the server.</span></span><br><span class="line">	<span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">SendMsg</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; msg)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// Data we are sending to the server.</span></span><br><span class="line">		apiService::Request request;</span><br><span class="line">		request.set_value(msg);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Container for the data we expect from the server.</span></span><br><span class="line">		apiService::Response reply;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Context for the client. It could be used to convey extra information to</span></span><br><span class="line">		<span class="comment">// the server and/or tweak certain RPC behaviors.</span></span><br><span class="line">		ClientContext context;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// The actual RPC.</span></span><br><span class="line">		Status status = stub_-&gt;apiTrans(&amp;context, request, &amp;reply);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Act upon its status.</span></span><br><span class="line">		<span class="keyword">if</span> (status.ok()) &#123;</span><br><span class="line">			<span class="keyword">return</span> reply.value();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; status.error_code() &lt;&lt; <span class="string">": "</span> &lt;&lt; status.error_message()</span><br><span class="line">				&lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">			<span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;apiService::apiService::Stub&gt; stub_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rpcClient</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	rpcClient greeter(grpc::CreateChannel("localhost:53061", grpc::InsecureChannelCredentials()));</span><br><span class="line">	<span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">user</span><span class="params">(<span class="string">"world"</span>)</span></span>;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">string</span> reply = greeter.SendMsg(user);</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Greeter received: "</span> &lt;&lt; reply &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>warning C4003: not enough actual parameters for macro ‘min’<br>包含rpc的头文件要在windows前面</p>
+<p>包含库文件</p>
+<p>libprotobufd.lib<br>gpr.lib<br>grpc.lib<br>grpc++.lib<br>Ws2_32.lib<br>zlibstaticd.lib<br>caresd.lib<br>address_sortingd.lib</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;grpc/grpc.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;grpc++/server.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;grpc++/server_builder.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;grpc++/server_context.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;grpc++/security/server_credentials.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">undef</span> max</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">undef</span> min</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"rpc_api.grpc.pb.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"rpc_api.pb.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> grpc::Server;</span><br><span class="line"><span class="keyword">using</span> grpc::ServerBuilder;</span><br><span class="line"><span class="keyword">using</span> grpc::ServerContext;</span><br><span class="line"><span class="keyword">using</span> grpc::Status;</span><br></pre></td></tr></table></figure>
+<h3 id="“Please-compile-grpc-with-WIN32-WINNT-of-at-least-0x600-aka-Windows-Vista-”"><a href="#“Please-compile-grpc-with-WIN32-WINNT-of-at-least-0x600-aka-Windows-Vista-”" class="headerlink" title="“Please compile grpc with _WIN32_WINNT of at least 0x600 (aka Windows Vista)”"></a>“Please compile grpc with _WIN32_WINNT of at least 0x600 (aka Windows Vista)”</h3><p>需要在项目设置里面定义 _WIN32_WINNT=0x600 宏</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/31/读过的书/苏黎世投资定律/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/31/读过的书/苏黎世投资定律/" itemprop="url">苏黎世投资定律</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-31T06:43:37+08:00">2019-08-31</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>讲了几大定律，需要有切身的体会才能更好的领悟。推荐阅读</p>
+<p><img alt="20190831_064644.png" src="/2019/08/31/读过的书/苏黎世投资定律/20190831_064644.png" width="400" height=""></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/29/功能分类/database/sqlite/sqlite-delete/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/29/功能分类/database/sqlite/sqlite-delete/" itemprop="url">sqlite-delete</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-29T16:06:33+08:00">2019-08-29</time>
             
 
             
@@ -416,7 +722,7 @@
       
         
           
-            <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> table_name</span><br><span class="line"><span class="keyword">SET</span> column1 = value1, column2 = value2...., columnN = valueN</span><br><span class="line"><span class="keyword">WHERE</span> [condition];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">UPDATE</span> <span class="keyword">table</span></span><br><span class="line"><span class="keyword">SET</span> column_1 = new_value_1,</span><br><span class="line">    column_2 = new_value_2</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">    search_condition </span><br><span class="line"><span class="keyword">ORDER</span> column_or_expression</span><br><span class="line"><span class="keyword">LIMIT</span> <span class="keyword">row_count</span> <span class="keyword">OFFSET</span> <span class="keyword">offset</span>;</span><br></pre></td></tr></table></figure>
+            <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">DELETE FROM table WHERE search_condition;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">DELETE FROM table</span><br><span class="line">WHERE search_condition</span><br><span class="line">ORDER BY criteria</span><br><span class="line">LIMIT row_count OFFSET offset;</span><br></pre></td></tr></table></figure>
           
         
       
@@ -469,7 +775,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/13/Web开发/Mq-vs-rpc/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/28/学习笔记/算法/hash算法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -488,7 +794,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/08/13/Web开发/Mq-vs-rpc/" itemprop="url">Mq vs rpc</a></h1>
+                <a class="post-title-link" href="/2019/08/28/学习笔记/算法/hash算法/" itemprop="url">hash算法</a></h1>
         
 
         <div class="post-meta">
@@ -500,7 +806,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-13T17:41:42+08:00">2019-08-13</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-28T17:14:17+08:00">2019-08-28</time>
             
 
             
@@ -521,7 +827,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端/" itemprop="url" rel="index"><span itemprop="name">后端</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/算法/" itemprop="url" rel="index"><span itemprop="name">算法</span></a></span>
 
                 
                 
@@ -557,20 +863,13 @@
       
         
           
-            <p>同步调用：对于要立即等待返回处理结果的场景，RPC是首选。<br>RPC相比与MQ，不仅是实现了消息层面的通信，还直接实现了作为服务端的业务逻辑，客户端在调用多个RPC服务的时候，负载均衡逻辑必须在客户端实现，即，没有解耦的功能！</p>
-<h1 id="MQ-适用场景"><a href="#MQ-适用场景" class="headerlink" title="MQ 适用场景"></a>MQ 适用场景</h1><ul>
-<li>业务解耦</li>
-<li>消息的发送和处理是异步的</li>
-<li>广播</li>
-<li>最终一致性</li>
-<li>错峰流控等</li>
-</ul>
-<h1 id="RPC-适用场景"><a href="#RPC-适用场景" class="headerlink" title="RPC 适用场景"></a>RPC 适用场景</h1><ul>
-<li>客户端调用哪个服务器比较明确</li>
-<li>调用需要立即得到返回结果</li>
-<li>架构简单</li>
-</ul>
-<p>一次RPC调用的流程：<br><img alt="20190813_184052.png" src="/2019/08/13/Web开发/Mq-vs-rpc/20190813_184052.png" width="500" height=""></p>
+            <p>CityHash算法的开发是受到了 MurmurHash的启发<br>为了满足大数量的需求，减少碰撞，我们一般需要给出一个32位，64位或者128位的哈希，Google发布了一个叫做CityHash的方法，<br>能比较快的生成一个32位，64位或者128位的字符串签名，效率在64位cpu上得到了特殊优化，在工业级应用中可以使用该哈希算法，代码公布在google code上。</p>
+<p>总体而言，CityHash64 与 CityHash128 是解决经典问题的全新算法</p>
+<p><a href="https://github.com/google/cityhash" target="_blank" rel="noopener">https://github.com/google/cityhash</a></p>
+<p>murmurhash<br>属于非加密型hash算法</p>
+<p>MurmurHash算法：高运算性能，低碰撞率，由Austin Appleby创建于2008年，现已应用到Hadoop、libstdc++、nginx、libmemcached等开源系统。<br>2011年Appleby被Google雇佣，随后Google推出其变种的CityHash算法。</p>
+<p>Murmur is a family of good general purpose hashing functions, suitable for non-cryptographic usage. As stated by Austin Appleby, MurmurHash provides the following benefits:</p>
+<p>simple (in term of number of generated assembly instructions).<br>good distribution (passing chi-squared tests for practically all keysets &amp; bucket sizes.<br>good avalanche behavior (max bias of 0.5%).<br>good collision resistance (passes Bob Jenkin’s frog.c torture-test. No collisions possible for 4-byte keys, no small (1- to 7-bit) differentials).<br>great performance on Intel/AMD hardware, good tradeoff between hash quality and CPU consumption.</p>
 
           
         
@@ -624,7 +923,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/13/语言相关/CPP/cpp-插件相关开发/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/28/学习笔记/数据库/postgreSQL-mysql/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -643,7 +942,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/08/13/语言相关/CPP/cpp-插件相关开发/" itemprop="url">cpp-插件相关开发</a></h1>
+                <a class="post-title-link" href="/2019/08/28/学习笔记/数据库/postgreSQL-mysql/" itemprop="url">postgreSQL-mysql</a></h1>
         
 
         <div class="post-meta">
@@ -655,7 +954,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-13T15:25:56+08:00">2019-08-13</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-28T09:46:44+08:00">2019-08-28</time>
             
 
             
@@ -676,7 +975,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
 
                 
                 
@@ -712,7 +1011,20 @@
       
         
           
-            <p>使用 DLL 方式实现</p>
+            <p>MySQL 的各种 text 字段有不同的限制, 要手动区分 small text, middle text, large text… Pg 没有这个限制, text 能支持各种大小.<br>不少人应该遇到过 MySQL 里需要 utf8mb4 才能显示 emoji 的坑, Pg 就没这个坑.</p>
+<p>PostgreSQL 的稳定性极强， Innodb 等引擎在崩溃、断电之类的灾难场景下抗打击能力有了长足进步，然而很多 MySQL 用户都遇到过Server级的数据库丢失的场景——mysql系统库是MyISAM的，相比之下，PG数据库这方面要好一些。</p>
+<p>PG 多年来在 GIS 领域处于优势地位，因为它有丰富的几何类型，实际上不止几何类型，PG有大量字典、数组、bitmap 等数据类型，相比之下mysql就差很多，instagram就是因为PG的空间数据库扩展POSTGIS远远强于MYSQL的my spatial而采用PGSQL的。</p>
+<p>它可以存储 array 和 json, 可以在 array 和 json 上建索引, 甚至还能用表达式索引. 为了实现文档数据库的功能, 设计了 jsonb 的存储结构. 有人会说为什么不用 Mongodb 的 BSON 呢? Pg 的开发团队曾经考虑过, 但是他们看到 BSON 把 [“a”, “b”, “c”] 存成 {0: “a”, 1: “b”, 2: “c”} 的时候就决定要重新做一个 jsonb 了… 现在 jsonb 的性能已经优于 BSON.</p>
+<p>它有地理信息处理扩展 (GIS 扩展不仅限于真实世界, 游戏里的地形什么的也可以), 可以用 Pg 搭寻路服务器和地图服务器:<br>PostGIS — Spatial and Geographic Objects for PostgreSQL<br><a href="http://postgis.net/" target="_blank" rel="noopener">http://postgis.net/</a></p>
+<p>它自带全文搜索功能 (不用费劲再装一个 elasticsearch 咯):Full text search in milliseconds with PostgreSQL 不过一些语言相关的支持还不太完善, 有个 bamboo 插件用调教过的 mecab 做中文分词, 如果要求比较高, 还是自己分了词再存到 tsvector 比较好.</p>
+<p>它支持 trigram 索引.trigram 索引可以帮助改进全文搜索的结果: PostgreSQL: Documentation: 9.3: pg_trgmtrigram 还可以实现高效的正则搜索 (原理参考 <a href="https://swtch.com/~rsc/regexp/regexp4.html" target="_blank" rel="noopener">https://swtch.com/~rsc/regexp/regexp4.html</a> )</p>
+<p>MySQL 处理树状回复的设计会很复杂, 而且需要写很多代码, 而 Pg 可以高效处理树结构:Scaling Threaded Comments on Django at Disqus<a href="http://www.slideshare.net/quipo/trees-in-the-database-advanced-data-structures" target="_blank" rel="noopener">http://www.slideshare.net/quipo/trees-in-the-database-advanced-data-structures</a></p>
+<p>它可以把 70 种外部数据源 (包括 Mysql, Oracle, CSV, hadoop …) 当成自己数据库中的表来查询:<br>Foreign data wrappers</p>
+<p><img alt="20190828_101925.png" src="/2019/08/28/学习笔记/数据库/postgreSQL-mysql/20190828_101925.png" width="500" height=""></p>
+<p><img alt="20190828_101943.png" src="/2019/08/28/学习笔记/数据库/postgreSQL-mysql/20190828_101943.png" width="500" height=""></p>
+<p><img alt="20190828_102009.png" src="/2019/08/28/学习笔记/数据库/postgreSQL-mysql/20190828_102009.png" width="500" height=""></p>
+<p><img alt="20190828_102020.png" src="/2019/08/28/学习笔记/数据库/postgreSQL-mysql/20190828_102020.png" width="500" height=""></p>
+<p><img alt="20190828_102038.png" src="/2019/08/28/学习笔记/数据库/postgreSQL-mysql/20190828_102038.png" width="500" height=""></p>
 
           
         
@@ -766,7 +1078,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/10/开源库/POCO/poco-http-server/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/26/功能分类/database/sqlite/sqlite优化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -785,7 +1097,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/08/10/开源库/POCO/poco-http-server/" itemprop="url">poco-http server</a></h1>
+                <a class="post-title-link" href="/2019/08/26/功能分类/database/sqlite/sqlite优化/" itemprop="url">sqlite优化</a></h1>
         
 
         <div class="post-meta">
@@ -797,7 +1109,155 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-10T17:42:37+08:00">2019-08-10</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-26T14:49:42+08:00">2019-08-26</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>多使用显式事务。</li>
+<li>选择合适的PageSize,详细请看SQLite 知识摘要 — 存储。</li>
+<li>操作频繁 ，大量小记录（不使用显式事务），建议使用JournalMode :WAL 搭配 Synchronous: OFF。</li>
+<li>操作少 ，数据量大，使用默认的方式就好。看数据是否重要，可搭配 ：JournalMode : TRUNCATE | PERSIST  和 Synchronous: OFF。</li>
+<li>数据量大，但是数据可以重建，建议使用JournalMode :Memory ，搭配 Synchronous: OFF。HttpURLCache 就属于这种。</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/26/开源库/POCO/poco-data模块/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/26/开源库/POCO/poco-data模块/" itemprop="url">poco-data模块</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-26T13:24:05+08:00">2019-08-26</time>
             
 
             
@@ -861,7 +1321,13 @@
       
         
           
-            <p>poco 1.9 动态编译 dll md</p>
+            <h1 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    *pwnd-&gt;m_spDb-&gt;m_spSession &lt;&lt; <span class="string">"select f_id from t_user where f_name=? and f_pwd=?"</span>,</span><br><span class="line">        use(user), use(pwd), into(fid), now;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (<span class="keyword">const</span> Poco::Exception&amp; ex)</span><br><span class="line">&#123;</span><br><span class="line">    g_logger-&gt;error(<span class="string">"cmdType_frontend_login: get user info failed. &#123;&#125;"</span>, ex.displayText());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="事务处理"><a href="#事务处理" class="headerlink" title="事务处理"></a>事务处理</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    m_spDb-&gt;m_spSession-&gt;begin();</span><br><span class="line">    *m_spDb-&gt;m_spSession &lt;&lt; strSql, now;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp;it : vIdxCol)</span><br><span class="line">    &#123;</span><br><span class="line">        *m_spDb-&gt;m_spSession &lt;&lt; <span class="string">"CREATE INDEX idx_"</span> &lt;&lt; strInstId&lt;&lt; it &lt;&lt; <span class="string">" ON "</span> &lt;&lt; tableName &lt;&lt; <span class="string">" ("</span> &lt;&lt; it &lt;&lt; <span class="string">")"</span>, now;</span><br><span class="line">        *m_spDb-&gt;m_spSession &lt;&lt; <span class="string">"CREATE INDEX idx_"</span> &lt;&lt; strInstId&lt;&lt; it&lt;&lt;<span class="string">"_alarm "</span> &lt;&lt; <span class="string">" ON "</span> &lt;&lt; tableName + <span class="string">"_alarm"</span> &lt;&lt; <span class="string">" ("</span> &lt;&lt; it &lt;&lt; <span class="string">")"</span>, now;</span><br><span class="line">    &#125;</span><br><span class="line">    m_spDb-&gt;m_spSession-&gt;commit();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (<span class="keyword">const</span> Poco::Exception&amp; ex)</span><br><span class="line">&#123;</span><br><span class="line">    m_spDb-&gt;m_spSession-&gt;rollback();</span><br><span class="line">    g_logger-&gt;error(<span class="string">"checkDbDataTable: create data table failed. &#123;&#125;"</span>, ex.displayText());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="简单的选择"><a href="#简单的选择" class="headerlink" title="简单的选择"></a>简单的选择</h1><p>从数据库中取数据的操作与之类似。into关键字将数据库返回的值与C++对象匹配起来。并且支持指定默认值以防数据库返回null值。<br>此处需要注意的是，指定默认值的into，其定义为：into(T&amp; t, const Position&amp; pos, const T&amp; def)，使用的是模样类。在有些编译器下，不能隐式转换数据类型，所以需要显示的让第一个参数和第三个参数的数据类型保持一致。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Poco::Data::<span class="function">Session <span class="title">ses</span><span class="params">(MySQL::Connector::KEY, _dbConnString)</span></span>;</span><br><span class="line"><span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">ses &lt;&lt; <span class="string">"SELECT COUNT(*) FROM SMART_U_STREET"</span>,into(count),now;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="string">"street has "</span>&lt;&lt;count&lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span> name;</span><br><span class="line">session &lt;&lt; <span class="string">"SELECT fN FROM tbA"</span>,into(name),now;</span><br><span class="line">session &lt;&lt; <span class="string">"SELECT fN FROM tbA"</span>,into(name,<span class="number">0</span>,<span class="built_in">std</span>::<span class="built_in">string</span>(<span class="string">"default"</span>)),now;</span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span> name;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span> match=<span class="string">"wandoer"</span>;</span><br><span class="line">session &lt;&lt; <span class="string">"SELECT fN FROM tbA WHERE fN=?"</span>,into(name),use(match),now;</span><br></pre></td></tr></table></figure>
+<h1 id="选择循环处理"><a href="#选择循环处理" class="headerlink" title="选择循环处理"></a>选择循环处理</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MapObj</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int64_t</span> fk_user_id;</span><br><span class="line">    <span class="keyword">int64_t</span> f_datasId;</span><br><span class="line">    <span class="keyword">int64_t</span> f_datasType;</span><br><span class="line">    <span class="built_in">string</span> f_datas;</span><br><span class="line">&#125;;</span><br><span class="line">MapObj mapObj;</span><br><span class="line"></span><br><span class="line"><span class="function">Statement <span class="title">select</span><span class="params">(*m_spDbSrc-&gt;m_spSession)</span></span>;</span><br><span class="line">select &lt;&lt; <span class="string">"select fk_user_id,f_datasId,f_datasType,f_datas from t_ui_map"</span>, </span><br><span class="line">    into(mapObj.fk_user_id),into(mapObj.f_datasId),into(mapObj.f_datasType),into(mapObj.f_datas), range(<span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    m_spDbDest-&gt;m_spSession-&gt;begin();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> (!select.done())</span><br><span class="line">    &#123;</span><br><span class="line">        select.execute();</span><br><span class="line">        *m_spDbDest-&gt;m_spSession &lt;&lt; <span class="string">"insert into t_ui_map (fk_user_id,f_datasId,f_datasType,f_datas) values (?,?,?,?);"</span>,</span><br><span class="line">            useRef(mapObj.fk_user_id), useRef(mapObj.f_datasId), useRef(mapObj.f_datasType), useRef(mapObj.f_datas), now;</span><br><span class="line">    &#125;</span><br><span class="line">    m_spDbDest-&gt;m_spSession-&gt;commit();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (<span class="keyword">const</span> Poco::Exception&amp; ex)</span><br><span class="line">&#123;</span><br><span class="line">    m_spDbDest-&gt;m_spSession-&gt;rollback();</span><br><span class="line">    g_logger-&gt;error(<span class="string">"checkDbDataTable: create data table failed. &#123;&#125;"</span>, ex.displayText());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="使用容器"><a href="#使用容器" class="headerlink" title="使用容器"></a>使用容器</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Json::Value jsonObj;</span><br><span class="line"><span class="keyword">typedef</span> Poco::Tuple&lt;<span class="keyword">int64_t</span>, <span class="built_in">std</span>::<span class="built_in">string</span>&gt; Person;</span><br><span class="line"><span class="keyword">typedef</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Person&gt; People;</span><br><span class="line">People people;</span><br><span class="line"></span><br><span class="line">*pwnd-&gt;m_spDb-&gt;m_spSession &lt;&lt; <span class="string">"select f_ui_id,f_param from t_user where f_param is not null"</span>,into(people), now;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span>&amp;it: people)</span><br><span class="line">&#123;</span><br><span class="line">    jsonObj = readJsonFromString(it.get&lt;<span class="number">1</span>&gt;());</span><br><span class="line">    jsonObj[<span class="string">"userid"</span>] = it.get&lt;<span class="number">0</span>&gt;();</span><br><span class="line">    <span class="built_in">string</span> ss = jsonObj.toStyledString();</span><br><span class="line">    jsonRet[<span class="string">"datas"</span>].append(jsonObj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="参数化"><a href="#参数化" class="headerlink" title="参数化"></a>参数化</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span> name=<span class="string">"wandoer"</span>; </span><br><span class="line">session &lt;&lt; <span class="string">"INSERT INTO tbA VALUES(?)"</span>,use(name), now;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -915,7 +1381,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/06/功能分类/database/sqlite/sqlite-其他操作/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/26/功能分类/database/sqlite/sqlite-创建索引/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -934,7 +1400,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/08/06/功能分类/database/sqlite/sqlite-其他操作/" itemprop="url">sqlite-其他操作</a></h1>
+                <a class="post-title-link" href="/2019/08/26/功能分类/database/sqlite/sqlite-创建索引/" itemprop="url">sqlite-创建索引</a></h1>
         
 
         <div class="post-meta">
@@ -946,7 +1412,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-06T16:17:13+08:00">2019-08-06</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-26T09:59:36+08:00">2019-08-26</time>
             
 
             
@@ -1003,11 +1469,13 @@
       
         
           
-            <h2 id="判断表是否存在"><a href="#判断表是否存在" class="headerlink" title="判断表是否存在"></a>判断表是否存在</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//判断表是否存在</span></span><br><span class="line">select count(*) from sqlite_master where type = 'table' and name = 'T_test'</span><br></pre></td></tr></table></figure>
-<h2 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h2><p>注意，如果使用了 int64 的整形，需要明确指定长度。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE IF NOT EXISTS main.tableName (f_id INTEGER PRIMARY KEY AUTOINCREMENT NOT <span class="literal">NULL</span>, f_datetime TEXT DEFAULT CURRENT_TIMESTAMP NOT <span class="literal">NULL</span>, f_id_name INTEGER(<span class="number">8</span>) NOT <span class="literal">NULL</span>);</span><br></pre></td></tr></table></figure>
-<h2 id="获取记录总数"><a href="#获取记录总数" class="headerlink" title="获取记录总数"></a>获取记录总数</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">获取记录总数</span><br><span class="line"><span class="function">select <span class="title">count</span><span class="params">(*)</span> from <span class="title">t_info</span> <span class="params">(f_id INTEGER PRIMARY KEY AUTOINCREMENT NOT <span class="literal">NULL</span>, f_attr_id INTEGER NOT <span class="literal">NULL</span>, f_datatime TEXT DEFAULT CURRENT_TIMESTAMP NOT NUL<span class="string">L");</span></span></span></span><br></pre></td></tr></table></figure>
-<p>f_id_noise integer 0<br>select * from t_3764846313_5539326756021866496 where f_id_noise=1476754630 ORDER BY f_datetime DESC LIMIT 1</p>
+            <p>通用的语法</p>
+<h2 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">INDEX</span> index_name <span class="keyword">ON</span> table_name (column_name);</span><br></pre></td></tr></table></figure>
+<h2 id="创建唯一索引"><a href="#创建唯一索引" class="headerlink" title="创建唯一索引"></a>创建唯一索引</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">UNIQUE</span> <span class="keyword">INDEX</span> index_name <span class="keyword">ON</span> table_name (column_name)</span><br></pre></td></tr></table></figure>
+<h2 id="降序索引"><a href="#降序索引" class="headerlink" title="降序索引"></a>降序索引</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">INDEX</span> PersonIndex <span class="keyword">ON</span> Person (LastName <span class="keyword">DESC</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="索引多个列"><a href="#索引多个列" class="headerlink" title="索引多个列"></a>索引多个列</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">INDEX</span> PersonIndex <span class="keyword">ON</span> Person (LastName, FirstName)</span><br></pre></td></tr></table></figure>
+<h2 id="索引是否存在"><a href="#索引是否存在" class="headerlink" title="索引是否存在"></a>索引是否存在</h2><h3 id="sqlite"><a href="#sqlite" class="headerlink" title="sqlite"></a>sqlite</h3><p>select * from sqlite_master</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">count</span>(*) <span class="keyword">FROM</span> sqlite_master <span class="keyword">WHERE</span> <span class="keyword">name</span> = <span class="string">'idx_number_data'</span></span><br></pre></td></tr></table></figure>
 
           
         
@@ -1061,7 +1529,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/06/功能分类/database/sqlite/sqlite-insert/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/26/功能分类/database/sqlite-mysql-postgresql比较/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1080,7 +1548,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/08/06/功能分类/database/sqlite/sqlite-insert/" itemprop="url">sqlite-insert</a></h1>
+                <a class="post-title-link" href="/2019/08/26/功能分类/database/sqlite-mysql-postgresql比较/" itemprop="url">sqlite-mysql-postgresql比较</a></h1>
         
 
         <div class="post-meta">
@@ -1092,7 +1560,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-06T13:57:03+08:00">2019-08-06</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-26T09:40:34+08:00">2019-08-26</time>
             
 
             
@@ -1149,7 +1617,60 @@
       
         
           
-            <h2 id="一次插入多行"><a href="#一次插入多行" class="headerlink" title="一次插入多行"></a>一次插入多行</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">sql = "<span class="keyword">INSERT</span> <span class="keyword">INTO</span> t_outlet (<span class="keyword">id</span>,parentId) <span class="keyword">VALUES</span> (<span class="literal">null</span>,?),<span class="string">";</span></span><br><span class="line"><span class="string">for (int i = 0; i &lt; 7; ++i)</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    sql += "</span> (<span class="literal">null</span>,?),<span class="string">";</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">sql.remove(sql.length() - 1, 1);</span></span><br><span class="line"><span class="string">for (int i = 0; i &lt; 8; ++i)</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    m_pDb-&gt;setSqlParam(dbID);</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">if (m_pDb-&gt;exec(sql.toStdWString().c_str()) || m_pDb-&gt;changes() != 8)</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    m_lastErrorString = m_pDb-&gt;getLastError();</span></span><br><span class="line"><span class="string">    return -1;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+            <p><a href="https://www.digitalocean.com/community/articles/sqlite-vs-mysql-vs-postgresql-a-comparison-of-relational-database-management-systems" target="_blank" rel="noopener">https://www.digitalocean.com/community/articles/sqlite-vs-mysql-vs-postgresql-a-comparison-of-relational-database-management-systems</a></p>
+<h1 id="SQLite"><a href="#SQLite" class="headerlink" title="SQLite"></a>SQLite</h1><p>SQLite的优点</p>
+<p>基于文件<br>整个数据库完全由磁盘上的一个文件构成，这使得它的可移植性非常好。</p>
+<p>标准化<br>尽管它看起来像一个“简化版”的数据库实现，但是SQLite确实支持SQL。它省略了一些功能（RIGHT OUTER JOIN和FOR EACH STATEMENT），但同时也增加了一些额外的功能。</p>
+<p>非常适合开发甚至是测试<br>在大多数应用程序的开发阶段，大部分开发人员可能都非常需要一个能够支持并发扩展的解决方案。SQLite 包含丰富的功能，所能提供的特性超乎开发所需，使用起来也非常简洁——只需要一个文件和一个C链接库。</p>
+<p>SQLite的缺点</p>
+<p>没有用户管理<br>高级数据库都支持用户系统，例如管理连接对数据库和表的访问权限。鉴于SQLite的目的和性质（没有多客户端并发的高层设计），它并不包含这些功能。</p>
+<p>缺少通过优化获得额外性能的空间<br>还是由于设计方面的原因，无法通过优化SQLite获得大量的额外性能。这个类库非常容易调整、也非常容易使用。它并不复杂，所以从技术上无法让它变得更快，因为它已经很快了。</p>
+<p>何时应该使用SQLite</p>
+<p>嵌入式应用程序<br>所有需要可移植性、不需要扩展的应用程序，例如单用户的本地应用、移动应用或者游戏。</p>
+<p>替代磁盘访问<br>在很多情况下，需要直接读写磁盘文件的应用程序可以切换到SQLite从而受益于SQLite提供的额外功能以及使用结构化查询语言（SQL）所带来的简便性。</p>
+<p>测试<br>对大部分应用程序而言没必要使用额外的进程测试业务逻辑（例如应用程序的主要目标：功能）。</p>
+<p>何时不应该使用SQLite</p>
+<p>多用户应用程序<br>如果有多个客户端需要访问并使用同一个数据库，那么最好使用功能完整的关系型数据库（例如MySQL），而不是选择SQLite。</p>
+<p>需要高写入量的应用程序<br>写操作是SQLite的一个局限。该DBMS在同一时刻仅允许一个写操作，因而也限制了其吞吐量。</p>
+<h1 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h1><p>MySQL的优点</p>
+<p>易用<br>很容易安装。第三方工具，包括可视化工具，让用户能够很容易入门。</p>
+<p>功能丰富<br>MySQL支持关系型数据库应该有的大部分功能——或者直接支持、或者间接支持。</p>
+<p>安全<br>支持很多安全特性，有些非常高级，并且是内置于MySQL中。</p>
+<p>可扩展也非常强大<br>MySQL能够处理大量数据，并且在需要的时候可以规模化使用。</p>
+<p>快速<br>放弃某些标准让MySQL能够非常高效、简捷地工作，因而速度更快。</p>
+<p>MySQL的缺点</p>
+<p>已知限制<br>MySQL从一开始就没有打算做所有事情，因而它在功能方面有一定的局限性，并不能满足一些先进应用程序的要求。</p>
+<p>可靠性问题<br>MySQL对某些功能（例如引用、事务、审计等）的实现方式使得它与其他的关系型数据库相比缺少了一些可靠性。</p>
+<p>开发停滞<br>尽管MySQL依然是一款开源产品，但是自从它被收购之后人们就对其开发进展有很多抱怨。需要注意的是有一些基于MySQL的、完整集成的数据库在标准的MySQL之上附加了其他价值，例如MariaDB。</p>
+<p>何时应该使用MySQL</p>
+<p>分布式操作<br>如果SQLite不能满足你的需求，那么将MySQL引入到开发栈中，就像任何其他独立的数据库服务器一样，它能够给你带来大量的操作自由度以及一些先进的功能。</p>
+<p>高安全性<br>MySQL的安全机制通过一种简单的方式为数据的访问和使用提供了可靠的保护。</p>
+<p>网站和Web应用<br>尽管有一些约束，但是绝大部分网站和Web应用都可以简单地运行在MySQL上。相关的灵活可扩展的工具非常易于使用和管理——事实证明这些工具在长期运行时非常有用。</p>
+<p>定制解决方案<br>MySQL有丰富的配置项和运行模式，如果你需要一个高度量身定制的解决方案，那么MySQL能够非常容易地尾随并执行你的规则。</p>
+<p>何时不应该使用MySQL</p>
+<p>SQL遵从性<br>因为MySQL并没有打算实现完整的SQL标准，所以它并不完全符合SQL。如果你可能需要与这样的关系型数据库集成，那么从MySQL切换过去可能并不容易。</p>
+<p>并发性<br>尽管MySQL和一些其他的存储引擎能够非常好地执行读操作，但是并发读写可能会有问题。</p>
+<p>缺少功能<br>MySQL缺少某些功能，例如全文本搜索。</p>
+<h1 id="PostgreSQL"><a href="#PostgreSQL" class="headerlink" title="PostgreSQL"></a>PostgreSQL</h1><p>PostgreSQL的优点</p>
+<p>开源且遵从SQL标准<br>PostgreSQL是一款开源的、免费的、功能非常强大的关系型数据库。</p>
+<p>强大的社区<br>由一个忠实的、经验丰富的社区支持，用户可以通过知识库和Q&amp;A网站获得全天候的免费服务。</p>
+<p>强有力的第三方支持<br>除了非常先进的特性之外，PostgreSQL还有很多优秀的、开源的第三方工具可以辅助系统的设计、管理和使用。</p>
+<p>可扩展<br>可以通过存储过程扩展PostgreSQL的功能。</p>
+<p>面向对象<br>PostgreSQL不仅是一个关系型数据库，它还是一个面向对象的数据库——支持嵌套等功能。</p>
+<p>PostgreSQL的缺点</p>
+<p>性能:<br>对于简单繁重的读取操作，使用PostgreSQL可能有点小题大做，同时性能也比MySQL这样的同类产品要差。</p>
+<p>流行程度<br>尽管有大量的部署，但是鉴于该数据库的性质，它的受欢迎程序并不高。</p>
+<p>托管<br>由于上面提到的几点，很难找到提供托管PostgreSQL实例的主机或者服务提供商。</p>
+<p>何时应该使用PostgreSQL</p>
+<p>数据完整性<br>当绝对需要可靠性和数据完整性的时候，PostgreSQL是更好的选择。</p>
+<p>复杂的定制程序<br>如果需要数据库执行定制程序，那么可扩展的PostgreSQL是更好的选择。</p>
+<p>集成:<br>如果将来可能需要将整个数据库迁移到其他合适的解决方案上（例如Oracle），那么PostgreSQL可能兼容性最好也更容易切换。</p>
+<p>复杂的设计<br>与其他开源且免费的数据库相比，对于复杂的数据库设计PostgreSQL在功能方面最全面，潜力最大，不需要你放弃其他有价值的资产。</p>
+<p>何时不应该使用PostgreSQL</p>
+<p>速度<br>如果你只需要快速读取操作，那么PostgreSQL并不合适。</p>
+<p>简单<br>除非你需要绝对的数据完整性，ACID遵从性或者设计复杂，否则PostgreSQL对于简单的场景而言有点多余。</p>
+<p>复制<br>对于缺少数据库和系统管理经验的人而言使用MySQL实现复制要更简单，除非你愿意花费时间、精力和资源。</p>
+
           
         
       
@@ -1202,7 +1723,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/05/功能分类/database/sqlite/sqlite-参数化/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/23/学习笔记/设计模式/权限设计/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1221,7 +1742,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/08/05/功能分类/database/sqlite/sqlite-参数化/" itemprop="url">sqlite-参数化</a></h1>
+                <a class="post-title-link" href="/2019/08/23/学习笔记/设计模式/权限设计/" itemprop="url">权限设计</a></h1>
         
 
         <div class="post-meta">
@@ -1233,7 +1754,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-05T16:44:52+08:00">2019-08-05</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-23T10:50:13+08:00">2019-08-23</time>
             
 
             
@@ -1254,7 +1775,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/设计模式/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a></span>
 
                 
                 
@@ -1290,430 +1811,20 @@
       
         
           
-            <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> sql = <span class="string">"select count(*) from t_user where f_name=? and f_pwd=?"</span>;</span><br><span class="line">iRet = sqlite3_bind_text(pStmt, i + <span class="number">1</span>, m_param.at(i).typeChar, <span class="number">-1</span>, SQLITE_STATIC);</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
+            <h1 id="基于技术模型进行设计-RBAC-Role-Based-Access-Control）模型"><a href="#基于技术模型进行设计-RBAC-Role-Based-Access-Control）模型" class="headerlink" title="基于技术模型进行设计-RBAC(Role-Based Access Control）模型"></a>基于技术模型进行设计-RBAC(Role-Based Access Control）模型</h1><p>如下图即是 RBAC 模型中最基本的模型：用户与角色可为多对一或多对多的关系，当一个用户的角色为多对多时，当前用户的权限是多个角色的并集。<br>此时只需要为角色赋予权限，能够大大减轻管理负担，同时将用户与权限解耦，提供更大的灵活性。</p>
+<p><img alt="20190823_105347.png" src="/2019/08/23/学习笔记/设计模式/权限设计/20190823_105347.png" width="500" height=""></p>
+<ol>
+<li><p>页面权限优先于操作和数据权限<br>必须配置了页面模块权限后，才能配置当前页面模块下具体的操作权限，以及页面模块的数据展示权限。</p>
+</li>
+<li><p>查看权限优先于增删改权限</p>
+</li>
+</ol>
+<p>正常情况下，一定要先能查看某个模块或操作，其它的增删改操作才有意义。因此在设计时，应在获取查看权限前限制其它权限的配置，或者配置其它权限时默认赋予查看权限。</p>
+<p>节点包括：</p>
+<p>用户；<br>用户组；<br>角色；<br>角色组；<br>权限（页面、操作、数据）；<br>权限组（页面、操作、数据）。</p>
+<p>关系包括：</p>
+<p>是/否关系；<br>继承关系；<br>限制关系（互斥、范围限制、边界限制、字段限制……）；</p>
 
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/02/学习笔记/金融投资/融资融券/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/02/学习笔记/金融投资/融资融券/" itemprop="url">融资融券</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-02T07:31:57+08:00">2019-08-02</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/投资/" itemprop="url" rel="index"><span itemprop="name">投资</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>借钱买股和借股卖股的过程也叫开仓。<br>在这个过程中，有两个角色，分别是客户和券商，券商借给你钱，借给你券，你呢，为此支付利息，年化8%~14%之间。</p>
-<p>你借的钱，和股票，就叫做负债<br>借了钱，借了股票当然要还，这个期限最长不能超过180天，当然，在这期限之内，你可以随借随还</p>
-<p>你还钱的过程，叫做还款，可以直接现金还，也可以用卖了股票得来的资金还。<br>你还股票的过程，叫做还券，可以直接用持仓的股票还，也可以买入股票还。<br>当然，还款和还券的同时，要把对应的利息和手续费一起还上。<br>还钱还股票的过程，也叫平仓。</p>
-<p>买涨过程，就和我们现在的买股票是一模一样的，先买后卖。收益就是价差。<br>卖空，就是先把从券商借来的股票按照当前价卖掉，然后在找个低价买回来。</p>
-<p>买涨股票好理解，买入的时候有了买入成本价，持有的时候，现价就是你的卖出价，你的收益就是【（卖出价（现价）-买入成本价】<em>数量。<br>卖空操作呢，是先有了卖出价，你的买入成本价成了随时变动的现价，啥时候你买入了，这个时候你的收益就是【卖出价-现价（买入价）】</em>数量</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/02/学习笔记/金融投资/股指期货介绍/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/02/学习笔记/金融投资/股指期货介绍/" itemprop="url">股指期货介绍</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-02T07:17:13+08:00">2019-08-02</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>股指期货品种：<br>沪深300指数期货（代码IF）2010年4月16日<br>上证50指数期货（代码IH）2015年4月16日<br>中证500指数期货（代码IC）2015年4月16日</p>
-<p>特点:<br>杠杆性</p>
-<p><img alt="20190802_072321.png" src="/2019/08/02/学习笔记/金融投资/股指期货介绍/20190802_072321.png" width="400" height=""></p>
-<p><img alt="20190802_072454.png" src="/2019/08/02/学习笔记/金融投资/股指期货介绍/20190802_072454.png" width="400" height=""></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/08/01/语言相关/CPP/cpp-随机数/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/01/语言相关/CPP/cpp-随机数/" itemprop="url">cpp-随机数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-01T13:10:47+08:00">2019-08-01</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>随机数生成算法有很多，C++11之前的C/C++只用了一种。C++11则提供下面三种可供选择：</p>
-<ul>
-<li>linear_congruential_engine线性同余法</li>
-<li>mersenne_twister_engine梅森旋转法</li>
-<li>substract_with_carry_engine滞后Fibonacci</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生成随机模拟数据</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;random&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::default_random_engine random;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">20</span>; ++i)</span><br><span class="line">    <span class="keyword">int</span> i = random();</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生成 0- 100范围内的</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;random&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;time.h&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">cout</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">cin</span>;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::uniform_real_distribution&lt;<span class="keyword">double</span>&gt; dis2(<span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">    <span class="comment">// obtain a seed from the system clock:</span></span><br><span class="line">        <span class="keyword">unsigned</span> seed1 = <span class="built_in">std</span>::chrono::system_clock::now().time_since_epoch().count();</span><br><span class="line">        <span class="built_in">std</span>::<span class="function">default_random_engine <span class="title">random</span><span class="params">(seed1)</span></span>;</span><br><span class="line">        <span class="built_in">std</span>::uniform_int_distribution&lt;<span class="keyword">int</span>&gt; dis1(<span class="number">0</span>, <span class="number">100</span>);</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;dis1(random)&lt;&lt;<span class="string">' '</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i)</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;dis2(random)&lt;&lt;<span class="string">' '</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在uniform_int_distribution的构造函数中，参数说明了随机数的范围。uniform_int_distribution的随机数的范围不是半开范围[  )，而是[  ]，对于uniform_real_distribution却是半开范围[  )。也是就是说上面的例子中，能产生100，但不会产生1.0。不得不说，这颠覆了之前的认识。对于default_random_engine来说，其产生的随机数范围是在[min()， max()]之间，其中min()和max()为它的两个成员函数。同样，也是非半开范围。对于浮点数，如果真的是想产生[0.0, 1.0]范围的数，可以使用</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cfloat&gt;</span></span></span><br><span class="line"><span class="built_in">std</span>::uniform_real_distribution&lt;<span class="keyword">double</span>&gt; dis2(<span class="number">0</span>, <span class="built_in">std</span>::nextafter(<span class="number">1</span>,DBL_MAX));</span><br></pre></td></tr></table></figure>
           
         
       
@@ -1755,7 +1866,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/91/">91</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/92/">92</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1802,7 +1913,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">902</span>
+                    <span class="site-state-item-count">914</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2358,7 +2469,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">192</span>
+                      
+                    
+                    <span class="site-state-item-count">193</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -2424,7 +2537,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

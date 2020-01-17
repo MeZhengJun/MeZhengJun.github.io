@@ -107,7 +107,7 @@
 <meta property="og:site_name" content="郑君的学习笔记">
 <meta property="og:description" content="获取当前应用路径1234567func getCurrentDirectory() string &amp;#123;   dir, err := filepath.Abs(filepath.Dir(os.Args[0]))  //返回绝对路径  filepath.Dir(os.Args[0])去除最后一个元素的路径   if err != nil &amp;#123;      log.Fatal(err)">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-12T08:08:05.000Z">
+<meta property="og:updated_time" content="2019-11-14T03:25:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="go-常用代码段">
 <meta name="twitter:description" content="获取当前应用路径1234567func getCurrentDirectory() string &amp;#123;   dir, err := filepath.Abs(filepath.Dir(os.Args[0]))  //返回绝对路径  filepath.Dir(os.Args[0])去除最后一个元素的路径   if err != nil &amp;#123;      log.Fatal(err)">
@@ -246,7 +246,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">902</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">914</span>
       </a>
 </li>
 
@@ -414,7 +414,7 @@
 
       
         <h2 id="获取当前应用路径"><a href="#获取当前应用路径" class="headerlink" title="获取当前应用路径"></a>获取当前应用路径</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getCurrentDirectory</span><span class="params">()</span> <span class="title">string</span></span> &#123;</span><br><span class="line">   dir, err := filepath.Abs(filepath.Dir(os.Args[<span class="number">0</span>]))  <span class="comment">//返回绝对路径  filepath.Dir(os.Args[0])去除最后一个元素的路径</span></span><br><span class="line">   <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">      log.Fatal(err)</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> strings.Replace(dir, <span class="string">"\\"</span>, <span class="string">"/"</span>, <span class="number">-1</span>) <span class="comment">//将\替换成/</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<h2 id="遍历目录下文件和目录"><a href="#遍历目录下文件和目录" class="headerlink" title="遍历目录下文件和目录"></a>遍历目录下文件和目录</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取指定目录下的所有文件和目录</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetFilesAndDirs</span><span class="params">(dirPth <span class="keyword">string</span>)</span> <span class="params">(files []<span class="keyword">string</span>, dirs []<span class="keyword">string</span>, err error)</span></span> &#123;</span><br><span class="line">    dir, err := ioutil.ReadDir(dirPth)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span>, <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	PthSep := <span class="keyword">string</span>(os.PathSeparator)</span><br><span class="line">	<span class="comment">//suffix = strings.ToUpper(suffix) //忽略后缀匹配的大小写</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, fi := <span class="keyword">range</span> dir &#123;</span><br><span class="line">		<span class="keyword">if</span> fi.IsDir() &#123; <span class="comment">// 目录, 递归遍历</span></span><br><span class="line">			dirs = <span class="built_in">append</span>(dirs, dirPth+PthSep+fi.Name())</span><br><span class="line">			GetFilesAndDirs(dirPth + PthSep + fi.Name())</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// 过滤指定格式</span></span><br><span class="line">			<span class="comment">// ok := strings.HasSuffix(fi.Name(), ".log")</span></span><br><span class="line">			<span class="comment">// if ok &#123;</span></span><br><span class="line">			<span class="comment">// 	files = append(files, dirPth+PthSep+fi.Name())</span></span><br><span class="line">			<span class="comment">// &#125;</span></span><br><span class="line">			files = <span class="built_in">append</span>(files, dirPth+PthSep+fi.Name())</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> files, dirs, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -566,7 +566,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">902</span>
+                    <span class="site-state-item-count">914</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1122,7 +1122,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">192</span>
+                      
+                    
+                    <span class="site-state-item-count">193</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -1179,7 +1181,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#获取当前应用路径"><span class="nav-number">1.</span> <span class="nav-text">获取当前应用路径</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#获取当前应用路径"><span class="nav-number">1.</span> <span class="nav-text">获取当前应用路径</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遍历目录下文件和目录"><span class="nav-number">2.</span> <span class="nav-text">遍历目录下文件和目录</span></a></li></ol></div>
             
 
           </div>
@@ -1204,7 +1206,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
