@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">73</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">72</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">914</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">915</span>
       </a>
 </li>
 
@@ -348,6 +348,148 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 <a class="post-title-link" href="/2019/03/26/学习笔记/windows/win32-listctrl/" itemprop="url">win32-listctrl</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-26T15:09:05+08:00">2019-03-26</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="创建实例"><a href="#创建实例" class="headerlink" title="创建实例"></a>创建实例</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">InitCommonControls();</span><br><span class="line">m_handleList = GetDlgItem(m_hWnd, IDC_LIST1);</span><br><span class="line"></span><br><span class="line">LVCOLUMN LvCol;</span><br><span class="line"><span class="built_in">memset</span>(&amp;LvCol, <span class="number">0</span>, <span class="keyword">sizeof</span>(LvCol));</span><br><span class="line">LvCol.mask = LVCF_TEXT | LVCF_WIDTH | LVCF_SUBITEM; <span class="comment">// Type of mask</span></span><br><span class="line">LvCol.cx = <span class="number">200</span>;                                <span class="comment">// width between each coloum</span></span><br><span class="line">LvCol.pszText = <span class="string">"分组"</span>;                     <span class="comment">// First Header</span></span><br><span class="line">SendMessage(m_handleList, LVM_INSERTCOLUMN, <span class="number">0</span>, (LPARAM)&amp;LvCol);</span><br><span class="line">LvCol.pszText = <span class="string">"设备编号"</span>;</span><br><span class="line">SendMessage(m_handleList, LVM_INSERTCOLUMN, <span class="number">1</span>, (LPARAM)&amp;LvCol);</span><br><span class="line">LvCol.pszText = <span class="string">"设备名称"</span>;</span><br><span class="line">SendMessage(m_handleList, LVM_INSERTCOLUMN, <span class="number">2</span>, (LPARAM)&amp;LvCol);</span><br><span class="line">LvCol.pszText = <span class="string">"是否启用"</span>;</span><br><span class="line">SendMessage(m_handleList, LVM_INSERTCOLUMN, <span class="number">3</span>, (LPARAM)&amp;LvCol);</span><br></pre></td></tr></table></figure>
+<h1 id="插入一行"><a href="#插入一行" class="headerlink" title="插入一行"></a>插入一行</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 填充设备信息列表</span></span><br><span class="line">LVITEMA item;</span><br><span class="line"><span class="built_in">memset</span>(&amp;item, <span class="number">0</span>, <span class="keyword">sizeof</span>(item)); <span class="comment">// Zero struct's Members</span></span><br><span class="line">                                    <span class="comment">//  Setting properties Of members:</span></span><br><span class="line">item.mask = LVIF_TEXT;   <span class="comment">// Text Style</span></span><br><span class="line">item.cchTextMax = <span class="number">256</span>; <span class="comment">// Max size of test</span></span><br><span class="line">item.iItem = <span class="number">0</span>;          <span class="comment">// choose item  </span></span><br><span class="line">item.iSubItem = <span class="number">0</span>;       <span class="comment">// Put in first coluom</span></span><br><span class="line">item.pszText = <span class="string">"Item 0"</span>; <span class="comment">// Text to display (can be from a char variable) (Items)</span></span><br><span class="line"></span><br><span class="line">SendMessage(m_handleList, LVM_INSERTITEM, <span class="number">0</span>, (LPARAM)&amp;item); <span class="comment">// Send info to the Listview</span></span><br><span class="line"><span class="keyword">char</span> Temp[<span class="number">512</span>];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">5</span>; i++) <span class="comment">// Add SubItems in a loop</span></span><br><span class="line">&#123;</span><br><span class="line">    item.iSubItem = i;</span><br><span class="line">    <span class="built_in">sprintf</span>(Temp, <span class="string">"SubItem %d"</span>, i);</span><br><span class="line">    item.pszText = Temp;</span><br><span class="line">    SendMessage(m_handleList, LVM_SETITEM, <span class="number">0</span>, (LPARAM)&amp;item); <span class="comment">// Enter text to SubItems</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/03/26/学习笔记/windows/Win32/win32-listctrl/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/26/学习笔记/windows/Win32/win32-listctrl/" itemprop="url">win32-listctrl</a></h1>
         
 
         <div class="post-meta">
@@ -1624,148 +1766,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/03/19/功能分类/process_thread/系统托盘图标/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/19/功能分类/process_thread/系统托盘图标/" itemprop="url">系统托盘图标</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-19T09:40:54+08:00">2019-03-19</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="对话框"><a href="#对话框" class="headerlink" title="对话框"></a>对话框</h1><p>资源里面添加右键菜单资源</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 头文件添加</span></span><br><span class="line">CMenu		  m_menu;</span><br><span class="line">NOTIFYICONDATA m_notifyData;</span><br><span class="line"><span class="function">LRESULT <span class="title">OnTrayNotify</span><span class="params">(WPARAM wParam, LPARAM lParam)</span></span>;</span><br><span class="line"><span class="keyword">void</span> CvideoHelperDlg::OnTraymenuRestore();</span><br><span class="line"><span class="keyword">void</span> CvideoHelperDlg::OnTraymenuExit();</span><br><span class="line"><span class="keyword">void</span> CvideoHelperDlg::OnTraymenuStartService();</span><br><span class="line"><span class="keyword">void</span> CvideoHelperDlg::OnTraymenuStopService();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 源文件添加</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> WM_TRAY_MESSAGE (WM_APP + 100)</span></span><br><span class="line"></span><br><span class="line">ON_MESSAGE(WM_TRAY_MESSAGE, OnTrayNotify)</span><br><span class="line">ON_COMMAND(ID_RMENU_SHOWWINDOW, &amp;CvideoHelperDlg::OnTraymenuRestore)</span><br><span class="line">ON_COMMAND(ID_RMENU_EXIT, &amp;CvideoHelperDlg::OnTraymenuExit)</span><br><span class="line">ON_COMMAND(ID_RMENU_STARTSERVICE, &amp;CvideoHelperDlg::OnTraymenuStartService)</span><br><span class="line">ON_COMMAND(ID_RMENU_STOPSERVICE, &amp;CvideoHelperDlg::OnTraymenuStopService)</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> CvideoHelperDlg::OnTraymenuRestore()</span><br><span class="line">&#123;</span><br><span class="line">	ShowWindow(SW_SHOW);</span><br><span class="line">	ShowWindow(SW_RESTORE);</span><br><span class="line">	Shell_NotifyIcon(NIM_DELETE, &amp;m_notifyData);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> CvideoHelperDlg::OnTraymenuExit()</span><br><span class="line">&#123;</span><br><span class="line">	Shell_NotifyIcon(NIM_DELETE, &amp;m_notifyData);</span><br><span class="line">	clean4quit();</span><br><span class="line">	OnOK();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">LRESULT CvideoHelperDlg::OnTrayNotify(WPARAM wParam, LPARAM lParam)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">switch</span> ((UINT)lParam)</span><br><span class="line">	&#123;</span><br><span class="line">	<span class="keyword">case</span> WM_LBUTTONUP:</span><br><span class="line">		OnTraymenuRestore();</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> WM_RBUTTONUP:</span><br><span class="line">	<span class="keyword">case</span> WM_CONTEXTMENU:</span><br><span class="line">		CPoint pt;</span><br><span class="line">		GetCursorPos(&amp;pt);</span><br><span class="line">		SetForegroundWindow();<span class="comment">//for pop up menu but not click</span></span><br><span class="line">							  <span class="comment">//m_menu is the member of CTrayMinDlg as CMenu m_menu;</span></span><br><span class="line">		m_menu.GetSubMenu(<span class="number">0</span>)-&gt;TrackPopupMenu(TPM_BOTTOMALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON, pt.x, pt.y, <span class="keyword">this</span>);</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">OnInitDialog</span><br><span class="line">m_menu.LoadMenu(IDR_MENU_TRAY);</span><br><span class="line"><span class="comment">//m_bMinimized = FALSE;</span></span><br><span class="line">ZeroMemory(&amp;m_notifyData, <span class="keyword">sizeof</span>(NOTIFYICONDATA));</span><br><span class="line">m_notifyData.cbSize = <span class="keyword">sizeof</span>(NOTIFYICONDATA);</span><br><span class="line">m_notifyData.hWnd = <span class="keyword">this</span>-&gt;m_hWnd;</span><br><span class="line">m_notifyData.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;</span><br><span class="line">m_notifyData.uID = IDR_MAINFRAME;</span><br><span class="line">m_notifyData.uCallbackMessage = WM_TRAY_MESSAGE;</span><br><span class="line">m_notifyData.hIcon = AfxGetApp()-&gt;LoadIcon(IDR_MAINFRAME);</span><br><span class="line">_tcscpy_s(&amp;m_notifyData.szTip[<span class="number">0</span>], <span class="number">128</span>, TEXT(<span class="string">"服务器程序"</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 最小化窗口</span></span><br><span class="line">PostMessage(WM_SYSCOMMAND, SC_MINIMIZE);</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> CvideoHelperDlg::OnDestroy()</span><br><span class="line">&#123;</span><br><span class="line">	CDialogEx::OnDestroy();</span><br><span class="line">	Shell_NotifyIcon(NIM_DELETE, &amp;m_notifyData);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> CvideoHelperDlg::OnSize(UINT nType, <span class="keyword">int</span> cx, <span class="keyword">int</span> cy)</span><br><span class="line">&#123;</span><br><span class="line">	CDialogEx::OnSize(nType, cx, cy);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//minimized to system tray  &amp;&amp; (FALSE == m_bMinimized)</span></span><br><span class="line">	<span class="keyword">if</span> (nType == SIZE_MINIMIZED)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (FALSE == Shell_NotifyIcon(NIM_ADD, &amp;m_notifyData))</span><br><span class="line">		&#123;</span><br><span class="line">			MessageBox(TEXT(<span class="string">"Unable to set tray icon"</span>), TEXT(<span class="string">"Error"</span>));</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		ShowWindow(SW_HIDE);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1817,7 +1817,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">914</span>
+                    <span class="site-state-item-count">915</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1974,9 +1974,7 @@
                     
                       
                     
-                      
-                    
-                    <span class="site-state-item-count">73</span>
+                    <span class="site-state-item-count">72</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -2940,9 +2938,9 @@
       
     
       
-        
-      
     
+      
+        
       
     
       
