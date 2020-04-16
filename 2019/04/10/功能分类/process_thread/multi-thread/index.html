@@ -99,18 +99,18 @@
 
 
 
-  <meta name="description" content="win32 方式C++ 14注意：可被 joinable 的 std::thread 对象必须在他们销毁之前被主线程 join 或者将其设置为 detached. 123456789101112131415161718192021m_thread_recive = std::thread(threadReceive, this);int threadReceive(const void* p)&amp;#">
+  <meta name="description" content="win32 方式c++ 方式CPP RunTime Library12_beginthreadex, _endthreadex_endthreadex need calling the Win32 CloseHandle API 注意：在使用了MFC的程序中不能够使用该函数创建线程，而应该使用MFC提供的线程函数MFC relies on some thread - local variables">
 <meta name="keywords" content="多线程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="multi-thread">
 <meta property="og:url" content="http://zhengjunblog.top/2019/04/10/功能分类/process_thread/multi-thread/index.html">
 <meta property="og:site_name" content="郑君的学习笔记">
-<meta property="og:description" content="win32 方式C++ 14注意：可被 joinable 的 std::thread 对象必须在他们销毁之前被主线程 join 或者将其设置为 detached. 123456789101112131415161718192021m_thread_recive = std::thread(threadReceive, this);int threadReceive(const void* p)&amp;#">
+<meta property="og:description" content="win32 方式c++ 方式CPP RunTime Library12_beginthreadex, _endthreadex_endthreadex need calling the Win32 CloseHandle API 注意：在使用了MFC的程序中不能够使用该函数创建线程，而应该使用MFC提供的线程函数MFC relies on some thread - local variables">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-11-04T06:16:36.000Z">
+<meta property="og:updated_time" content="2020-04-08T02:04:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="multi-thread">
-<meta name="twitter:description" content="win32 方式C++ 14注意：可被 joinable 的 std::thread 对象必须在他们销毁之前被主线程 join 或者将其设置为 detached. 123456789101112131415161718192021m_thread_recive = std::thread(threadReceive, this);int threadReceive(const void* p)&amp;#">
+<meta name="twitter:description" content="win32 方式c++ 方式CPP RunTime Library12_beginthreadex, _endthreadex_endthreadex need calling the Win32 CloseHandle API 注意：在使用了MFC的程序中不能够使用该函数创建线程，而应该使用MFC提供的线程函数MFC relies on some thread - local variables">
 
 
 
@@ -236,7 +236,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">72</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">75</span>
       </a>
 </li>
 
@@ -246,7 +246,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">915</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">982</span>
       </a>
 </li>
 
@@ -413,23 +413,7 @@
       
 
       
-        <h1 id="win32-方式"><a href="#win32-方式" class="headerlink" title="win32 方式"></a>win32 方式</h1><h1 id="C-14"><a href="#C-14" class="headerlink" title="C++ 14"></a>C++ 14</h1><p>注意：可被 joinable 的 std::thread 对象必须在他们销毁之前被主线程 join 或者将其设置为 detached.</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">m_thread_recive = <span class="built_in">std</span>::thread(threadReceive, <span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">threadReceive</span><span class="params">(<span class="keyword">const</span> <span class="keyword">void</span>* p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	CTcpClient* pwnd = (CTcpClient*)p;</span><br><span class="line">	<span class="keyword">while</span> (FLAG_EXIT_THREAD_RECEIVE != (pwnd-&gt;m_flag&amp;FLAG_EXIT_THREAD_RECEIVE))</span><br><span class="line">	&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">20</span>; ++i)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (FLAG_EXIT_THREAD_RECEIVE == (pwnd-&gt;m_flag&amp;FLAG_EXIT_THREAD_RECEIVE))</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">goto</span> skip_return;</span><br><span class="line">			&#125;</span><br><span class="line">			this_thread::sleep_for(chrono::milliseconds(<span class="number">100</span>));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">skip_return:</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::thread m_threadHttpServer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (FLAG_HTTP_SERVER_RUNNING != (g_iFlag&amp;FLAG_HTTP_SERVER_RUNNING))</span><br><span class="line">&#123;</span><br><span class="line">  m_threadHttpServer = <span class="built_in">std</span>::thread(threadHttpServer, (<span class="keyword">this</span>), <span class="number">2</span>,<span class="string">"other param"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">g_iFlag |= FLAG_EXIT_HTTP_SERVER;</span><br><span class="line"><span class="keyword">while</span> (FLAG_HTTP_SERVER_RUNNING == (g_iFlag&amp;FLAG_HTTP_SERVER_RUNNING))</span><br><span class="line">&#123;</span><br><span class="line">  Sleep(<span class="number">200</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (m_threadHttpServer.joinable())</span><br><span class="line">&#123;</span><br><span class="line">  m_threadHttpServer.join();</span><br><span class="line">&#125;</span><br><span class="line">g_iFlag &amp;= (~FLAG_EXIT_HTTP_SERVER);</span><br></pre></td></tr></table></figure>
-<p><a href="https://hackernoon.com/learn-c-multi-threading-in-5-minutes-8b881c92941f" target="_blank" rel="noopener">ref.</a></p>
-<p>A thread can be created in several ways:</p>
-<ol>
-<li>Using a function pointer</li>
-<li>Using a functor</li>
-<li>Using a lambda function</li>
-</ol>
-<p>c++11<br>lock_guard is no longer recommended.</p>
-<p>c++ 17<br>unique_lock and scoped_lock are recommended.</p>
-<p>对于判断线程是否执行完毕,可以通过自己设置 flag 来判断.</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// thread example</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;       // std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;         // std::thread</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		str.Format(<span class="string">L"foo %d\n"</span>, i);</span><br><span class="line">		OutputDebugString(str);</span><br><span class="line">		Sleep(<span class="number">1000</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bar</span><span class="params">(<span class="keyword">int</span>&amp; x, <span class="keyword">int</span>&amp; out)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> m = <span class="number">0</span>;</span><br><span class="line">	CString str;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		m += x;</span><br><span class="line">		str.Format(<span class="string">L"bar %d\n"</span>, i);</span><br><span class="line">		OutputDebugString(str);</span><br><span class="line">		Sleep(<span class="number">1000</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	out = m;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  CString str;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">std</span>::<span class="function">thread <span class="title">first</span><span class="params">(foo)</span></span>;     <span class="comment">// spawn new thread that calls foo()</span></span><br><span class="line">	<span class="keyword">int</span> out = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> in = <span class="number">10</span>;</span><br><span class="line">	std::thread second(bar, ref(in),ref(out));  // spawn new thread that calls bar(0)</span><br><span class="line"></span><br><span class="line">	OutputDebugString(<span class="string">L"main, foo and bar now execute concurrently...\n"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// synchronize threads:</span></span><br><span class="line">	first.join();                <span class="comment">// pauses until first finishes</span></span><br><span class="line">	second.join();               <span class="comment">// pauses until second finishes</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	str.Format(<span class="string">L"foo and bar completed. out:%d\n"</span>, out);</span><br><span class="line"></span><br><span class="line">	OutputDebugString(str);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>std::ref<br>主要是考虑函数式编程（如std::bind）在使用时，是对参数直接拷贝，而不是引用。</p>
-<p>warning: all parameters is passing default by value unless you wrap them in std::ref.</p>
-<h1 id="c-方式"><a href="#c-方式" class="headerlink" title="c++ 方式"></a>c++ 方式</h1><p>CPP RunTime Library<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_beginthreadex, _endthreadex</span><br><span class="line">_endthreadex need calling the Win32 CloseHandle API</span><br></pre></td></tr></table></figure></p>
+        <h1 id="win32-方式"><a href="#win32-方式" class="headerlink" title="win32 方式"></a>win32 方式</h1><h1 id="c-方式"><a href="#c-方式" class="headerlink" title="c++ 方式"></a>c++ 方式</h1><p>CPP RunTime Library<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_beginthreadex, _endthreadex</span><br><span class="line">_endthreadex need calling the Win32 CloseHandle API</span><br></pre></td></tr></table></figure></p>
 <p>注意：在使用了MFC的程序中不能够使用该函数创建线程，而应该使用MFC提供的线程函数<br>MFC relies on some thread - local variables and state.AfxBeginThread<br>initializes those, then calls <code>_beginthreadex</code> for you.Just part of the<br>preconditions for using the library.If you don’t use <code>AfxBeginThread</code>  some<br>of your calls to MFC functions could encounter uninitialized pointers.</p>
 <a id="more"></a>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//_beginthread use</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;process.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//friend function can access private member</span></span><br><span class="line"><span class="keyword">friend</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> __<span class="function">stdcall <span class="title">threadReadProc</span><span class="params">(<span class="keyword">void</span>* pArguments)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//monitor thread use</span></span><br><span class="line">HANDLE        hThread;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">startListener</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// Create the second thread.</span></span><br><span class="line">    m_hThreadPay = (HANDLE)_beginthreadex(<span class="literal">NULL</span>, <span class="number">0</span>, &amp;threadReadProc, <span class="keyword">this</span>, <span class="number">0</span>, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">if</span> (<span class="literal">NULL</span> == m_hThread)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> RET_FAILED;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Wait until second thread terminates. If you comment out the line</span></span><br><span class="line">    <span class="comment">// below, Counter will not be correct because the thread has not</span></span><br><span class="line">    <span class="comment">// terminated, and Counter most likely has not been incremented to</span></span><br><span class="line">    <span class="comment">// 1000000 yet.</span></span><br><span class="line">    WaitForSingleObject(m_hThreadPay, INFINITE);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Counter should be 1000000; it is-&gt; %d\n"</span>, Counter);</span><br><span class="line">    <span class="comment">// Destroy the thread object.</span></span><br><span class="line">    CloseHandle(m_hThreadPay);</span><br><span class="line">    _endthreadex(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> __<span class="function">stdcall <span class="title">threadReadProc</span><span class="params">(<span class="keyword">void</span>* pArguments)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  CMainDlg* pwnd = (CMainDlg*)pArguments;</span><br><span class="line">    ::WaitForSingleObject(hEvent, INFINITE);</span><br><span class="line">    ...</span><br><span class="line">        CloseHandle(hThread);</span><br><span class="line">    g_hThreadProc = <span class="literal">NULL</span>;</span><br><span class="line">    _endthreadex(<span class="number">0</span>);<span class="comment">//ensure proper recovery of resources allocated for the thread.</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -590,7 +574,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">915</span>
+                    <span class="site-state-item-count">982</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -747,7 +731,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">72</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">75</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -1146,7 +1136,25 @@
                     
                       
                     
-                    <span class="site-state-item-count">193</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">202</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -1203,7 +1211,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#win32-方式"><span class="nav-number">1.</span> <span class="nav-text">win32 方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-14"><span class="nav-number">2.</span> <span class="nav-text">C++ 14</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c-方式"><span class="nav-number">3.</span> <span class="nav-text">c++ 方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#暂停线程"><span class="nav-number">3.1.</span> <span class="nav-text">暂停线程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MFC-方式"><span class="nav-number">4.</span> <span class="nav-text">MFC 方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#工作线程"><span class="nav-number">4.1.</span> <span class="nav-text">工作线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新UI界面"><span class="nav-number">4.2.</span> <span class="nav-text">更新UI界面</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#win32-方式"><span class="nav-number">1.</span> <span class="nav-text">win32 方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c-方式"><span class="nav-number">2.</span> <span class="nav-text">c++ 方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#暂停线程"><span class="nav-number">2.1.</span> <span class="nav-text">暂停线程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MFC-方式"><span class="nav-number">3.</span> <span class="nav-text">MFC 方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#工作线程"><span class="nav-number">3.1.</span> <span class="nav-text">工作线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新UI界面"><span class="nav-number">3.2.</span> <span class="nav-text">更新UI界面</span></a></li></ol></li></ol></div>
             
 
           </div>

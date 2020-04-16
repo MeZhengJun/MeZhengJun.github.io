@@ -107,7 +107,7 @@
 <meta property="og:site_name" content="郑君的学习笔记">
 <meta property="og:description" content="c++下面操作json的一个开源类库，比较好用，这里记录一下常用的操作。 github 编译方式更新了：先使用 cmake . 编译一下，然后在执行 python 12&quot;D:\Program Files\CMake\bin\cmake.exe&quot; .python amalgamate.py Generating amalgamated source and header执行完毕后会在 dist 路径">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-10T09:29:06.000Z">
+<meta property="og:updated_time" content="2020-03-26T00:27:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JSONCpp">
 <meta name="twitter:description" content="c++下面操作json的一个开源类库，比较好用，这里记录一下常用的操作。 github 编译方式更新了：先使用 cmake . 编译一下，然后在执行 python 12&quot;D:\Program Files\CMake\bin\cmake.exe&quot; .python amalgamate.py Generating amalgamated source and header执行完毕后会在 dist 路径">
@@ -236,7 +236,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">72</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">75</span>
       </a>
 </li>
 
@@ -246,7 +246,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">915</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">982</span>
       </a>
 </li>
 
@@ -429,7 +429,9 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;json/json.h&gt;</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <h1 id="构建数组对象"><a href="#构建数组对象" class="headerlink" title="构建数组对象"></a>构建数组对象</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 对象数组</span></span><br><span class="line">jsonArr[<span class="string">"paid"</span>] = it.paramNo;</span><br><span class="line">jsonArr[<span class="string">"name"</span>] = it.paramName;</span><br><span class="line">jsonArr[<span class="string">"unit"</span>] = it.unit;</span><br><span class="line">jsonDev[<span class="string">"param"</span>].append(jsonArr);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 字符串数据</span></span><br><span class="line">value[<span class="string">"andy"</span>].append( <span class="string">"005"</span> );  </span><br><span class="line">value[<span class="string">"andy"</span>].append( <span class="string">"123"</span> );  </span><br><span class="line">value[<span class="string">"andy"</span>].append( <span class="string">"true"</span> );  </span><br><span class="line"></span><br><span class="line"><span class="comment">// 空数组</span></span><br><span class="line">Json::Value root;  </span><br><span class="line">root[<span class="string">"datas"</span>].resize(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 第二种方式</span></span><br><span class="line">jsonRet[<span class="string">"datas"</span>] = Json::Value(Json::ValueType::arrayValue);</span><br></pre></td></tr></table></figure>
-<h1 id="中文支持"><a href="#中文支持" class="headerlink" title="中文支持"></a>中文支持</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// json 版本 1.8.4</span></span><br><span class="line"><span class="comment">// 在src\lib_json\json_writer.cpp中 找到 valueToQuotedStringN函数，</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 将 default 改为下面的代码，直接返回字符</span></span><br><span class="line"><span class="keyword">default</span>: </span><br><span class="line">	result += *c;</span><br><span class="line">	<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// .重新编译jsoncpp库，重新生成lib_json.lib</span></span><br></pre></td></tr></table></figure>
+<h1 id="中文支持"><a href="#中文支持" class="headerlink" title="中文支持"></a>中文支持</h1><p>Json 1.9.2<br>只需要在打开的时候设置一下默认的参数就可以了，读取的时候是 UTF8 的要转一下 GBK<br>这些写入文件就能正常看到中文了。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Json::StreamWriterBuilder wBuilder;</span><br><span class="line">Json::Value def;</span><br><span class="line">def[<span class="string">"emitUTF8"</span>] = <span class="literal">true</span>;</span><br><span class="line">wBuilder.setDefaults(&amp;def);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// json 版本 1.8.4</span></span><br><span class="line"><span class="comment">// 在src\lib_json\json_writer.cpp中 找到 valueToQuotedStringN函数，</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 将 default 改为下面的代码，直接返回字符</span></span><br><span class="line"><span class="keyword">default</span>: </span><br><span class="line">	result += *c;</span><br><span class="line">	<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// .重新编译jsoncpp库，重新生成lib_json.lib</span></span><br></pre></td></tr></table></figure>
 <h1 id="转为字符串"><a href="#转为字符串" class="headerlink" title="转为字符串"></a>转为字符串</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//数组类型 </span></span><br><span class="line">Json::Value json = ...;</span><br><span class="line">Json::StreamWriterBuilder builder;</span><br><span class="line">builder[<span class="string">"indentation"</span>] = <span class="string">""</span>; <span class="comment">// If you want whitespace-less output</span></span><br><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> output = Json::writeString(builder, json);</span><br><span class="line"></span><br><span class="line"><span class="comment">//数组类型</span></span><br><span class="line"><span class="built_in">string</span> output = val_array.toStyledString();</span><br></pre></td></tr></table></figure>
 <h1 id="从字符串解析json"><a href="#从字符串解析json" class="headerlink" title="从字符串解析json"></a>从字符串解析json</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//parse response</span></span><br><span class="line">Json::Value root;</span><br><span class="line">Json::CharReaderBuilder reader;</span><br><span class="line">Json::CharReader* pchReader = reader.newCharReader();</span><br><span class="line"><span class="built_in">string</span> strErr;</span><br><span class="line"><span class="keyword">bool</span> bRet = pchReader-&gt;parse(strRet.c_str(), strRet.c_str() + strRet.size(), &amp;root, &amp;strErr);</span><br><span class="line"><span class="keyword">delete</span> pchReader;</span><br><span class="line"><span class="keyword">if</span> (bRet == <span class="literal">false</span>)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">string</span> strMsg = <span class="string">"parse server response failed."</span> + strRet;</span><br><span class="line">	LOG_ERROR(g_log,strMsg);</span><br><span class="line">	<span class="keyword">goto</span> skip_return;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>版本：1.8.4<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Json::Reader reader;</span><br><span class="line">Json::Value value;</span><br><span class="line"><span class="keyword">if</span> (reader.parse(json, value))</span><br><span class="line">&#123;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
@@ -592,7 +594,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">915</span>
+                    <span class="site-state-item-count">982</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -749,7 +751,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">72</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">75</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -1148,7 +1156,25 @@
                     
                       
                     
-                    <span class="site-state-item-count">193</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">202</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

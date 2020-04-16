@@ -106,7 +106,7 @@
 <meta property="og:site_name" content="郑君的学习笔记">
 <meta property="og:description" content="123&amp;lt;utility&amp;gt;std::make_pairstd::pair std::make_pairstd::pairboost::variant std::pair主要的作用是将两个数据组合成一个数据，两个数据可以是同一类型或者不同类型。例如std::pair&amp;lt;int,float&amp;gt; 或者 std：：pair&amp;lt;double,double&amp;gt;等。pair实质上是一个">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-20T03:17:39.000Z">
+<meta property="og:updated_time" content="2020-04-08T03:18:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cpp-pair相关">
 <meta name="twitter:description" content="123&amp;lt;utility&amp;gt;std::make_pairstd::pair std::make_pairstd::pairboost::variant std::pair主要的作用是将两个数据组合成一个数据，两个数据可以是同一类型或者不同类型。例如std::pair&amp;lt;int,float&amp;gt; 或者 std：：pair&amp;lt;double,double&amp;gt;等。pair实质上是一个">
@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">72</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">75</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">915</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">982</span>
       </a>
 </li>
 
@@ -412,14 +412,14 @@
       
 
       
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;utility&gt;</span><br><span class="line">std::make_pair</span><br><span class="line">std::pair</span><br></pre></td></tr></table></figure>
+        <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;utility&gt;</span><br><span class="line"><span class="built_in">std</span>::make_pair</span><br><span class="line"><span class="built_in">std</span>::pair</span><br></pre></td></tr></table></figure>
 <p><a href="http://www.cplusplus.com/reference/utility/make_pair/" target="_blank" rel="noopener">std::make_pair</a><br><a href="http://www.cplusplus.com/reference/utility/pair/pair/" target="_blank" rel="noopener">std::pair</a><br><a href="https://www.boost.org/doc/libs/1_67_0/doc/html/boost/variant.html#id-1_3_46_5_4_1_1_16_1-bb" target="_blank" rel="noopener">boost::variant</a></p>
 <p>std::pair主要的作用是将两个数据组合成一个数据，两个数据可以是同一类型或者不同类型。<br>例如std::pair&lt;int,float&gt; 或者 std：：pair&lt;double,double&gt;等。<br>pair实质上是一个结构体，其主要的两个成员变量是first和second，这两个变量可以直接使用。<br>初始化一个pair可以使用构造函数，也可以使用std::make_pair函数，make_pair函数的定义如下：<br><code>template pair make_pair(T1 a, T2 b) { return pair(a, b); }</code></p>
 <a id="more"></a>
 <p>一般make_pair都使用在需要pair做参数的位置，可以直接调用make_pair生成pair对象。<br>另一个使用的方面就是pair可以接受隐式的类型转换，这样可以获得更高的灵活度。但是这样会出现如下问题：<br>    例如有如下两个定义：<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::pair&lt;int, float&gt;(1, 1.1);</span><br><span class="line">std::make_pair(1, 1.1);</span><br></pre></td></tr></table></figure></p>
 <p>其中第一个的second变量是float类型，而make_pair函数会将second变量都转换成double类型。<br>这个问题在编程是需要引起注意。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// make_pair example</span><br><span class="line">#include &lt;utility&gt;      // std::pair</span><br><span class="line">#include &lt;iostream&gt;     // std::cout</span><br><span class="line"></span><br><span class="line">int main () &#123;</span><br><span class="line">  std::pair &lt;int,int&gt; foo;</span><br><span class="line">  std::pair &lt;int,int&gt; bar;</span><br><span class="line"></span><br><span class="line">  foo = std::make_pair (10,20);</span><br><span class="line">  bar = std::make_pair (10.5,&apos;A&apos;); // ok: implicit conversion from pair&lt;double,char&gt;</span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; &quot;foo: &quot; &lt;&lt; foo.first &lt;&lt; &quot;, &quot; &lt;&lt; foo.second &lt;&lt; &apos;\n&apos;;</span><br><span class="line">  std::cout &lt;&lt; &quot;bar: &quot; &lt;&lt; bar.first &lt;&lt; &quot;, &quot; &lt;&lt; bar.second &lt;&lt; &apos;\n&apos;;</span><br><span class="line"></span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foo: 10, 20</span><br><span class="line">bar: 10, 65</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">// pair::pair example</span><br><span class="line">#include &lt;utility&gt;      // std::pair, std::make_pair</span><br><span class="line">#include &lt;string&gt;       // std::string</span><br><span class="line">#include &lt;iostream&gt;     // std::cout</span><br><span class="line"></span><br><span class="line">int main () &#123;</span><br><span class="line">  std::pair &lt;std::string,double&gt; product1;                     // default constructor</span><br><span class="line">  std::pair &lt;std::string,double&gt; product2 (&quot;tomatoes&quot;,2.30);   // value init</span><br><span class="line">  std::pair &lt;std::string,double&gt; product3 (product2);          // copy constructor</span><br><span class="line"></span><br><span class="line">  product1 = std::make_pair(std::string(&quot;lightbulbs&quot;),0.99);   // using make_pair (move)</span><br><span class="line"></span><br><span class="line">  product2.first = &quot;shoes&quot;;                  // the type of first is string</span><br><span class="line">  product2.second = 39.90;                   // the type of second is double</span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; &quot;The price of &quot; &lt;&lt; product1.first &lt;&lt; &quot; is $&quot; &lt;&lt; product1.second &lt;&lt; &apos;\n&apos;;</span><br><span class="line">  std::cout &lt;&lt; &quot;The price of &quot; &lt;&lt; product2.first &lt;&lt; &quot; is $&quot; &lt;&lt; product2.second &lt;&lt; &apos;\n&apos;;</span><br><span class="line">  std::cout &lt;&lt; &quot;The price of &quot; &lt;&lt; product3.first &lt;&lt; &quot; is $&quot; &lt;&lt; product3.second &lt;&lt; &apos;\n&apos;;</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// make_pair example</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;utility&gt;      // std::pair</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;     // std::cout</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::pair &lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; foo;</span><br><span class="line">  <span class="built_in">std</span>::pair &lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; bar;</span><br><span class="line"></span><br><span class="line">  foo = <span class="built_in">std</span>::make_pair (<span class="number">10</span>,<span class="number">20</span>);</span><br><span class="line">  bar = <span class="built_in">std</span>::make_pair (<span class="number">10.5</span>,<span class="string">'A'</span>); <span class="comment">// ok: implicit conversion from pair&lt;double,char&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"foo: "</span> &lt;&lt; foo.first &lt;&lt; <span class="string">", "</span> &lt;&lt; foo.second &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"bar: "</span> &lt;&lt; bar.first &lt;&lt; <span class="string">", "</span> &lt;&lt; bar.second &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foo: <span class="number">10</span>, <span class="number">20</span></span><br><span class="line">bar: <span class="number">10</span>, <span class="number">65</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// pair::pair example</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;utility&gt;      // std::pair, std::make_pair</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;       // std::string</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;     // std::cout</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::pair &lt;<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="keyword">double</span>&gt; product1;                     <span class="comment">// default constructor</span></span><br><span class="line">  <span class="built_in">std</span>::pair &lt;<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="keyword">double</span>&gt; product2 (<span class="string">"tomatoes"</span>,<span class="number">2.30</span>);   <span class="comment">// value init</span></span><br><span class="line">  <span class="built_in">std</span>::pair &lt;<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="keyword">double</span>&gt; product3 (product2);          <span class="comment">// copy constructor</span></span><br><span class="line"></span><br><span class="line">  product1 = <span class="built_in">std</span>::make_pair(<span class="built_in">std</span>::<span class="built_in">string</span>(<span class="string">"lightbulbs"</span>),<span class="number">0.99</span>);   <span class="comment">// using make_pair (move)</span></span><br><span class="line"></span><br><span class="line">  product2.first = <span class="string">"shoes"</span>;                  <span class="comment">// the type of first is string</span></span><br><span class="line">  product2.second = <span class="number">39.90</span>;                   <span class="comment">// the type of second is double</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"The price of "</span> &lt;&lt; product1.first &lt;&lt; <span class="string">" is $"</span> &lt;&lt; product1.second &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"The price of "</span> &lt;&lt; product2.first &lt;&lt; <span class="string">" is $"</span> &lt;&lt; product2.second &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"The price of "</span> &lt;&lt; product3.first &lt;&lt; <span class="string">" is $"</span> &lt;&lt; product3.second &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -557,7 +557,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">915</span>
+                    <span class="site-state-item-count">982</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -714,7 +714,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">72</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">75</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -1113,7 +1119,25 @@
                     
                       
                     
-                    <span class="site-state-item-count">193</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">202</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

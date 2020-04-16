@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">72</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">75</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">915</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">982</span>
       </a>
 </li>
 
@@ -328,7 +328,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/29/学习笔记/其他/服务器更新原则参考/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/11/14/学习笔记/区块链/primecoin/primecoin-pow-relative/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -347,7 +347,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/29/学习笔记/其他/服务器更新原则参考/" itemprop="url">服务器更新原则参考</a></h1>
+                <a class="post-title-link" href="/2018/11/14/学习笔记/区块链/primecoin/primecoin-pow-relative/" itemprop="url">primecoin pow relative</a></h1>
         
 
         <div class="post-meta">
@@ -359,7 +359,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-29T07:26:34+08:00">2018-08-29</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-14T20:11:26+08:00">2018-11-14</time>
             
 
             
@@ -380,7 +380,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/其他/" itemprop="url" rel="index"><span itemprop="name">其他</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
 
                 
                 
@@ -416,16 +416,171 @@
       
         
           
-            <p>一切操作的前提是服务的高可用性，高效性。</p>
+            <p><a href="https://www.7234.cn/coin/23431" target="_blank" rel="noopener">引用文章</a></p>
+<p>primecoin pow 是寻找质数链，包括三种类型：<br>第一类坎宁安链，第二类坎宁安链，和孪生坎宁安链。</p>
+<p>第一类坎宁安链的规则是，素数链中每个数都是前一个数的两倍减一。第一个长度为5的第一类坎宁安链包含以下5个素数：<br><code>1531，3061，6121，12241，24481</code></p>
+<p>第二类坎宁安链，素数链中每个数都是前一个数的两倍加一。第一个长度为5的第二类坎宁安链出现得更快，如下：<br><code>2，5，11，23，47</code></p>
+<p>最后，孪生坎宁安链的规则是：大小相差2的孪生素数，后一对的平均值是前一对的平均值的两倍。很容易理解，双坎宁安链具有偶数个数。第一个长度为6的双坎宁安链是：<br><code>211049，211051，422099，422101，844199，844201</code></p>
+<p>孪生坎宁安链本质上是第一类坎宁安链和第二类坎宁安链组合而成。每对的第一个数字组合正好是第二类坎宁安链，每对的第二个数字组合正好是第一类坎宁安链。</p>
+<h1 id="验证方式"><a href="#验证方式" class="headerlink" title="验证方式"></a>验证方式</h1><p>费马测试（费马小定理）:<br>费马测试是一种快速辨别素数的方法：以任意数字（通常为2）为底，以需要测试的素数为幂，计算结果再用来减去该素数和一个大数的乘积，看是否得到原来的数字。</p>
+<p>费马小定理：<br>如果 n 是一个素数，a 是小于 n 的任意正整数，那么 a 的 n 次方与 a 模 n 同余。（两个数称为是模 n 的同余，如果它们除以 n 的余数相同。数 a 除以 n 的余数称为 a 取模 n 的余数，或简称为 a 取模 n）。</p>
+<h1 id="目标难度的匹配"><a href="#目标难度的匹配" class="headerlink" title="目标难度的匹配"></a>目标难度的匹配</h1><p>怎么区分7.2和7.5的素数链长？<br>拿数列中第一个非素数，进行费马测试余数越小，分级长度越大。例如，我们的链2，5，11，23，47下一个值是95，依据上面使用的重复减法的过程计算后，余数是54，因此，链的长度为5+（95-54）/95=5.43。然而，1531……24481素数链的下一个值48961，费马余数为1024，所以链的长度为5+（48961-1024）/48961=5.97。为了一个为了使素数链可以成为有效的工作证明，它用小数表示的长度至少要和现在的难度想当。</p>
+<p>我们不希望工作量证明可以重复使用，素数币还增加了另一种限制。基于素数币的目的，对于双向链的起点被定义为前面两个数字的平均，对于单坎宁安链的的起点被定义为假想双向链存在前面两数字的平均。例如，上面两个单坎宁安链的起点分别是1530和3。这样限制是因为素数列起点必须能够被工作证明的区块哈希数整除。哈希函数从属性看，寻找特定的散列值的唯一途径只能是采用简单地尝试新的值直到得到结果。因此，得到有效的工作证明的方法就是针对已知哈希值的区块寻找素数列，这些素数列只有对特定的区块才有效。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/11/14/学习笔记/区块链/bitcoin/bitcoin-use-vscode-debug/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/14/学习笔记/区块链/bitcoin/bitcoin-use-vscode-debug/" itemprop="url">bitcoin-use vscode debug</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-14T16:27:00+08:00">2018-11-14</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>use vscode as ide for bitcoin</p>
 <ol>
-<li>更新操作之前要有应对突发事件的准备（例如：更新失败，网络错误，硬件故障等等意想不到的能导致服务失败的可能性）</li>
-<li>确保相关人员在更新操作后2个小时内能够及时响应。（建议周一—–周四，上午 10.00，下午 15.00，其他时间不推荐更新操作）</li>
-<li>确保服务程序可以回退到更新前的版本，保证高可用性</li>
-<li>多台服务，先更新一台，然后验证功能是否正常，确认无误后可以更新其他服务（要准备相关验证脚本或工具）</li>
-<li>更新操作过程尽可能原子化 （推荐使用更新脚本或其他工具，后台执行，避免操作端出现意外故障导致更新操作处于中间状态）</li>
-<li>要熟悉每个服务的相关指令和参数，加强岗位技能</li>
-<li>只做必要操作（和本次更新无关的操作禁止执行）</li>
-<li>针对每项服务要有更新流程清单。（记录每一步需要的操作和注意事项）</li>
+<li>make sure compile bitcoin manually successful</li>
+<li>ubuntu 16.04 install vscode</li>
+<li>install c++ (microsoft) and C++ Intellisense</li>
+<li>open project folder, press F5 debug select C++（GDB/LLDB）, will auto generate a file<br>launch.json. need some modification</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;program&quot;: &quot;$&#123;workspaceRoot&#125;/src/primecoind&quot;, //setup application path</span><br><span class="line">&quot;args&quot;: [&quot;-printtoconsole&quot;], //application params</span><br><span class="line">&quot;cwd&quot;: &quot;$&#123;workspaceRoot&#125;&quot;,</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>ctrl+p, input task, select <code>config build task</code> will generate a file tasks.json<br>do some modify</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;command&quot;:&quot;BDB_PREFIX=/home/ubuntu/prime/db-4.8.30.NC/build_unix/build BDB_INCLUDE_PATH=$&#123;BDB_PREFIX&#125;/include BDB_LIB_PATH=$&#123;BDB_PREFIX&#125;/lib cd $&#123;workspaceFolder&#125;/src &amp;&amp; make -f makefile.unix&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>press <code>crtl + shift + B</code> to build. setup breakpoint and tap F5 run debug</p>
+</li>
 </ol>
 
           
@@ -480,7 +635,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/28/学习笔记/linux/centos/centos7-install-docker/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/11/13/学习笔记/linux/linux-apt-cacher/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -499,7 +654,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/28/学习笔记/linux/centos/centos7-install-docker/" itemprop="url">centos7 install docker</a></h1>
+                <a class="post-title-link" href="/2018/11/13/学习笔记/linux/linux-apt-cacher/" itemprop="url">linux-apt-cacher</a></h1>
         
 
         <div class="post-meta">
@@ -511,7 +666,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-28T16:16:46+08:00">2018-08-28</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-13T10:31:30+08:00">2018-11-13</time>
             
 
             
@@ -568,7 +723,33 @@
       
         
           
-            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum -y install docker</span><br><span class="line">#启动 Docker 后台服务</span><br><span class="line">service docker start</span><br><span class="line">#测试运行 hello-world,由于本地没有hello-world这个镜像，所以会下载一个hello-world的镜像，并在容器内运行。</span><br><span class="line">docker run hello-world</span><br></pre></td></tr></table></figure>
+            <h1 id="Use-Cases"><a href="#Use-Cases" class="headerlink" title="Use Cases"></a>Use Cases</h1><p>The common use case for apt-cacher-ng is where you have a sizable network and<br>would like to speed up all the apt-get update calls made by your nodes,<br>especially if you are running chef or puppet periodically.<br>It is also used for complying to security policies that restrict internet access<br>to bulk of hosts except for a designated proxy server.</p>
+<p>Apt-Cacher-NG是一个缓存代理服务（或者apt代理），对基于Debian的设备，如 Ubuntu, Kubuntu, Xubuntu, Edubuntu, Linux Mint等，它被是用来缓存已经下载过的包。</p>
+<p><img alt="7fbbd728.png" src="/2018/11/13/学习笔记/linux/linux-apt-cacher/7fbbd728.png" width="" height=""></p>
+<h1 id="install-in-docker"><a href="#install-in-docker" class="headerlink" title="install in docker"></a>install in docker</h1><p>create docker file</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># docker file for apt-cacher-ng service 2018.11.14</span><br><span class="line">FROM ubuntu:18.04</span><br><span class="line"></span><br><span class="line">MAINTAINER Tyler Cheng - &quot;&lt;zhengjun2018@gmail.com&gt;&quot;</span><br><span class="line"></span><br><span class="line">ARG DEBIAN_FRONTEND=noninteractive</span><br><span class="line"></span><br><span class="line"># modify to custom china source</span><br><span class="line">RUN sed -i &apos;s/archive.ubuntu.com/mirrors.aliyun.com/g&apos; /etc/apt/sources.list</span><br><span class="line"></span><br><span class="line">VOLUME      [&quot;/var/cache/apt-cacher-ng&quot;]</span><br><span class="line">RUN     apt-get update &amp;&amp; apt-get install -y apt-cacher-ng</span><br><span class="line"></span><br><span class="line">EXPOSE      3142</span><br><span class="line">CMD     chmod 777 /var/cache/apt-cacher-ng &amp;&amp; /etc/init.d/apt-cacher-ng start &amp;&amp; tail -f /var/log/apt-cacher-ng/*</span><br></pre></td></tr></table></figure>
+<h2 id="create-image"><a href="#create-image" class="headerlink" title="create image"></a>create image</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t apt_cache_ng_service .</span><br></pre></td></tr></table></figure>
+<h2 id="run-image"><a href="#run-image" class="headerlink" title="run image"></a>run image</h2><p>启动镜像，并且把端口映射到宿主机的3142上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 3142:3142 --name apt_cacher_service apt_cache_ng_service</span><br></pre></td></tr></table></figure>
+<p>可以使用docker命令来查看日志</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker logs -f apt_cacher_service</span><br></pre></td></tr></table></figure>
+<p>登录浏览器查看<br><a href="http://localhost:3142" target="_blank" rel="noopener">http://localhost:3142</a></p>
+<h1 id="install-and-use"><a href="#install-and-use" class="headerlink" title="install and use"></a>install and use</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install apt-cacher-ng</span><br><span class="line">sudo /etc/init.d/apt-cacher-ng start</span><br><span class="line"></span><br><span class="line">Patch configuration file:</span><br><span class="line">sudo nano /etc/apt-cacher-ng/acng.conf</span><br><span class="line"></span><br><span class="line">sudo service apt-cacher-ng force-reload</span><br></pre></td></tr></table></figure>
+<p>If everything went okay, then when visiting <a href="http://localhost:3142" target="_blank" rel="noopener">http://localhost:3142</a><br>you should see instructions on how to configure your clients to use the proxy.</p>
+<p>HTTPS repositories：<br><code>PassThroughPattern: .*</code></p>
+<p>Client Proxy Configuration<br>There are two ways to tell apt-get to use your proxy:</p>
+<ol>
+<li>Global /etc/apt/apt.conf method<br>RUN echo “Acquire::http::Proxy \”<a href="http://dockerhost:3142\&quot;;&quot;" target="_blank" rel="noopener">http://dockerhost:3142\&quot;;&quot;</a> &gt; /etc/apt/apt.conf.d/00aptproxy</li>
+</ol>
+<p>Add this line to /etc/apt/apt.conf (or to a file named /etc/apt/apt.conf.d/00proxy):<br><code>Acquire::http { Proxy &quot;http://yourdomain.example:3142&quot;; };</code><br>This tells apt to proxy all requests to that address and port.</p>
+<ol>
+<li>Per repository /etc/apt/sources.list method<br>You can edit the /etc/apt/sources.list file and append the proxy to the beginning like so:<br>Before:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">deb http://ftp.debian.org/debian stable main contrib non-free</span><br><span class="line">deb-src http://ftp.debian.org/debian stable main contrib non-free</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>After:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">deb http://yourdomain.example:3142/ftp.debian.org/debian stable main contrib non-free</span><br><span class="line">deb-src http://yourdomain.example:3142/ftp.debian.org/debian stable main contrib non-free</span><br></pre></td></tr></table></figure>
+<p>Note about Cache Visibility<br>It’s important to note that apt-get has it’s own internal cache, and is pretty good about not downloading the same indexes and packages over and over again. Unfortunately, this is at odds with apt-cacher-ng, as it cannot cache requests it never receives. You can force a download by clearing the contents of local caches (<code>/var/cache/apt/* and /var/lib/apt/lists/*</code>), then running apt-get update again to ensure that apt-cacher-ng sees all possible requests. Note: apt-get clean is not sufficient, as it only clears the local package cache, and not the index and list cache.</p>
+<h1 id="清理无效的缓存"><a href="#清理无效的缓存" class="headerlink" title="清理无效的缓存"></a>清理无效的缓存</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:3142/acng-report.html?abortOnErrors=aOe&amp;byPath=bP&amp;byChecksum=bS&amp;truncNow=tN&amp;incomAsDamaged=iad&amp;purgeNow=pN&amp;doExpire=Start+Scan+and%2For+Expiration&amp;calcSize=cs&amp;asNeeded=an#bottom</span><br></pre></td></tr></table></figure>
 
           
         
@@ -622,7 +803,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/28/学习笔记/linux/linux-application-mime-type/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/11/11/学习笔记/MacOS/生成的应用比较/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -641,7 +822,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/28/学习笔记/linux/linux-application-mime-type/" itemprop="url">linux-application mime type</a></h1>
+                <a class="post-title-link" href="/2018/11/11/学习笔记/MacOS/生成的应用比较/" itemprop="url">生成的应用比较</a></h1>
         
 
         <div class="post-meta">
@@ -653,7 +834,300 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-28T15:39:49+08:00">2018-08-28</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-11T19:53:52+08:00">2018-11-11</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/操作系统/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>xxd 可以将镜像文件导出为 hex 格式<br>然后使用 diff 比较</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xxd primecoind &gt; primecoind.hex</span><br><span class="line">diff -u 1/primcoind.hex 2/primecoind.hex</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/11/10/读过的书/不懂心理学就别谈工作与人生/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/10/读过的书/不懂心理学就别谈工作与人生/" itemprop="url">不懂心理学就别谈工作与人生</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-10T18:14:05+08:00">2018-11-10</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>总体来说推荐阅读。<br>日本-和田秀树的作品，分了几个类别来说明应用的注意事项等。<br>提高干劲所需的心理学知识<br>三大法则：</p>
+<ol>
+<li>希望法则</li>
+<li>充实法则</li>
+<li>关系法则</li>
+</ol>
+<p>建立职场人际关系所需的心理学知识<br>市场营销等<br>还是有些收获的。</p>
+<p><img alt="b0e99a36.png" src="/2018/11/10/读过的书/不懂心理学就别谈工作与人生/b0e99a36.png" width="" height=""></p>
+<p><img alt="0a229ece.png" src="/2018/11/10/读过的书/不懂心理学就别谈工作与人生/0a229ece.png" width="" height=""><br><img alt="635ad584.png" src="/2018/11/10/读过的书/不懂心理学就别谈工作与人生/635ad584.png" width="" height=""></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/11/08/学习笔记/linux/shell-relative/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/08/学习笔记/linux/shell-relative/" itemprop="url">shell relative</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-08T18:00:49+08:00">2018-11-08</time>
             
 
             
@@ -710,17 +1184,7 @@
       
         
           
-            <p>when I deploy some application on linux platform I found some application can run<br>in file manager through double click, but my application can’t. So I do some research.</p>
-<h2 id="short-answer"><a href="#short-answer" class="headerlink" title="short answer:"></a>short answer:</h2><p>app has mime type:</p>
-<ul>
-<li>application/x-executable</li>
-<li>application/x-sharedlib</li>
-</ul>
-<p>that x-executable file manager recognize it you can double click to run it.<br>but x-sharedlib has some security advantage, so x-sharedlib is recommended</p>
-<h2 id="long-answer"><a href="#long-answer" class="headerlink" title="long answer"></a>long answer</h2><p>you can use <code>file --mime-type app</code> see app’s mime type, also <code>file app</code> is working too.</p>
-<p>gcc now defaults to building with PIE (Position Independent Executable) enabled on x86 Debian systems for security reasons.<br>The behavior is occurring because newer ubuntu distros set GCC default link flag -pie,<br>which marks e_type as ET_DYN on the binary file. Consequently, the Operating System recognizes as Shared Library.</p>
-<p>-pie allows for some extra security protections that are fundamentally incompatible with -no-pie.</p>
-<p>Qt project:<br>QMAKE_LFLAGS += -no-pie</p>
+            <h1 id="赋值给变量"><a href="#赋值给变量" class="headerlink" title="赋值给变量"></a>赋值给变量</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var=$(command)</span><br></pre></td></tr></table></figure>
 
           
         
@@ -774,7 +1238,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/27/学习笔记/数据库/Rocksdb/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/11/08/学习笔记/MacOS/mac-linux-date-difference/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -793,7 +1257,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/27/学习笔记/数据库/Rocksdb/" itemprop="url">Rocksdb</a></h1>
+                <a class="post-title-link" href="/2018/11/08/学习笔记/MacOS/mac-linux-date-difference/" itemprop="url">mac-linux date difference</a></h1>
         
 
         <div class="post-meta">
@@ -805,7 +1269,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-27T21:31:23+08:00">2018-08-27</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-08T11:26:25+08:00">2018-11-08</time>
             
 
             
@@ -826,7 +1290,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/操作系统/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a></span>
 
                 
                 
@@ -862,8 +1326,9 @@
       
         
           
-            <p>Rocksdb is a better Leveldb</p>
-<p><a href="https://rocksdb.org/" target="_blank" rel="noopener">office website</a><br><a href="https://github.com/facebook/rocksdb" target="_blank" rel="noopener">github</a><br><a href="https://github.com/tecbot/gorocksdb" target="_blank" rel="noopener">go wrapper</a></p>
+            <h1 id="通过脚本判断"><a href="#通过脚本判断" class="headerlink" title="通过脚本判断"></a>通过脚本判断</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">os=$(uname -s)</span><br><span class="line">if [[ &quot;$os&quot; == &quot;Linux&quot; ]]; then</span><br><span class="line">    date +%Y-%m-%d --date=&apos;-1 day -1 year&apos;</span><br><span class="line">elif [[ &quot;$os&quot; == &quot;Darwin&quot; ]]; then</span><br><span class="line">    date -v-1d -v-1y +%Y-%m-%d</span><br><span class="line">else</span><br><span class="line">    echo &quot;unknown OS&quot;</span><br><span class="line">    exit 1</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<h1 id="linux-date"><a href="#linux-date" class="headerlink" title="linux date"></a>linux date</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="mac-date"><a href="#mac-date" class="headerlink" title="mac date"></a>mac date</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">date +%Y-%m-%d %H:%M:%S</span><br></pre></td></tr></table></figure>
 
           
         
@@ -917,7 +1382,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/27/学习笔记/区块链/通用/blockchain-utils-api-service/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/11/06/业余爱好/送自己的生日礼物/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -936,7 +1401,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/27/学习笔记/区块链/通用/blockchain-utils-api-service/" itemprop="url">blockchain-utils api service</a></h1>
+                <a class="post-title-link" href="/2018/11/06/业余爱好/送自己的生日礼物/" itemprop="url">送自己的生日礼物</a></h1>
         
 
         <div class="post-meta">
@@ -948,7 +1413,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-27T17:47:00+08:00">2018-08-27</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-06T16:20:19+08:00">2018-11-06</time>
             
 
             
@@ -969,7 +1434,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/乐器/" itemprop="url" rel="index"><span itemprop="name">乐器</span></a></span>
 
                 
                 
@@ -1005,13 +1470,8 @@
       
         
           
-            <p>目前支持以下功能</p>
-<p>Use POST Request</p>
-<h2 id="获取接口列表-Get-Reques"><a href="#获取接口列表-Get-Reques" class="headerlink" title="获取接口列表 Get Reques"></a>获取接口列表 Get Reques</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://47.100.193.211:49911/api/v1.0/help</span><br></pre></td></tr></table></figure>
-<h2 id="error-return"><a href="#error-return" class="headerlink" title="error return"></a>error return</h2><p>{<br>    “ErrorMsg”: “opcode not found”<br>}</p>
-<h2 id="parse-tx-string"><a href="#parse-tx-string" class="headerlink" title="parse tx string"></a>parse tx string</h2><p><a href="http://47.100.193.211:49911/api/v1.0/tx2json/" target="_blank" rel="noopener">http://47.100.193.211:49911/api/v1.0/tx2json/</a><br>{“coinType”:”primecoin”,”tx”:”01000000010000000000000000000000000000000000000000000000000000000000000000ffffffff0f03bad82a02780200062f503253482fffffffff0140b1b02b00000000232103a0c8d5d706a7f1d7b19ac2dcc25905d5fbb77a3e65a5b5160be972955593e3efac00000000”}<br>support coin type: primecoin|bitcoin<br>return<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;Version&quot;: &quot;1&quot;,</span><br><span class="line">    &quot;Vin Count&quot;: &quot;1&quot;,</span><br><span class="line">    &quot;Vin&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;RefBlock Hash&quot;: &quot;0000000000000000000000000000000000000000000000000000000000000000&quot;,</span><br><span class="line">            &quot;RefTxOut Index&quot;: &quot;ffffffff&quot;,</span><br><span class="line">            &quot;Data Length&quot;: &quot;11&quot;,</span><br><span class="line">            &quot;Data&quot;: &quot;51013100062f503253482f&quot;,</span><br><span class="line">            &quot;Sequence&quot;: &quot;ffffffff&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;Vout Count&quot;: &quot;1&quot;,</span><br><span class="line">    &quot;Vout&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;Amount&quot;: &quot;2038000000&quot;,</span><br><span class="line">            &quot;Script Length&quot;: &quot;35&quot;,</span><br><span class="line">            &quot;Locking Script&quot;: &#123;</span><br><span class="line">                &quot;Hex&quot;: &quot;21037c9e467f50b27358ddd94788d716f96235541dd76ec377cbfb97bc5ed81043b8ac&quot;,</span><br><span class="line">                &quot;Asm&quot;: &quot;037c9e467f50b27358ddd94788d716f96235541dd76ec377cbfb97bc5ed81043b8 OP_CHECKSIG&quot;,</span><br><span class="line">                &quot;Type&quot;: &quot;P2PK&quot;,</span><br><span class="line">                &quot;Address&quot;: [</span><br><span class="line">                    &quot;AZCmTX1BrevDXvfeJGUs3mUQa99goGDYFf&quot;</span><br><span class="line">                ],</span><br><span class="line">                &quot;P2SH&quot;: &quot;&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;Locking Value&quot;: &quot;0&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="convert-little-endian-to-big-endian"><a href="#convert-little-endian-to-big-endian" class="headerlink" title="convert little endian to big endian"></a>convert little endian to big endian</h2><p><a href="http://47.100.193.211:49911/api/v1.0/l2b/" target="_blank" rel="noopener">http://47.100.193.211:49911/api/v1.0/l2b/</a><br>{“data”:”123456”}</p>
-<p>return<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;data&quot;:&quot;563412&quot;&#125;</span><br></pre></td></tr></table></figure></p>
+            <p>送了一件让自己回到 20 岁的生日礼物。</p>
+<p><img alt="90b98a72.png" src="/2018/11/06/业余爱好/送自己的生日礼物/90b98a72.png" width="" height=""></p>
 
           
         
@@ -1065,7 +1525,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/27/工具相关/git/gitignore-file/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/11/06/语言相关/python/python-site-and-dist-packages/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1084,7 +1544,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/27/工具相关/git/gitignore-file/" itemprop="url">gitignore file</a></h1>
+                <a class="post-title-link" href="/2018/11/06/语言相关/python/python-site-and-dist-packages/" itemprop="url">python-site and dist packages</a></h1>
         
 
         <div class="post-meta">
@@ -1096,7 +1556,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-27T12:10:18+08:00">2018-08-27</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-06T15:52:26+08:00">2018-11-06</time>
             
 
             
@@ -1117,7 +1577,14 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具相关/" itemprop="url" rel="index"><span itemprop="name">工具相关</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端/" itemprop="url" rel="index"><span itemprop="name">后端</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a></span>
 
                 
                 
@@ -1153,12 +1620,9 @@
       
         
           
-            <p>use gitignore file exclusive files and folders</p>
-<p>Note: gitignore only exclusive un-tracking file</p>
-<h1 id="globle-config"><a href="#globle-config" class="headerlink" title="globle config"></a>globle config</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.excludesfile ~/.gitignore_global</span><br></pre></td></tr></table></figure>
-<h1 id="locale-config"><a href="#locale-config" class="headerlink" title="locale config"></a>locale config</h1><p>In Terminal, navigate to the location of your Git repository.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch .gitignore</span><br></pre></td></tr></table></figure>
-<h1 id="example"><a href="#example" class="headerlink" title="example"></a>example</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># OS X</span><br><span class="line">.DS_Store</span><br></pre></td></tr></table></figure>
+            <h1 id="dist-packages-和-site-packages-区别"><a href="#dist-packages-和-site-packages-区别" class="headerlink" title="dist-packages 和 site-packages 区别"></a>dist-packages 和 site-packages 区别</h1><p>dist-packages is a Debian-specific convention that is also present in its derivatives, like Ubuntu. Modules are installed to dist-packages when they come from the Debian package manager into this location:</p>
+<p>dist-packages instead of site-packages. Third party Python software installed from Debian packages goes into dist-packages, not site-packages. This is to reduce conflict between the system Python, and any from-source Python build you might install manually.</p>
+<h1 id="查看路径"><a href="#查看路径" class="headerlink" title="查看路径"></a>查看路径</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m site --user-site</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1212,7 +1676,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/27/学习笔记/区块链/bitcoin/bitcoin-address/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/11/06/学习笔记/linux/查看系统信息/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1231,7 +1695,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/27/学习笔记/区块链/bitcoin/bitcoin-address/" itemprop="url">bitcoin-address</a></h1>
+                <a class="post-title-link" href="/2018/11/06/学习笔记/linux/查看系统信息/" itemprop="url">查看系统信息</a></h1>
         
 
         <div class="post-meta">
@@ -1243,7 +1707,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-27T06:43:53+08:00">2018-08-27</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-06T13:38:30+08:00">2018-11-06</time>
             
 
             
@@ -1264,7 +1728,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a></span>
 
                 
                 
@@ -1300,473 +1764,14 @@
       
         
           
-            <p><a href="https://en.bitcoin.it/wiki/Address" target="_blank" rel="noopener">ref</a></p>
-<p>There are currently three address formats in use:<br>P2PKH which begin with the number 1, eg: 1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2.<br>P2SH type starting with the number 3, eg: 3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy.<br>Bech32 type starting with bc1, eg: bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq.</p>
-<h1 id="Misconceptions"><a href="#Misconceptions" class="headerlink" title="Misconceptions"></a>Misconceptions</h1><h2 id="Address-reuse"><a href="#Address-reuse" class="headerlink" title="Address reuse"></a>Address reuse</h2><p>Addresses are not intended to be used more than once, and doing so has numerous problems associated. See the dedicated article on <a href="https://en.bitcoin.it/wiki/Address_reuse" target="_blank" rel="noopener">address reuse</a> for more details.</p>
-<p><img alt="33b210fc.png" src="/2018/08/27/学习笔记/区块链/bitcoin/bitcoin-address/33b210fc.png" width="" height=""></p>
-<h2 id="List-of-address-prefixes"><a href="#List-of-address-prefixes" class="headerlink" title="List of address prefixes"></a>List of address prefixes</h2><p><img alt="31dc90c3.png" src="/2018/08/27/学习笔记/区块链/bitcoin/bitcoin-address/31dc90c3.png" width="" height=""></p>
-<h2 id="Conversion-from-ECDSA-public-key-to-Bitcoin-address"><a href="#Conversion-from-ECDSA-public-key-to-Bitcoin-address" class="headerlink" title="Conversion from ECDSA public key to Bitcoin address"></a>Conversion from ECDSA public key to Bitcoin address</h2><p><img alt="6a42dc8e.png" src="/2018/08/27/学习笔记/区块链/bitcoin/bitcoin-address/6a42dc8e.png" width="" height=""></p>
+            <h1 id="查看操作系统发行版详细信息"><a href="#查看操作系统发行版详细信息" class="headerlink" title="查看操作系统发行版详细信息"></a>查看操作系统发行版详细信息</h1><p><code>lsb_release -a</code></p>
+<h1 id="查看内核信息-Ubuntu-的版本号"><a href="#查看内核信息-Ubuntu-的版本号" class="headerlink" title="查看内核信息, Ubuntu 的版本号"></a>查看内核信息, Ubuntu 的版本号</h1><p><code>cat /etc/issue</code></p>
+<h1 id="查看CPU统计信息"><a href="#查看CPU统计信息" class="headerlink" title="查看CPU统计信息"></a>查看CPU统计信息</h1><p><code>lscpu</code></p>
+<h1 id="查看概要内存使用情况"><a href="#查看概要内存使用情况" class="headerlink" title="查看概要内存使用情况"></a>查看概要内存使用情况</h1><p><code>free -g</code></p>
+<h1 id="查看内存硬件信息"><a href="#查看内存硬件信息" class="headerlink" title="查看内存硬件信息"></a>查看内存硬件信息</h1><p><code>sudo dmidecode -t memory</code></p>
+<h1 id="查看硬盘和分区分布"><a href="#查看硬盘和分区分布" class="headerlink" title="查看硬盘和分区分布"></a>查看硬盘和分区分布</h1><p><code>lsblk</code></p>
 
           
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/25/语言相关/go/go-package/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/25/语言相关/go/go-package/" itemprop="url">go-package</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-25T07:56:39+08:00">2018-08-25</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>cannot import main package.<br>you can put code in one package for other package use.</p>
-<h1 id="包管理工具-dep"><a href="#包管理工具-dep" class="headerlink" title="包管理工具 dep"></a>包管理工具 dep</h1><p>go get -u github.com/golang/dep/cmd/dep</p>
-<p>下载二进制文件<br><a href="https://github.com/golang/dep/releases" target="_blank" rel="noopener">https://github.com/golang/dep/releases</a></p>
-<p>将dep-windows-amd64.exe放入GOPATH/bin下，修改名称为dep</p>
-<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><ol>
-<li>切换到工程目录下cd %GOPATH%/src/github.com/xxx/dep-demo</li>
-<li>初始化dep init</li>
-</ol>
-<h2 id="添加"><a href="#添加" class="headerlink" title="添加"></a>添加</h2><p>预先添加到vendor中<br>dep ensure -add github.com/foo/bar github.com/baz/quux</p>
-<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><p>dep ensure -update</p>
-<h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><p>四种情况：工程中引入包、移除包、Gopkg.toml规则修改、不确定情况</p>
-<p>dep ensure</p>
-<p>查看状态<br>运行<br>dep status<br>结果解释<br>CONSTRAINT为Gopkg.toml中限定的版本；<br>VERSION为当前vendor中的版本；<br>REVISION为当前vendor中的修订号；<br>LATEST为CONSTRAINT限定下github中能满足要求的最新版本。<br>修改限定版本并同步<br>修改Gopkg.toml中的CONSTRAINT，若使得LATEST低于当前vendor中的版本，则运行dep ensure后，vendor中的版本降低到能满足要求的最新版本；<br>若使得LATEST高于vendor中的版本，则运行dep ensure后，vendor中的版本不变，可使用dep ensure -update更新vendor到LATEST版本。</p>
-<p>作者：gisxiaowei<br>链接：<a href="https://www.jianshu.com/p/e3c9f9039542" target="_blank" rel="noopener">https://www.jianshu.com/p/e3c9f9039542</a><br>来源：简书<br>简书著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/24/语言相关/go/go-json-operation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/24/语言相关/go/go-json-operation/" itemprop="url">go-json operation</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-24T15:46:07+08:00">2018-08-24</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://github.com/antonholmquist/jason" target="_blank" rel="noopener">https://github.com/antonholmquist/jason</a></p>
-<h2 id="parsing-json"><a href="#parsing-json" class="headerlink" title="parsing json"></a>parsing json</h2><p>must be predefined a struct.</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s Serverslice</span><br><span class="line">str := <span class="string">`&#123;"servers":[&#123;"serverName":"Shanghai_VPN","serverIP":"127.0.0.1"&#125;,&#123;"serverName":"Beijing_VPN","serverIP":"127.0.0.2"&#125;]&#125;`</span></span><br><span class="line">json.Unmarshal([]<span class="keyword">byte</span>(str), &amp;s)</span><br><span class="line">fmt.Println(s)</span><br></pre></td></tr></table></figure>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> response2 <span class="keyword">struct</span> &#123;</span><br><span class="line">    Page   <span class="keyword">int</span>      <span class="string">`json:"page"`</span></span><br><span class="line">    Fruits []<span class="keyword">string</span> <span class="string">`json:"fruits"`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">res := response2&#123;&#125;</span><br><span class="line">json.Unmarshal([]<span class="keyword">byte</span>(str), &amp;res)</span><br></pre></td></tr></table></figure>
-<h2 id="json-Decoder-vs-json-Unmarshal"><a href="#json-Decoder-vs-json-Unmarshal" class="headerlink" title="json.Decoder vs json.Unmarshal"></a>json.Decoder vs json.Unmarshal</h2><p><a href="https://ahmet.im/blog/golang-json-decoder-pitfalls/" target="_blank" rel="noopener">Go json.Decoder Considered Harmful</a><br>short answer is :<br>Do not use json.Decoder if you are not dealing with JSON streaming.</p>
-<p>Use json.Unmarshal:</p>
-<ul>
-<li>if you don’t know what Go JSON streams are</li>
-<li>if you are working with a single JSON object at a time</li>
-<li>if there is a remote possibility that the API may return malformed JSON</li>
-</ul>
-<h2 id="arbitrary-json-operate"><a href="#arbitrary-json-operate" class="headerlink" title="arbitrary json operate"></a>arbitrary json operate</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">  <span class="string">"log"</span></span><br><span class="line">  <span class="string">"fmt"</span></span><br><span class="line">  <span class="string">"encoding/json"</span></span><br><span class="line">  <span class="string">"reflect"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  b := []<span class="keyword">byte</span>(<span class="string">`&#123;"name": "tom", "favNum": 6, "interests": ["knives", "computers"], "usernames": &#123;"github": "TomNomNom", "twitter": "@TomNomNom"&#125;&#125;`</span>)</span><br><span class="line">  <span class="keyword">var</span> f <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">  err := json.Unmarshal(b, &amp;f) </span><br><span class="line">  <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    log.Fatal(<span class="string">"Failed to parse JSON"</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  m := f.(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>&#123;&#125;)</span><br><span class="line"></span><br><span class="line">  printStruct(<span class="string">""</span>, m)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">printStruct</span><span class="params">(prefix <span class="keyword">string</span>, m <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">  <span class="keyword">for</span> k, v := <span class="keyword">range</span> m &#123; </span><br><span class="line">    <span class="keyword">switch</span> vv := v.(<span class="keyword">type</span>) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="keyword">string</span>:</span><br><span class="line">      fmt.Println(prefix, k, <span class="string">"is string"</span>, vv) </span><br><span class="line">    <span class="keyword">case</span> <span class="keyword">float64</span>:</span><br><span class="line">      fmt.Println(prefix, k, <span class="string">"is number"</span>, vv) </span><br><span class="line">    <span class="keyword">case</span> []<span class="keyword">interface</span>&#123;&#125;:</span><br><span class="line">      fmt.Println(prefix, k, <span class="string">"is an array:"</span>)</span><br><span class="line">      <span class="keyword">for</span> i, u := <span class="keyword">range</span> vv &#123;</span><br><span class="line">        fmt.Println(prefix, i, u)</span><br><span class="line">      &#125;   </span><br><span class="line">    <span class="keyword">case</span> <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>&#123;&#125;:</span><br><span class="line">      fmt.Println(prefix, k, <span class="string">"is a map:"</span>)</span><br><span class="line">      printStruct(prefix + <span class="string">"  "</span>, vv) </span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">      fmt.Println(prefix, k, <span class="string">"is a type we can't handle"</span>, vv) </span><br><span class="line">    &#125;   </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//ref:  http://michaelheap.com/golang-encodedecode-arbitrary-json/  18/8/15</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Using some hand crafted JSON. This could come from a file, web service, anything</span></span><br><span class="line">str2 := <span class="string">`&#123;</span></span><br><span class="line"><span class="string">    "foo": &#123;</span></span><br><span class="line"><span class="string">        "baz": [</span></span><br><span class="line"><span class="string">            1,</span></span><br><span class="line"><span class="string">            2,</span></span><br><span class="line"><span class="string">            3</span></span><br><span class="line"><span class="string">        ]</span></span><br><span class="line"><span class="string">    &#125;,</span></span><br><span class="line"><span class="string">    "flag": true,</span></span><br><span class="line"><span class="string">    "list": [</span></span><br><span class="line"><span class="string">        "one",</span></span><br><span class="line"><span class="string">        2,</span></span><br><span class="line"><span class="string">        true,</span></span><br><span class="line"><span class="string">        "4",</span></span><br><span class="line"><span class="string">        &#123;</span></span><br><span class="line"><span class="string">            "key": "value"</span></span><br><span class="line"><span class="string">        &#125;,</span></span><br><span class="line"><span class="string">        [</span></span><br><span class="line"><span class="string">            1,</span></span><br><span class="line"><span class="string">            true</span></span><br><span class="line"><span class="string">        ]</span></span><br><span class="line"><span class="string">    ]</span></span><br><span class="line"><span class="string">&#125;`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> y <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">json.Unmarshal([]<span class="keyword">byte</span>(str2), &amp;y)</span><br><span class="line"></span><br><span class="line">fmt.Printf(<span class="string">"%+v\n"</span>, y)</span><br><span class="line"><span class="comment">//# =&gt; map[foo:map[baz:[1 2 3]] flag:true list:[one 2 true 4 map[key:value] [1 true]]]</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">As we’re un-marshalling into an interface, we need to inform go what data type</span></span><br><span class="line"><span class="comment">each key is before we can perform operations on it. Go provides a the "reflect"</span></span><br><span class="line"><span class="comment">package which we can use to process arbitrarily complex data structures:</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line">    the_list := y[<span class="string">"list"</span>].([]<span class="keyword">interface</span>&#123;&#125;)</span><br><span class="line">    <span class="keyword">for</span> n, v := <span class="keyword">range</span> the_list &#123;</span><br><span class="line">        fmt.Printf(<span class="string">"index:%d  value:%v  kind:%s  type:%s\n"</span>, n, v, reflect.TypeOf(v).Kind(), reflect.TypeOf(v))</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//# =&gt;</span></span><br><span class="line">    <span class="comment">//index:0  value:one  kind:string  type:string</span></span><br><span class="line">    <span class="comment">//index:1  value:2  kind:float64  type:float64</span></span><br><span class="line">    <span class="comment">//index:2  value:true  kind:bool  type:bool</span></span><br><span class="line">    <span class="comment">//index:3  value:4  kind:string  type:string</span></span><br><span class="line">    <span class="comment">//index:4  value:map[key:value]  kind:map  type:map[string]interface &#123;&#125;</span></span><br><span class="line">    <span class="comment">//index:5  value:[1 true]  kind:slice  type:[]interface &#123;&#125;</span></span><br></pre></td></tr></table></figure>
-<h2 id="map-to-json"><a href="#map-to-json" class="headerlink" title="map to json"></a>map to json</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Marshal the map into a JSON string.</span></span><br><span class="line">empData, err := json.Marshal(emp)	</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    fmt.Println(err.Error())</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">jsonStr := <span class="keyword">string</span>(empData)</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2018/08/24/工具相关/git/git-working-repo-vs-bare-repo/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/24/工具相关/git/git-working-repo-vs-bare-repo/" itemprop="url">git-working repo vs bare repo</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-24T06:51:59+08:00">2018-08-24</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具相关/" itemprop="url" rel="index"><span itemprop="name">工具相关</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>When I first create a repository by git, usually use <code>git init</code>.<br>But sometimes I see someone use <code>git --bare init</code>, especially I study an article that use bare git repo deploy website.</p>
-<p>what’s the difference?</p>
-<p>So I do some study with it.</p>
-<p>Short answer:<br>Use a non-bare repository to work locally and a bare repository as a central server/hub to share your changes with other people.</p>
-<p><img alt="203f8fc3.png" src="/2018/08/24/工具相关/git/git-working-repo-vs-bare-repo/203f8fc3.png" width="" height=""></p>
-<p><a href="http://www.saintsjd.com/2011/01/what-is-a-bare-git-repository/" target="_blank" rel="noopener">ref</a></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/08/24/工具相关/git/git-working-repo-vs-bare-repo/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
       
     </div>
@@ -1807,7 +1812,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/40/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><span class="page-number current">41</span><a class="page-number" href="/page/42/">42</a><span class="space">&hellip;</span><a class="page-number" href="/page/92/">92</a><a class="extend next" rel="next" href="/page/42/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/40/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><span class="page-number current">41</span><a class="page-number" href="/page/42/">42</a><span class="space">&hellip;</span><a class="page-number" href="/page/99/">99</a><a class="extend next" rel="next" href="/page/42/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1854,7 +1859,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">915</span>
+                    <span class="site-state-item-count">982</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2011,7 +2016,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">72</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">75</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -2410,7 +2421,25 @@
                     
                       
                     
-                    <span class="site-state-item-count">193</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">202</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

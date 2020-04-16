@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">72</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">75</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">915</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">982</span>
       </a>
 </li>
 
@@ -328,7 +328,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/11/21/语言相关/CPP/cpp-struct/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/03/27/语言相关/CPP/cpp-fold-expression/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -347,7 +347,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/11/21/语言相关/CPP/cpp-struct/" itemprop="url">cpp-struct</a></h1>
+                <a class="post-title-link" href="/2020/03/27/语言相关/CPP/cpp-fold-expression/" itemprop="url">cpp-fold expression</a></h1>
         
 
         <div class="post-meta">
@@ -359,7 +359,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-21T16:14:09+08:00">2019-11-21</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-27T12:44:42+08:00">2020-03-27</time>
             
 
             
@@ -416,7 +416,11 @@
       
         
           
-            <h2 id="initialization"><a href="#initialization" class="headerlink" title="initialization"></a>initialization</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+            <p>用来打包可变参数的</p>
+<p>有四种语义</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">unary right <span class="title">fold</span> <span class="params">(pack op …)</span></span></span><br><span class="line"><span class="function">unary left <span class="title">fold</span> <span class="params">(… op pack)</span></span></span><br><span class="line"><span class="function">binary right <span class="title">fold</span> <span class="params">(pack op … op init)</span></span></span><br><span class="line"><span class="function">binary left <span class="title">fold</span> <span class="params">(init op … op pack)</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Args&gt;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">sub_val_right</span><span class="params">(Args&amp;&amp;... args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (args - ...);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Args&gt;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">sub_val_left</span><span class="params">(Args&amp;&amp;... args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (... - args);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> t = sub_val_right(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>); <span class="comment">//(2-(3-4)) = 3</span></span><br><span class="line"><span class="keyword">auto</span> t1 = sub_val_left(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>); <span class="comment">//((2-3)-4) = -5</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Args&gt;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">sub_one_left</span><span class="params">(Args&amp;&amp;... args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (<span class="number">1</span> - ... - args);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Args&gt;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">sub_one_right</span><span class="params">(Args&amp;&amp;... args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (args - ... - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> t = sub_one_left（<span class="number">2</span>，<span class="number">3</span>，<span class="number">4</span>);<span class="comment">// (((1-2)-3)-4) = -8</span></span><br><span class="line"><span class="keyword">auto</span> t1 = sub_one_right（<span class="number">2</span>，<span class="number">3</span>，<span class="number">4</span>);<span class="comment">//(2-(3-(4-1))) = 2</span></span><br></pre></td></tr></table></figure>
           
         
       
@@ -469,7 +473,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/11/21/开源库/SOUI/soui-mclistview/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/03/27/开源库/开源协议/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -488,7 +492,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/11/21/开源库/SOUI/soui-mclistview/" itemprop="url">soui-mclistview</a></h1>
+                <a class="post-title-link" href="/2020/03/27/开源库/开源协议/" itemprop="url">开源协议</a></h1>
         
 
         <div class="post-meta">
@@ -500,7 +504,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-21T11:04:34+08:00">2019-11-21</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-27T08:32:02+08:00">2020-03-27</time>
             
 
             
@@ -521,14 +525,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/UI/" itemprop="url" rel="index"><span itemprop="name">UI</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
 
                 
                 
@@ -564,762 +561,20 @@
       
         
           
-            <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//多列listview</span></span><br><span class="line">SMCListView * pMcListView = FindChildByName2&lt;SMCListView&gt;(<span class="string">"mclv_test"</span>);</span><br><span class="line"><span class="keyword">if</span>(pMcListView)</span><br><span class="line">&#123;</span><br><span class="line">    IMcAdapter *pAdapter = <span class="keyword">new</span> CTestMcAdapterFix;</span><br><span class="line">    pMcListView-&gt;SetAdapter(pAdapter);</span><br><span class="line">    pAdapter-&gt;Release();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CTestMcAdapterFix</span> :</span> <span class="keyword">public</span> SMcAdapterBase</span><br><span class="line">&#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NUMSCALE 100000</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">SOFTINFO</span></span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">		<span class="keyword">const</span> <span class="keyword">wchar_t</span> * pszSkinName;</span><br><span class="line">		<span class="keyword">const</span> <span class="keyword">wchar_t</span> * pszName;</span><br><span class="line">		<span class="keyword">const</span> <span class="keyword">wchar_t</span> * pszDesc;</span><br><span class="line">		<span class="keyword">float</span>     fScore;</span><br><span class="line">		DWORD     dwSize;</span><br><span class="line">		<span class="keyword">const</span> <span class="keyword">wchar_t</span> * pszInstallTime;</span><br><span class="line">		<span class="keyword">const</span> <span class="keyword">wchar_t</span> * pszUseTime;</span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">	SArray&lt;SOFTINFO&gt; m_softInfo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	CTestMcAdapterFix()</span><br><span class="line">	&#123;</span><br><span class="line">		SOFTINFO info[] =</span><br><span class="line">		&#123;</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="string">L"skin_icon1"</span>,</span><br><span class="line">				<span class="string">L"鲁大师"</span>,</span><br><span class="line">				<span class="string">L"鲁大师是一款专业的硬件检测，驱动安装工具"</span>,</span><br><span class="line">				<span class="number">5.4f</span>,</span><br><span class="line">				<span class="number">15</span> * (<span class="number">1</span> &lt;&lt; <span class="number">20</span>),</span><br><span class="line">				<span class="string">L"2015-8-5"</span>,</span><br><span class="line">				<span class="string">L"今天"</span></span><br><span class="line">			&#125;,</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="string">L"skin_icon2"</span>,</span><br><span class="line">				<span class="string">L"PhotoShop"</span>,</span><br><span class="line">				<span class="string">L"强大的图片处理工具"</span>,</span><br><span class="line">				<span class="number">9.0f</span>,</span><br><span class="line">				<span class="number">150</span> * (<span class="number">1</span> &lt;&lt; <span class="number">20</span>),</span><br><span class="line">				<span class="string">L"2015-8-5"</span>,</span><br><span class="line">				<span class="string">L"今天"</span></span><br><span class="line">			&#125;,</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="string">L"skin_icon3"</span>,</span><br><span class="line">				<span class="string">L"QQ7.0"</span>,</span><br><span class="line">				<span class="string">L"腾讯公司出品的即时聊天工具"</span>,</span><br><span class="line">				<span class="number">8.0f</span>,</span><br><span class="line">				<span class="number">40</span> * (<span class="number">1</span> &lt;&lt; <span class="number">20</span>),</span><br><span class="line">				<span class="string">L"2015-8-5"</span>,</span><br><span class="line">				<span class="string">L"今天"</span></span><br><span class="line">			&#125;,</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="string">L"skin_icon4"</span>,</span><br><span class="line">				<span class="string">L"Visual Studio 2008"</span>,</span><br><span class="line">				<span class="string">L"Microsoft公司的程序开发套件"</span>,</span><br><span class="line">				<span class="number">9.0f</span>,</span><br><span class="line">				<span class="number">40</span> * (<span class="number">1</span> &lt;&lt; <span class="number">20</span>),</span><br><span class="line">				<span class="string">L"2015-8-5"</span>,</span><br><span class="line">				<span class="string">L"今天"</span></span><br><span class="line">			&#125;,</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="string">L"skin_icon5"</span>,</span><br><span class="line">				<span class="string">L"YY8"</span>,</span><br><span class="line">				<span class="string">L"YY语音"</span>,</span><br><span class="line">				<span class="number">9.0f</span>,</span><br><span class="line">				<span class="number">20</span> * (<span class="number">1</span> &lt;&lt; <span class="number">20</span>),</span><br><span class="line">				<span class="string">L"2015-8-5"</span>,</span><br><span class="line">				<span class="string">L"今天"</span></span><br><span class="line">			&#125;,</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="string">L"skin_icon6"</span>,</span><br><span class="line">				<span class="string">L"火狐浏览器"</span>,</span><br><span class="line">				<span class="string">L"速度最快的浏览器"</span>,</span><br><span class="line">				<span class="number">8.5f</span>,</span><br><span class="line">				<span class="number">35</span> * (<span class="number">1</span> &lt;&lt; <span class="number">20</span>),</span><br><span class="line">				<span class="string">L"2015-8-5"</span>,</span><br><span class="line">				<span class="string">L"今天"</span></span><br><span class="line">			&#125;,</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="string">L"skin_icon7"</span>,</span><br><span class="line">				<span class="string">L"迅雷"</span>,</span><br><span class="line">				<span class="string">L"迅雷下载软件"</span>,</span><br><span class="line">				<span class="number">7.3f</span>,</span><br><span class="line">				<span class="number">17</span> * (<span class="number">1</span> &lt;&lt; <span class="number">20</span>),</span><br><span class="line">				<span class="string">L"2015-8-5"</span>,</span><br><span class="line">				<span class="string">L"今天"</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; ARRAYSIZE(info); i++)</span><br><span class="line">		&#123;</span><br><span class="line">			m_softInfo.Add(info[i]);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">int</span> <span class="title">getCount</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> m_softInfo.GetCount()*NUMSCALE;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function">SStringT <span class="title">getSizeText</span><span class="params">(DWORD dwSize)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">int</span> num1 = dwSize / (<span class="number">1</span> &lt;&lt; <span class="number">20</span>);</span><br><span class="line">		dwSize -= num1 *(<span class="number">1</span> &lt;&lt; <span class="number">20</span>);</span><br><span class="line">		<span class="keyword">int</span> num2 = dwSize * <span class="number">100</span> / (<span class="number">1</span> &lt;&lt; <span class="number">20</span>);</span><br><span class="line">		<span class="keyword">return</span> SStringT().Format(_T(<span class="string">"%d.%02dM"</span>), num1, num2);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">getView</span><span class="params">(<span class="keyword">int</span> position, SWindow * pItem, pugi::xml_node xmlTemplate)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (pItem-&gt;GetChildrenCount() == <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			pItem-&gt;InitFromXml(xmlTemplate);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		SOFTINFO *psi = m_softInfo.GetData() + position%m_softInfo.GetCount();</span><br><span class="line">		pItem-&gt;FindChildByName(<span class="string">L"img_icon"</span>)-&gt;SetAttribute(<span class="string">L"skin"</span>, psi-&gt;pszSkinName);</span><br><span class="line">		pItem-&gt;FindChildByName(<span class="string">L"txt_name"</span>)-&gt;SetWindowText(S_CW2T(psi-&gt;pszName));</span><br><span class="line">		pItem-&gt;FindChildByName(<span class="string">L"txt_desc"</span>)-&gt;SetWindowText(S_CW2T(psi-&gt;pszDesc));</span><br><span class="line">		pItem-&gt;FindChildByName(<span class="string">L"txt_score"</span>)-&gt;SetWindowText(SStringT().Format(_T(<span class="string">"%1.2f 分"</span>), psi-&gt;fScore));</span><br><span class="line">		pItem-&gt;FindChildByName(<span class="string">L"txt_installtime"</span>)-&gt;SetWindowText(S_CW2T(psi-&gt;pszInstallTime));</span><br><span class="line">		pItem-&gt;FindChildByName(<span class="string">L"txt_usetime"</span>)-&gt;SetWindowText(S_CW2T(psi-&gt;pszUseTime));</span><br><span class="line">		pItem-&gt;FindChildByName(<span class="string">L"txt_size"</span>)-&gt;SetWindowText(getSizeText(psi-&gt;dwSize));</span><br><span class="line">		pItem-&gt;FindChildByName2&lt;SRatingBar&gt;(<span class="string">L"rating_score"</span>)-&gt;SetValue(psi-&gt;fScore / <span class="number">2</span>);</span><br><span class="line">		pItem-&gt;FindChildByName(<span class="string">L"txt_index"</span>)-&gt;SetWindowText(SStringT().Format(_T(<span class="string">"第%d行"</span>), position + <span class="number">1</span>));</span><br><span class="line"></span><br><span class="line">		SButton *pBtnUninstall = pItem-&gt;FindChildByName2&lt;SButton&gt;(<span class="string">L"btn_uninstall"</span>);</span><br><span class="line">		pBtnUninstall-&gt;SetUserData(position);</span><br><span class="line">		pBtnUninstall-&gt;GetEventSet()-&gt;subscribeEvent(EVT_CMD, Subscriber(&amp;CTestMcAdapterFix::OnButtonClick, <span class="keyword">this</span>));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">OnButtonClick</span><span class="params">(EventArgs *pEvt)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		SButton *pBtn = sobj_cast&lt;SButton&gt;(pEvt-&gt;sender);</span><br><span class="line">		<span class="keyword">int</span> iItem = pBtn-&gt;GetUserData();</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (SMessageBox(<span class="literal">NULL</span>, SStringT().Format(_T(<span class="string">"Are you sure to uninstall the selected [%d] software?"</span>), iItem), _T(<span class="string">"uninstall"</span>), MB_OKCANCEL | MB_ICONQUESTION) == IDOK)</span><br><span class="line">		&#123;<span class="comment">//删除一条记录</span></span><br><span class="line">			DeleteItem(iItem);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//删除一行，提供外部调用。</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">DeleteItem</span><span class="params">(<span class="keyword">int</span> iPosition)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (iPosition &gt;= <span class="number">0</span> &amp;&amp; iPosition &lt; getCount())</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> iItem = iPosition % m_softInfo.GetCount();</span><br><span class="line">			m_softInfo.RemoveAt(iItem);</span><br><span class="line">			notifyDataSetChanged();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function">SStringW <span class="title">GetColumnName</span><span class="params">(<span class="keyword">int</span> iCol)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> SStringW().Format(<span class="string">L"col%d"</span>, iCol + <span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">SORTCTX</span></span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">		<span class="keyword">int</span> iCol;</span><br><span class="line">		SHDSORTFLAG stFlag;</span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">OnSort</span><span class="params">(<span class="keyword">int</span> iCol, SHDSORTFLAG * stFlags, <span class="keyword">int</span> nCols)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (iCol == <span class="number">5</span>) <span class="comment">//最后一列“操作”不支持排序</span></span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">		SHDSORTFLAG stFlag = stFlags[iCol];</span><br><span class="line">		<span class="keyword">switch</span> (stFlag)</span><br><span class="line">		&#123;</span><br><span class="line">		<span class="keyword">case</span> ST_NULL:stFlag = ST_UP; <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> ST_DOWN:stFlag = ST_UP; <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> ST_UP:stFlag = ST_DOWN; <span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nCols; i++)</span><br><span class="line">		&#123;</span><br><span class="line">			stFlags[i] = ST_NULL;</span><br><span class="line">		&#125;</span><br><span class="line">		stFlags[iCol] = stFlag;</span><br><span class="line"></span><br><span class="line">		SORTCTX ctx = &#123; iCol,stFlag &#125;;</span><br><span class="line">		qsort_s(m_softInfo.GetData(), m_softInfo.GetCount(), <span class="keyword">sizeof</span>(SOFTINFO), SortCmp, &amp;ctx);</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">int</span> __<span class="function">cdecl <span class="title">SortCmp</span><span class="params">(<span class="keyword">void</span> *context, <span class="keyword">const</span> <span class="keyword">void</span> * p1, <span class="keyword">const</span> <span class="keyword">void</span> * p2)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		SORTCTX *pctx = (SORTCTX*)context;</span><br><span class="line">		<span class="keyword">const</span> SOFTINFO *pSI1 = (<span class="keyword">const</span> SOFTINFO*)p1;</span><br><span class="line">		<span class="keyword">const</span> SOFTINFO *pSI2 = (<span class="keyword">const</span> SOFTINFO*)p2;</span><br><span class="line">		<span class="keyword">int</span> nRet = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">switch</span> (pctx-&gt;iCol)</span><br><span class="line">		&#123;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">0</span>:<span class="comment">//name</span></span><br><span class="line">			nRet = wcscmp(pSI1-&gt;pszName, pSI2-&gt;pszName);</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">1</span>:<span class="comment">//score</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">float</span> fCmp = (pSI1-&gt;fScore - pSI2-&gt;fScore);</span><br><span class="line">			<span class="keyword">if</span> (<span class="built_in">fabs</span>(fCmp) &lt; <span class="number">0.0000001</span>) nRet = <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (fCmp &gt; <span class="number">0.0f</span>) nRet = <span class="number">1</span>;</span><br><span class="line">			<span class="keyword">else</span> nRet = <span class="number">-1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">2</span>:<span class="comment">//size</span></span><br><span class="line">			nRet = (<span class="keyword">int</span>)(pSI1-&gt;dwSize - pSI2-&gt;dwSize);</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">3</span>:<span class="comment">//install time</span></span><br><span class="line">			nRet = wcscmp(pSI1-&gt;pszInstallTime, pSI2-&gt;pszInstallTime);</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">4</span>:<span class="comment">//user time</span></span><br><span class="line">			nRet = wcscmp(pSI1-&gt;pszUseTime, pSI2-&gt;pszUseTime);</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (pctx-&gt;stFlag == ST_UP)</span><br><span class="line">			nRet = -nRet;</span><br><span class="line">		<span class="keyword">return</span> nRet;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/11/20/工具相关/visual studio/vs2015-release模式调试/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/11/20/工具相关/visual studio/vs2015-release模式调试/" itemprop="url">vs2015 release模式调试</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-20T13:14:28+08:00">2019-11-20</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具相关/" itemprop="url" rel="index"><span itemprop="name">工具相关</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在项目设置中把优化的相关部分去掉即可。</p>
-<ul>
-<li>c++常规:调试信息格式:选 程序数据库(/Zi)或(/ZI), 注意：如果是库的话，只能(Zi)</li>
-<li>c++优化:优化: 选  禁止（/Od）</li>
-<li>连接器:调试:生成调试信息: 选  是 （/DEBUG）</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/11/20/生活小知识/医药健康/静修体式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/11/20/生活小知识/医药健康/静修体式/" itemprop="url">静修体式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-20T06:46:23+08:00">2019-11-20</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/医药/" itemprop="url" rel="index"><span itemprop="name">医药</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/医药/健康/" itemprop="url" rel="index"><span itemprop="name">健康</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="静修一：挺尸式——行气通脉"><a href="#静修一：挺尸式——行气通脉" class="headerlink" title="静修一：挺尸式——行气通脉"></a>静修一：挺尸式——行气通脉</h2><p><img alt="20191120_064841.png" src="/2019/11/20/生活小知识/医药健康/静修体式/20191120_064841.png" width="400" height=""></p>
-<p>方法一】平躺，将双腿放置于瑜伽椅上，体会下背部的放松。双臂自然放置于体侧。觉知自己的呼吸，在每一次呼气时，将身体重量沉向背部，安全交给地面。</p>
-<p>【方法二】将瑜伽毯的一头卷起 2-3 折，横放于腋窝下方的中背部。如下图</p>
-<p><img alt="20191120_064857.png" src="/2019/11/20/生活小知识/医药健康/静修体式/20191120_064857.png" width="400" height=""></p>
-<p>可双腿伸展平卧，也可以延续“方法一”的卧法。觉知呼吸中胸腔的变化，体会这样的卧姿 5 分钟后呼吸的改变。</p>
-<p><img alt="20191120_064909.png" src="/2019/11/20/生活小知识/医药健康/静修体式/20191120_064909.png" width="400" height=""></p>
-<p>仰卧挺尸式，在瑜伽中，并不等同于睡觉。而是充满觉知的观照。观照身体与呼吸的每一点变化。而在中国传统运动中，也常以仰卧之姿来行气通脉。</p>
-<p>挺尸式不建议在柔软的床上进行，床垫有弹性不利于舒展。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/11/20/生活小知识/医药健康/静修体式/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/11/17/前端开发/canvas-and-svg/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/11/17/前端开发/canvas-and-svg/" itemprop="url">canvas and svg</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-17T10:35:56+08:00">2019-11-17</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>转载记录一下<br>作者：果汁凉茶丶<br>链接：<a href="https://www.jianshu.com/p/7bb4896be61c" target="_blank" rel="noopener">https://www.jianshu.com/p/7bb4896be61c</a><br>来源：简书<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
-<p>Canvas 和 SVG 都是 HTML5 中推荐的也是主要的 2D 图形绘制技术</p>
-<p>Canvas 提供画布标签和绘制 API，技术比较新，注重栅格图像处理。</p>
-<p>SVG 是一套独立的矢量图形语言，成为 W3C 标准已经有十几年，发展缓慢。</p>
-<p><img alt="20191117_103836.png" src="/2019/11/17/前端开发/canvas-and-svg/20191117_103836.png" width="400" height=""></p>
-<p>Canvas 基于像素，提供 2D 绘制函数，是一种 HTML 元素类型，依赖于 HTML，只能通过脚本绘制图案；</p>
-<p>SVG 为矢量图，提供一系列图形元素（Rect，Path，Circle，Line…）；还有完整的动画，时间机制，本身就能独立使用，也可以嵌入到 HTML 中。</p>
-<p><img alt="20191117_103900.png" src="/2019/11/17/前端开发/canvas-and-svg/20191117_103900.png" width="400" height=""></p>
-<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><h3 id="Canvas-提供功能更原始，动态渲染和大数据量绘制"><a href="#Canvas-提供功能更原始，动态渲染和大数据量绘制" class="headerlink" title="Canvas 提供功能更原始，动态渲染和大数据量绘制"></a>Canvas 提供功能更原始，动态渲染和大数据量绘制</h3><p>依赖分辨率<br>不支持事件处理器<br>弱的文本渲染能力<br>能够以.png 或 .jpg 格式保存结果图像<br>最适合图像密集型游戏，其中的许多对象会被频繁的重绘。</p>
-<h3 id="SVG-功能更完善，适合静态图片展示，高保证文档查看和打印的应用场景；"><a href="#SVG-功能更完善，适合静态图片展示，高保证文档查看和打印的应用场景；" class="headerlink" title="SVG 功能更完善，适合静态图片展示，高保证文档查看和打印的应用场景；"></a>SVG 功能更完善，适合静态图片展示，高保证文档查看和打印的应用场景；</h3><p>不依赖分辨率<br>支持事件处理器<br>最适合带有大型渲染区域的应用程序（比如谷歌地图）<br>复杂度高会减慢渲染速度（任何过度使用 DOM 的应用都不快）<br>不适合游戏应用</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/11/16/读过的书/如何控制负面情绪/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/11/16/读过的书/如何控制负面情绪/" itemprop="url">如何控制负面情绪</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-16T21:40:05+08:00">2019-11-16</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>这本书还不错，比较系统的讲了如何应付负面情绪，并且给出了具体的操作建议。推荐阅读<br>正好微信读书有免费阅读体验，就看了一下，全书 365 页，稍微厚点。 用了 2.5 小时看完<br>还需要反复的看几遍，加深理解。</p>
-<p>首先要知道，情绪主宰着你的健康，这个非常有意义。<br>然后要认识到人的 6 种基本需求情绪</p>
-<p><img alt="20191116_214244.png" src="/2019/11/16/读过的书/如何控制负面情绪/20191116_214244.png" width="400" height=""></p>
-<p><img alt="20191116_230308.png" src="/2019/11/16/读过的书/如何控制负面情绪/20191116_230308.png" width="800" height=""></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/11/15/读过的书/消除压力从大脑开始/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/11/15/读过的书/消除压力从大脑开始/" itemprop="url">消除压力从大脑开始</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-15T21:48:47+08:00">2019-11-15</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>方法比较简单实用，但是因为还没有通过操作获得实质性的结果，所以目前不好说是否可行。<br>书不厚 171 页，看一下也无妨。</p>
-<p>原理就是激活血清素，平衡脑内神经冲动。</p>
-<p>下面的两个实操方法：</p>
+            <p><img alt="20200327_084455.png" src="/2020/03/27/开源库/开源协议/20200327_084455.png" width="500" height=""></p>
+<h2 id="GPL-GNU"><a href="#GPL-GNU" class="headerlink" title="GPL/GNU"></a>GPL/GNU</h2><p>GNU 通用公共许可证（英语：GNU General Public License，缩写 GNU GPL 或 GPL）<br>是被广泛使用的自由软件许可证，给予了终端用户运行、学习、共享和修改软件的自由<br>GPL是在分发软件的时候有约束，就是在分发二进制的时候必须以同样的GPL分发代码。（分发包括公开提供下载和商业使用等）</p>
+<p>GPL协议的主要内容是只要在一个软件中使用(”使用”指类库引用，修改后的代码或者衍生代码)GPL 协议的产品，则该软件产品必须也采用GPL协议，既必须也是开源和免费。这就是所谓的”传染性”。GPL协议的产品作为一个单独的产品使用没有任何问题，还可以享受免费的优势。</p>
+<p>GPL 要求提供源码，所以不适合商用</p>
+<h2 id="LGPL"><a href="#LGPL" class="headerlink" title="LGPL"></a>LGPL</h2><p>LGPL是GPL的一个为主要为类库使用设计的开源协议。和GPL要求任何使用/修改/衍生之GPL类库的的软件必须采用GPL协议不同。LGPL 允许商业软件通过类库引用(link)方式使用LGPL类库而不需要开源商业软件的代码。这使得采用LGPL协议的开源代码可以被商业软件作为类库引用并发布和销售。</p>
+<p>但是如果修改LGPL协议的代码或者衍生，则所有修改的代码，涉及修改部分的额外代码和衍生的代码都必须采用LGPL协议。因此LGPL协议的开源代码很适合作为第三方类库被商业软件引用，但不适合希望以LGPL协议代码为基础，通过修改和衍生的方式做二次开发的商业软件采用。</p>
+<p>GPL/LGPL都保障原作者的知识产权，避免有人利用开源代码复制并开发类似的产品</p>
+<h2 id="MIT"><a href="#MIT" class="headerlink" title="MIT"></a>MIT</h2><p>MIT是和BSD一样宽范的许可协议,作者只想保留版权,而无任何其他了限制.也就是说,你必须在你的发行版里包含原许可协议的声明,无论你是以二进制发布的还是以源代码发布的.</p>
+<h2 id="BSD开源协议（original-BSD-license、FreeBSD-license、Original-BSD-license）"><a href="#BSD开源协议（original-BSD-license、FreeBSD-license、Original-BSD-license）" class="headerlink" title="BSD开源协议（original BSD license、FreeBSD license、Original BSD license）"></a>BSD开源协议（original BSD license、FreeBSD license、Original BSD license）</h2><p>当你发布使用了BSD协议的代码，或则以BSD协议代码为基础做二次开发自己的产品时，需要满足三个条件：</p>
 <ol>
-<li>日光浴 5-30 分钟，早上最好，激活血清素</li>
-<li>韵律运动，5-30 分钟，激活血清素</li>
+<li>如果再发布的产品中包含源代码，则在源代码中必须带有原来代码中的BSD协议。</li>
+<li>如果再发布的只是二进制类库/软件，则需要在类库/软件的文档和版权声明中包含原来代码中的BSD协议。</li>
+<li>不可以用开源代码的作者/机构名字和原来产品的名字做市场推广。</li>
 </ol>
-<p>这里面韵律运动，指的是有节奏的运动都可以，咀嚼口香糖也算，但是要注意一点，就是头脑要集中在运动上，不能分心，比如看电视，看书，这些都会激活工作脑，影响激活血清素</p>
-<p><img alt="20191115_215155.png" src="/2019/11/15/读过的书/消除压力从大脑开始/20191115_215155.png" width="400" height=""></p>
-<p><img alt="20191115_215213.png" src="/2019/11/15/读过的书/消除压力从大脑开始/20191115_215213.png" width="400" height=""></p>
-<p><img alt="20191115_215231.png" src="/2019/11/15/读过的书/消除压力从大脑开始/20191115_215231.png" width="400" height=""></p>
-<p><img alt="20191115_215244.png" src="/2019/11/15/读过的书/消除压力从大脑开始/20191115_215244.png" width="400" height=""></p>
 
           
         
@@ -1373,7 +628,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/11/14/语言相关/Rust/rust-log4rs/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/03/20/语言相关/CPP/cpp-大小端转换/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1392,7 +647,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/11/14/语言相关/Rust/rust-log4rs/" itemprop="url">rust-log4rs</a></h1>
+                <a class="post-title-link" href="/2020/03/20/语言相关/CPP/cpp-大小端转换/" itemprop="url">cpp-大小端转换</a></h1>
         
 
         <div class="post-meta">
@@ -1404,7 +659,1014 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-14T19:03:37+08:00">2019-11-14</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-20T13:42:33+08:00">2020-03-20</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>如果使用 vc 可以使用下面的函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// For 16 bit numbers:</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">short</span> _byteswap_ushort(<span class="keyword">unsigned</span> <span class="keyword">short</span> value);</span><br><span class="line"><span class="comment">// For 32 bit numbers:</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> _byteswap_ulong(<span class="keyword">unsigned</span> <span class="keyword">long</span> value);</span><br><span class="line"><span class="comment">// For 64 bit numbers:</span></span><br><span class="line"><span class="keyword">unsigned</span> __int64 _byteswap_uint64(<span class="keyword">unsigned</span> __int64 value);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;climits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function">T <span class="title">swap_endian</span><span class="params">(T u)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">static_assert</span> (CHAR_BIT == <span class="number">8</span>, <span class="string">"CHAR_BIT != 8"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">union</span></span><br><span class="line">    &#123;</span><br><span class="line">        T u;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">char</span> u8[<span class="keyword">sizeof</span>(T)];</span><br><span class="line">    &#125; source, dest;</span><br><span class="line"></span><br><span class="line">    source.u = u;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> k = <span class="number">0</span>; k &lt; <span class="keyword">sizeof</span>(T); k++)</span><br><span class="line">        dest.u8[k] = source.u8[<span class="keyword">sizeof</span>(T) - k - <span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> dest.u;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">swap_endian&lt;<span class="keyword">uint32_t</span>&gt;(<span class="number">42</span>);</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/03/17/学习笔记/PLC/PLC-西门子S7Comm以太网通讯协议/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/17/学习笔记/PLC/PLC-西门子S7Comm以太网通讯协议/" itemprop="url">PLC-西门子S7Comm以太网通讯协议</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-17T17:44:27+08:00">2020-03-17</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://blog.csdn.net/powersun1981/article/details/54289776" target="_blank" rel="noopener">ref.1</a></p>
+<p>正常项目，一般都是网线tcp通讯的那种，官方叫 iso on tcp 这种方式<br>西门子的做法和 现在的大众软件方法类似，开放一个默认端口，是102，可以同时连接多个客户端；<br>tcp 客户端连上西门子的102端口后，必须做一个特定报文的交互，然后才能做正常的读取操作；</p>
+<p>可能由于西门子的102端口是1对多的，所以它比较拽，一旦发现通讯数据格式或内容不正确，不但不回复，而且直接跟你把通讯通道断开，<br>    不理你了； 三菱遇到异常报文时，通讯不会断的，只是回复你异常数据，并且有异常代码；</p>
+<p>解析的是以 0x32 开始的报文结构</p>
+<p>借助WireShark抓包，可以看到，S7Comm 以太网协议基于OSI模型：</p>
+<table>
+<thead>
+<tr>
+<th>OSI layer</th>
+<th>Protocol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7 Application Layer</td>
+<td>S7 communication</td>
+</tr>
+<tr>
+<td>6 Presentation Layer</td>
+<td>S7 communication(COTP)</td>
+</tr>
+<tr>
+<td>5 Session Layer</td>
+<td>S7 communication(TPKT)</td>
+</tr>
+<tr>
+<td>4 Transport Layer</td>
+<td>ISO-on-TCP (RFC 1006)</td>
+</tr>
+<tr>
+<td>3 Network Layer</td>
+<td>IP</td>
+</tr>
+<tr>
+<td>2 Data Link Layer</td>
+<td>Ethernet</td>
+</tr>
+<tr>
+<td>1 Physical Layer</td>
+<td>Ethernet</td>
+</tr>
+</tbody>
+</table>
+<p>其中，第1~4层会由计算机自己完成（底层驱动程序）；<br>第5层TPKT，应用程数据传输协议，介于TCP和COTP协议之间；这是一个传输服务协议，主要用来在COTP和TCP之间建立桥梁；</p>
+<p>“TPKT is an”encapsulation” protocol. It carries the OSI packet in its ownpacket’s data payload and then passes the resulting structure to TCP, from thenon, the packet is processed as a TCP/IP packet. The OSI programs passing datato TPKT are unaware that their data will be carried over TCP/IP because TPKTemulates the OSI protocol Transport Service Access Point (TSAP).”</p>
+<p>第6层COTP，按照维基百科的解释，COTP 是 OSI 7层协议定义的位于TCP之上的协议。COTP 以“Packet”为基本单位来传输数据，这样接收方会得到与发送方具有相同边界的数据；</p>
+<p>第7层，S7 communication，这一层和用户数据相关，对PLC数据的读取报文在这里完成；</p>
+<p>刚看到TPKT和COPT也许会很迷惑，其实在具体的报文中，TPKT的作用是包含用户协议（5~7层）的数据长度（字节数）；COTP的作用是定义了数据传输的基本单位（在S7Comm中 PDU TYPE：DT data）；</p>
+<p>S7Comm与标准TCP/IP比较：S7Comm是一个7层协议；TCP/IP是四层协议，用户数据在第四层TCP层完成；</p>
+<p>计算机与PLC进行通讯，可以连接102端口，这是西门子开放的一个通讯端口；</p>
+<p>第七层 S7 communication协议</p>
+<p>S7 communication包含三部分：1-Header；2-Parameter；3 - Data。</p>
+<p>根据实现的功能不同，S7 communication协议的结构会有所不同；例如，请求数据报文只包含前两部分；</p>
+<pre><code> &lt;1&gt;Header     
+
+   *01(1 byte): protocol Id: 0x32;
+
+   *02a(1 byte): ROSCTR: Job (01);
+
+   *02b(2 byte): redundancy identification (reserved): 0x0000;
+
+   *2c(2 byte): protocol data unit reference; it’s increased by request event;
+
+   *2d(2 byte): parameter length - the total length (bytes) of parameter part;
+
+   *2e(2 byte): data length; 读取PLC内部数据，此处为00 00；对于其他功能，例如：读取CPU的型号，此处为Data部分的数据长度；
+
+&lt;2&gt;Parameter（读取数据）
+
+  *3(1 byte): function code: Read Var (0x04)；writeVar (0x05);
+
+    *4(1 byte): item count;
+
+    *5(1 byte): variable specification: 0x12;
+
+    *6(1 byte): length of following address specification – is 7~12length in byte;
+
+    *7(1 byte): syntax Id: S7ANY (0x10);
+
+    *8(1 byte):transport size: BYTE(2);
+
+    *9(2 byte): requested data length;
+
+    *10(2 byte): DB number; 如果访问的不是DB区域，此处为00 00；
+
+    *11(1 byte): Area: 0x84= data block(DB); 0X82= outputs(Q); 0x81=inputs(I); 0x83= Flags(M); 0x1d= S7 timers(T); 0x1c= S7counters(C);
+
+    *12(3 byte):address- start address from zero bit
+
+    *5~*12构成了一个基本的数据请求单元[Item],对多个不同地址区域的数据请求，就是有多个[Item]构成的。
+
+     Parameter部分的数据结构可以总结为：
+
+                 [Function code ]+ [Item count] + Item[1] + Item[2]  . . . Item[n]  
+
+    &lt;3&gt;Data
+
+      这一部分与功能有关，例如：读取CPU型号、向CPU存储区写数据；在请求数据报文中此部分不包含任何数据。
+</code></pre><h2 id="S7Comm以太网通讯过程"><a href="#S7Comm以太网通讯过程" class="headerlink" title="S7Comm以太网通讯过程"></a>S7Comm以太网通讯过程</h2><ol>
+<li>需要”通讯请求”过程。这个过程包含两次报文交换</li>
+</ol>
+<p>1&gt; PC 发送COTP报文给PLC；在COTP报文中包含“连接请求”和“destination TSAP” - 明确CPU的机架号和槽号；<br>PLC反馈COTP报文，包含“连接确认”；<br> 这样PLC就清楚了需要和那个CPU来进行数据通讯；</p>
+<p>握手1<br>03 00 00 16 11 e0 00 00 00 04 00 c1 02 01 00 c2 02 01 02 c0 01 0a<br>握手2<br>03 00 00 19 02 f0 80 32 01 00 00 02 00 00 08 00 00 f0 00 00 01 00 01 01 e0</p>
+<p>2&gt; PC 发送S7Comm报文给PLC；在S7 communicaton报文中包含“通讯请求”；<br>PLC反馈S7Comm报文。</p>
+<ol>
+<li>交换数据<br>数据读写就在这个过程内完成。我们可以组织报文来实现我们需要的功能。这个过程内的报文是S7Comm格式；<br>具体实现时，需要对S7Comm中的第5、6、7层进行编程。</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/03/17/学习笔记/windows/MFC/MFC-自定义控件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/17/学习笔记/windows/MFC/MFC-自定义控件/" itemprop="url">MFC-自定义控件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-17T14:28:40+08:00">2020-03-17</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在对话框程序中使用。</p>
+<p><a href="https://www.codeproject.com/Articles/5032/Creating-and-Using-custom-controls-in-VC" target="_blank" rel="noopener">ref.1</a></p>
+<ol>
+<li>资源管理其中，拖拽自定义控件到对话框中</li>
+<li>右键菜单创建 class，继承至 CWnd</li>
+<li>比较重要的一步，需要注册自定义的控件，并且必须在构造函数里面注册</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> WNDCLASS_NAME (<span class="meta-string">L"CCanvas"</span>)</span></span><br><span class="line"></span><br><span class="line">BOOL CCanvas::RegisterWndClass()</span><br><span class="line">&#123;</span><br><span class="line">	WNDCLASS windowclass;</span><br><span class="line">	HINSTANCE hInst = AfxGetInstanceHandle();</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Check weather the class is registerd already</span></span><br><span class="line">	<span class="keyword">if</span> (!(::GetClassInfo(hInst, WNDCLASS_NAME, &amp;windowclass)))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//If not then we have to register the new class</span></span><br><span class="line">		windowclass.style = CS_DBLCLKS;<span class="comment">// | CS_HREDRAW | CS_VREDRAW;</span></span><br><span class="line">		windowclass.lpfnWndProc = ::DefWindowProc;</span><br><span class="line">		windowclass.cbClsExtra = windowclass.cbWndExtra = <span class="number">0</span>;</span><br><span class="line">		windowclass.hInstance = hInst;</span><br><span class="line">		windowclass.hIcon = <span class="literal">NULL</span>;</span><br><span class="line">		windowclass.hCursor = AfxGetApp()-&gt;LoadStandardCursor(IDC_ARROW);</span><br><span class="line">		windowclass.hbrBackground = ::GetSysColorBrush(COLOR_WINDOW);</span><br><span class="line">		windowclass.lpszMenuName = <span class="literal">NULL</span>;</span><br><span class="line">		windowclass.lpszClassName = WNDCLASS_NAME;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (!AfxRegisterClass(&amp;windowclass))</span><br><span class="line">		&#123;</span><br><span class="line">			AfxThrowResourceException();</span><br><span class="line">			<span class="keyword">return</span> FALSE;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> TRUE;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CCanvas::CCanvas()</span><br><span class="line">&#123;</span><br><span class="line">	RegisterWndClass();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>绑定类和自定义控件。右键单击-属性-class 里面填写类定义里面的 “CCanvas”</li>
+<li>数据绑定，在对话框主程序中添加</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CCanvas m_canvas;<span class="comment">//This is our custom control</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> CdrawDemoDlg::DoDataExchange(CDataExchange* pDX)</span><br><span class="line">&#123;</span><br><span class="line">	CDialogEx::DoDataExchange(pDX);</span><br><span class="line">	DDX_Control(pDX, IDC_STATIC_FRAME, m_ctrl_draw);</span><br><span class="line">	DDX_Control(pDX, IDOK, m_btn_ok);</span><br><span class="line">	DDX_Control(pDX, IDC_CUSTOM1, m_canvas);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/03/17/学习笔记/数学/数学-三角函数-正弦等/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/17/学习笔记/数学/数学-三角函数-正弦等/" itemprop="url">数学-三角函数-正弦等</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-17T10:09:20+08:00">2020-03-17</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数学/" itemprop="url" rel="index"><span itemprop="name">数学</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>初三学三角函数：正弦，余弦和正切都是研究三角形边角关系的。等你学的时候会要求你知道角会求边，知道边会求角，比如说求船的航行路程，仰角俯角求建筑物高度，还有，有时还会和勾股定理一起用</p>
+<h2 id="名称来源"><a href="#名称来源" class="headerlink" title="名称来源"></a>名称来源</h2><p>来源是文言文。把词语拆成字逐个分析。“弦”代表长，也就是斜边，从“勾三股四弦五”中迁移过来。“正”就是正对，表示直角三角形中角的对边。“余”代表相邻，表示直角三角形中与角相邻的直角边。“切”有垂直之意，在圆的切线中有体现。这样一来，正弦就是对边比斜边，余弦就是邻边比斜边，正切就是对边比（与对边垂直的）邻边。我们常说切割，在数学里，切和割是相差很远的，比如切线和割线。所以在三角函数里，切割相反。</p>
+<h2 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h2><p>从已知两边求角度</p>
+<p>例子<br>梯子搁在墙上，如图。梯子与墙之间的 角度 是多少？</p>
+<p><img alt="20200317_124139.png" src="/2020/03/17/学习笔记/数学/数学-三角函数-正弦等/20200317_124139.png" width="500" height=""></p>
+<p>例子：在这个梯子的例子，我们知道：<br>角 “x” 的 对边的长度：2.5<br>最长的边（斜边）的长度：5</p>
+<p>$Sin (x) = 对边 / 斜边 = 2.5 / 5 = 0.5$</p>
+<p>解方程！</p>
+<p>$sin(x) = 0.5$</p>
+<p>我们可以重写为：</p>
+<p>$x = sin^{-1}(0.5)$</p>
+<p>我们用计算器来做：输入 0.5，按 $sin^{-1}$ 键，答案便出来了：</p>
+<p>$x = 30°$</p>
+<p>但…… $sin^{-1}$ 的意思是什么？<br>正弦函数 “sin” 以角度为输入来计算 “对边/斜边” 的比，</p>
+<p><img alt="20200317_134548.png" src="/2020/03/17/学习笔记/数学/数学-三角函数-正弦等/20200317_134548.png" width="500" height=""></p>
+<p>$sin^{-1}$（叫 “反正弦”）是正弦的相反……<br>……它以 “对边/斜边” 的比为输入来计算角度。</p>
+<p>例子：<br>正弦函数：sin(30°) = 0.5<br>反正弦函数：sin-1(0.5) = 30°</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/03/16/学习笔记/windows/MFC/MFC-调用控制台调试/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/16/学习笔记/windows/MFC/MFC-调用控制台调试/" itemprop="url">MFC-调用控制台调试</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-16T11:31:40+08:00">2020-03-16</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>AllocConsole 为调用进程分配一个新的控制台</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _DEBUG  </span></span><br><span class="line">	AllocConsole();</span><br><span class="line">	_cprintf(<span class="string">"Debuging....\r\n"</span>);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> </span></span><br><span class="line"></span><br><span class="line">HANDLE　hOutputHandle=GetStdHandle(STD_OUTPUT_HANDLE);<span class="comment">//获得控制台输出句柄</span></span><br><span class="line">DWORD　nRet=<span class="number">0</span>;</span><br><span class="line">TCHAR　buf[<span class="number">100</span>]=&#123;<span class="number">0</span>&#125;;<span class="comment">//用来输出字符的缓冲区</span></span><br><span class="line">lstrcpy(buf,_T(<span class="string">"Hello"</span>));</span><br><span class="line">WriteConsole(hOutputHandle,buf,lstrlen(buf),&amp;nRet,<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 退出时释放</span></span><br><span class="line">FreeConsole();</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/03/16/学习笔记/windows/MFC/MFC-对话框绘图/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/16/学习笔记/windows/MFC/MFC-对话框绘图/" itemprop="url">MFC-对话框绘图</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-16T11:19:35+08:00">2020-03-16</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>和绘图效率的一个重要相关因素是绘图引擎。Windows环境下二维绘图引擎有多种选择：GDI、GDI+、DirectDraw、QT、Agg、Cairo、skia、Direct2D、Direct3D、OpenGL等</p>
+<p>使用 CDC 绘图</p>
+<p>添加一个 Picture Control 设置 Notify 属性为 True</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">My_Draw</span> :</span> <span class="keyword">public</span> CStatic </span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="使用自定义控件"><a href="#使用自定义控件" class="headerlink" title="使用自定义控件"></a>使用自定义控件</h2><p>创建一个自定义控件，然后绑定一个 Wnd 子类，在子类里面绘图</p>
+<h2 id="填充背景"><a href="#填充背景" class="headerlink" title="填充背景"></a>填充背景</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">RECT rcClient;</span><br><span class="line">GetClientRect(&amp;rcClient);</span><br><span class="line"><span class="comment">// 填充客户区颜色</span></span><br><span class="line">dc.FillSolidRect(&amp;rcClient, RGB(<span class="number">0x99</span>,<span class="number">0x99</span>,<span class="number">0x99</span>));</span><br></pre></td></tr></table></figure>
+<h2 id="绘制矩形"><a href="#绘制矩形" class="headerlink" title="绘制矩形"></a>绘制矩形</h2><p>矩形框，内部不填充</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m_memDC.FrameRect(&amp;m_rc_measure, m_spBrushWhite.get());</span><br></pre></td></tr></table></figure>
+<h2 id="绘制多个点连线"><a href="#绘制多个点连线" class="headerlink" title="绘制多个点连线"></a>绘制多个点连线</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (FALSE == m_memDC.PolylineTo(&amp;it.pt[<span class="number">0</span>], it.pt.size()))</span><br><span class="line">&#123;</span><br><span class="line">    ASSERT(FALSE);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="脏矩形"><a href="#脏矩形" class="headerlink" title="脏矩形"></a>脏矩形</h2><p>就是每次画面的刷新只更新需要更新的那一块区域</p>
+<p>实际上，在OnDraw(CDC *pDC)中绘制的图并不是所有都显示了的，例如：你 在OnDraw中画了两个矩形，在一次重绘中虽然两个矩形的绘制函数都有执行，但是很有可能只有一个显示了，这是因为MFC本身为了提高重绘的效率设置了裁剪区。裁剪区的作用就是：只有在这个区内的绘图过程才会真正有效，在区外的是无效的，即使在区外执行了绘图函数也是不会显示的。因为多数情况下窗口重绘的产生大多是因为窗口部分被遮挡或者窗口有滚动发生，改变的区域并不是整个图形而只有一小部分，这一部分需要改变的就是pDC中的裁剪区了。因为显示（往内存或者显存都叫显示）比绘图过程的计算要费时得多，有了裁剪区后显示的就只是应该显示的部分，大大提高了显示效率。但是这个裁剪区是MFC设置的，它已经为我们提高了显示效率，在进行复杂图形的绘制时如何进一步提高效率呢？那就只有去掉在裁剪区外的绘图过程了。可以先用pDC-&gt;GetClipBox()得到裁剪区，然后在绘图时判断你的图形是否在这个区内，如果在就画，不在就不画。 如果你的绘图过程不复杂，这样做可能对你的绘图效率不会有提高。</p>
+<p>invalidaterect（）<br>想产生“区域无效”的系统消息的话，可以用GDI的，InvalidateRect或者ValidateRgn</p>
+<h2 id="闪烁问题"><a href="#闪烁问题" class="headerlink" title="闪烁问题"></a>闪烁问题</h2><p>当窗口由于任何原因需要重绘时，总是先用背景色将显示区清除，然后才调用OnPaint进行重绘，而背景色往往与绘图内容反差很大，这样在短时间内背景色与显示图形的交替出现，使得显示窗口看起来在闪。</p>
+<p>当窗口中有控件时，需要把窗口对话框属性Clip Children设置为True，这样在重绘父窗口时就不会刷新子控件的背景，否则界面重绘时控件由于重绘还是会发生闪烁。</p>
+<p>然后重载窗口的OnEraseBkgnd()函数，使背景刷变成透明的，实现代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BOOL <span class="title">OnEraseBkgnd</span><span class="params">(CDC* pDC)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> TRUE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="设置颜色"><a href="#设置颜色" class="headerlink" title="设置颜色"></a>设置颜色</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="文本背景透明"><a href="#文本背景透明" class="headerlink" title="文本背景透明"></a>文本背景透明</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SetBkMode(m_memDC, TRANSPARENT);</span><br></pre></td></tr></table></figure>
+<h2 id="输出文本"><a href="#输出文本" class="headerlink" title="输出文本"></a>输出文本</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pDC-&gt;SetTextAlign( TA_BASELINE | TA_CENTER ); </span><br><span class="line">pDC-&gt;TextOut( rect.right / <span class="number">2</span>, rect.bottom / <span class="number">2</span>, s, s.GetLength() );</span><br></pre></td></tr></table></figure>
+<h2 id="获取坐标值"><a href="#获取坐标值" class="headerlink" title="获取坐标值"></a>获取坐标值</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">POINT point;</span><br><span class="line"><span class="comment">// 获取鼠标指针位置（屏幕坐标）</span></span><br><span class="line">GetCursorPos(&amp;point);</span><br><span class="line"><span class="comment">// 将鼠标指针位置转换为窗口坐标</span></span><br><span class="line"><span class="keyword">this</span>-&gt;ScreenToClient(&amp;point);</span><br></pre></td></tr></table></figure>
+<h2 id="判断点是否在矩形内"><a href="#判断点是否在矩形内" class="headerlink" title="判断点是否在矩形内"></a>判断点是否在矩形内</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (PtInRect(&amp;rc, itData.pt[i]));</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//测试框内的数据</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/03/16/语言相关/python/python-distribute/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/16/语言相关/python/python-distribute/" itemprop="url">python-distribute</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-16T10:27:48+08:00">2020-03-16</time>
             
 
             
@@ -1461,7 +1723,9 @@
       
         
           
-            <p>log4rs是一个高效的日志库框架，借鉴了 java 的 Logback 和 log4j。<br>提供了输出到文件和控制台两种方式。<br>输出到文件时，你可能需要限制文件大小，文件拆分，文件回滚功能，这些log4rs都提供了。</p>
+            <h2 id="pyinstaller"><a href="#pyinstaller" class="headerlink" title="pyinstaller"></a>pyinstaller</h2><p><a href="https://pyinstaller.readthedocs.io/en/stable/" target="_blank" rel="noopener">doc</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install pyinstaller</span><br><span class="line">pyinstaller yourprogram.py</span><br></pre></td></tr></table></figure>
+<h2 id="nuitka"><a href="#nuitka" class="headerlink" title="nuitka"></a>nuitka</h2><p><a href="https://nuitka.net/" target="_blank" rel="noopener">website</a></p>
 
           
         
@@ -1515,7 +1779,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/11/14/语言相关/Rust/rust-build/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/03/07/语言相关/python/python-比较浮点数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1534,7 +1798,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/11/14/语言相关/Rust/rust-build/" itemprop="url">rust-build</a></h1>
+                <a class="post-title-link" href="/2020/03/07/语言相关/python/python-比较浮点数/" itemprop="url">python-比较浮点数</a></h1>
         
 
         <div class="post-meta">
@@ -1546,7 +1810,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-14T16:59:20+08:00">2019-11-14</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-07T08:45:47+08:00">2020-03-07</time>
             
 
             
@@ -1603,150 +1867,7 @@
       
         
           
-            <h2 id="优化编译"><a href="#优化编译" class="headerlink" title="优化编译"></a>优化编译</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cargo build --release</span><br><span class="line">strip -s target/release/hello</span><br><span class="line">du -h target/release/hello</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在Cargo.toml中添加</span></span><br><span class="line">[profile.release]</span><br><span class="line"><span class="built_in">panic</span> = <span class="string">'abort'</span></span><br><span class="line">lto = <span class="literal">true</span></span><br><span class="line">opt-level = <span class="string">"z"</span></span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/11/09/读过的书/哈利布朗的永久投资组合/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/11/09/读过的书/哈利布朗的永久投资组合/" itemprop="url">哈利布朗的永久投资组合</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-09T08:45:24+08:00">2019-11-09</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>这本书还没到我该看的时候，初步看资产要 1 千万差不多就可以看了。<br>总共分四类资产配置：股票，债券，现金，黄金。这个组合可以抵御大多数的经融危机。</p>
-<p><img alt="20191109_084650.png" src="/2019/11/09/读过的书/哈利布朗的永久投资组合/20191109_084650.png" width="400" height=""></p>
-
+            <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python <span class="number">3.5</span>之后，PEP485提案中给出了解决方案。</span><br><span class="line">math.isclose(val, rval, rel_tol=<span class="number">1e-10</span>)</span><br></pre></td></tr></table></figure>
           
         
       
@@ -1788,7 +1909,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/92/">92</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/99/">99</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1835,7 +1956,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">915</span>
+                    <span class="site-state-item-count">982</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1992,7 +2113,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">72</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">75</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -2391,7 +2518,25 @@
                     
                       
                     
-                    <span class="site-state-item-count">193</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">202</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -2933,7 +3078,69 @@
         onPopupClose();
       }
     });
-  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -2952,44 +3159,7 @@
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->
 
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-  
     
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-  
-
   
 
 
