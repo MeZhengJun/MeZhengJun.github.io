@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="慢慢的把之前收集的代码片段迁移过来。 格式化开源库fmt 大小写转换1234// toUppertransform(strOutput.begin(), strOutput.end(), strOutput.begin(), ::toupper);// toLowertransform(strOutput.begin(), strOutput.end(), strOutput.begin(), :">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cpp_string">
+<meta property="og:url" content="http://zhengjunblog.top/2017/12/14/语言相关/CPP/cpp-string/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="慢慢的把之前收集的代码片段迁移过来。 格式化开源库fmt 大小写转换1234// toUppertransform(strOutput.begin(), strOutput.end(), strOutput.begin(), ::toupper);// toLowertransform(strOutput.begin(), strOutput.end(), strOutput.begin(), :">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-04-20T08:37:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cpp_string">
+<meta name="twitter:description" content="慢慢的把之前收集的代码片段迁移过来。 格式化开源库fmt 大小写转换1234// toUppertransform(strOutput.begin(), strOutput.end(), strOutput.begin(), ::toupper);// toLowertransform(strOutput.begin(), strOutput.end(), strOutput.begin(), :">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="http://zhengjunblog.top/2017/12/14/语言相关/CPP/cpp-string/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>cpp_string | 郑君的学习笔记</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">郑君的学习笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">要比昨天进步一点点</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">75</span>
+      </a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">986</span>
+      </a>
+</li>
+
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2017/12/14/语言相关/CPP/cpp-string/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">cpp_string</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-14T10:11:09+08:00">2017-12-14</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>慢慢的把之前收集的代码片段迁移过来。</p>
+<h2 id="格式化开源库"><a href="#格式化开源库" class="headerlink" title="格式化开源库"></a>格式化开源库</h2><p><a href="https://github.com/fmtlib/fmt" target="_blank" rel="noopener">fmt</a></p>
+<h2 id="大小写转换"><a href="#大小写转换" class="headerlink" title="大小写转换"></a>大小写转换</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// toUpper</span></span><br><span class="line">transform(strOutput.begin(), strOutput.end(), strOutput.begin(), ::<span class="built_in">toupper</span>);</span><br><span class="line"><span class="comment">// toLower</span></span><br><span class="line">transform(strOutput.begin(), strOutput.end(), strOutput.begin(), ::<span class="built_in">tolower</span>);</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="sscanf-s"><a href="#sscanf-s" class="headerlink" title="sscanf_s"></a>sscanf_s</h2><h3 id="跳过指定字符串"><a href="#跳过指定字符串" class="headerlink" title="跳过指定字符串"></a>跳过指定字符串</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> index = <span class="number">0</span>;</span><br><span class="line">_stscanf_s(it.c_str(), <span class="string">L"dev_config_%d"</span>, &amp;index);</span><br></pre></td></tr></table></figure>
+<h1 id="去前后空白字符"><a href="#去前后空白字符" class="headerlink" title="去前后空白字符"></a>去前后空白字符</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;list&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _UNICODE</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> tstring wstring</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> tstring string</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// _UNICODE</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">strTrim</span><span class="params">(tstring&amp; s)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    s.erase(<span class="number">0</span>, s.find_first_not_of(_T(<span class="string">" \t\f\v\n\r"</span>)));</span><br><span class="line">    s.erase(s.find_last_not_of(_T(<span class="string">" \t\f\v\n\r"</span>)) + <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="vector2string"><a href="#vector2string" class="headerlink" title="vector2string"></a>vector2string</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt; v;</span><br><span class="line">std::string str(v.begin(), v.end());</span><br></pre></td></tr></table></figure>
+<h1 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> strPlain = w2s(harddriveSN) + w2s(cpuSN) + w2s(originMac);</span><br><span class="line">sort(strPlain.begin(), strPlain.end());</span><br></pre></td></tr></table></figure>
+<h1 id="倒序"><a href="#倒序" class="headerlink" title="倒序"></a>倒序</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> strPlain = w2s(harddriveSN) + w2s(cpuSN) + w2s(originMac);</span><br><span class="line">sort(strPlain.begin(), strPlain.end());</span><br><span class="line">reverse(strPlain.begin(), strPlain.end());</span><br></pre></td></tr></table></figure>
+<h1 id="base64-编码"><a href="#base64-编码" class="headerlink" title="base64 编码"></a>base64 编码</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">https:<span class="comment">//github.com/ReneNyffenegger/cpp-base64</span></span><br><span class="line">https:<span class="comment">//renenyffenegger.ch/notes/development/Base64/Encoding-and-decoding-base-64-with-cpp</span></span><br></pre></td></tr></table></figure>
+<h2 id="原生字符串（raw-string-literals）"><a href="#原生字符串（raw-string-literals）" class="headerlink" title="原生字符串（raw string literals）"></a>原生字符串（raw string literals）</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *lua_script = <span class="string">R"(</span></span><br><span class="line"><span class="string">version = '1.0.0'</span></span><br><span class="line"><span class="string">function add(a, b)</span></span><br><span class="line"><span class="string">    return a + b;</span></span><br><span class="line"><span class="string">end</span></span><br><span class="line"><span class="string">)"</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">string</span> path = <span class="string">R"(this "</span>word<span class="string">" is escaped)"</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="拆分字符串"><a href="#拆分字符串" class="headerlink" title="拆分字符串"></a>拆分字符串</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line">tstring str = _T(<span class="string">"1,2,3,45 4,5"</span>);</span><br><span class="line"><span class="built_in">vector</span>&lt;tstring&gt; vBuf;</span><br><span class="line"><span class="keyword">int</span> iRet = strSplit(str, _T(<span class="string">" ,"</span>), vBuf, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/** split string for stl string type</span></span><br><span class="line"><span class="comment">@param [in] source</span></span><br><span class="line"><span class="comment">@param [in] delimiter</span></span><br><span class="line"><span class="comment">@param [out] out</span></span><br><span class="line"><span class="comment">@param [in] iTrim 1 trim 0 not trim</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">strSplit</span><span class="params">(<span class="keyword">const</span> tstring&amp; source, <span class="keyword">const</span> tstring&amp; delimiter, <span class="built_in">vector</span>&lt;tstring&gt;&amp; out, <span class="keyword">const</span> <span class="keyword">int</span> iTrim)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    out.clear();</span><br><span class="line">    TCHAR* pContex;</span><br><span class="line">    TCHAR* pFind = _tcstok_s((<span class="keyword">wchar_t</span>*)source.c_str(), delimiter.c_str(), &amp;pContex);</span><br><span class="line">    <span class="keyword">if</span> (<span class="number">0</span> == _tcscmp(_T(<span class="string">"\0"</span>), pContex))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    tstring strTmp;</span><br><span class="line">    <span class="keyword">while</span> (pFind)</span><br><span class="line">    &#123;</span><br><span class="line">        strTmp = pFind;</span><br><span class="line">        <span class="keyword">if</span> (iTrim)</span><br><span class="line">        &#123;</span><br><span class="line">            strTrim(strTmp);</span><br><span class="line">        &#125;</span><br><span class="line">        out.push_back(strTmp);</span><br><span class="line">        pFind = _tcstok_s(<span class="literal">NULL</span>, delimiter.c_str(), &amp;pContex);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/** split string for stl string type</span></span><br><span class="line"><span class="comment">@param [in] source</span></span><br><span class="line"><span class="comment">@param [in] delimiter</span></span><br><span class="line"><span class="comment">@param [out] out</span></span><br><span class="line"><span class="comment">@param [in] iTrim 1 trim 0 not trim</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">stlSplit</span><span class="params">(<span class="keyword">const</span> tstring&amp; source, <span class="keyword">const</span> tstring&amp; delimiter, <span class="built_in">vector</span>&lt;tstring&gt;&amp; out, <span class="keyword">int</span> iTrim)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">size_t</span> fpos = <span class="number">0</span>, bpos = <span class="number">0</span>;</span><br><span class="line">    out.clear();</span><br><span class="line">    tstring strTmp;</span><br><span class="line">    <span class="keyword">while</span> ((fpos = source.find_first_of(delimiter, fpos)) != <span class="built_in">string</span>::npos)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (iTrim)</span><br><span class="line">        &#123;</span><br><span class="line">            strTmp = source.substr(bpos, fpos - bpos);</span><br><span class="line">            strTrim(strTmp);</span><br><span class="line">            <span class="keyword">if</span> (<span class="literal">false</span> == strTmp.empty())</span><br><span class="line">            &#123;</span><br><span class="line">                out.push_back(strTmp);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            out.push_back(source.substr(bpos, fpos - bpos));</span><br><span class="line">        &#125;</span><br><span class="line">        ++fpos;</span><br><span class="line">        bpos = fpos;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (bpos &lt; source.size())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (iTrim)</span><br><span class="line">        &#123;</span><br><span class="line">            strTmp = source.substr(bpos);</span><br><span class="line">            strTrim(strTmp);</span><br><span class="line">            <span class="keyword">if</span> (<span class="literal">false</span> == strTmp.empty())</span><br><span class="line">            &#123;</span><br><span class="line">                out.push_back(strTmp);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            out.push_back(source.substr(bpos));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">char sentence[] = &quot;192.168...9...14&quot;;</span><br><span class="line">    cout &lt;&lt; &quot;sentence = &quot; &lt;&lt; sentence &lt;&lt; &quot;\nThe tokens are:\n&quot;;</span><br><span class="line">    char *p;</span><br><span class="line">    char *token = strtok_s(sentence, &quot;.&quot;, &amp;p);</span><br><span class="line">    while (token != NULL)&#123;</span><br><span class="line"></span><br><span class="line">        cout &lt;&lt; token &lt;&lt; &apos;\n&apos;;</span><br><span class="line">        token = strtok_s(NULL, &quot;.&quot;, &amp;p);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">/* strtok example */</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;string.h&gt;</span><br><span class="line"></span><br><span class="line">int main ()</span><br><span class="line">&#123;</span><br><span class="line">  char str[] =&quot;This is a sample string,just testing.&quot;;</span><br><span class="line">  char * pch;</span><br><span class="line">  printf (&quot;Splitting string \&quot;%s\&quot; in tokens:\n&quot;,str);</span><br><span class="line">  pch = strtok (str,&quot; &quot;);</span><br><span class="line">  while (pch != NULL)</span><br><span class="line">  &#123;</span><br><span class="line">    printf (&quot;%s\n&quot;,pch);</span><br><span class="line">    pch = strtok (NULL, &quot; ,.&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">Splitting string &quot;This is a sample string,just testing.&quot; in tokens:</span><br><span class="line">This</span><br><span class="line">is</span><br><span class="line">a</span><br><span class="line">sample</span><br><span class="line">string</span><br><span class="line">just</span><br><span class="line">testing </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">01.char buf[]=&quot;port=5000&quot;;  </span><br><span class="line">02.char key[100]=&quot;&quot;;  </span><br><span class="line">03.char value[100]=&quot;&quot;;  </span><br><span class="line">04.  </span><br><span class="line">05.strcpy(key,strtok(buf,&quot;=&quot;));  </span><br><span class="line">06.strcpy(value,strtok(NULL,&quot;=&quot;));  </span><br><span class="line">07.printf(&quot;key=%s\n&quot;,key);  </span><br><span class="line">08.printf(&quot;value=%s\n&quot;,value);</span><br></pre></td></tr></table></figure>
+<h2 id="string-to-hex-byte"><a href="#string-to-hex-byte" class="headerlink" title="string to hex byte"></a>string to hex byte</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">Convert string to byte vector</span></span><br><span class="line"><span class="comment">str: [in] string need convert</span></span><br><span class="line"><span class="comment">byte: [in] byte vector for store</span></span><br><span class="line"><span class="comment">return: false is successful, otherwise is true.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">str2byte</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; str, <span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt;&amp; byte)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	byte.clear();</span><br><span class="line">	<span class="built_in">string</span> str1 = str;</span><br><span class="line">	<span class="keyword">size_t</span> fpos;</span><br><span class="line">	<span class="keyword">while</span> (<span class="built_in">string</span>::npos != (fpos = str1.find_first_of(<span class="string">" \t\n\r;"</span>)))</span><br><span class="line">	&#123;</span><br><span class="line">		str1.erase(fpos, <span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (str1.size() % <span class="number">2</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="comment">//	int dbg = 0;</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="built_in">string</span>::const_iterator it = str1.begin(); it != str1.end(); it += <span class="number">2</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="number">0</span> &gt;= sscanf_s((<span class="keyword">const</span> <span class="keyword">char</span>*)&amp;(*it), <span class="string">"%02X"</span>, &amp;i))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//++dbg;</span></span><br><span class="line">		byte.push_back((<span class="keyword">unsigned</span> <span class="keyword">char</span>)i);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">Convert string to byte array</span></span><br><span class="line"><span class="comment">@param str [in] string need convert</span></span><br><span class="line"><span class="comment">@param buf [in] byte array for store</span></span><br><span class="line"><span class="comment">@param len [in][out] array length</span></span><br><span class="line"><span class="comment">@param return</span></span><br><span class="line"><span class="comment">-false is successful</span></span><br><span class="line"><span class="comment">-true is failed</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">str2byte</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; str, byte* buf, DWORD&amp; len)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">string</span> str1 = str;</span><br><span class="line">	<span class="keyword">size_t</span> fpos;</span><br><span class="line">	<span class="keyword">while</span> (<span class="built_in">string</span>::npos != (fpos = str1.find_first_of(<span class="string">" \t\n\r"</span>)))</span><br><span class="line">	&#123;</span><br><span class="line">		str1.erase(fpos, <span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">	UINT dbg = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="built_in">string</span>::const_iterator it = str1.begin(); it != str1.end(); it += <span class="number">2</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="number">0</span> &gt;= sscanf_s((<span class="keyword">const</span> <span class="keyword">char</span>*)&amp;(*it), <span class="string">"%02X"</span>, &amp;i))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		buf[dbg] = ((<span class="keyword">unsigned</span> <span class="keyword">char</span>)i);</span><br><span class="line">		++dbg;</span><br><span class="line">		<span class="keyword">if</span> (dbg &gt; len)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	len = dbg;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">Convert string to byte vector</span></span><br><span class="line"><span class="comment">str: [in] string need convert</span></span><br><span class="line"><span class="comment">byte: [in] byte vector for store</span></span><br><span class="line"><span class="comment">return: false is successful, otherwise is true.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">str2byte</span><span class="params">(<span class="keyword">const</span> TCHAR* pstr, <span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt;&amp; vByte)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	vByte.clear();</span><br><span class="line">	wstring str = pstr;</span><br><span class="line">	<span class="keyword">size_t</span> fpos;</span><br><span class="line">	<span class="keyword">while</span> (wstring::npos != (fpos = str.find_first_of(TEXT(<span class="string">" \t\n\r"</span>))))</span><br><span class="line">	&#123;</span><br><span class="line">		str.erase(fpos, <span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span> uc = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> iTmp = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (wstring::const_iterator it = str.begin(); it != str.end(); it += <span class="number">2</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="number">0</span> &gt;= _stscanf_s((<span class="keyword">const</span> TCHAR*)&amp;(*it), TEXT(<span class="string">"%02X"</span>), &amp;iTmp))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		vByte.push_back((<span class="keyword">unsigned</span> <span class="keyword">char</span>)iTmp);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> ASLUCKY_STRINGHELPER__</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ASLUCKY_STRINGHELPER__</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">convert byte array to tchar vector</span></span><br><span class="line"><span class="comment">@param bArr [in] byte array</span></span><br><span class="line"><span class="comment">@param size [in] byte array size</span></span><br><span class="line"><span class="comment">\param strOut [in] string of data output</span></span><br><span class="line"><span class="comment">\param strOutLen [in] length of strOut buffer</span></span><br><span class="line"><span class="comment">\return</span></span><br><span class="line"><span class="comment">- 0 successful</span></span><br><span class="line"><span class="comment">- 1 string buffer is small</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">byte2Str</span><span class="params">(<span class="keyword">const</span> BYTE* bArr, <span class="keyword">const</span> DWORD size, TCHAR* strOut, DWORD strOutLen)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	strOut[<span class="number">0</span>] = <span class="string">'\0'</span>;</span><br><span class="line">	<span class="keyword">if</span> (!size)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	DWORD pos = <span class="number">0</span>;</span><br><span class="line">	TCHAR hexval[] = &#123; <span class="string">'0'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>, <span class="string">'7'</span>, <span class="string">'8'</span>, <span class="string">'9'</span>, <span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>, <span class="string">'e'</span>, <span class="string">'f'</span> &#125;;</span><br><span class="line">	<span class="keyword">for</span> (DWORD j = <span class="number">0</span>; j &lt; size; j++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (pos + <span class="number">3</span> &gt; strOutLen)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		strOut[pos] = hexval[((bArr[j] &gt;&gt; <span class="number">4</span>) &amp; <span class="number">0x0F</span>)];</span><br><span class="line">		strOut[pos + <span class="number">1</span>] = hexval[(bArr[j]) &amp; <span class="number">0x0F</span>];</span><br><span class="line">		strOut[pos + <span class="number">2</span>] = <span class="string">' '</span>;</span><br><span class="line">		pos += <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	strOut[pos - <span class="number">1</span>] = <span class="string">'\0'</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">convert byte array to tchar vector</span></span><br><span class="line"><span class="comment">@param bArr [in] byte array</span></span><br><span class="line"><span class="comment">@param size [in] byte array size</span></span><br><span class="line"><span class="comment">@param vstr [in] TCHAR vector</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">byte2Str</span><span class="params">(<span class="keyword">const</span> BYTE* bArr, <span class="keyword">const</span> DWORD size, <span class="built_in">vector</span>&lt;TCHAR&gt;&amp; vstr)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	vstr.clear();</span><br><span class="line">	vstr.reserve(<span class="number">500</span>);</span><br><span class="line">	<span class="keyword">if</span> (!size)</span><br><span class="line">	&#123;</span><br><span class="line">		vstr.push_back(<span class="string">'\0'</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	TCHAR hexval[] = &#123; <span class="string">'0'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>, <span class="string">'7'</span>, <span class="string">'8'</span>, <span class="string">'9'</span>, <span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>, <span class="string">'e'</span>, <span class="string">'f'</span> &#125;;</span><br><span class="line">	<span class="keyword">for</span> (DWORD j = <span class="number">0</span>; j &lt; size; j++)</span><br><span class="line">	&#123;</span><br><span class="line">		vstr.push_back(hexval[((bArr[j] &gt;&gt; <span class="number">4</span>) &amp; <span class="number">0x0F</span>)]);</span><br><span class="line">		vstr.push_back(hexval[(bArr[j]) &amp; <span class="number">0x0F</span>]);</span><br><span class="line">		vstr.push_back(<span class="string">' '</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	vstr.push_back(<span class="string">'\0'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">byte2StrA</span><span class="params">(<span class="keyword">const</span> BYTE* bArr, <span class="keyword">const</span> DWORD size, <span class="built_in">vector</span>&lt;CHAR&gt;&amp; vstr)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	vstr.clear();</span><br><span class="line">	vstr.reserve(<span class="number">500</span>);</span><br><span class="line">	<span class="keyword">if</span> (!size)</span><br><span class="line">	&#123;</span><br><span class="line">		vstr.push_back(<span class="string">'\0'</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	TCHAR hexval[] = &#123; <span class="string">'0'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>, <span class="string">'7'</span>, <span class="string">'8'</span>, <span class="string">'9'</span>, <span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>, <span class="string">'e'</span>, <span class="string">'f'</span> &#125;;</span><br><span class="line">	<span class="keyword">for</span> (DWORD j = <span class="number">0</span>; j &lt; size; j++)</span><br><span class="line">	&#123;</span><br><span class="line">		vstr.push_back(hexval[((bArr[j] &gt;&gt; <span class="number">4</span>) &amp; <span class="number">0x0F</span>)]);</span><br><span class="line">		vstr.push_back(hexval[(bArr[j]) &amp; <span class="number">0x0F</span>]);</span><br><span class="line">	&#125;</span><br><span class="line">	vstr.push_back(<span class="string">'\0'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="字符串数字转换"><a href="#字符串数字转换" class="headerlink" title="字符串数字转换"></a>字符串数字转换</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> buf[<span class="number">200</span>] = &#123;<span class="string">'\0'</span>&#125;;</span><br><span class="line"><span class="keyword">if</span> ( <span class="number">-1</span> == sprintf_s(buf,<span class="number">200</span>,(<span class="string">"%04d%02d%02d"</span>),t.wYear,t.wMonth,t.wDay) )</span><br><span class="line">&#123;</span><br><span class="line">    logName += <span class="string">"payHelper.txt"</span>;</span><br><span class="line">&#125;<span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    logName += &amp;buf[<span class="number">0</span>];</span><br><span class="line">    logName += <span class="string">"_xxx.txt"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="字符串转数字"><a href="#字符串转数字" class="headerlink" title="字符串转数字"></a>字符串转数字</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//C++11</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">stoi</span> <span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp;  str, <span class="keyword">size_t</span>* idx = <span class="number">0</span>, <span class="keyword">int</span> base = <span class="number">10</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">stoi</span> <span class="params">(<span class="keyword">const</span> wstring&amp; str, <span class="keyword">size_t</span>* idx = <span class="number">0</span>, <span class="keyword">int</span> base = <span class="number">10</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">stol</span> <span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp;  str, <span class="keyword">size_t</span>* idx = <span class="number">0</span>, <span class="keyword">int</span> base = <span class="number">10</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">stol</span> <span class="params">(<span class="keyword">const</span> wstring&amp; str, <span class="keyword">size_t</span>* idx = <span class="number">0</span>, <span class="keyword">int</span> base = <span class="number">10</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">double</span> <span class="title">stold</span> <span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp;  str, <span class="keyword">size_t</span>* idx = <span class="number">0</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">double</span> <span class="title">stold</span> <span class="params">(<span class="keyword">const</span> wstring&amp; str, <span class="keyword">size_t</span>* idx = <span class="number">0</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">stof</span> <span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp;  str, <span class="keyword">size_t</span>* idx = <span class="number">0</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">stof</span> <span class="params">(<span class="keyword">const</span> wstring&amp; str, <span class="keyword">size_t</span>* idx = <span class="number">0</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">stod</span> <span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp;  str, <span class="keyword">size_t</span>* idx = <span class="number">0</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">stod</span> <span class="params">(<span class="keyword">const</span> wstring&amp; str, <span class="keyword">size_t</span>* idx = <span class="number">0</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int64_t</span> totalSize = _tstoi64(dInfo.totalSize.c_str());</span><br><span class="line"><span class="keyword">int64_t</span> freeSize = _tstoi64(dInfo.freeSize.c_str());</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="number">0</span> == totalSize || <span class="number">0</span> == freeSize)</span><br><span class="line">&#123;</span><br><span class="line">    dInfo.usedSize = _T(<span class="string">""</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Parses str interpreting its content as a floating-point number, which is returned as a value of type <span class="keyword">float</span>.</span><br><span class="line">If idx is <span class="keyword">not</span> a null pointer, the function also sets the value of idx to the position of the first character in str after the number.</span><br><span class="line"></span><br><span class="line"> 	_stscanf_s</span><br><span class="line">        sscanf_s</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="number">1</span> != _stscanf_s(pstrPort.c_str(), TEXT(<span class="string">"%d"</span>), &amp;iPort))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> RET_INVALIDE_PARAM;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function">CString <span class="title">thestring</span><span class="params">(<span class="string">"13.37"</span>)</span></span>;</span><br><span class="line"><span class="keyword">double</span> d = atof(thestring).</span><br><span class="line">...<span class="keyword">or</span> <span class="keyword">for</span> Unicode builds, _wtof():</span><br><span class="line"></span><br><span class="line">CString thestring(<span class="string">L"13.37"</span>);</span><br><span class="line"><span class="keyword">double</span> d = _wtof(thestring).</span><br><span class="line"></span><br><span class="line">CString strOrder;</span><br><span class="line">	GetDlgItemText(IDC_EDIT_ORDER,strOrder);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">double</span> order = _tstof(strOrder);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">_tstof	atof	atof	_wtof</span><br><span class="line">_tstoi	atoi	atoi	_wtoi</span><br><span class="line">_tstoi64	_atoi64	_atoi64	_wtoi64</span><br><span class="line">_tstol	atol	atol	_wtol</span><br><span class="line"></span><br><span class="line">_ttoi64	_atoi64	_atoi64	_wtoi64</span><br><span class="line">_ttol	atol	atol	_wtol</span><br></pre></td></tr></table></figure>
+<h3 id="数字转字符串"><a href="#数字转字符串" class="headerlink" title="数字转字符串"></a>数字转字符串</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">_itoa_s</span><br><span class="line"></span><br><span class="line">C++11</span><br><span class="line">#include &lt;string&gt;     // std::wstring, std::to_wstring</span><br><span class="line"></span><br><span class="line">string to_string (int val);</span><br><span class="line">string to_string (long val);</span><br><span class="line">string to_string (long long val);</span><br><span class="line">string to_string (unsigned val);</span><br><span class="line">string to_string (unsigned long val);</span><br><span class="line">string to_string (unsigned long long val);</span><br><span class="line">string to_string (float val);</span><br><span class="line">string to_string (double val);</span><br><span class="line">string to_string (long double val);</span><br><span class="line"></span><br><span class="line">wstring to_wstring (int val);</span><br><span class="line">wstring to_wstring (long val);</span><br><span class="line">wstring to_wstring (long long val);</span><br><span class="line">wstring to_wstring (unsigned val);</span><br><span class="line">wstring to_wstring (unsigned long val);</span><br><span class="line">wstring to_wstring (unsigned long long val);</span><br><span class="line">wstring to_wstring (float val);</span><br><span class="line">wstring to_wstring (double val);</span><br><span class="line">wstring to_wstring (long double val);</span><br></pre></td></tr></table></figure>
+<h1 id="宽字符转-ASCII"><a href="#宽字符转-ASCII" class="headerlink" title="宽字符转 ASCII"></a>宽字符转 ASCII</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;list&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _UNICODE</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> tstring wstring</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> tstring string</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// _UNICODE</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">strTrim</span><span class="params">(tstring&amp; s)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    s.erase(<span class="number">0</span>, s.find_first_not_of(_T(<span class="string">" \t\f\v\n\r"</span>)));</span><br><span class="line">    s.erase(s.find_last_not_of(_T(<span class="string">" \t\f\v\n\r"</span>)) + <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//下面代码在转换mht内容的时候失败了，提示有的字符没有,中文可用</span></span><br><span class="line"><span class="function">wstring <span class="title">s2w</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; str)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">size_t</span> num = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">wchar_t</span>&gt;buf(str.size() * <span class="number">2</span> + <span class="number">2</span>);</span><br><span class="line">    <span class="keyword">_locale_t</span> local = _create_locale(LC_ALL, <span class="string">"chs"</span>);</span><br><span class="line">    <span class="comment">//if failed set buf empty string and num = 0</span></span><br><span class="line">    _mbstowcs_s_l(&amp;num, &amp;buf[<span class="number">0</span>], buf.size(), str.c_str(), _TRUNCATE, local);</span><br><span class="line">    _free_locale(local);</span><br><span class="line">    <span class="keyword">return</span> &amp;buf[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">w2s</span><span class="params">(<span class="keyword">const</span> wstring&amp; wstr)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">size_t</span> num = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;buf(wstr.size() * <span class="number">2</span> + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">_locale_t</span> local = _create_locale(LC_ALL, <span class="string">"chs"</span>);</span><br><span class="line">    <span class="comment">//if failed set buf empty string and num = 0</span></span><br><span class="line">    _wcstombs_s_l(&amp;num, &amp;buf[<span class="number">0</span>], buf.size(), wstr.c_str(), _TRUNCATE, local);</span><br><span class="line">    _free_locale(local);</span><br><span class="line">    <span class="keyword">return</span> &amp;buf[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//这个目前好用,对中文有问题</span></span><br><span class="line"><span class="built_in">std</span>::<span class="function">wstring <span class="title">s2w</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;str)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::wstring wstr(str.length(), L' ');</span><br><span class="line">    <span class="built_in">std</span>::copy(str.begin(), str.end(), wstr.begin());</span><br><span class="line">    <span class="keyword">return</span> wstr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//只拷贝低字节至string中</span></span><br><span class="line"><span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">w2s</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::wstring &amp;wstr)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::string str(wstr.length(), ' ');</span><br><span class="line">    <span class="built_in">std</span>::copy(wstr.begin(), wstr.end(), str.begin());</span><br><span class="line">    <span class="keyword">return</span> str;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//============================================下面代码在转换mht内容的时候失败了，提示有的字符没有 对中文有问题</span></span><br><span class="line"><span class="built_in">std</span>::<span class="function">wstring <span class="title">s2w</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;str)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    wstring wstr;</span><br><span class="line">    <span class="keyword">size_t</span> nLen = str.size();</span><br><span class="line">    wstr.resize(nLen, L' ');</span><br><span class="line">    <span class="keyword">int</span> nResult = MultiByteToWideChar(CP_ACP, <span class="number">0</span>, (LPCSTR)str.c_str(), nLen, (LPWSTR)wstr.c_str(), nLen);</span><br><span class="line">    <span class="keyword">if</span> (nResult == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        wstr = _T(<span class="string">""</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> wstr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//wstring高字节不为0，返回FALSE</span></span><br><span class="line"><span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">w2s</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::wstring &amp;wstr)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> str;</span><br><span class="line">    <span class="keyword">size_t</span> nLen = wstr.size();</span><br><span class="line">    str.resize(nLen, <span class="string">' '</span>);</span><br><span class="line">    <span class="keyword">int</span> nResult = WideCharToMultiByte(CP_ACP, <span class="number">0</span>, (LPCWSTR)wstr.c_str(), nLen, (LPSTR)str.c_str(), nLen, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">if</span> (nResult == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        str = <span class="string">""</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> str;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatPay.png" alt="郑  君 WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="郑  君 Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/13/语言相关/python/后端/flask-email-service学习笔记/" rel="next" title="flask_email_service学习笔记">
+                <i class="fa fa-chevron-left"></i> flask_email_service学习笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/14/语言相关/CPP/cpp_string/" rel="prev" title="cpp_string">
+                cpp_string <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="郑  君" />
+            
+              <p class="site-author-name" itemprop="name">郑  君</p>
+              <p class="site-description motion-element" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">986</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">75</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">203</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/tyler2018" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:zhengjun2018@gmail.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#格式化开源库"><span class="nav-number">1.</span> <span class="nav-text">格式化开源库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#大小写转换"><span class="nav-number">2.</span> <span class="nav-text">大小写转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sscanf-s"><span class="nav-number">3.</span> <span class="nav-text">sscanf_s</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#跳过指定字符串"><span class="nav-number">3.1.</span> <span class="nav-text">跳过指定字符串</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#去前后空白字符"><span class="nav-number"></span> <span class="nav-text">去前后空白字符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vector2string"><span class="nav-number"></span> <span class="nav-text">vector2string</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#排序"><span class="nav-number"></span> <span class="nav-text">排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#倒序"><span class="nav-number"></span> <span class="nav-text">倒序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#base64-编码"><span class="nav-number"></span> <span class="nav-text">base64 编码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#原生字符串（raw-string-literals）"><span class="nav-number">1.</span> <span class="nav-text">原生字符串（raw string literals）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#拆分字符串"><span class="nav-number"></span> <span class="nav-text">拆分字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#string-to-hex-byte"><span class="nav-number">1.</span> <span class="nav-text">string to hex byte</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串数字转换"><span class="nav-number">2.</span> <span class="nav-text">字符串数字转换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串转数字"><span class="nav-number">2.1.</span> <span class="nav-text">字符串转数字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数字转字符串"><span class="nav-number">2.2.</span> <span class="nav-text">数字转字符串</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#宽字符转-ASCII"><span class="nav-number"></span> <span class="nav-text">宽字符转 ASCII</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.0.6</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.6"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content
+                if (!(data.content))
+                {
+                    alert("文章内容不能为空，后面代码没处理这个情况，这里暂时处理一下，可能有隐患。");
+                }else{
+                  content = data.content.trim().replace(/<[^>]+>/g,"");
+                }
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

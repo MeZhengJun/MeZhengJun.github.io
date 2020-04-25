@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">982</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">986</span>
       </a>
 </li>
 
@@ -312,6 +312,1298 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/03/20/语言相关/CPP/cpp-大小端转换/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/20/语言相关/CPP/cpp-大小端转换/" itemprop="url">cpp-大小端转换</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-20T13:42:33+08:00">2020-03-20</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>如果使用 vc 可以使用下面的函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// For 16 bit numbers:</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">short</span> _byteswap_ushort(<span class="keyword">unsigned</span> <span class="keyword">short</span> value);</span><br><span class="line"><span class="comment">// For 32 bit numbers:</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> _byteswap_ulong(<span class="keyword">unsigned</span> <span class="keyword">long</span> value);</span><br><span class="line"><span class="comment">// For 64 bit numbers:</span></span><br><span class="line"><span class="keyword">unsigned</span> __int64 _byteswap_uint64(<span class="keyword">unsigned</span> __int64 value);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;climits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function">T <span class="title">swap_endian</span><span class="params">(T u)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">static_assert</span> (CHAR_BIT == <span class="number">8</span>, <span class="string">"CHAR_BIT != 8"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">union</span></span><br><span class="line">    &#123;</span><br><span class="line">        T u;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">char</span> u8[<span class="keyword">sizeof</span>(T)];</span><br><span class="line">    &#125; source, dest;</span><br><span class="line"></span><br><span class="line">    source.u = u;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> k = <span class="number">0</span>; k &lt; <span class="keyword">sizeof</span>(T); k++)</span><br><span class="line">        dest.u8[k] = source.u8[<span class="keyword">sizeof</span>(T) - k - <span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> dest.u;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">swap_endian&lt;<span class="keyword">uint32_t</span>&gt;(<span class="number">42</span>);</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/03/17/学习笔记/PLC/PLC-西门子S7Comm以太网通讯协议/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/17/学习笔记/PLC/PLC-西门子S7Comm以太网通讯协议/" itemprop="url">PLC-西门子S7Comm以太网通讯协议</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-17T17:44:27+08:00">2020-03-17</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://blog.csdn.net/powersun1981/article/details/54289776" target="_blank" rel="noopener">ref.1</a></p>
+<p>正常项目，一般都是网线tcp通讯的那种，官方叫 iso on tcp 这种方式<br>西门子的做法和 现在的大众软件方法类似，开放一个默认端口，是102，可以同时连接多个客户端；<br>tcp 客户端连上西门子的102端口后，必须做一个特定报文的交互，然后才能做正常的读取操作；</p>
+<p>可能由于西门子的102端口是1对多的，所以它比较拽，一旦发现通讯数据格式或内容不正确，不但不回复，而且直接跟你把通讯通道断开，<br>    不理你了； 三菱遇到异常报文时，通讯不会断的，只是回复你异常数据，并且有异常代码；</p>
+<p>解析的是以 0x32 开始的报文结构</p>
+<p>借助WireShark抓包，可以看到，S7Comm 以太网协议基于OSI模型：</p>
+<table>
+<thead>
+<tr>
+<th>OSI layer</th>
+<th>Protocol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7 Application Layer</td>
+<td>S7 communication</td>
+</tr>
+<tr>
+<td>6 Presentation Layer</td>
+<td>S7 communication(COTP)</td>
+</tr>
+<tr>
+<td>5 Session Layer</td>
+<td>S7 communication(TPKT)</td>
+</tr>
+<tr>
+<td>4 Transport Layer</td>
+<td>ISO-on-TCP (RFC 1006)</td>
+</tr>
+<tr>
+<td>3 Network Layer</td>
+<td>IP</td>
+</tr>
+<tr>
+<td>2 Data Link Layer</td>
+<td>Ethernet</td>
+</tr>
+<tr>
+<td>1 Physical Layer</td>
+<td>Ethernet</td>
+</tr>
+</tbody>
+</table>
+<p>其中，第1~4层会由计算机自己完成（底层驱动程序）；<br>第5层TPKT，应用程数据传输协议，介于TCP和COTP协议之间；这是一个传输服务协议，主要用来在COTP和TCP之间建立桥梁；</p>
+<p>“TPKT is an”encapsulation” protocol. It carries the OSI packet in its ownpacket’s data payload and then passes the resulting structure to TCP, from thenon, the packet is processed as a TCP/IP packet. The OSI programs passing datato TPKT are unaware that their data will be carried over TCP/IP because TPKTemulates the OSI protocol Transport Service Access Point (TSAP).”</p>
+<p>第6层COTP，按照维基百科的解释，COTP 是 OSI 7层协议定义的位于TCP之上的协议。COTP 以“Packet”为基本单位来传输数据，这样接收方会得到与发送方具有相同边界的数据；</p>
+<p>第7层，S7 communication，这一层和用户数据相关，对PLC数据的读取报文在这里完成；</p>
+<p>刚看到TPKT和COPT也许会很迷惑，其实在具体的报文中，TPKT的作用是包含用户协议（5~7层）的数据长度（字节数）；COTP的作用是定义了数据传输的基本单位（在S7Comm中 PDU TYPE：DT data）；</p>
+<p>S7Comm与标准TCP/IP比较：S7Comm是一个7层协议；TCP/IP是四层协议，用户数据在第四层TCP层完成；</p>
+<p>计算机与PLC进行通讯，可以连接102端口，这是西门子开放的一个通讯端口；</p>
+<p>第七层 S7 communication协议</p>
+<p>S7 communication包含三部分：1-Header；2-Parameter；3 - Data。</p>
+<p>根据实现的功能不同，S7 communication协议的结构会有所不同；例如，请求数据报文只包含前两部分；</p>
+<pre><code> &lt;1&gt;Header     
+
+   *01(1 byte): protocol Id: 0x32;
+
+   *02a(1 byte): ROSCTR: Job (01);
+
+   *02b(2 byte): redundancy identification (reserved): 0x0000;
+
+   *2c(2 byte): protocol data unit reference; it’s increased by request event;
+
+   *2d(2 byte): parameter length - the total length (bytes) of parameter part;
+
+   *2e(2 byte): data length; 读取PLC内部数据，此处为00 00；对于其他功能，例如：读取CPU的型号，此处为Data部分的数据长度；
+
+&lt;2&gt;Parameter（读取数据）
+
+  *3(1 byte): function code: Read Var (0x04)；writeVar (0x05);
+
+    *4(1 byte): item count;
+
+    *5(1 byte): variable specification: 0x12;
+
+    *6(1 byte): length of following address specification – is 7~12length in byte;
+
+    *7(1 byte): syntax Id: S7ANY (0x10);
+
+    *8(1 byte):transport size: BYTE(2);
+
+    *9(2 byte): requested data length;
+
+    *10(2 byte): DB number; 如果访问的不是DB区域，此处为00 00；
+
+    *11(1 byte): Area: 0x84= data block(DB); 0X82= outputs(Q); 0x81=inputs(I); 0x83= Flags(M); 0x1d= S7 timers(T); 0x1c= S7counters(C);
+
+    *12(3 byte):address- start address from zero bit
+
+    *5~*12构成了一个基本的数据请求单元[Item],对多个不同地址区域的数据请求，就是有多个[Item]构成的。
+
+     Parameter部分的数据结构可以总结为：
+
+                 [Function code ]+ [Item count] + Item[1] + Item[2]  . . . Item[n]  
+
+    &lt;3&gt;Data
+
+      这一部分与功能有关，例如：读取CPU型号、向CPU存储区写数据；在请求数据报文中此部分不包含任何数据。
+</code></pre><h2 id="S7Comm以太网通讯过程"><a href="#S7Comm以太网通讯过程" class="headerlink" title="S7Comm以太网通讯过程"></a>S7Comm以太网通讯过程</h2><ol>
+<li>需要”通讯请求”过程。这个过程包含两次报文交换</li>
+</ol>
+<p>1&gt; PC 发送COTP报文给PLC；在COTP报文中包含“连接请求”和“destination TSAP” - 明确CPU的机架号和槽号；<br>PLC反馈COTP报文，包含“连接确认”；<br> 这样PLC就清楚了需要和那个CPU来进行数据通讯；</p>
+<p>握手1<br>03 00 00 16 11 e0 00 00 00 04 00 c1 02 01 00 c2 02 01 02 c0 01 0a<br>握手2<br>03 00 00 19 02 f0 80 32 01 00 00 02 00 00 08 00 00 f0 00 00 01 00 01 01 e0</p>
+<p>2&gt; PC 发送S7Comm报文给PLC；在S7 communicaton报文中包含“通讯请求”；<br>PLC反馈S7Comm报文。</p>
+<ol>
+<li>交换数据<br>数据读写就在这个过程内完成。我们可以组织报文来实现我们需要的功能。这个过程内的报文是S7Comm格式；<br>具体实现时，需要对S7Comm中的第5、6、7层进行编程。</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/03/17/功能分类/windows/MFC/MFC-自定义控件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/17/功能分类/windows/MFC/MFC-自定义控件/" itemprop="url">MFC-自定义控件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-17T14:28:40+08:00">2020-03-17</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在对话框程序中使用。</p>
+<p><a href="https://www.codeproject.com/Articles/5032/Creating-and-Using-custom-controls-in-VC" target="_blank" rel="noopener">ref.1</a></p>
+<ol>
+<li>资源管理其中，拖拽自定义控件到对话框中</li>
+<li>右键菜单创建 class，继承至 CWnd</li>
+<li>比较重要的一步，需要注册自定义的控件，并且必须在构造函数里面注册</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> WNDCLASS_NAME (<span class="meta-string">L"CCanvas"</span>)</span></span><br><span class="line"></span><br><span class="line">BOOL CCanvas::RegisterWndClass()</span><br><span class="line">&#123;</span><br><span class="line">	WNDCLASS windowclass;</span><br><span class="line">	HINSTANCE hInst = AfxGetInstanceHandle();</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Check weather the class is registerd already</span></span><br><span class="line">	<span class="keyword">if</span> (!(::GetClassInfo(hInst, WNDCLASS_NAME, &amp;windowclass)))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//If not then we have to register the new class</span></span><br><span class="line">		windowclass.style = CS_DBLCLKS;<span class="comment">// | CS_HREDRAW | CS_VREDRAW;</span></span><br><span class="line">		windowclass.lpfnWndProc = ::DefWindowProc;</span><br><span class="line">		windowclass.cbClsExtra = windowclass.cbWndExtra = <span class="number">0</span>;</span><br><span class="line">		windowclass.hInstance = hInst;</span><br><span class="line">		windowclass.hIcon = <span class="literal">NULL</span>;</span><br><span class="line">		windowclass.hCursor = AfxGetApp()-&gt;LoadStandardCursor(IDC_ARROW);</span><br><span class="line">		windowclass.hbrBackground = ::GetSysColorBrush(COLOR_WINDOW);</span><br><span class="line">		windowclass.lpszMenuName = <span class="literal">NULL</span>;</span><br><span class="line">		windowclass.lpszClassName = WNDCLASS_NAME;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (!AfxRegisterClass(&amp;windowclass))</span><br><span class="line">		&#123;</span><br><span class="line">			AfxThrowResourceException();</span><br><span class="line">			<span class="keyword">return</span> FALSE;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> TRUE;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CCanvas::CCanvas()</span><br><span class="line">&#123;</span><br><span class="line">	RegisterWndClass();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>绑定类和自定义控件。右键单击-属性-class 里面填写类定义里面的 “CCanvas”</li>
+<li>数据绑定，在对话框主程序中添加</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CCanvas m_canvas;<span class="comment">//This is our custom control</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> CdrawDemoDlg::DoDataExchange(CDataExchange* pDX)</span><br><span class="line">&#123;</span><br><span class="line">	CDialogEx::DoDataExchange(pDX);</span><br><span class="line">	DDX_Control(pDX, IDC_STATIC_FRAME, m_ctrl_draw);</span><br><span class="line">	DDX_Control(pDX, IDOK, m_btn_ok);</span><br><span class="line">	DDX_Control(pDX, IDC_CUSTOM1, m_canvas);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/03/17/学习笔记/数学/数学-三角函数-正弦等/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/17/学习笔记/数学/数学-三角函数-正弦等/" itemprop="url">数学-三角函数-正弦等</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-17T10:09:20+08:00">2020-03-17</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数学/" itemprop="url" rel="index"><span itemprop="name">数学</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>初三学三角函数：正弦，余弦和正切都是研究三角形边角关系的。等你学的时候会要求你知道角会求边，知道边会求角，比如说求船的航行路程，仰角俯角求建筑物高度，还有，有时还会和勾股定理一起用</p>
+<h2 id="名称来源"><a href="#名称来源" class="headerlink" title="名称来源"></a>名称来源</h2><p>来源是文言文。把词语拆成字逐个分析。“弦”代表长，也就是斜边，从“勾三股四弦五”中迁移过来。“正”就是正对，表示直角三角形中角的对边。“余”代表相邻，表示直角三角形中与角相邻的直角边。“切”有垂直之意，在圆的切线中有体现。这样一来，正弦就是对边比斜边，余弦就是邻边比斜边，正切就是对边比（与对边垂直的）邻边。我们常说切割，在数学里，切和割是相差很远的，比如切线和割线。所以在三角函数里，切割相反。</p>
+<h2 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h2><p>从已知两边求角度</p>
+<p>例子<br>梯子搁在墙上，如图。梯子与墙之间的 角度 是多少？</p>
+<p><img alt="20200317_124139.png" src="/2020/03/17/学习笔记/数学/数学-三角函数-正弦等/20200317_124139.png" width="500" height=""></p>
+<p>例子：在这个梯子的例子，我们知道：<br>角 “x” 的 对边的长度：2.5<br>最长的边（斜边）的长度：5</p>
+<p>$Sin (x) = 对边 / 斜边 = 2.5 / 5 = 0.5$</p>
+<p>解方程！</p>
+<p>$sin(x) = 0.5$</p>
+<p>我们可以重写为：</p>
+<p>$x = sin^{-1}(0.5)$</p>
+<p>我们用计算器来做：输入 0.5，按 $sin^{-1}$ 键，答案便出来了：</p>
+<p>$x = 30°$</p>
+<p>但…… $sin^{-1}$ 的意思是什么？<br>正弦函数 “sin” 以角度为输入来计算 “对边/斜边” 的比，</p>
+<p><img alt="20200317_134548.png" src="/2020/03/17/学习笔记/数学/数学-三角函数-正弦等/20200317_134548.png" width="500" height=""></p>
+<p>$sin^{-1}$（叫 “反正弦”）是正弦的相反……<br>……它以 “对边/斜边” 的比为输入来计算角度。</p>
+<p>例子：<br>正弦函数：sin(30°) = 0.5<br>反正弦函数：sin-1(0.5) = 30°</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/03/16/功能分类/windows/MFC/MFC-调用控制台调试/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/16/功能分类/windows/MFC/MFC-调用控制台调试/" itemprop="url">MFC-调用控制台调试</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-16T11:31:40+08:00">2020-03-16</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>AllocConsole 为调用进程分配一个新的控制台</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _DEBUG  </span></span><br><span class="line">	AllocConsole();</span><br><span class="line">	_cprintf(<span class="string">"Debuging....\r\n"</span>);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> </span></span><br><span class="line"></span><br><span class="line">HANDLE　hOutputHandle=GetStdHandle(STD_OUTPUT_HANDLE);<span class="comment">//获得控制台输出句柄</span></span><br><span class="line">DWORD　nRet=<span class="number">0</span>;</span><br><span class="line">TCHAR　buf[<span class="number">100</span>]=&#123;<span class="number">0</span>&#125;;<span class="comment">//用来输出字符的缓冲区</span></span><br><span class="line">lstrcpy(buf,_T(<span class="string">"Hello"</span>));</span><br><span class="line">WriteConsole(hOutputHandle,buf,lstrlen(buf),&amp;nRet,<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 退出时释放</span></span><br><span class="line">FreeConsole();</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/03/16/功能分类/windows/MFC/MFC-对话框绘图/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/16/功能分类/windows/MFC/MFC-对话框绘图/" itemprop="url">MFC-对话框绘图</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-16T11:19:35+08:00">2020-03-16</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>和绘图效率的一个重要相关因素是绘图引擎。Windows环境下二维绘图引擎有多种选择：GDI、GDI+、DirectDraw、QT、Agg、Cairo、skia、Direct2D、Direct3D、OpenGL等</p>
+<p>使用 CDC 绘图</p>
+<p>添加一个 Picture Control 设置 Notify 属性为 True</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">My_Draw</span> :</span> <span class="keyword">public</span> CStatic </span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="使用自定义控件"><a href="#使用自定义控件" class="headerlink" title="使用自定义控件"></a>使用自定义控件</h2><p>创建一个自定义控件，然后绑定一个 Wnd 子类，在子类里面绘图</p>
+<h2 id="填充背景"><a href="#填充背景" class="headerlink" title="填充背景"></a>填充背景</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">RECT rcClient;</span><br><span class="line">GetClientRect(&amp;rcClient);</span><br><span class="line"><span class="comment">// 填充客户区颜色</span></span><br><span class="line">dc.FillSolidRect(&amp;rcClient, RGB(<span class="number">0x99</span>,<span class="number">0x99</span>,<span class="number">0x99</span>));</span><br></pre></td></tr></table></figure>
+<h2 id="绘制矩形"><a href="#绘制矩形" class="headerlink" title="绘制矩形"></a>绘制矩形</h2><p>矩形框，内部不填充</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m_memDC.FrameRect(&amp;m_rc_measure, m_spBrushWhite.get());</span><br></pre></td></tr></table></figure>
+<h2 id="绘制多个点连线"><a href="#绘制多个点连线" class="headerlink" title="绘制多个点连线"></a>绘制多个点连线</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (FALSE == m_memDC.PolylineTo(&amp;it.pt[<span class="number">0</span>], it.pt.size()))</span><br><span class="line">&#123;</span><br><span class="line">    ASSERT(FALSE);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="脏矩形"><a href="#脏矩形" class="headerlink" title="脏矩形"></a>脏矩形</h2><p>就是每次画面的刷新只更新需要更新的那一块区域</p>
+<p>实际上，在OnDraw(CDC *pDC)中绘制的图并不是所有都显示了的，例如：你 在OnDraw中画了两个矩形，在一次重绘中虽然两个矩形的绘制函数都有执行，但是很有可能只有一个显示了，这是因为MFC本身为了提高重绘的效率设置了裁剪区。裁剪区的作用就是：只有在这个区内的绘图过程才会真正有效，在区外的是无效的，即使在区外执行了绘图函数也是不会显示的。因为多数情况下窗口重绘的产生大多是因为窗口部分被遮挡或者窗口有滚动发生，改变的区域并不是整个图形而只有一小部分，这一部分需要改变的就是pDC中的裁剪区了。因为显示（往内存或者显存都叫显示）比绘图过程的计算要费时得多，有了裁剪区后显示的就只是应该显示的部分，大大提高了显示效率。但是这个裁剪区是MFC设置的，它已经为我们提高了显示效率，在进行复杂图形的绘制时如何进一步提高效率呢？那就只有去掉在裁剪区外的绘图过程了。可以先用pDC-&gt;GetClipBox()得到裁剪区，然后在绘图时判断你的图形是否在这个区内，如果在就画，不在就不画。 如果你的绘图过程不复杂，这样做可能对你的绘图效率不会有提高。</p>
+<p>invalidaterect（）<br>想产生“区域无效”的系统消息的话，可以用GDI的，InvalidateRect或者ValidateRgn</p>
+<h2 id="闪烁问题"><a href="#闪烁问题" class="headerlink" title="闪烁问题"></a>闪烁问题</h2><p>当窗口由于任何原因需要重绘时，总是先用背景色将显示区清除，然后才调用OnPaint进行重绘，而背景色往往与绘图内容反差很大，这样在短时间内背景色与显示图形的交替出现，使得显示窗口看起来在闪。</p>
+<p>当窗口中有控件时，需要把窗口对话框属性Clip Children设置为True，这样在重绘父窗口时就不会刷新子控件的背景，否则界面重绘时控件由于重绘还是会发生闪烁。</p>
+<p>然后重载窗口的OnEraseBkgnd()函数，使背景刷变成透明的，实现代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BOOL <span class="title">OnEraseBkgnd</span><span class="params">(CDC* pDC)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> TRUE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="设置颜色"><a href="#设置颜色" class="headerlink" title="设置颜色"></a>设置颜色</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="文本背景透明"><a href="#文本背景透明" class="headerlink" title="文本背景透明"></a>文本背景透明</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SetBkMode(m_memDC, TRANSPARENT);</span><br></pre></td></tr></table></figure>
+<h2 id="输出文本"><a href="#输出文本" class="headerlink" title="输出文本"></a>输出文本</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pDC-&gt;SetTextAlign( TA_BASELINE | TA_CENTER ); </span><br><span class="line">pDC-&gt;TextOut( rect.right / <span class="number">2</span>, rect.bottom / <span class="number">2</span>, s, s.GetLength() );</span><br></pre></td></tr></table></figure>
+<h2 id="获取坐标值"><a href="#获取坐标值" class="headerlink" title="获取坐标值"></a>获取坐标值</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">POINT point;</span><br><span class="line"><span class="comment">// 获取鼠标指针位置（屏幕坐标）</span></span><br><span class="line">GetCursorPos(&amp;point);</span><br><span class="line"><span class="comment">// 将鼠标指针位置转换为窗口坐标</span></span><br><span class="line"><span class="keyword">this</span>-&gt;ScreenToClient(&amp;point);</span><br></pre></td></tr></table></figure>
+<h2 id="判断点是否在矩形内"><a href="#判断点是否在矩形内" class="headerlink" title="判断点是否在矩形内"></a>判断点是否在矩形内</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (PtInRect(&amp;rc, itData.pt[i]));</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//测试框内的数据</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/03/16/语言相关/python/python-distribute/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/16/语言相关/python/python-distribute/" itemprop="url">python-distribute</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-16T10:27:48+08:00">2020-03-16</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="pyinstaller"><a href="#pyinstaller" class="headerlink" title="pyinstaller"></a>pyinstaller</h2><p><a href="https://pyinstaller.readthedocs.io/en/stable/" target="_blank" rel="noopener">doc</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install pyinstaller</span><br><span class="line">pyinstaller yourprogram.py</span><br></pre></td></tr></table></figure>
+<h2 id="nuitka"><a href="#nuitka" class="headerlink" title="nuitka"></a>nuitka</h2><p><a href="https://nuitka.net/" target="_blank" rel="noopener">website</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/03/07/语言相关/python/python-比较浮点数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/07/语言相关/python/python-比较浮点数/" itemprop="url">python-比较浮点数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-07T08:45:47+08:00">2020-03-07</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python <span class="number">3.5</span>之后，PEP485提案中给出了解决方案。</span><br><span class="line">math.isclose(val, rval, rel_tol=<span class="number">1e-10</span>)</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -617,1205 +1909,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/02/28/语言相关/python/python-library/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/28/语言相关/python/python-library/" itemprop="url">python-library</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-28T10:54:19+08:00">2020-02-28</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="反函数库"><a href="#反函数库" class="headerlink" title="反函数库"></a>反函数库</h2><p><a href="https://pypi.org/project/pynverse/" target="_blank" rel="noopener">website</a></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inv_fun_standard = inversefunc(fun_standard)</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/02/22/开源库/skia-编译/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/22/开源库/skia-编译/" itemprop="url">skia-编译</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-22T10:31:15+08:00">2020-02-22</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="windows-build"><a href="#windows-build" class="headerlink" title="windows build"></a>windows build</h2><h3 id="环境需求"><a href="#环境需求" class="headerlink" title="环境需求"></a>环境需求</h3><ol>
-<li>python 2.x</li>
-<li>git</li>
-<li>vs2019</li>
-</ol>
-<h3 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h3><p>先下载相关代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git</span><br><span class="line">git clone https://skia.googlesource.com/skia.git</span><br><span class="line">进入 skia 的源码目录</span><br><span class="line">cd skia</span><br><span class="line">python tools/git-sync-deps</span><br></pre></td></tr></table></figure>
-<ol>
-<li>工具添加到环境变量中</li>
-</ol>
-<p>set PATH=%PATH%;E:\project\cpp\skia_project\depot_tools\<br>set PATH=%PATH%;E:\project\cpp\skia_project\skia\bin\</p>
-<p>查看 ninja 是否存在。命令行输入 <code>ninja</code> 查看是否成功</p>
-<p>下面是失败的信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;ninja&quot; 不是内部或外部命令，也不是可运行的程序或批处理文件。</span><br></pre></td></tr></table></figure></p>
-<p>命令行输入 <code>gn</code> 查看是否成功</p>
-<p><code>&quot;gn&quot; 不是内部或外部命令，也不是可运行的程序或批处理文件。</code> 则是配置失败</p>
-<h3 id="配置-VC-目录"><a href="#配置-VC-目录" class="headerlink" title="配置 VC 目录"></a>配置 VC 目录</h3><p>打开 <code>skia/gn/BUILDCONFIG.gn</code> 文件</p>
-<p>将 <code>win_vc = “”</code> 的值设置为 Visual Studio 的安装目录下的VC目录<br>配置 SDK 目录 <code>win_sdk = &quot;D:/Windows Kits/10&quot;</code></p>
-<p>只有 VC 可以编译 32 位的<br>This toolchain is the only way we support 32-bit builds, by also setting <code>target_cpu=&quot;x86&quot;</code></p>
-<p>官方强烈推荐使用 <a href="https://releases.llvm.org/download.html" target="_blank" rel="noopener">clang-cl</a> 构建，高度优化</p>
-<p><code>clang_win = &quot;C:\Program Files\LLVM&quot;</code></p>
-<p>Run GN to generate your build files.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">## 直接构建VisualStudio的.sln文件</span><br><span class="line">gn gen out/sln --ide=vs</span><br><span class="line"></span><br><span class="line">静态 debug</span><br><span class="line">gn gen out/Clang --args=&quot;cxx=\&quot;clang++\&quot; cc=\&quot;clang\&quot; is_debug=true&quot;</span><br><span class="line"></span><br><span class="line">静态 release</span><br><span class="line">gn gen out/Clang_release --args=&quot;cxx=\&quot;clang++\&quot; cc=\&quot;clang\&quot; is_debug=false&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">bin/gn gen out/Shared --args=&apos;is_official_build=true is_component_build=true&apos;</span><br><span class="line">--ide=vs</span><br><span class="line">bin\gn gen out/Static_x86 --args=&quot;clang_win=\&quot;C:\Program Files\LLVM\&quot; target_cpu=\&quot;x86\&quot; is_debug=false is_official_build=true skia_use_system_expat=false skia_use_system_libjpeg_turbo=false skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_zlib=false&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">bin/gn gen out/Debug</span><br><span class="line">bin/gn gen out/Release  --args=&apos;is_debug=false&apos;</span><br><span class="line">bin/gn gen out/Clang    --args=&apos;cc=&quot;clang&quot; cxx=&quot;clang++&quot;&apos;</span><br><span class="line">bin/gn gen out/Cached   --args=&apos;cc_wrapper=&quot;ccache&quot;&apos;</span><br><span class="line">bin/gn gen out/RTTI     --args=&apos;extra_cflags_cc=[&quot;-frtti&quot;]&apos;</span><br></pre></td></tr></table></figure>
-<p>is_official_build=true 优化编译<br>is_official_build=false debug 编译</p>
-<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ninja -C out/Static</span><br><span class="line">ninja -C out/Shared</span><br><span class="line">ninja -C out/Debug</span><br><span class="line">ninja -C out/Release</span><br><span class="line">ninja -C out/Clang</span><br><span class="line">ninja -C out/Clang_release</span><br><span class="line">ninja -C out/Cached</span><br><span class="line">ninja -C out/RTTI</span><br></pre></td></tr></table></figure>
-<p>有更新时，重新 build</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git pull</span><br><span class="line">python tools/git-sync-deps</span><br><span class="line">ninja -C out/Static</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/02/21/语言相关/csharp/csharp-图片资源/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/21/语言相关/csharp/csharp-图片资源/" itemprop="url">csharp-图片资源</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-21T15:46:42+08:00">2020-02-21</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>协议：pack://<br>一种用于访问编译时已经知道的文件，用application:///<br>一种用于访问编译时不知道、运行时才知道的文件，用siteoforigin:///</p>
-<p>一般用逗号代替斜杠，也就是改写作application:,,,</p>
-<h2 id="用XAML引用资源"><a href="#用XAML引用资源" class="headerlink" title="用XAML引用资源"></a>用XAML引用资源</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;Grid.Background&gt;</span><br><span class="line">    &lt;ImageBrush ImageSource=&quot;pack://application:,,,/watermark.png&quot;  /&gt;</span><br><span class="line">&lt;/Grid.Background&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="用代码引用资源"><a href="#用代码引用资源" class="headerlink" title="用代码引用资源"></a>用代码引用资源</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Image img;</span><br><span class="line">img.Source=new BitmapImage(new Uri(&quot;pack://application:,,,/images/my.jpg&quot;),UriKind.Relative);</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/02/20/学习笔记/windows/MFC/mfc-dialog/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/20/学习笔记/windows/MFC/mfc-dialog/" itemprop="url">mfc_dialog</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-20T16:01:13+08:00">2020-02-20</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="防止回车，ESC退出"><a href="#防止回车，ESC退出" class="headerlink" title="防止回车，ESC退出"></a>防止回车，ESC退出</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">BOOL CMRLGaugerDrawerDlg::PreTranslateMessage(MSG* pMsg)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (pMsg-&gt;message == WM_KEYDOWN)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (pMsg-&gt;wParam == VK_RETURN || pMsg-&gt;wParam == VK_ESCAPE)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">// Do not process further</span></span><br><span class="line">			<span class="keyword">return</span> TRUE;                </span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> CDialogEx::PreTranslateMessage(pMsg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="设置标题文字"><a href="#设置标题文字" class="headerlink" title="设置标题文字"></a>设置标题文字</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> APP_VERSION (<span class="meta-string">"serial port tool version: 2020.02.19-1341"</span>)</span></span><br><span class="line"></span><br><span class="line">BOOL CcomToolsDlg::OnInitDialog()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">this</span>-&gt;SetWindowText(s2w(APP_VERSION).c_str());</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="问题对话框"><a href="#问题对话框" class="headerlink" title="问题对话框"></a>问题对话框</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (IDYES == AfxMessageBox(<span class="string">L"即将删除所有标记的测量点，请再次确认该操作。"</span>,MB_YESNO))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/02/19/语言相关/CPP/cpp-thread/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/19/语言相关/CPP/cpp-thread/" itemprop="url">cpp-thread</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-19T17:18:02+08:00">2020-02-19</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><p>c++11<br>lock_guard is no longer recommended.</p>
-<p>c++ 17<br>unique_lock and scoped_lock are recommended.</p>
-<p>unique_lock 和 lock_guard 类似，增加一些有用的函数。<br>unique_lock can unlock, not lock_guard</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 发送队列锁</span></span><br><span class="line"><span class="built_in">std</span>::mutex m_mutex_write;</span><br><span class="line"><span class="built_in">std</span>::<span class="function">unique_lock <span class="title">guard</span><span class="params">(m_mutex_write)</span></span>;</span><br><span class="line"><span class="comment">// 可以在 guard 生命周期结束前解锁</span></span><br><span class="line">guard.unlock();</span><br><span class="line"><span class="comment">// 解锁后还可以再次加锁</span></span><br><span class="line">guard.lock();</span><br></pre></td></tr></table></figure>
-<h2 id="指针参数"><a href="#指针参数" class="headerlink" title="指针参数"></a>指针参数</h2><p>可以使用智能指针保存参数，然后传给工作线程。<br>目前还没找到更好的办法，只能复制一份给工作线程使用。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> CserialPort::write(<span class="keyword">const</span> BYTE* data, <span class="keyword">const</span> DWORD&amp; length)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;BYTE[]&gt; spBuf(<span class="keyword">new</span> BYTE[length]);</span><br><span class="line">	<span class="built_in">memcpy</span>(spBuf.get(), data, length);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">std</span>::thread threadWork = <span class="built_in">std</span>::thread(threadWrite, <span class="keyword">this</span>, spBuf,length);</span><br><span class="line">	threadWork.detach();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="C-14"><a href="#C-14" class="headerlink" title="C++ 14"></a>C++ 14</h2><p>注意：可被 joinable 的 std::thread 对象必须在他们销毁之前被主线程 join 或者将其设置为 detached.</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="literal">false</span> == m_thread_recive.joinable())</span><br><span class="line">&#123;</span><br><span class="line">	m_thread_recive = <span class="built_in">std</span>::thread(threadReceive, <span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">threadReceive</span><span class="params">(<span class="keyword">const</span> <span class="keyword">void</span>* p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	CTcpClient* pwnd = (CTcpClient*)p;</span><br><span class="line">	<span class="keyword">while</span> (FLAG_EXIT_THREAD_RECEIVE != (pwnd-&gt;m_flag&amp;FLAG_EXIT_THREAD_RECEIVE))</span><br><span class="line">	&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">20</span>; ++i)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (FLAG_EXIT_THREAD_RECEIVE == (pwnd-&gt;m_flag&amp;FLAG_EXIT_THREAD_RECEIVE))</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">goto</span> skip_return;</span><br><span class="line">			&#125;</span><br><span class="line">			this_thread::sleep_for(chrono::milliseconds(<span class="number">100</span>));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">skip_return:</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Create a thread using member function</span></span><br><span class="line"><span class="built_in">std</span>::<span class="function">thread <span class="title">th</span><span class="params">(&amp;Task::execute, taskPtr, <span class="string">"Sample Task"</span>)</span></span>;</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::thread m_threadHttpServer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (FLAG_HTTP_SERVER_RUNNING != (g_iFlag&amp;FLAG_HTTP_SERVER_RUNNING))</span><br><span class="line">&#123;</span><br><span class="line">  m_threadHttpServer = <span class="built_in">std</span>::thread(threadHttpServer, (<span class="keyword">this</span>), <span class="number">2</span>,<span class="string">"other param"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">g_iFlag |= FLAG_EXIT_HTTP_SERVER;</span><br><span class="line"><span class="keyword">while</span> (FLAG_HTTP_SERVER_RUNNING == (g_iFlag&amp;FLAG_HTTP_SERVER_RUNNING))</span><br><span class="line">&#123;</span><br><span class="line">  Sleep(<span class="number">200</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (m_threadHttpServer.joinable())</span><br><span class="line">&#123;</span><br><span class="line">  m_threadHttpServer.join();</span><br><span class="line">&#125;</span><br><span class="line">g_iFlag &amp;= (~FLAG_EXIT_HTTP_SERVER);</span><br></pre></td></tr></table></figure>
-<p><a href="https://hackernoon.com/learn-c-multi-threading-in-5-minutes-8b881c92941f" target="_blank" rel="noopener">ref.</a></p>
-<p>A thread can be created in several ways:</p>
-<ol>
-<li>Using a function pointer</li>
-<li>Using a functor</li>
-<li>Using a lambda function</li>
-</ol>
-<p>对于判断线程是否执行完毕,可以通过自己设置 flag 来判断.</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// thread example</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;       // std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;         // std::thread</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		str.Format(<span class="string">L"foo %d\n"</span>, i);</span><br><span class="line">		OutputDebugString(str);</span><br><span class="line">		Sleep(<span class="number">1000</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bar</span><span class="params">(<span class="keyword">int</span>&amp; x, <span class="keyword">int</span>&amp; out)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> m = <span class="number">0</span>;</span><br><span class="line">	CString str;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		m += x;</span><br><span class="line">		str.Format(<span class="string">L"bar %d\n"</span>, i);</span><br><span class="line">		OutputDebugString(str);</span><br><span class="line">		Sleep(<span class="number">1000</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	out = m;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  CString str;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">std</span>::<span class="function">thread <span class="title">first</span><span class="params">(foo)</span></span>;     <span class="comment">// spawn new thread that calls foo()</span></span><br><span class="line">	<span class="keyword">int</span> out = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> in = <span class="number">10</span>;</span><br><span class="line">	std::thread second(bar, ref(in),ref(out));  // spawn new thread that calls bar(0)</span><br><span class="line"></span><br><span class="line">	OutputDebugString(<span class="string">L"main, foo and bar now execute concurrently...\n"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// synchronize threads:</span></span><br><span class="line">	first.join();                <span class="comment">// pauses until first finishes</span></span><br><span class="line">	second.join();               <span class="comment">// pauses until second finishes</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	str.Format(<span class="string">L"foo and bar completed. out:%d\n"</span>, out);</span><br><span class="line"></span><br><span class="line">	OutputDebugString(str);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>std::ref<br>主要是考虑函数式编程（如std::bind）在使用时，是对参数直接拷贝，而不是引用。</p>
-<p>warning: all parameters is passing default by value unless you wrap them in std::ref.</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/02/19/开源库/Qt/qt-QPlainTextEdit/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/19/开源库/Qt/qt-QPlainTextEdit/" itemprop="url">qt-QPlainTextEdit</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-19T09:52:56+08:00">2020-02-19</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://doc.qt.io/qt-5/qplaintextedit.html#details" target="_blank" rel="noopener">doc</a></p>
-<h2 id="追加文档"><a href="#追加文档" class="headerlink" title="追加文档"></a>追加文档</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ui.plainTextEdit_out-&gt;appendPlainText(strRead);</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/02/18/随笔/2020年寄语/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/18/随笔/2020年寄语/" itemprop="url">2020年寄语</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-18T12:32:28+08:00">2020-02-18</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/随笔/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>2019 年过去了，这是一个特殊的年，因为非冠状流行病毒疫情，全国上下几乎都很宅。商场，饭店，电影院，各种场所都关了，直到今天，商场里面也没有几个人。</p>
-<p>年前被动换了工作，新找的工作在奉贤，已经出了上海市区了。</p>
-<p>2020 年我的计划是，先拿到本科毕业证，5月份答辩。<br>然后全力看股票，作为我下半生的养老项目。</p>
-<p>工作上是机械测量相关的业务，对我来说难度不大。应该可以轻松应对。</p>
-<p>以下是我在 2020 年要完成的任务</p>
-<ol>
-<li>本科毕业证</li>
-<li>重点发展股票事业</li>
-<li>健身</li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2020/02/18/测量/串口通讯/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/18/测量/串口通讯/" itemprop="url">串口通讯</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-18T12:31:14+08:00">2020-02-18</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><a href="https://docs.microsoft.com/en-us/previous-versions/ff802693(v=msdn.10" target="_blank" rel="noopener">msdn 串口总体描述</a>?redirectedfrom=MSDN)<br>book: C Programmer’s Guide to Serial Communications</p>
-<p>Nonoverlapped I/O vs Overlapped I/O<br>Overlapped I/O 是异步的，Nonoverlapped I/O 是同步的，<br>同步操作，调用线程会被阻塞，通常使用多个线程来操作，但是如果一个线程中 readFile 阻塞，那么另一个线程的 writeFile 也会被阻塞。<br>异步，同步接口的选择依据主要是可移植性。</p>
-<p>Overlapped I/O<br>更具有灵活性和效率，允许多线程在阻塞等待时同时处理不同的I/O操作，允许单线程在阻塞时在后台执行多个请求</p>
-<h2 id="Serial-Status"><a href="#Serial-Status" class="headerlink" title="Serial Status"></a>Serial Status</h2><p>两种方式：</p>
-<ol>
-<li>使用事件 mask</li>
-<li>使用 polling （低效，不推荐）</li>
-</ol>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/02/18/测量/串口通讯/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1867,7 +1960,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">982</span>
+                    <span class="site-state-item-count">986</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2447,7 +2540,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">202</span>
+                      
+                    
+                    <span class="site-state-item-count">203</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -2989,7 +3084,69 @@
         onPopupClose();
       }
     });
-  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -3008,44 +3165,7 @@
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->
 
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-  
     
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-  
-
   
 
 
