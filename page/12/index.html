@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">75</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">76</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">986</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">999</span>
       </a>
 </li>
 
@@ -328,7 +328,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/09/23/语言相关/CPP/cpp-grpc-server/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/10/18/开源库/RabbitMQ/RabbitMQ-study/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -347,7 +347,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/09/23/语言相关/CPP/cpp-grpc-server/" itemprop="url">cpp-grpc-server</a></h1>
+                <a class="post-title-link" href="/2019/10/18/开源库/RabbitMQ/RabbitMQ-study/" itemprop="url">RabbitMQ-study</a></h1>
         
 
         <div class="post-meta">
@@ -359,862 +359,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-23T16:03:57+08:00">2019-09-23</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>implement a grpc server</p>
-<h2 id="define-proto-file"><a href="#define-proto-file" class="headerlink" title="define proto file"></a>define proto file</h2><p>request a json string respoinse a json string</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">syntax = <span class="string">"proto3"</span>;</span><br><span class="line"></span><br><span class="line">package apiService;</span><br><span class="line"></span><br><span class="line">service apiService &#123;</span><br><span class="line">    <span class="function">rpc <span class="title">apiTrans</span><span class="params">(Request)</span> <span class="title">returns</span> <span class="params">(Response)</span> </span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message Request &#123;</span><br><span class="line">    <span class="built_in">string</span> value = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message Response &#123;</span><br><span class="line">    <span class="built_in">string</span> value = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="generate-cpp-file"><a href="#generate-cpp-file" class="headerlink" title="generate cpp file"></a>generate cpp file</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protoc --cpp_out=. rpc_api.proto</span><br></pre></td></tr></table></figure>
-<h2 id="source-code"><a href="#source-code" class="headerlink" title="source code"></a>source code</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ApiService</span> :</span> <span class="keyword">public</span> apiService::apiService::Service</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// 构造、析构</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 接口实现</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">virtual</span> ::grpc::<span class="function">Status <span class="title">apiTrans</span><span class="params">(::grpc::ServerContext* context,</span></span></span><br><span class="line"><span class="function"><span class="params">		<span class="keyword">const</span> ::apiService::Request* request, ::apiService::Response* response)</span> override</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="built_in">string</span> strJson = request-&gt;value();</span><br><span class="line">		OutputDebugStringA(strJson.c_str());</span><br><span class="line"></span><br><span class="line">		response-&gt;set_value(strJson);</span><br><span class="line">		<span class="keyword">return</span> grpc::Status::OK;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rpcServer</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">server_address</span><span class="params">(<span class="string">"0.0.0.0:52061"</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">	ApiService service;</span><br><span class="line"></span><br><span class="line">	grpc::ServerBuilder builder;</span><br><span class="line">	builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());</span><br><span class="line">	builder.RegisterService(&amp;service);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;grpc::Server&gt; server(builder.BuildAndStart());</span><br><span class="line"></span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Server listening on "</span> &lt;&lt; server_address &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	server-&gt;Wait();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/09/21/语言相关/go/go-gorm/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/09/21/语言相关/go/go-gorm/" itemprop="url">go-gorm</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-21T14:39:08+08:00">2019-09-21</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="tags"><a href="#tags" class="headerlink" title="tags"></a>tags</h2><table>
-<thead>
-<tr>
-<th>tag</th>
-<th>说明</th>
-<th>样例</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>column</td>
-<td>自定义字段名</td>
-<td>自定义 <code>gorm:&quot;column:f_id;&quot;</code></td>
-</tr>
-<tr>
-<td>type</td>
-<td>字段类型</td>
-<td><code>gorm:&quot;type:varchar(20);&quot;</code> <code>gorm:&quot;type:integer(8);&quot;</code></td>
-</tr>
-</tbody>
-</table>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Like <span class="keyword">struct</span> &#123;</span><br><span class="line">    ID        <span class="keyword">int</span>    <span class="string">`gorm:"column:f_id;primary_key"`</span></span><br><span class="line">    Ip        <span class="keyword">string</span> <span class="string">`gorm:"type:varchar(20);not null;index:ip_idx"`</span></span><br><span class="line">    Ua        <span class="keyword">string</span> <span class="string">`gorm:"type:varchar(256);not null;"`</span></span><br><span class="line">    Title     <span class="keyword">string</span> <span class="string">`gorm:"type:varchar(128);not null;index:title_idx"`</span></span><br><span class="line">    Hash      <span class="keyword">uint64</span> <span class="string">`gorm:"unique_index:hash_idx;"`</span></span><br><span class="line">    CreatedAt time.Time</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h2><h3 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"github.com/jinzhu/gorm"</span></span><br><span class="line">    _ <span class="string">"github.com/jinzhu/gorm/dialects/mysql"</span></span><br><span class="line">）</span><br><span class="line"><span class="keyword">var</span> db *gorm.DB</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> err error</span><br><span class="line">    db, err = gorm.Open(<span class="string">"mysql"</span>, <span class="string">"&lt;user&gt;:&lt;password&gt;/&lt;database&gt;?charset=utf8&amp;parseTime=True&amp;loc=Local"</span>)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="built_in">panic</span>(err)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="sqlite"><a href="#sqlite" class="headerlink" title="sqlite"></a>sqlite</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"github.com/jinzhu/gorm"</span></span><br><span class="line">    _ <span class="string">"github.com/jinzhu/gorm/dialects/sqlite"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> db *gorm.DB</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> err error</span><br><span class="line">    db, err = gorm.Open(<span class="string">"sqlite3"</span>, <span class="string">"/tmp/gorm.db"</span>)</span><br><span class="line">    <span class="keyword">defer</span> db.Close()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="PostgreSQL"><a href="#PostgreSQL" class="headerlink" title="PostgreSQL"></a>PostgreSQL</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"github.com/jinzhu/gorm"</span></span><br><span class="line">    _ <span class="string">"github.com/jinzhu/gorm/dialects/postgres"</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">var</span> db *gorm.DB</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> err error</span><br><span class="line">    db, err := gorm.Open(<span class="string">"postgres"</span>, <span class="string">"host=myhost user=gorm dbname=gorm sslmode=disable password=mypassword"</span>)</span><br><span class="line">    <span class="keyword">defer</span> db.Close()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h2><p>执行任何操作后，如果发生任何错误，GORM将其设置为*DB的Error字段</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> err := db.Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>).First(&amp;user).Error; err != <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="comment">// 错误处理...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果有多个错误发生，用`GetErrors`获取所有的错误，它返回`[]error`</span></span><br><span class="line">db.First(&amp;user).Limit(<span class="number">10</span>).Find(&amp;users).GetErrors()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 检查是否返回RecordNotFound错误</span></span><br><span class="line">db.Where(<span class="string">"name = ?"</span>, <span class="string">"hello world"</span>).First(&amp;user).RecordNotFound()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> db.Model(&amp;user).Related(&amp;credit_card).RecordNotFound() &#123;</span><br><span class="line">    <span class="comment">// 没有信用卡被发现处理...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="连接池"><a href="#连接池" class="headerlink" title="连接池"></a>连接池</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">db.DB().SetMaxIdleConns(<span class="number">10</span>)</span><br><span class="line">db.DB().SetMaxOpenConns(<span class="number">100</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 开始事务</span></span><br><span class="line">tx := db.Begin()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在事务中做一些数据库操作（从这一点使用'tx'，而不是'db'）</span></span><br><span class="line">tx.Create(...)</span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 发生错误时回滚事务</span></span><br><span class="line">tx.Rollback()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 或提交事务</span></span><br><span class="line">tx.Commit()</span><br></pre></td></tr></table></figure>
-<h3 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CreateAnimals</span><span class="params">(db *gorm.DB)</span> <span class="title">err</span></span> &#123;</span><br><span class="line">  tx := db.Begin()</span><br><span class="line">  <span class="comment">// 注意，一旦你在一个事务中，使用tx作为数据库句柄</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> err := tx.Create(&amp;Animal&#123;Name: <span class="string">"Giraffe"</span>&#125;).Error; err != <span class="literal">nil</span> &#123;</span><br><span class="line">     tx.Rollback()</span><br><span class="line">     <span class="keyword">return</span> err</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> err := tx.Create(&amp;Animal&#123;Name: <span class="string">"Lion"</span>&#125;).Error; err != <span class="literal">nil</span> &#123;</span><br><span class="line">     tx.Rollback()</span><br><span class="line">     <span class="keyword">return</span> err</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  tx.Commit()</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="迁移"><a href="#迁移" class="headerlink" title="迁移"></a>迁移</h2><p>自动迁移仅仅会创建表，缺少列和索引，并且不会改变现有列的类型或删除未使用的列以保护数据。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">db.AutoMigrate(&amp;User&#123;&#125;)</span><br><span class="line"></span><br><span class="line">db.AutoMigrate(&amp;User&#123;&#125;, &amp;Product&#123;&#125;, &amp;Order&#123;&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建表时添加表后缀</span></span><br><span class="line">db.Set(<span class="string">"gorm:table_options"</span>, <span class="string">"ENGINE=InnoDB"</span>).AutoMigrate(&amp;User&#123;&#125;)</span><br></pre></td></tr></table></figure>
-<h2 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h2><p>默认创建表回添加 s 在末尾，可以使用下面语句关闭</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.SingularTable(<span class="literal">true</span>) <span class="comment">//全局设置表名不可以为复数形式。</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 为模型`User`创建表</span></span><br><span class="line">db.CreateTable(&amp;User&#123;&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建表`users'时将“ENGINE = InnoDB”附加到SQL语句</span></span><br><span class="line">db.Set(<span class="string">"gorm:table_options"</span>, <span class="string">"ENGINE=InnoDB"</span>).CreateTable(&amp;User&#123;&#125;)</span><br></pre></td></tr></table></figure>
-<h2 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 为`name`列添加索引`idx_user_name`</span></span><br><span class="line">db.Model(&amp;User&#123;&#125;).AddIndex(<span class="string">"idx_user_name"</span>, <span class="string">"name"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 为`name`, `age`列添加索引`idx_user_name_age`</span></span><br><span class="line">db.Model(&amp;User&#123;&#125;).AddIndex(<span class="string">"idx_user_name_age"</span>, <span class="string">"name"</span>, <span class="string">"age"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加唯一索引</span></span><br><span class="line">db.Model(&amp;User&#123;&#125;).AddUniqueIndex(<span class="string">"idx_user_name"</span>, <span class="string">"name"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 为多列添加唯一索引</span></span><br><span class="line">db.Model(&amp;User&#123;&#125;).AddUniqueIndex(<span class="string">"idx_user_name_age"</span>, <span class="string">"name"</span>, <span class="string">"age"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 删除索引</span></span><br><span class="line">db.Model(&amp;User&#123;&#125;).RemoveIndex(<span class="string">"idx_user_name"</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="表是否存在"><a href="#表是否存在" class="headerlink" title="表是否存在"></a>表是否存在</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 检查模型`User`表是否存在</span></span><br><span class="line">db.HasTable(&amp;User&#123;&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 检查表`users`是否存在</span></span><br><span class="line">db.HasTable(<span class="string">"users"</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="删除表"><a href="#删除表" class="headerlink" title="删除表"></a>删除表</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 删除模型`User`的表</span></span><br><span class="line">db.DropTable(&amp;User&#123;&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 删除表`users`</span></span><br><span class="line">db.DropTable(<span class="string">"users"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 删除模型`User`的表和表`products`</span></span><br><span class="line">db.DropTableIfExists(&amp;User&#123;&#125;, <span class="string">"products"</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="设置默认表名"><a href="#设置默认表名" class="headerlink" title="设置默认表名"></a>设置默认表名</h2><p>你可以通过定义DefaultTableNameHandler来设置默认表名的命名规则</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gorm.DefaultTableNameHandler = <span class="function"><span class="keyword">func</span> <span class="params">(db *gorm.DB, defaultTableName <span class="keyword">string</span>)</span> <span class="title">string</span></span>  &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"prefix_"</span> + defaultTableName;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="设置列名"><a href="#设置列名" class="headerlink" title="设置列名"></a>设置列名</h2><p>下划线分割命名（Snake Case）的列名</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">  ID        <span class="keyword">uint</span>      <span class="comment">// 列名为`id`</span></span><br><span class="line">  Name      <span class="keyword">string</span>    <span class="comment">// 列名为 `name`</span></span><br><span class="line">  Birthday  time.Time <span class="comment">// 列名为 `birthday`</span></span><br><span class="line">  CreatedAt time.Time <span class="comment">// 列名为 `created_at`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 重写列名</span></span><br><span class="line"><span class="keyword">type</span> Animal <span class="keyword">struct</span> &#123;</span><br><span class="line">    AnimalId    <span class="keyword">int64</span>     <span class="string">`gorm:"column:beast_id"`</span>         <span class="comment">// 设置列名为 `beast_id`</span></span><br><span class="line">    Birthday    time.Time <span class="string">`gorm:"column:day_of_the_beast"`</span> <span class="comment">// 设置列名为 `day_of_the_beast`</span></span><br><span class="line">    Age         <span class="keyword">int64</span>     <span class="string">`gorm:"column:age_of_the_beast"`</span> <span class="comment">//设置列名为 `age_of_the_beast`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Run-Raw-SQL"><a href="#Run-Raw-SQL" class="headerlink" title="Run Raw SQL"></a>Run Raw SQL</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">db.Exec(<span class="string">"DROP TABLE users;"</span>)</span><br><span class="line">db.Exec(<span class="string">"UPDATE orders SET shipped_at=? WHERE id IN (?)"</span>, time.Now(), []<span class="keyword">int64</span>&#123;<span class="number">11</span>,<span class="number">22</span>,<span class="number">33</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Scan</span></span><br><span class="line"><span class="keyword">type</span> Result <span class="keyword">struct</span> &#123;</span><br><span class="line">  Name <span class="keyword">string</span></span><br><span class="line">  Age  <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> result Result</span><br><span class="line">db.Raw(<span class="string">"SELECT name, age FROM users WHERE name = ?"</span>, <span class="number">3</span>).Scan(&amp;result)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">db.Raw(<span class="string">"select count(1) as total from user"</span>).Scan(&amp;count)</span><br></pre></td></tr></table></figure>
-<h2 id="修改列"><a href="#修改列" class="headerlink" title="修改列"></a>修改列</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 修改模型`User`的description列的数据类型为`text`</span></span><br><span class="line">db.Model(&amp;User&#123;&#125;).ModifyColumn(<span class="string">"description"</span>, <span class="string">"text"</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="删除列"><a href="#删除列" class="headerlink" title="删除列"></a>删除列</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 删除模型`User`的description列</span></span><br><span class="line">db.Model(&amp;User&#123;&#125;).DropColumn(<span class="string">"description"</span>)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/09/19/语言相关/go/go-xorm/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/09/19/语言相关/go/go-xorm/" itemprop="url">go-xorm</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-19T15:23:36+08:00">2019-09-19</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//Install Library</span><br><span class="line">go get github.com/go-xorm/xorm</span><br><span class="line">//Xorm 命令行工具</span><br><span class="line">go get github.com/go-xorm/cmd/xorm</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// 数据库驱动</span><br><span class="line">go get github.com/mattn/go-sqlite3</span><br><span class="line">go get -u github.com/go-sql-driver/mysql</span><br></pre></td></tr></table></figure>
-<p><a href="https://github.com/mattn/go-sqlite3" target="_blank" rel="noopener">https://github.com/mattn/go-sqlite3</a><br><a href="https://github.com/go-sql-driver/mysql" target="_blank" rel="noopener">https://github.com/go-sql-driver/mysql</a></p>
-<h2 id="使用-xorm-命令行工具"><a href="#使用-xorm-命令行工具" class="headerlink" title="使用 xorm 命令行工具"></a>使用 xorm 命令行工具</h2><p>sqlite3 先要编译一下 xorm</p>
-<ol>
-<li>cd to %GOPATH%/src/github.com/go-xorm/cmd/xorm</li>
-<li>run “go build -tags sqlite3”</li>
-<li>a new “xorm” will be generated at current dir</li>
-<li>copy the new “xorm” to %GOPATH%/bin</li>
-<li>run your “xorm reverse …” again. Done!</li>
-</ol>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">xorm reverse sqlite3 test.db templates/goxorm</span><br></pre></td></tr></table></figure>
-<h2 id="名称映射规则"><a href="#名称映射规则" class="headerlink" title="名称映射规则"></a>名称映射规则</h2><p>xorm内置了三种IMapper实现：core.SnakeMapper，core.SameMapper和core.GonicMapper<br>SnakeMapper支持struct为驼峰式命名，表结构为下划线命名之间的转换；<br>SameMapper支持结构体名称和对应的表名称以及结构体field名称与对应的表字段名称相同的命名</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">engine.SetMapper(core.SnakeMapper&#123;&#125;)</span><br></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr>
-<th>name</th>
-<th>当前field对应的字段的名称</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>pk</td>
-<td>是否是Primary Key</td>
-</tr>
-<tr>
-<td>name</td>
-<td>当前field对应的字段的名称</td>
-</tr>
-<tr>
-<td>autoincr</td>
-<td>是否是自增</td>
-</tr>
-<tr>
-<td>[not ]null 或 notnull</td>
-<td>是否可以为空</td>
-</tr>
-<tr>
-<td>unique</td>
-<td>是否是唯一</td>
-</tr>
-<tr>
-<td>index</td>
-<td>是否是索引</td>
-</tr>
-<tr>
-<td>extends</td>
-<td>应用于一个匿名成员结构体或者非匿名成员结构体之上</td>
-</tr>
-<tr>
-<td>-</td>
-<td>这个Field将不进行字段映射</td>
-</tr>
-<tr>
-<td>-&gt;</td>
-<td>Field将只写入到数据库而不从数据库读取</td>
-</tr>
-<tr>
-<td>&lt;-</td>
-<td>Field将只从数据库读取，而不写入到数据库</td>
-</tr>
-<tr>
-<td>created</td>
-<td>Field将在Insert时自动赋值为当前时间</td>
-</tr>
-<tr>
-<td>updated</td>
-<td>Field将在Insert或Update时自动赋值为当前时间</td>
-</tr>
-<tr>
-<td>deleted</td>
-<td>Field将在Delete时设置为当前时间，并且当前记录不删除</td>
-</tr>
-<tr>
-<td>version</td>
-<td>Field将会在insert时默认为1，每次更新自动加1</td>
-</tr>
-<tr>
-<td>default 0或default(0)</td>
-<td>设置默认值，紧跟的内容如果是Varchar等需要加上单引号</td>
-</tr>
-<tr>
-<td>json</td>
-<td>表示内容将先转成Json格式</td>
-</tr>
-</tbody>
-</table>
-<h2 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    _ <span class="string">"github.com/mattn/go-sqlite3"</span></span><br><span class="line">    <span class="string">"github.com/go-xorm/xorm"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> engine *xorm.Engine</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> err error</span><br><span class="line">    engine, err = xorm.NewEngine(<span class="string">"sqlite3"</span>, <span class="string">"./test.db"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    _ <span class="string">"github.com/go-sql-driver/mysql"</span></span><br><span class="line">    <span class="string">"github.com/go-xorm/xorm"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> engine *xorm.Engine</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> err error</span><br><span class="line">    engine, err = xorm.NewEngine(<span class="string">"mysql"</span>, <span class="string">"root:123@/test?charset=utf8"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="自动同步表结构"><a href="#自动同步表结构" class="headerlink" title="自动同步表结构"></a>自动同步表结构</h2><p>ync2会进行如下这些操作：</p>
-<p>自动检测和创建表，这个检测是根据表的名字<br>自动检测和新增表中的字段，这个检测是根据字段名，同时对表中多余的字段给出警告信息<br>自动检测，创建和删除索引和唯一索引，这个检测是根据索引的一个或多个字段名，而不根据索引名称。因此这里需要注意，如果在一个有大量数据的表中引入新的索引，数据库可能需要一定的时间来建立索引。<br>自动转换varchar字段类型到text字段类型，自动警告其它字段类型在模型和数据库之间不一致的情况。<br>自动警告字段的默认值，是否为空信息在模型和数据库之间不匹配的情况</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> err = x.Sync2(<span class="built_in">new</span>(Account)); err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatalf(<span class="string">"Fail to sync database: %v\n"</span>, err)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h2 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">results, err := engine.Query(<span class="string">"select * from user"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 注意这里首字母要大写，导出该字段，类型名和表名对应，字段名和表字段名对应</span></span><br><span class="line"><span class="keyword">type</span> T_user <span class="keyword">struct</span> &#123;</span><br><span class="line">	F_id       <span class="keyword">int64</span>  <span class="string">`xorm:"not null pk autoincr INT(11)"`</span></span><br><span class="line">	F_ui_id    <span class="keyword">int64</span>  <span class="string">`xorm:"INT(11)"`</span></span><br><span class="line">	F_group_id <span class="keyword">int64</span>  <span class="string">`xorm:" INT(11)"`</span></span><br><span class="line">	F_pwd      <span class="keyword">string</span> <span class="string">`xorm:"not null VARCHAR(32)"`</span></span><br><span class="line">	F_name     <span class="keyword">string</span> <span class="string">`xorm:"not null VARCHAR(32)"`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据结构体中存在的非空数据来获取单条数据</span></span><br><span class="line">user := &amp;T_user&#123;F_name: <span class="string">"admin"</span>, F_pwd: <span class="string">"4acb4bc224acbbe3c2bfdcaa39a4324e"</span>&#125;</span><br><span class="line">has, err := engine.Get(user)</span><br><span class="line">fmt.Println(has)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据where获取单条数据</span></span><br><span class="line">user := <span class="built_in">new</span>(User)</span><br><span class="line">has, err := engine.Table(<span class="string">"t_user"</span>).Where(<span class="string">"f_name=? and f_pwd=?"</span>, <span class="string">"admin"</span>, <span class="string">"4acb4bc224acbbe3c2bfdcaa39a4324e"</span>).Get(user)</span><br><span class="line">fmt.Println(has)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据where获取单条数据</span></span><br><span class="line">user := <span class="built_in">new</span>(T_user)</span><br><span class="line">has, err := engine.Where(<span class="string">"f_name=? and f_pwd=?"</span>, <span class="string">"admin"</span>, <span class="string">"4acb4bc224acbbe3c2bfdcaa39a4324e"</span>).Get(user)</span><br><span class="line">fmt.Println(has)</span><br><span class="line"></span><br><span class="line">返回的结果为两个参数，一个has(<span class="keyword">bool</span>类型)为该条记录是否存在，第二个参数err为是否有错误。不管err是否为<span class="literal">nil</span>，has都有可能为<span class="literal">true</span>或者<span class="literal">false</span>。</span><br></pre></td></tr></table></figure>
-<h3 id="根据Id来获得单条数据"><a href="#根据Id来获得单条数据" class="headerlink" title="根据Id来获得单条数据"></a>根据Id来获得单条数据</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">has, err := x.Id(id).Get(a)</span><br></pre></td></tr></table></figure>
-<h3 id="逐条执行查询到的记录"><a href="#逐条执行查询到的记录" class="headerlink" title="逐条执行查询到的记录"></a>逐条执行查询到的记录</h3><p>Iterate方法提供逐条执行查询到的记录的方法，他所能使用的条件和Find方法完全相同</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">err := x.Where(<span class="string">"id &gt; ?=)"</span>, <span class="number">30</span>).Iterate(<span class="built_in">new</span>(Account), <span class="function"><span class="keyword">func</span><span class="params">(i <span class="keyword">int</span>, bean <span class="keyword">interface</span>&#123;&#125;)</span><span class="title">error</span></span>&#123;</span><br><span class="line">    user := bean.(*Account)</span><br><span class="line">    <span class="comment">//do somthing use i and user</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>我们主要来看迭代函数的声明：它接受 2 个参数，第一个是当前记录所对应的索引（该索引和 ID 的值毫无关系，只是查询后结果的索引），第二个参数则是保存了相关类型的空接口，需要自行断言，例如示例中使用 bean.(*Account) 因为我们知道查询的结构是 Account。</p>
-<h3 id="查询特定字段"><a href="#查询特定字段" class="headerlink" title="查询特定字段"></a>查询特定字段</h3><p>使用 Cols 方法可以指定查询特定字段，当只有结构中的某个字段的值对您有价值时，就可以使用它：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x.Cols(<span class="string">"name"</span>).Iterate(<span class="built_in">new</span>(Account), printFn)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> printFn = <span class="function"><span class="keyword">func</span><span class="params">(idx <span class="keyword">int</span>, bean <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">    <span class="comment">//dosomething</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>此处，所查询出来的结构只有 Name 字段有值，其它字段均为零值。要注意的是，Cols 方法所接受的参数是数据表中对应的名称，而不是字段名称。</p>
-<h3 id="统计记录条数-Count方法"><a href="#统计记录条数-Count方法" class="headerlink" title="统计记录条数- Count方法"></a>统计记录条数- Count方法</h3><p>统计数据使用Count方法，Count方法的参数为struct的指针并且成为查询条件。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a := <span class="built_in">new</span>(Account)</span><br><span class="line"><span class="comment">//返回满足id&gt;1的Account的记录条数</span></span><br><span class="line">total, err := x.Where(<span class="string">"id &gt;?"</span>, <span class="number">1</span>).Count(a)</span><br><span class="line"><span class="comment">// 返回Account所有记录条数</span></span><br><span class="line">total,err = x.Count(a)</span><br></pre></td></tr></table></figure>
-<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">affected, err := engine.Exec(<span class="string">"update user set .... where ..."</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在获取到记录之后，我们就需要进行一些修改，然后更新到数据库：</span></span><br><span class="line">a.Balance += deposit</span><br><span class="line"><span class="comment">// 对已有记录进行更新</span></span><br><span class="line">_, err = x.Update(a)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 注意，Update接受的参数是指针</span></span><br></pre></td></tr></table></figure>
-<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><p>方法 Delete 接受参数后，会自动根据传进去的值进行查找，然后删除。比如此处，我们指定了 Account 的 ID 字段，那么就会删除 ID 字段值与我们所赋值相同的记录；如果您只对 Name 字段赋值，那么 xorm 就会去查找 Name 字段值匹配的记录。如果多个字段同时赋值，则是多个条件同时满足的记录才会被删除。</p>
-<p>删除操作针对的对象没有限制，凡是按照条件查找到的，都会被删除（单个与批量删除）。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">_, err := x.Delete(&amp;Account&#123;Id: id&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> _, err := session.Exec(<span class="string">"delete from userinfo where username = ?"</span>, user2.Username); err != <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> err</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="事务及回滚"><a href="#事务及回滚" class="headerlink" title="事务及回滚"></a>事务及回滚</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建 Session 对象</span></span><br><span class="line">sess := x.NewSession()</span><br><span class="line"><span class="keyword">defer</span> sess.Close()</span><br><span class="line"><span class="comment">// 开启事务</span></span><br><span class="line"><span class="keyword">if</span> err = sess.Begin(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> err</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> _, err = sess.Update(a1); err != <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="comment">// 发生错误时进行回滚</span></span><br><span class="line">    sess.Rollback()</span><br><span class="line">    <span class="keyword">return</span> err</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="comment">// 完成事务</span></span><br><span class="line"><span class="keyword">return</span> sess.Commit()</span><br></pre></td></tr></table></figure>
-<h2 id="日志记录"><a href="#日志记录" class="headerlink" title="日志记录"></a>日志记录</h2><p>一般情况下，使用x.ShowSQL = true来开启 xorm 最基本的日志功能，所有 SQL 都会被打印到控制台，但如果您想要将日志保存到文件，则可以在获取到 ORM 引擎之后，进行如下操作：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">f, err := os.Create(<span class="string">"sql.log"</span>)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    log.Fatalf(<span class="string">"Fail to create log file: %v\n"</span>, err)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line">x.Logger = xorm.NewSimpleLogger(f)</span><br></pre></td></tr></table></figure>
-<h2 id="LRU-缓存"><a href="#LRU-缓存" class="headerlink" title="LRU 缓存"></a>LRU 缓存</h2><p>只需要在获取到 ORM 引擎之后，进行如下操作<br>这样就算是使用最基本的缓存功能了。该功能还支持只缓存某些表或排除缓存某些表，详情可以参见 文章首部的官方文档。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cacher := xorm.NewLRUCacher(xorm.NewMemoryStore(), <span class="number">1000</span>)</span><br><span class="line">x.SetDefaultCacher(cacher)</span><br></pre></td></tr></table></figure>
-<h2 id="表操作"><a href="#表操作" class="headerlink" title="表操作"></a>表操作</h2><h3 id="是否存在"><a href="#是否存在" class="headerlink" title="是否存在"></a>是否存在</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通过结构体判断</span></span><br><span class="line">&#123;</span><br><span class="line">    exists, _ := engine.IsTableExist(&amp;tOpLog&#123;&#125;)</span><br><span class="line">    fmt.Println(exists)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 通过表名字符串判断</span></span><br><span class="line">&#123;</span><br><span class="line">    exists, _ := engine.IsTableExist(<span class="string">"t_123123"</span>)</span><br><span class="line">    fmt.Println(exists)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="创建表自定义表名"><a href="#创建表自定义表名" class="headerlink" title="创建表自定义表名"></a>创建表自定义表名</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">    ID   <span class="keyword">int</span>    <span class="string">`xorm:"serial primary key 'id'"`</span></span><br><span class="line">    Name <span class="keyword">string</span> <span class="string">`xorm:"text not null 'name'"`</span></span><br><span class="line">    Type <span class="keyword">string</span> <span class="string">`xorm:"text not null 'type'"`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(u *User)</span> <span class="title">TableName</span><span class="params">()</span> <span class="title">string</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"users"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">db, err := xorm.NewEngine(<span class="string">"postgres"</span>, <span class="string">"postgres://db_admin:db_admin@db/sample_db?sslmode=disable"</span>)</span><br><span class="line">db.CreateTables(&amp;User&#123;&#125;)</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/09/18/Web开发/tcp-相关细节信息/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/09/18/Web开发/tcp-相关细节信息/" itemprop="url">tcp 相关细节信息</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-18T16:44:42+08:00">2019-09-18</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端/" itemprop="url" rel="index"><span itemprop="name">后端</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>查看 MTU</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh interface ipv4 show subinterfaces</span><br></pre></td></tr></table></figure>
-<p>TCP数据包每次能够传输的最大数据分段为MSS，为了达到最佳的传输效能，在建立TCP连接时双方协商MSS值，双方提供的MSS值的最小值为这次连接的最大MSS值。MSS往往基于MTU计算出来，通常MSS=MTU-sizeof(IP Header)-sizeof(TCP Header)=1500-20-20=1460。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/09/18/开源库/golang开源库/go-汉字转拼音/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/09/18/开源库/golang开源库/go-汉字转拼音/" itemprop="url">go-汉字转拼音</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-18T09:19:43+08:00">2019-09-18</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>这个据说经过优化，用了之后，发现需要安装 gcc ，然后debug的时候，后台在compiling，很久然后，out of memory，机器内存16G<br><a href="https://github.com/struCoder/Go-pinyin" target="_blank" rel="noopener">https://github.com/struCoder/Go-pinyin</a></p>
-<p>是基于这个优化后的<br><a href="https://github.com/mozillazg/go-pinyin" target="_blank" rel="noopener">https://github.com/mozillazg/go-pinyin</a></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"github.com/mozillazg/go-pinyin"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	hans := "0123456789楼防区"</span></span><br><span class="line"><span class="comment">	p1 := get_pin_yin(hans)</span></span><br><span class="line"><span class="comment">	fmt.Println(p1)</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">	return _0_1_2_3_4_5_6_7_8_9_lou_fang_qu</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">get_pin_yin</span><span class="params">(param <span class="keyword">string</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	strRet := <span class="string">"_"</span></span><br><span class="line">	<span class="keyword">var</span> strTail <span class="keyword">string</span></span><br><span class="line">	<span class="keyword">for</span> _, val := <span class="keyword">range</span> param &#123;</span><br><span class="line">		<span class="keyword">if</span> unicode.IsDigit(val) &#123;</span><br><span class="line">			strRet += <span class="keyword">string</span>(<span class="keyword">rune</span>(val)) + <span class="string">"_"</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			strTail += <span class="keyword">string</span>(<span class="keyword">rune</span>(val))</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	a := pinyin.NewArgs()</span><br><span class="line">	pin := pinyin.Pinyin(strTail, a)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, val := <span class="keyword">range</span> pin &#123;</span><br><span class="line">		strRet += val[<span class="number">0</span>] + <span class="string">"_"</span></span><br><span class="line">	&#125;</span><br><span class="line">	strRet = strRet[:<span class="built_in">len</span>(strRet)<span class="number">-1</span>]</span><br><span class="line">	<span class="keyword">return</span> strRet</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/09/18/开源库/minGW/minGW-install/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/09/18/开源库/minGW/minGW-install/" itemprop="url">minGW-install</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-18T09:14:07+08:00">2019-09-18</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-18T11:11:48+08:00">2019-10-18</time>
             
 
             
@@ -1239,6 +384,170 @@
 
                 
                 
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="概念介绍"><a href="#概念介绍" class="headerlink" title="概念介绍"></a>概念介绍</h2><ul>
+<li>Broker：简单来说就是消息队列服务器实体。</li>
+<li>Exchange：消息交换机，它指定消息按什么规则，路由到哪个队列。</li>
+<li>Queue：消息队列载体，每个消息都会被投入到一个或多个队列。</li>
+<li>Binding：绑定，它的作用就是把 exchange 和 queue 按照路由规则绑定起来。</li>
+<li>Routing Key：路由关键字，exchange 根据这个关键字进行消息投递。</li>
+<li>vhost：虚拟主机，一个 broker 里可以开设多个 vhost，用作不同用户的权限分离。</li>
+<li>producer：消息生产者，就是投递消息的程序。</li>
+<li>consumer：消息消费者，就是接受消息的程序。</li>
+<li>channel：消息通道，在客户端的每个连接里，可建立多个 channel，每个 channel 代表一个会话任务。</li>
+</ul>
+<p><img alt="20191018_111802.png" src="/2019/10/18/开源库/RabbitMQ/RabbitMQ-study/20191018_111802.png" width="500" height=""></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/10/18/开源库/RabbitMQ/RabbitMQ-study/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/10/17/生活小知识/小青柑普洱茶/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/10/17/生活小知识/小青柑普洱茶/" itemprop="url">小青柑普洱茶</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-17T10:31:34+08:00">2019-10-17</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/健康/" itemprop="url" rel="index"><span itemprop="name">健康</span></a></span>
+
+                
+                
               
             </span>
           
@@ -1271,10 +580,15 @@
       
         
           
-            <p>正常在线安装会出现 mingw64 cannot get repository.txt 错误</p>
-<p>Install chocolatey. Then type the following command line:</p>
-<p><a href="https://chocolatey.org/" target="_blank" rel="noopener">https://chocolatey.org/</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">choco install mingw</span><br></pre></td></tr></table></figure>
+            <p>这是一种评论：<br>类似于这种将普洱茶装进各种果皮里的茶，首先，好的普洱茶原料是绝对不会用来制作这类再制茶的（因为滋味已经很好了，不需要其他的味道去掩盖杂味，加之好茶贵增加制作成本）。其次，这类茶一般将熟普装进去时候是新鲜的，把果肉挖出后再填进茶叶烘干，制作工艺良莠不齐，是否湿润的内部会让茶叶再次发酵或引起微生物变化甚至霉变都有可能，这是不可估计的。最后，市面上的新会小青柑小红柑是否食用安全不得而知，现在的农残那么严重，厂家自然会给你宣传无污染，天然，绿色。可是果皮中是否有农药残留，不知。</p>
+<h2 id="观外观"><a href="#观外观" class="headerlink" title="观外观"></a>观外观</h2><p>大家可以打开小青柑的皮盖子，然后看看里面的茶叶填充状态，如果看见里面的干茶芽头大多都是为金黄色，并且条索匀整、粗壮，且干茶色泽深褐色、乌润，并且没有任何杂物的话，那么就是优质的普洱茶；而如果发现打开青柑皮盖后，发现填充的普洱熟茶芽头比较小，条索不均匀，色泽乌黑有杂质，那么就可以说明，这样的围劣质青柑普洱茶；并且冲泡后，口感不佳者，品质多为劣质，大家切莫选购、饮用。</p>
+<h2 id="察白霜"><a href="#察白霜" class="headerlink" title="察白霜"></a>察白霜</h2><p>首先，“白霜”的主要成分是柠檬烯，为挥发油析出物，在柑橘类水果（特别是其果皮）含量较高。</p>
+<p>由于柠檬烯易挥发，若在密闭环境条件下，经过长时间的储藏，这些物质缓慢析出至柑皮表面并氧化为白色物质，形成“白霜”。</p>
+<p>其次，白霜的形成与产区和加工工艺息息相关。绝大多数情况下只有新会核心产区的青皮才会有“白霜”的现象，而越是核心产区的柑果，柑皮上的油包越多，起的“白霜”也就越多。</p>
+<p>但是即便是核心产区的青皮想要产生“白霜”，也要保证小青柑表面油囊的活性，小青柑的油囊一旦遭到破坏就难以产生“白霜”，小青柑的价值也随之降低。如果想保证油囊的活性及完整性，只有通过低温长时间烘焙的工艺，小青柑表面才会析出“白霜”。</p>
+<h3 id="怎么知道是霉变还是白霜"><a href="#怎么知道是霉变还是白霜" class="headerlink" title="怎么知道是霉变还是白霜"></a>怎么知道是霉变还是白霜</h3><p>一看：白霜基本是圆状白点，霉变则是发散棉絮状。<br>二闻：白霜闻起来果香带陈香无杂味，霉变则是难闻的霉味。<br>三触摸：白霜干燥带有颗粒感，霉变的话触摸霉菌湿滑，缺乏质感，会有脱落。</p>
+<p>其实对于小青柑来说，整颗冲泡、掰碎冲泡都是没问题的</p>
+
           
         
       
@@ -1327,7 +641,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/09/17/语言相关/go/go-data-type/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/10/16/语言相关/go/go-datetime-timer/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1346,7 +660,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/09/17/语言相关/go/go-data-type/" itemprop="url">go-data type</a></h1>
+                <a class="post-title-link" href="/2019/10/16/语言相关/go/go-datetime-timer/" itemprop="url">go-datetime_timer</a></h1>
         
 
         <div class="post-meta">
@@ -1358,7 +672,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-17T10:02:20+08:00">2019-09-17</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-16T11:33:01+08:00">2019-10-16</time>
             
 
             
@@ -1414,8 +728,167 @@
 
       
         
+          <h1 id="日期格式化"><a href="#日期格式化" class="headerlink" title="日期格式化"></a>日期格式化</h1><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">strDate := time.Now().Format(<span class="string">"2006-01-02 15:04:05"</span>)</span><br><span class="line"></span><br><span class="line">unixTime := <span class="keyword">int64</span>(binary.LittleEndian.Uint32(b.value[fpos:]))</span><br><span class="line">block.header.Time = time.Unix(unixTime, <span class="number">0</span>).Format(<span class="string">"2006-01-02 15:04:05"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="获取当前时间戳"><a href="#获取当前时间戳" class="headerlink" title="获取当前时间戳"></a>获取当前时间戳</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">timeUnix:=time.Now().Unix()            <span class="comment">//单位s,打印结果:1491888244</span></span><br><span class="line">timeUnixNano:=time.Now().UnixNano()  <span class="comment">//单位纳秒,打印结果：1491888244752784461</span></span><br></pre></td></tr></table></figure>
+<h2 id="unix-timestamp"><a href="#unix-timestamp" class="headerlink" title="unix timestamp"></a>unix timestamp</h2><p>从字符串转</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"time"</span></span><br><span class="line">    <span class="string">"strconv"</span></span><br><span class="line">)</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    i, err := strconv.ParseInt(<span class="string">"1518328047"</span>, <span class="number">10</span>, <span class="number">64</span>)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="built_in">panic</span>(err)</span><br><span class="line">    &#125;</span><br><span class="line">    tm := time.Unix(i, <span class="number">0</span>)</span><br><span class="line">    fmt.Println(tm)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从 int 转</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">tm := time.Unix(<span class="number">1518328047</span>, <span class="number">0</span>)</span><br><span class="line">    fmt.Println(tm)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从 timestamp 到 UTC 时间</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">loc, _ := time.LoadLocation(<span class="string">"UTC"</span>)</span><br><span class="line">now := time.Unix(<span class="keyword">int64</span>(reversArr), <span class="number">0</span>).In(loc)</span><br><span class="line"><span class="comment">//fmt.Println(" Time : ", now) // UTC</span></span><br><span class="line">buf[<span class="string">"timestamp"</span>] = now.Format(<span class="string">"2006-01-02 15:04:05 -07:00 MST"</span>)</span><br><span class="line"></span><br><span class="line">输出：</span><br><span class="line">Time :  <span class="number">2013</span><span class="number">-07</span><span class="number">-05</span> <span class="number">22</span>:<span class="number">47</span>:<span class="number">09</span> +<span class="number">0000</span> UTC</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/10/16/语言相关/go/go-datetime-timer/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/10/11/工具相关/visual studio/vs2015UTF8编码调试时显示中文/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/10/11/工具相关/visual studio/vs2015UTF8编码调试时显示中文/" itemprop="url">vs2015UTF8编码调试时显示中文</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-11T13:23:50+08:00">2019-10-11</time>
+            
+
+            
+            
+
+            
+          </span>
+
           
-            <h2 id="rune"><a href="#rune" class="headerlink" title="rune"></a>rune</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// rune is an alias for int32 and is equivalent to int32 in all ways. It is</span><br><span class="line">// used, by convention, to distinguish character values from integer values.</span><br><span class="line"></span><br><span class="line">//int32的别名，几乎在所有方面等同于int32</span><br><span class="line">//它用来区分字符值和整数值</span><br><span class="line"></span><br><span class="line">type rune = int32</span><br></pre></td></tr></table></figure>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具相关/" itemprop="url" rel="index"><span itemprop="name">工具相关</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>设置string默认编码为utf8，只需要在文件头部加入以下代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> execution_character_set(<span class="meta-string">"utf-8"</span>) <span class="comment">//默认使用UTF8</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="vs2013-2015"><a href="#vs2013-2015" class="headerlink" title="vs2013/2015"></a>vs2013/2015</h2><p>stl.natvis 文件 581 行,后面替换为 <code>,s8</code> 即可，如下</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- VC <span class="number">2015</span> --&gt;</span><br><span class="line">&lt;Type Name=<span class="string">"std::basic_string&amp;lt;char,*&amp;gt;"</span>&gt;</span><br><span class="line">    &lt;DisplayString Condition=<span class="string">"_Mypair._Myval2._Myres &amp;lt; _Mypair._Myval2._BUF_SIZE"</span>&gt;&#123;_Mypair._Myval2._Bx._Buf,s8&#125;&lt;/DisplayString&gt;</span><br><span class="line">    &lt;DisplayString Condition=<span class="string">"_Mypair._Myval2._Myres &amp;gt;= _Mypair._Myval2._BUF_SIZE"</span>&gt;&#123;_Mypair._Myval2._Bx._Ptr,s8&#125;&lt;/DisplayString&gt;</span><br><span class="line">    &lt;StringView Condition=<span class="string">"_Mypair._Myval2._Myres &amp;lt; _Mypair._Myval2._BUF_SIZE"</span>&gt;_Mypair._Myval2._Bx._Buf,s8&lt;/StringView&gt;</span><br><span class="line">    &lt;StringView Condition=<span class="string">"_Mypair._Myval2._Myres &amp;gt;= _Mypair._Myval2._BUF_SIZE"</span>&gt;_Mypair._Myval2._Bx._Ptr,s8&lt;/StringView&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="VisualStudio-2010-SP1环境"><a href="#VisualStudio-2010-SP1环境" class="headerlink" title="VisualStudio 2010 SP1环境"></a>VisualStudio 2010 SP1环境</h2><p>debug提示窗口显示utf8，打开C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\Packages\Debugger\autoexp.dat文件找到第412到413行</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::basic_string&lt;<span class="keyword">char</span>,*&gt;&#123;</span><br><span class="line">    preview        ( #<span class="keyword">if</span> (($e._Myres) &lt; ($e._BUF_SIZE)) ( [$e._Bx._Buf,s8] ) #<span class="keyword">else</span> ( [$e._Bx._Ptr,s8] ))</span><br><span class="line">    stringview    ( #<span class="keyword">if</span> (($e._Myres) &lt; ($e._BUF_SIZE)) ( [$e._Bx._Buf,s8b] ) #<span class="keyword">else</span> ( [$e._Bx._Ptr,s8b] ))</span><br></pre></td></tr></table></figure>
+
           
         
       
@@ -1468,7 +941,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/09/16/语言相关/go/go-modules/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/10/10/学习笔记/其他/科学上网工具-v2ray/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1487,7 +960,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/09/16/语言相关/go/go-modules/" itemprop="url">go-modules</a></h1>
+                <a class="post-title-link" href="/2019/10/10/学习笔记/其他/科学上网工具-v2ray/" itemprop="url">科学上网工具-v2ray</a></h1>
         
 
         <div class="post-meta">
@@ -1499,7 +972,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-16T14:28:06+08:00">2019-09-16</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-10T15:46:57+08:00">2019-10-10</time>
             
 
             
@@ -1520,7 +993,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/科学上网/" itemprop="url" rel="index"><span itemprop="name">科学上网</span></a></span>
 
                 
                 
@@ -1556,61 +1029,202 @@
       
         
           
-            <h2 id="use-vscode"><a href="#use-vscode" class="headerlink" title="use vscode"></a>use vscode</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 设置 GO111MODULE GO111MODULE 有三个值：off, on和auto（默认值）。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">GO111MODULE=off，go命令行将不会支持module功能，寻找依赖包的方式将会沿用旧版本那种通过vendor目录或者GOPATH模式来查找。</span></span><br><span class="line"><span class="comment">GO111MODULE=on，go命令行会使用modules，而一点也不会去GOPATH目录下查找。</span></span><br><span class="line"><span class="comment">GO111MODULE=auto，默认值，go命令行将会根据当前目录来决定是否启用module功能。这种情况下可以分为两种情形：</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">当前目录在GOPATH/src之外且该目录包含go.mod文件</span></span><br><span class="line"><span class="comment">当前文件在包含go.mod文件的目录下面。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">当modules 功能启用时，依赖包的存放位置变更为$GOPATH/pkg，允许同一个package多个版本并存，且多个项目可以共享缓存的 module。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-<p>golang 提供了 <code>go mod</code> 命令来管理包。</p>
+            <p>想要在知识的海洋里面遨游，阻力还是有的。</p>
+<p>V2Ray 是 Project V 下的一个工具。Project V 是一个包含一系列构建特定网络环境工具的项目，而 V2Ray 属于最核心的一个。从时间上来说，先有 V2Ray 才有 Project V。如果再通俗易懂一点，V2Ray 是一个与 Shadowsocks 类似的代理软件，可以用来科学上网（翻墙）学习国外先进科学技术。</p>
+<p>V2Ray 跟 Shadowsocks 有什么区别<br>在介绍V2Ray中提到：V2Ray 是一个与 Shadowsocks 类似的代理软件，那么两者之间有什么区别呢？简单来概括的话：</p>
+<p>Shadowsocks 功能单一，V2Ray 功能强大<br>Shadowsocks 简单好上手，V2Ray 复杂配置多<br>看到这可能有人打退堂鼓了，虽然Shadowsocks 功能单一，但是已经能满足我们需要，而且简单好上手，为什么我们还要去用V2Ray？看待一个事物我们必须用辩证的思维去分析他，V2Ray有两个劣势：配置复杂，产业链不完整。<br>由于产业链不完整，大部分的V2Ray服务器和配置都是免费提供的，基本上连上就能用，没什么约束，当然可能服务也是说停就停，根本不跟你解释。不过对我们大部分人来说，免费就已经知足了。<br>虽然V2Ray的配置复杂，但其复杂带来的是更加卓越的功能：</p>
+<p>更完善的协议（安全度高，防检测）<br>更强大的性能（网速快）<br>更丰富的功能（满足开发党需求）</p>
+<p>VMess<br>VMess 协议是由 V2Ray 原创并使用于 V2Ray 的加密传输协议，如同 Shadowsocks 一样为了对抗墙的深度包检测而研发的。在 V2Ray 上客户端与服务器的通信主要是通过 VMess 协议通信。<br>对于我们使用者来说，不用太过地去纠结一个协议的原理和运转机制，我们只要会用就行了，需要注意的是，VMess协议是需要配置的，如果你在网上看到类似下图：</p>
+<p><img alt="20191010_154922.png" src="/2019/10/10/学习笔记/其他/科学上网工具-v2ray/20191010_154922.png" width="500" height=""></p>
+<p>首先打开 Profiles 配置选择页面，然后进行配置文件的添加 配置文件的链接，点击下载</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/10/09/学习笔记/行业标准/modbus协议/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/10/09/学习笔记/行业标准/modbus协议/" itemprop="url">modbus协议</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-09T11:47:15+08:00">2019-10-09</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/行业标准/" itemprop="url" rel="index"><span itemprop="name">行业标准</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Modbus通信协议由Modicon公司（现已经为施耐德公司并购，成为其旗下的子品牌）于1979年发明的，是全球最早用于工业现场的总线规约。由于其免费公开发行，使用该协议的厂家无需缴纳任何费用，Modbus通信协议采用的是主从通信模式（即Master/Slave通信模式)，其在分散控制方面应用极其广泛，从而使得Modbus协议在全球得到了广泛的应用。</p>
+<p>Modbus通信协议具有多个变种，其具有支持串口（主要是RS-485总线），以太网多个版本，其中最著名的是Modbus RTU,Modbus ASCII和Modbus TCP三种。其中Modbus RTU与Modbus ASCII均为支持RS-485总线的通信协议，其中Modbus RTU由于其采用二进制表现形式以及紧凑数据结构，通信效率较高，应用比较广泛。而Modbus ASCII由于采用ASCII码传输，并且利用特殊字符作为其字节的开始与结束标识，其传输效率要远远低于Modbus RTU协议，一般只有在通信数据量较小的情况下才考虑使用Modbus ASCII通信协议，在工业现场一般都是采用Modbus RTU协议，一般而言，大家说的基于串口通信的Modbus通信协议都是指Modbus RTU通信协议。</p>
+<p>Modbus can work on top of RS-232, RS-485 or TCP/IP over Ethernet. </p>
+<p><a href="https://unserver.xyz/modbus-guide/" target="_blank" rel="noopener">modbus-guide</a></p>
+<ul>
+<li>Modbus RTU (binary over serial link)</li>
+<li>Modbus ASCII (text-based over serial link)</li>
+<li>Modbus TCP (binary over TCP/IP transport)</li>
+</ul>
+<h2 id="Modbus-RTU-Protocol"><a href="#Modbus-RTU-Protocol" class="headerlink" title="Modbus RTU Protocol"></a>Modbus RTU Protocol</h2><p>Modbus RTU is a master-slave protocol. This means that only one device, the master, is allowed to initiate communication. The other devices on the network are called slaves and they may only respond to the requests. Modbus RTU can support up to 247 devices on the same physical network. It’s possible to modify the protocol to support more slaves, but in most applications the standard limit of slaves if enough.</p>
+<p>Modbus RTU encodes data as binary and uses big-endian encoding for 16-bit values. This means that the most significant byte of a 16-bit word is sent first.</p>
+<p><img alt="20200221_113232.png" src="/2019/10/09/学习笔记/行业标准/modbus协议/20200221_113232.png" width="500" height=""></p>
+<p>There are only two data types in Modbus: coils and registers. </p>
+<p>Coils are simply single bits. The bits can be ON (1) or they can be OFF (0). Some coils represent inputs, meaning they contain the status of some physical discrete input. Or they represent outputs, meaning that they hold the state of some physical discrete output signal. </p>
+<p>Registers are simply 16-bit unsigned register data. Registers can have a value from 0 to 65535 (0 to FFFF hexadecimal). There is no representation for negative values, no representation for values greater than 65535, and no representation for real data like 200.125.</p>
+<p>Registers are grouped into Input Registers and Holding Registers. Like Input Coils, Input Registers report the state of some external input as a value between 0 and 65535. The original intent of an Input Register was to reflect the value of some analog input. It is a digital representation of an analog signal like a voltage or a current. Most Modbus devices today are not I/O devices, and Input Registers simply function identically to Holding Registers.</p>
 <table>
 <thead>
 <tr>
-<th>命令</th>
-<th>说明</th>
+<th>地址码</th>
+<th>功能码</th>
+<th>数据区</th>
+<th>错误校验码</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>download</td>
-<td>download modules to local cache(下载依赖包)</td>
-</tr>
-<tr>
-<td>edit</td>
-<td>edit go.mod from tools or scripts（编辑go.mod</td>
-</tr>
-<tr>
-<td>graph</td>
-<td>print module requirement graph (打印模块依赖图)</td>
-</tr>
-<tr>
-<td>init</td>
-<td>initialize new module in current directory（在当前目录初始化mod）</td>
-</tr>
-<tr>
-<td>tidy</td>
-<td>add missing and remove unused modules(拉取缺少的模块，移除不用的模块)</td>
-</tr>
-<tr>
-<td>vendor</td>
-<td>make vendored copy of dependencies(将依赖复制到vendor下)</td>
-</tr>
-<tr>
-<td>verify</td>
-<td>verify dependencies have expected content (验证依赖是否正确）</td>
-</tr>
-<tr>
-<td>why</td>
-<td>explain why packages or modules are needed(解释为什么需要依赖)</td>
+<td>8位</td>
+<td>8位</td>
+<td>N × 8位</td>
+<td>16位</td>
 </tr>
 </tbody>
 </table>
-<h3 id="创建一个新项目"><a href="#创建一个新项目" class="headerlink" title="创建一个新项目"></a>创建一个新项目</h3><p>在 GOPATH 目录之外新建一个目录，并使用 <code>go mod init</code> 初始化生成go.mod 文件<br>go.mod文件一旦创建后，它的内容将会被go toolchain全面掌控。go toolchain会在各类命令执行时，比如go get、go build、go mod等修改和维护go.mod文件。</p>
-<p>项目名 hello</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span> mod init hello</span><br></pre></td></tr></table></figure>
-<p>执行 go run server.go 运行代码会发现 go mod 会自动查找依赖自动下载：<br>go module 安装 package 的原則是先拉最新的 release tag，若无tag则拉最新的commit，详见 Modules官方介绍。 go 会自动生成一个 go.sum 文件来记录 dependency tree：</p>
-<h2 id="goland"><a href="#goland" class="headerlink" title="goland"></a>goland</h2><p>摘录至<a href="https://juejin.im/post/5d0b865c6fb9a07f050a6f45" target="_blank" rel="noopener"></a></p>
-<p>在 GoLand 2019.1.3 中使用 Go Modules 需要进行两个设置：</p>
-<p>Preferences -&gt; Go -&gt; Go Modules (vgo)，勾选 Enable Go Modules (vgo) integration 以启用 Go Modules，并在 Proxy 输入框中输入 <a href="https://goproxy.io。如图所示：" target="_blank" rel="noopener">https://goproxy.io。如图所示：</a></p>
-<p><img alt="20190916_142859.png" src="/2019/09/16/语言相关/go/go-modules/20190916_142859.png" width="500" height=""></p>
-<p>Preferences -&gt; Go -&gt; GOPATH，勾选上 Index entire GOPATH 以索引整个 GOPATH，不然无法导入包。如图所示：</p>
-<p><img alt="20190916_142910.png" src="/2019/09/16/语言相关/go/go-modules/20190916_142910.png" width="500" height=""></p>
-<p>进行如上设置后，就可以在导入不在缓存中的包时，点击 Sync packages of… 下载该包了：</p>
+<p>发送数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">01 03 01 8E 00 04 25 DE</span><br><span class="line"></span><br><span class="line">&quot;01&quot; 为模块的地址码，</span><br><span class="line">&quot;03&quot; 为功能码，即表示读寄存器，</span><br><span class="line">&quot;01 8E&quot; 为寄存器地址，即从该寄存器地址开始读取数据，</span><br><span class="line">&quot;00 04&quot; 则表示读取4个寄存器，</span><br><span class="line">而 &quot;25 DE&quot; 则为前面 &quot;01 03 01 8E 00 04&quot; 的CRC校验码,该数值通过CRC16校验算法计算出来的</span><br></pre></td></tr></table></figure>
+<p>返回数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">01 03 08 00 01 00 01 00 01 00 01 28 D7</span><br><span class="line"></span><br><span class="line">&quot;01&quot; 为模块的地址码，</span><br><span class="line">&quot;03&quot; 表示该指令是读操作返回的指令</span><br><span class="line">&quot;08&quot; 表示数据长度，在此表示的是8个字节数据正文（即4个寄存器，每个寄存器两个字节表示）</span><br><span class="line">&quot;00 01 00 01 00 01 00 01&quot; 是数据正文，表示四个寄存器的状态，</span><br><span class="line">&quot;28 D7&quot; 就是CRC16校验码。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">Tx:074-03 03 00 00 00 08 45 EE </span><br><span class="line">Rx:075-03 03 10 A2 7E 73 4B A0 A7 73 32 9C CC 75 16 9C 65 75 80 76 3E </span><br><span class="line">Tx:076-03 03 00 00 00 08 45 EE </span><br><span class="line">Rx:077-03 03 10 A2 7A 73 84 A0 B3 73 32 9C C8 75 3A 9C 82 75 8C 42 F7 </span><br><span class="line">Tx:078-03 03 00 00 00 08 45 EE </span><br><span class="line">Rx:079-03 03 10 A2 7E 73 78 A0 AF 73 26 9C C8 75 47 9C AB 75 88 3F 58 </span><br><span class="line">Tx:080-03 03 00 00 00 08 45 EE </span><br><span class="line">Rx:081-03 03 10 A2 7A 73 5F A0 B3 73 1A 9C C3 75 5F 9C BB 75 7C BF 6D</span><br></pre></td></tr></table></figure>
+<p><img alt="20191009_150946.png" src="/2019/10/09/学习笔记/行业标准/modbus协议/20191009_150946.png" width="500" height=""></p>
+<p><img alt="20191009_150958.png" src="/2019/10/09/学习笔记/行业标准/modbus协议/20191009_150958.png" width="500" height=""></p>
+<p>ModBus 功能码与数据类型对应表：</p>
+<p><img alt="20200218_105117.png" src="/2019/10/09/学习笔记/行业标准/modbus协议/20200218_105117.png" width="500" height=""></p>
+<p>RTU 方式读取整数据的例子：</p>
+<p><img alt="20200218_105133.png" src="/2019/10/09/学习笔记/行业标准/modbus协议/20200218_105133.png" width="500" height=""></p>
+<p>解析一下：主机发送指令，访问从站地址为1，使用功能码03（读保持寄存器），起始地址高8位、低8位：表示想读取的模拟量的起始地址(起始地址为0)。比如例子中的起始地址为38，十进制为：56。寄存器数量高8位、低8位：表示从起始地址开始读多少个模拟量。例子中为1个模拟量。注意，在返回的信息中一个模拟量需要返回两个字节。错误校验为CRC校验。</p>
+<p>从站应答：设备地址和命令号和上面的相同。返回的字节数：表示数据的字节个数，也就是数据1，2…n中的n的值。例子中返回了1个模拟量的数据，因为一个模拟量需要2个字节所以共2个字节。数据高低字节：41和24代表返回的1个模拟量的值，即十进制的16676。错误校验为CRC校验。</p>
 
           
         
@@ -1664,7 +1278,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/09/16/Web开发/http-2相关学习/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/10/08/语言相关/go/go-jason-library/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1683,7 +1297,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/09/16/Web开发/http-2相关学习/" itemprop="url">http/2相关学习</a></h1>
+                <a class="post-title-link" href="/2019/10/08/语言相关/go/go-jason-library/" itemprop="url">go-jason library</a></h1>
         
 
         <div class="post-meta">
@@ -1695,143 +1309,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-16T09:40:56+08:00">2019-09-16</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>摘录至 <a href="https://zhuanlan.zhihu.com/p/26559480" target="_blank" rel="noopener">一文读懂 HTTP/2 特性</a><br>参考 <a href="https://www.ibm.com/developerworks/cn/web/wa-http2-under-the-hood/index.html" target="_blank" rel="noopener">HTTP/2 幕后原理</a></p>
-<p>仅做个人学习记录用途。</p>
-<p>HTTP/2 是 HTTP 协议自 1999 年 HTTP 1.1 发布后的首个更新，主要基于 SPDY 协议。由互联网工程任务组（IETF）的 Hypertext Transfer Protocol Bis（httpbis）工作小组进行开发。该组织于2014年12月将HTTP/2标准提议递交至IESG进行讨论，于2015年2月17日被批准。HTTP/2标准于2015年5月以RFC 7540正式发表。</p>
-<h2 id="二进制分帧"><a href="#二进制分帧" class="headerlink" title="二进制分帧"></a>二进制分帧</h2><p>帧：HTTP/2 数据通信的最小单位消息：指 HTTP/2 中逻辑上的 HTTP 消息。例如请求和响应等，消息由一个或多个帧组成。</p>
-<p>流：存在于连接中的一个虚拟通道。流可以承载双向消息，每个流都有一个唯一的整数ID。</p>
-<p>HTTP/2 采用二进制格式传输数据，而非 HTTP 1.x 的文本格式，二进制协议解析起来更高效。 HTTP / 1 的请求和响应报文，都是由起始行，首部和实体正文（可选）组成，各部分之间以文本换行符分隔。HTTP/2 将请求和响应数据分割为更小的帧，并且它们采用二进制编码。</p>
-<p>HTTP/2 中，同域名下所有通信都在单个连接上完成，该连接可以承载任意数量的双向数据流。每个数据流都以消息的形式发送，而消息又由一个或多个帧组成。多个帧之间可以乱序发送，根据帧首部的流标识可以重新组装。</p>
-<h2 id="多路复用"><a href="#多路复用" class="headerlink" title="多路复用"></a>多路复用</h2><p>多路复用，代替原来的序列和阻塞机制。所有就是请求的都是通过一个 TCP连接并发完成。</p>
-<p>在 HTTP/2 中，有了二进制分帧之后，HTTP /2 不再依赖 TCP 链接去实现多流并行了，在 HTTP/2中：</p>
-<p>同域名下所有通信都在单个连接上完成。<br>单个连接可以承载任意数量的双向数据流。<br>数据流以消息的形式发送，而消息又由一个或多个帧组成，多个帧之间可以乱序发送，因为根据帧首部的流标识可以重新组装。<br>这一特性，使性能有了极大提升：</p>
-<p>同个域名只需要占用一个 TCP 连接，消除了因多个 TCP 连接而带来的延时和内存消耗。<br>单个连接上可以并行交错的请求和响应，之间互不干扰。<br>在HTTP/2中，每个请求都可以带一个31bit的优先值，0表示最高优先级， 数值越大优先级越低。有了这个优先值，客户端和服务器就可以在处理不同的流时采取不同的策略，以最优的方式发送流、消息和帧。</p>
-<h2 id="服务器推送"><a href="#服务器推送" class="headerlink" title="服务器推送"></a>服务器推送</h2><p>服务端可以在发送页面HTML时主动推送其它资源，而不用等到浏览器解析到相应位置，发起请求再响应。例如服务端可以主动把JS和CSS文件推送给客户端，而不需要客户端解析HTML时再发送这些请求。</p>
-<p>服务端可以主动推送，客户端也有权利选择是否接收。如果服务端推送的资源已经被浏览器缓存过，浏览器可以通过发送RST_STREAM帧来拒收。主动推送也遵守同源策略，服务器不会随便推送第三方资源给客户端。</p>
-<h2 id="头部压缩"><a href="#头部压缩" class="headerlink" title="头部压缩"></a>头部压缩</h2>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/09/14/开源库/SOUI/soui-SStringT/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/09/14/开源库/SOUI/soui-SStringT/" itemprop="url">soui-SStringT</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-14T11:08:12+08:00">2019-09-14</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-08T15:55:18+08:00">2019-10-08</time>
             
 
             
@@ -1852,14 +1330,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/UI/" itemprop="url" rel="index"><span itemprop="name">UI</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
 
                 
                 
@@ -1895,7 +1366,443 @@
       
         
           
-            <h2 id="转-std-string"><a href="#转-std-string" class="headerlink" title="转 std::string"></a>转 std::string</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CUtils::UnicodeToAscii(wstring(strDeviceAddr)).c_str()</span><br></pre></td></tr></table></figure>
+            <p>A library that can operation arbitary json structure</p>
+<h2 id="遍历对象数组"><a href="#遍历对象数组" class="headerlink" title="遍历对象数组"></a>遍历对象数组</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">param = &#123;<span class="string">"cmdType"</span>: <span class="number">90000</span>,</span><br><span class="line">        <span class="string">"param"</span>: &#123;</span><br><span class="line">            <span class="string">"table"</span>: <span class="string">"t_op_log"</span>,</span><br><span class="line">            <span class="string">"columns"</span>: [</span><br><span class="line">                &#123;<span class="string">"f_id"</span>: <span class="string">"key;"</span>&#125;,</span><br><span class="line">                &#123;<span class="string">"f_datetime"</span>: <span class="string">"type:varchar(20);not null;index:idx_f_datetime;default(cur_datetime)"</span>&#125;,</span><br><span class="line">                &#123;<span class="string">"f_operation"</span>: <span class="string">"type:varchar(200);not null"</span>&#125;,</span><br><span class="line">                &#123;<span class="string">"f_user_id"</span>: <span class="string">"type:integer(8);not null"</span>&#125;,</span><br><span class="line">                &#123;<span class="string">"f_op_param"</span>: <span class="string">"type:varchar(200);not null;default("</span><span class="string">")"</span>&#125;,</span><br><span class="line">                &#123;<span class="string">"f_token"</span>: <span class="string">"type:integer(8);not null"</span>&#125;,</span><br><span class="line">                &#123;<span class="string">"f_token_expiration"</span>: <span class="string">"type:varchar(200)"</span>&#125;,</span><br><span class="line">                &#123;<span class="string">"f_hardware_info"</span>: <span class="string">"type:varchar(200)"</span>&#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line"><span class="string">"github.com/antonholmquist/jason"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">json, err := jason.NewObjectFromBytes([]<span class="keyword">byte</span>(in.Value))</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    fmt.Println(err.Error())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">columns, err := jsonObj.GetObjectArray(<span class="string">"param"</span>, <span class="string">"columns"</span>)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    fmt.Println(err.Error())</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 遍历对象数组, index,obj</span></span><br><span class="line"><span class="keyword">for</span> _, column := <span class="keyword">range</span> columns &#123;</span><br><span class="line">    fmt.Println(column)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/09/30/语言相关/python/python-range/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/09/30/语言相关/python/python-range/" itemprop="url">python-range</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-30T09:41:36+08:00">2019-09-30</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>works only with integers</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">range (start, stop[, step])</span><br><span class="line"></span><br><span class="line">range(<span class="number">1</span>,<span class="number">5</span>) <span class="comment">#代表从1到5(不包含5) [1, 2, 3, 4]</span></span><br><span class="line">range(<span class="number">1</span>,<span class="number">5</span>,<span class="number">2</span>) <span class="comment">#代表从1到5，间隔2(不包含5) [1, 3]</span></span><br><span class="line">range(<span class="number">5</span>) <span class="comment">#代表从0到5(不包含5) [0, 1, 2, 3, 4]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">6</span>):</span><br><span class="line">    print(i, end=<span class="string">', '</span>)</span><br><span class="line"></span><br><span class="line">Python range() example to <span class="keyword">print</span> numbers <span class="keyword">from</span> range <span class="number">0</span> to <span class="number">6</span></span><br><span class="line"><span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>,</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> idx <span class="keyword">in</span> range(<span class="number">2</span>, <span class="number">9</span>, <span class="number">1</span>):</span><br><span class="line">    print(<span class="string">'&#123;&#125;'</span>.format(idx))</span><br><span class="line"></span><br><span class="line">输出数值 <span class="number">2</span><span class="number">-8</span></span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/09/25/语言相关/python/python-json/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/09/25/语言相关/python/python-json/" itemprop="url">python-json</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-25T11:18:24+08:00">2019-09-25</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="json-to-str"><a href="#json-to-str" class="headerlink" title="json to str"></a>json to str</h2><p>json.dumps 会保证输出是合法的 json 字符串</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">param = &#123;"cmdType": 90001,</span><br><span class="line">             "param": &#123;"table": "t_user", "column": ["f_id", "f_ui_id", "f_group_id"], "where": ["f_name", "f_pwd"],"value": ["admin", "4acb4bc224acbbe3c2bfdcaa39a4324e"]&#125;&#125;</span><br><span class="line">    resp = rpc_client(json.dumps(param))</span><br></pre></td></tr></table></figure>
+<h2 id="str-to-json"><a href="#str-to-json" class="headerlink" title="str to json"></a>str to json</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># resp is str type</span><br><span class="line">final_dictionary = eval(resp)</span><br><span class="line"></span><br><span class="line">final_dictionary = json.loads(resp)</span><br></pre></td></tr></table></figure>
+<p>json.loads 将 json 中的字符串转成 unicode(types.UnicodeType)，eval 转成了 str(types.StringType)<br>读取中文的时候 json.loads 会报错。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjunblog.top/2019/09/25/语言相关/go/go-switch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/09/25/语言相关/go/go-switch/" itemprop="url">go-switch</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-25T11:03:27+08:00">2019-09-25</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>只执行选择的 case 所以不需要 break 语句，case 判断可以是变量</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"runtime"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Print(<span class="string">"Go runs on "</span>)</span><br><span class="line">	<span class="keyword">switch</span> os := runtime.GOOS; os &#123;</span><br><span class="line">	<span class="keyword">case</span> <span class="string">"darwin"</span>:</span><br><span class="line">		fmt.Println(<span class="string">"OS X."</span>)</span><br><span class="line">	<span class="keyword">case</span> <span class="string">"linux"</span>:</span><br><span class="line">		fmt.Println(<span class="string">"Linux."</span>)</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		<span class="comment">// freebsd, openbsd,</span></span><br><span class="line">		<span class="comment">// plan9, windows...</span></span><br><span class="line">		fmt.Printf(<span class="string">"%s.\n"</span>, os)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>switch和java,c等的有不同的地方，使用上需要注意</p>
+<p>不需要使用break，默认每个case是独立执行的<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> ch &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'0'</span>:</span><br><span class="line">        cl = <span class="string">"Int"</span></span><br><span class="line">    <span class="keyword">case</span> <span class="string">'1'</span>:</span><br><span class="line">        cl = <span class="string">"Int"</span></span><br><span class="line">    <span class="keyword">case</span> <span class="string">'A'</span>:</span><br><span class="line">        cl = <span class="string">"ABC"</span></span><br><span class="line">        <span class="keyword">break</span> <span class="comment">//可以添加</span></span><br><span class="line">    <span class="keyword">case</span> <span class="string">'a'</span>:</span><br><span class="line">        cl = <span class="string">"ABC"</span></span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        cl = <span class="string">"Other Char"</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>需要执行下一条case的情况，使用 <code>fallthrough</code> 语句，’0’和’1’都会执行cl=”Int”。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> ch &#123;</span><br><span class="line"><span class="keyword">case</span> <span class="string">'0'</span>:</span><br><span class="line">    <span class="keyword">fallthrough</span>   <span class="comment">//必须是最后一个语句</span></span><br><span class="line"><span class="keyword">case</span> <span class="string">'1'</span>:</span><br><span class="line">    cl = <span class="string">"Int"</span></span><br><span class="line"><span class="keyword">case</span> <span class="string">'A'</span>:</span><br><span class="line"><span class="keyword">case</span> <span class="string">'a'</span>:</span><br><span class="line">    <span class="keyword">fallthrough</span></span><br><span class="line">    cl = <span class="string">"ABC"</span>    <span class="comment">//error</span></span><br><span class="line"><span class="keyword">default</span>:</span><br><span class="line">    cl = <span class="string">"Other Char"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>有多个匹配结果执行同一段处理的情况<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> ch &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'0'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>, <span class="string">'7'</span>, <span class="string">'8'</span>, <span class="string">'9'</span>:</span><br><span class="line">        cl = <span class="string">"Int"</span></span><br><span class="line">    <span class="keyword">case</span> <span class="string">'A'</span>, <span class="string">'B'</span>, <span class="string">'C'</span>, <span class="string">'D'</span>,  <span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>, <span class="string">'e'</span>:</span><br><span class="line">        cl = <span class="string">"ABC"</span></span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        cl = <span class="string">"Other Char"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在 Case 中使用布尔表达式<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'0'</span> &lt;= ch &amp;&amp; ch &lt;= <span class="string">'9'</span>:</span><br><span class="line">        cl = <span class="string">"Int"</span></span><br><span class="line">    <span class="keyword">case</span> (<span class="string">'a'</span> &lt;= ch &amp;&amp; ch &lt;= <span class="string">'z'</span>) || (<span class="string">'A'</span> &lt;= ch &amp;&amp; ch &lt;= <span class="string">'Z'</span>):</span><br><span class="line">        cl = <span class="string">"ABC"</span></span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        cl = <span class="string">"Other Char"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
           
         
@@ -1938,7 +1845,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/99/">99</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/100/">100</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1985,7 +1892,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">986</span>
+                    <span class="site-state-item-count">999</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2148,7 +2055,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">75</span>
+                      
+                    
+                    <span class="site-state-item-count">76</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
