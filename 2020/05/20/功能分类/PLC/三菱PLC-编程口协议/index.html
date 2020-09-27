@@ -1,0 +1,1938 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="命令（CMD） 命令码 目标设备      DEVICE READ “0” X,Y,M,S,T,C,D    DEVICE WRITE “1” X,Y,M,S,T,C,D    FORCE  ON “7” X,Y,M,S,T,C    FORCE  OFF “8” X,Y,M,S,T,C        扩展命令 命令码      读配置 “E00”    写配置 “E10”    读程序 “">
+<meta name="keywords" content="三菱">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三菱PLC-编程口协议">
+<meta property="og:url" content="http://zhengjun.top/2020/05/20/功能分类/PLC/三菱PLC-编程口协议/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="命令（CMD） 命令码 目标设备      DEVICE READ “0” X,Y,M,S,T,C,D    DEVICE WRITE “1” X,Y,M,S,T,C,D    FORCE  ON “7” X,Y,M,S,T,C    FORCE  OFF “8” X,Y,M,S,T,C        扩展命令 命令码      读配置 “E00”    写配置 “E10”    读程序 “">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://zhengjun.top/2020/05/20/功能分类/PLC/三菱PLC-编程口协议/20200526_131708.png">
+<meta property="og:updated_time" content="2020-05-27T05:19:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="三菱PLC-编程口协议">
+<meta name="twitter:description" content="命令（CMD） 命令码 目标设备      DEVICE READ “0” X,Y,M,S,T,C,D    DEVICE WRITE “1” X,Y,M,S,T,C,D    FORCE  ON “7” X,Y,M,S,T,C    FORCE  OFF “8” X,Y,M,S,T,C        扩展命令 命令码      读配置 “E00”    写配置 “E10”    读程序 “">
+<meta name="twitter:image" content="http://zhengjun.top/2020/05/20/功能分类/PLC/三菱PLC-编程口协议/20200526_131708.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="http://zhengjun.top/2020/05/20/功能分类/PLC/三菱PLC-编程口协议/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>三菱PLC-编程口协议 | 郑君的学习笔记</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">郑君的学习笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">要比昨天进步一点点</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">78</span>
+      </a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1124</span>
+      </a>
+</li>
+
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/05/20/功能分类/PLC/三菱PLC-编程口协议/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">三菱PLC-编程口协议</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-20T11:13:54+08:00">2020-05-20</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/PLC/" itemprop="url" rel="index"><span itemprop="name">PLC</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <table>
+<thead>
+<tr>
+<th>命令（CMD）</th>
+<th>命令码</th>
+<th>目标设备 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DEVICE READ</td>
+<td>“0”</td>
+<td>X,Y,M,S,T,C,D </td>
+</tr>
+<tr>
+<td>DEVICE WRITE</td>
+<td>“1”</td>
+<td>X,Y,M,S,T,C,D </td>
+</tr>
+<tr>
+<td>FORCE  ON</td>
+<td>“7”</td>
+<td>X,Y,M,S,T,C </td>
+</tr>
+<tr>
+<td>FORCE  OFF</td>
+<td>“8”</td>
+<td>X,Y,M,S,T,C </td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>扩展命令</th>
+<th>命令码 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>读配置</td>
+<td>“E00” </td>
+</tr>
+<tr>
+<td>写配置</td>
+<td>“E10” </td>
+</tr>
+<tr>
+<td>读程序</td>
+<td>“E01” </td>
+</tr>
+<tr>
+<td>写程序</td>
+<td>“E11” </td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>16进制代码</th>
+<th>命令解释 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ENQ</td>
+<td>05H</td>
+<td>通信请求 </td>
+</tr>
+<tr>
+<td>ACK</td>
+<td>06H</td>
+<td>PLC正确响应 </td>
+</tr>
+<tr>
+<td>NAK</td>
+<td>15H</td>
+<td>PLC错误响应 </td>
+</tr>
+<tr>
+<td>STX</td>
+<td>02H</td>
+<td>报文开始 </td>
+</tr>
+<tr>
+<td>ETX</td>
+<td>03H</td>
+<td>报文结束 </td>
+</tr>
+</tbody>
+</table>
+<p>帧格式:<br>STX CMD DATA …… DATA ETX SUM(upper) SUM(lower)<br>SUM=CMD+……+ETX</p>
+<p>ACK(06H) 接受正確<br>NAK(15H) 接受錯誤</p>
+<p>校验和计算</p>
+<p><img alt="20200526_131708.png" src="/2020/05/20/功能分类/PLC/三菱PLC-编程口协议/20200526_131708.png" width="500" height=""></p>
+<h2 id="open"><a href="#open" class="headerlink" title="open"></a>open</h2><p>Baud Rate: 115200 StopBits: 1, Parity: Even, DataBits: 7</p>
+<p>write:05<br>read :00</p>
+<p>发送 05 连接测试 返回 06 表示正常，其他失败</p>
+<p>关闭使用 9600 重新打开</p>
+<p>write:02 30 30 45 30 32 30 32 03 36 43<br>读取 0E02 处 02 字节 （PLC型号）</p>
+<p>read :02 30 31 35 46 03 44 46<br>015F</p>
+<p>write:02 30 30 45 43 41 30 32 03 38 45<br>读取 0ECA 处 02 字节<br>read :02 43 31 33 46 03 46 30<br>返回 C13F</p>
+<p>write:02 45 30 30 30 45 45 38 30 34 03 46 45<br>读配置 E00 0EE8 04<br>read :02 36 30 32 36 38 34 35 43 03 42 35<br>返回 6026845C</p>
+<p>write:02 45 31 30 30 45 45 43 30 34 41 33 34 37 39 32 38 34 03 43 30<br>写配置 E10 0EEC 04 A3479284</p>
+<p>write:02 41 35 03 37 39<br>read :06</p>
+<p>write:A5<br>read :06 </p>
+<p>重新打开串口 115200<br>write:05<br>read :06 </p>
+<p>write:02 30 30 45 30 32 30 32 03 36 43<br>读取 0E02 处 02 字节<br>read :31 30 31 35 46 03 44 46<br>1015F ? 这个回复有异常</p>
+<p>write:02 30 30 45 43 41 30 32 03 38 45<br>read :02 43 31 33 46 03 46 30</p>
+<p>读取 0ECA 处 02 字节<br>返回 C13F</p>
+<p>write:02 30 30 45 30 32 30 32 03 36 43<br>read :02 30 31 35 46 03 44 46</p>
+<p>读取 0E02 处 02 字节<br>返回 015F</p>
+<p>read :02 43 31 33 46 03 46 30<br>返回 C13F</p>
+<p>write:02 45 30 31 38 30 30 30 30 32 03 44 33<br>read :02 31 30 30 30 03 43 34<br>读程序 E01 8000 02<br>返回 1000</p>
+<p>write:02 45 30 31 38 30 34 34 30 43 03 45 43<br>read :02 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 03 38 33<br>读程序 E01 80440C<br>返回 000000000000000000000000</p>
+<p>write:02 45 30 30 38 30 30 30 46 45 03 46 42<br>read :02 43 38 30 30 30 31 35 46 30 30 41 30 30 30 30 30 30 30 33 30 30 30 33 30 30 30 38 30 30 31 33 30 30 33 41 30 30 30 44 30 30 31 34 30 30 30 35 30 30 31 34 30 30 30 33 30 30 30 41 30 30 30 30 30 30 31 38 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 46 46 46 46 46 46 46 46 46 46 46 46 46 46 46 46 46 46 46 46 46 46 46 46 46 46 46 46 46 46 46 46 30 30 30 30 46 46 46 46 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 33 39 31 38 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 46 34 30 31 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 31 31 35 43 31 33 46 34 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 36 30 32 36 38 34 35 43 41 33 34 37 39 32 38 30 41 36 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 32 30 30 30 33 30 30 30 30 30 30 03 31 34</p>
+<p>读配置 E00 8000 FE<br>返回 C800015F00A00000003000300080013003A000D0014000500140003000A000000180000000000000000000000000000000000000000000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000FFFF00000000000000000000000000000000000000000000000039180000000000000000000000000000F401000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000115C13F400000000000000000000000000000000000000000000000000000006026845CA3479280A600000000000000020003000000</p>
+<p>write:02 45 30 30 38 30 46 45 30 32 03 46 44<br>read :02 30 30 30 30 03 43 33<br>读配置 E00 80FE 02<br>返回 0000</p>
+<p>write:02 30 30 45 30 32 30 32 03 36 43<br>read :02 30 31 35 46 03 44 46<br>读取 0E02 处 02 字节<br>返回 015F</p>
+<p>write:02 30 30 45 43 41 30 32 03 38 45<br>read :31 43 31 33 46 03 46 30<br>读取 0ECA 处 02 字节<br>返回 1 C13F</p>
+<h2 id="获取-CPU-类型"><a href="#获取-CPU-类型" class="headerlink" title="获取 CPU 类型"></a>获取 CPU 类型</h2><p>write:02 30 30 45 30 32 30 32 03 36 43<br>read :02 30 31 35 46 03 44 46</p>
+<p>write 解析:<br>0 DEVICE READ<br>0E02 地址 0E02H 处  PLC型号和系统版本号<br>02 02H 字节数据</p>
+<p>read 解析：<br>返回 015F （FX3UC）</p>
+<p>write:02 30 30 45 43 41 30 32 03 38 45<br>read :02 43 31 33 46 03 46 30 </p>
+<p>读取 0ECA 处 02 字节<br>返回 C13F  序列器机种名/版本</p>
+<p>FX3UC<br>F3</p>
+<h2 id="读取-D0"><a href="#读取-D0" class="headerlink" title="读取 D0"></a>读取 D0</h2><p>write:02 46 35 30 31 31 30 34 30 30 30 03 30 34<br>read :02 39 37 33 35 03 44 42<br>write:F5 0110 4000</p>
+<p>02 30 42 30 30 03 44 35     </p>
+<p>写 D0<br>write:02 45 31 30 34 30 30 30 30 32 30 43 30 30 03 41 32<br>read :06<br>E10 4000 02 0C00<br>命令-地址-长度-数值（小端模式）</p>
+<p>读 D1<br>write:02 46 35 30 31 31 30 34 30 30 32 03 30 36     </p>
+<p>F5 0110 4002</p>
+<p>02 46 35 30 31 31 30 34 30 43 38 03 31 46<br>F5 0110 40C8</p>
+<p>写 D1<br>write:02 45 31 30 34 30 30 32 30 32 30 42 30 30 03 41 33<br>E10 4002 02 0B00<br>read : 06</p>
+<p>读 D0-D9 10个字节<br>write:02 45 30 30 34 30 30 30 31 34 03 44 31     </p>
+<p>E00 4000 14</p>
+<p>write:02 45 30 30 34 30 30 30 31 34 03 44 31<br>E00 4000 14</p>
+<p>02 45 30 30 34 30 30 30 32 38 03 44 36     </p>
+<p>写多条</p>
+<p>02 45 31 30 34 30 30 32 31 34 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 03 35 34<br>E10 4002 14 0000000000000000000000000000000000000000</p>
+<p>D0 写入 20个字节<br>write:02 45 31 30 34 30 30 30 32 38 31 34 31 34 31 34 31 34 31 34 43 44 43 44 43 44 43 44 43 44 43 44 43 44 43 44 43 44 43 44 43 44 43 44 43 44 43 44 43 44 43 44 43 44 43 44 43 44 43 44 43 44 43 44<br>E10 4000 28 1414141414CDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCD</p>
+<p>02 45 31 30 34 30 30 30 32 38 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39     </p>
+<p>E10 4000 28 090909090909090909090909090909090909090909090909090909</p>
+<p>D1 写入 10个字节<br>02 45 31 30 34 30 30 32 31 34 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 03 30 38<br>E10 4002 14 0909090909090909090909090909090909090909</p>
+<p>读 10 个字节<br>02 45 30 30 34 30 30 32 31 34 03 44 33<br>E00 4002 14</p>
+<p>02 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 03 33 37<br>0909090909090909090909090909090909090909</p>
+<p>读 20 个字节<br>02 45 30 30 34 30 30 30 32 38 03 44 36     </p>
+<p>02 34 38 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 30 39 03 36 45     </p>
+<p>48 090909090909090909090909090909090909090909090909090909090909090909090909090909</p>
+<p>write:02 45 31 30 34 30 30 32 30 32 30 39 30 30 03 39 41     </p>
+<p>E10 4002 02 0900</p>
+<p>write:02 45 31 30 34 30 30 34 30 32 30 38 30 30 03 39 42     </p>
+<p>E10 4004 02 0800</p>
+<p>write:02 45 31 30 34 30 30 36 30 32 30 37 30 30 03 39 43     </p>
+<p>E10 4006 02 0700</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatPay.png" alt="郑  君 WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="郑  君 Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/三菱/" rel="tag"># 三菱</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/20/功能分类/windows/Dll-lib/dll-注册/" rel="next" title="dll-注册">
+                <i class="fa fa-chevron-left"></i> dll-注册
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/21/功能分类/windows/Dll-lib/dll-导出cpp类/" rel="prev" title="dll-导出cpp类">
+                dll-导出cpp类 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="郑  君" />
+            
+              <p class="site-author-name" itemprop="name">郑  君</p>
+              <p class="site-description motion-element" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">1124</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">78</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">209</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/tyler2018" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:zhengjun2018@gmail.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#open"><span class="nav-number">1.</span> <span class="nav-text">open</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取-CPU-类型"><span class="nav-number">2.</span> <span class="nav-text">获取 CPU 类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#读取-D0"><span class="nav-number">3.</span> <span class="nav-text">读取 D0</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.0.6</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.6"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content
+                if (!(data.content))
+                {
+                    alert("文章内容不能为空，后面代码没处理这个情况，这里暂时处理一下，可能有隐患。");
+                }else{
+                  content = data.content.trim().replace(/<[^>]+>/g,"");
+                }
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">76</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">78</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">999</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1124</span>
       </a>
 </li>
 
@@ -328,7 +328,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/03/11/开源库/log-spdlog日志库/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/07/11/开源库/zmq/nng-study/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -347,7 +347,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/03/11/开源库/log-spdlog日志库/" itemprop="url">log-spdlog日志库</a></h1>
+                <a class="post-title-link" href="/2019/07/11/开源库/zmq/nng-study/" itemprop="url">nng-study</a></h1>
         
 
         <div class="post-meta">
@@ -359,7 +359,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-11T18:21:34+08:00">2019-03-11</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-11T10:38:51+08:00">2019-07-11</time>
             
 
             
@@ -422,16 +422,21 @@
 
       
         
-          
-            <h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">stdafx.h 里面包含</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;spdlog/spdlog.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;spdlog/sinks/rotating_file_sink.h&gt;</span></span></span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;spdlog::logger&gt; g_logger;</span><br><span class="line"></span><br><span class="line">stdafx.cpp 里面包含</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;spdlog::logger&gt; g_logger;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化</span></span><br><span class="line"><span class="comment">// 如果存在会返回实例，否则返回空</span></span><br><span class="line">g_logger = spdlog::get(<span class="string">"IoTBackend"</span>);</span><br><span class="line"><span class="keyword">if</span> (g_logger == <span class="literal">nullptr</span>)</span><br><span class="line">&#123;</span><br><span class="line">    g_logger = spdlog::rotating_logger_mt(<span class="string">"IoTBackend"</span>, m_curInfo.appPath + <span class="string">"IoTBackend.log"</span>, <span class="number">1048576</span> * <span class="number">100</span>, <span class="number">10</span>);</span><br><span class="line">    g_logger-&gt;set_level(spdlog::level::level_enum(logLevel));</span><br><span class="line">    g_logger-&gt;flush_on(spdlog::level::level_enum(logLevel));</span><br><span class="line">    g_logger-&gt;info(<span class="string">"logger is started."</span>);</span><br><span class="line">&#125;</span><br><span class="line">g_logger-&gt;info(APP_VERSION);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 关闭</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Release and close all loggers</span></span><br><span class="line">spdlog::drop_all();</span><br><span class="line"></span><br><span class="line">或者单独drop某个logger</span><br><span class="line">spd::drop(<span class="string">"console"</span>);</span><br><span class="line">spd::drop(<span class="string">"basic_logger"</span>);</span><br></pre></td></tr></table></figure>
-<h2 id="格式化"><a href="#格式化" class="headerlink" title="格式化"></a>格式化</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">spdlog::info(<span class="string">"Hello, &#123;&#125;!"</span>, <span class="string">"World"</span>);</span><br><span class="line">logger-&gt;info(<span class="string">"Hello &#123;&#125; &#123;&#125; !!"</span>, <span class="string">"param1"</span>, <span class="number">123.4</span>);</span><br></pre></td></tr></table></figure>
-<h2 id="条件输出"><a href="#条件输出" class="headerlink" title="条件输出"></a>条件输出</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// trace=0 debug=1 info=2 warn=3 error=4 critical=5 off=6</span></span><br><span class="line">g_logger-&gt;set_level(spdlog::level::trace);</span><br><span class="line"></span><br><span class="line">m_pConf = confHelper::getInstance();</span><br><span class="line">m_pConf-&gt;open(m_curInfo.appPath + <span class="string">"dev_noise_jnrs.json"</span>);</span><br><span class="line"><span class="keyword">int32_t</span> logLevel = m_pConf-&gt;readInt(<span class="string">"logLevel"</span>);</span><br><span class="line">g_logger-&gt;set_level(spdlog::level::level_enum(logLevel));</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;spdlog/spdlog.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;spdlog/sinks/rotating_file_sink.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">m_configPath = getAppPath() + _T(<span class="string">"logs"</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;spdlog::logger&gt; m_logger;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (FALSE == PathFileExists(m_configPath.c_str()))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// directory not exist</span></span><br><span class="line">    DWORD dwErrCode = GetLastError();</span><br><span class="line">    <span class="keyword">if</span> (FALSE == CreateDirectory(m_configPath.c_str(), <span class="literal">NULL</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        OutputDebugString(<span class="string">L"videoHelper: 创建日志目录失败"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">m_pConf = confHelper::getInstance();</span><br><span class="line">m_pConf-&gt;open(m_curInfo.appPath + <span class="string">"dev_noise_jnrs.json"</span>);</span><br><span class="line"><span class="keyword">int64_t</span> logLevel = m_pConf-&gt;readInt(<span class="string">"logLevel"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果存在会返回实例，否则返回空</span></span><br><span class="line">m_logger = spdlog::get(<span class="string">"videoHelper"</span>);</span><br><span class="line"><span class="keyword">if</span> (m_logger == <span class="literal">nullptr</span>)</span><br><span class="line">&#123;</span><br><span class="line">    m_logger = spdlog::rotating_logger_mt(<span class="string">"videoHelper"</span>, <span class="string">"c:/collectorShanghaiXiTongHa360ams.txt"</span>, <span class="number">1048576</span> * <span class="number">10</span>, <span class="number">3</span>);</span><br><span class="line">    g_logger-&gt;set_level(spdlog::level::level_enum(logLevel));</span><br><span class="line">    g_logger-&gt;flush_on(spdlog::level::level_enum(logLevel));</span><br><span class="line">    m_logger-&gt;info(<span class="string">"m_logger is started."</span>);</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Create a file rotating logger with 10mb size max and 3 rotated files. 1048576*10</span></span><br><span class="line">m_logger = spdlog::rotating_logger_mt(<span class="string">"videoHelper"</span>, w2s(m_configPath) + <span class="string">"/videoHelperLog.txt"</span>, <span class="number">1048576</span> * <span class="number">10</span>, <span class="number">3</span>);</span><br><span class="line"><span class="comment">// 	m_logger-&gt;info("Welcome to spdlog version &#123;&#125;.&#123;&#125;.&#123;&#125; !", SPDLOG_VER_MAJOR, SPDLOG_VER_MINOR, SPDLOG_VER_PATCH);</span></span><br><span class="line"><span class="comment">// 	m_logger-&gt;warn("Easy padding in numbers like &#123;:08d&#125;", 12);</span></span><br><span class="line"><span class="comment">// 	m_logger-&gt;critical("Support for int: &#123;0:d&#125;;  hex: &#123;0:x&#125;;  oct: &#123;0:o&#125;; bin: &#123;0:b&#125;", 42);</span></span><br><span class="line"><span class="comment">// 	m_logger-&gt;info("Support for floats &#123;:03.2f&#125;", 1.23456);</span></span><br><span class="line"><span class="comment">// 	m_logger-&gt;info("Positional args are &#123;1&#125; &#123;0&#125;..", "too", "supported");</span></span><br><span class="line"><span class="comment">// 	m_logger-&gt;info("&#123;:&gt;8&#125; aligned, &#123;:&lt;8&#125; aligned", "right", "left");</span></span><br><span class="line">	</span><br><span class="line">m_logger-&gt;info(<span class="string">"m_logger is started."</span>);</span><br></pre></td></tr></table></figure>
-<h2 id="释放"><a href="#释放" class="headerlink" title="释放"></a>释放</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Release and close all loggers</span></span><br><span class="line">spdlog::drop_all();</span><br><span class="line"></span><br><span class="line">或者单独drop某个logger</span><br><span class="line">spd::drop(<span class="string">"console"</span>);</span><br><span class="line">spd::drop(<span class="string">"basic_logger"</span>);</span><br></pre></td></tr></table></figure>
-<h2 id="异步log"><a href="#异步log" class="headerlink" title="异步log"></a>异步log</h2><p>目前暂时未对性能造成影响，如果有影响了，可以使用这个看看</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"spdlog/async.h"</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">async_example</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// default thread pool settings can be modified *before* creating the async logger:</span></span><br><span class="line">    <span class="comment">// spdlog::init_thread_pool(8192, 1); // queue with 8k items and 1 backing thread.</span></span><br><span class="line">    <span class="keyword">auto</span> async_file = spdlog::basic_logger_mt&lt;spdlog::async_factory&gt;(<span class="string">"async_file_logger"</span>, <span class="string">"logs/async_log.txt"</span>);</span><br><span class="line">    <span class="comment">// alternatively:</span></span><br><span class="line">    <span class="comment">// auto async_file = spdlog::create_async&lt;spdlog::sinks::basic_file_sink_mt&gt;("async_file_logger", "logs/async_log.txt");</span></span><br><span class="line">   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
+          <p><a href="https://github.com/nanomsg/nng" target="_blank" rel="noopener">github</a></p>
+<p>NNG 是 nanomsg 的继任版本，而 nanomsg 则是流行的 ZMQ 的 C 重写版。</p>
+<p>整体上看，NNG 的 API 很简约，主要是 4 个，open/recv/send/close，open 根据协议不同使用的函数会不同。配置则是 setopt/getopt，与 UNIX API 类似。API 中没有上下文环境（context-less）依赖，只需要一个 nng_socket，</p>
+<p>使用 CMAKE 构建项目</p>
+<p>nng_recvmsg() does describe NNG_FLAG_NONBLOCK. nng_recv() just calls nng_recvmsg() under the hood.</p>
+<h2 id="NNG-支持的通信协议主要有以下几种："><a href="#NNG-支持的通信协议主要有以下几种：" class="headerlink" title="NNG 支持的通信协议主要有以下几种："></a>NNG 支持的通信协议主要有以下几种：</h2><p>PAIR 一对一双向通信。<br>PIPELINE(PUSH/PULL) 单向通信，类似与生产者消费者模型的消息队列。<br>PUB/SUB 单向广播。<br>REQ/REP 请求-应答模式，类似于 RPC 模式。<br>BUS 网状连接通信，每个加入节点都可以发送/接受广播消息。<br>SURVEY 用于多节点表决或者服务发现。</p>
+<h2 id="NNG-支持的传输模式主要有以下三种常用，其他还有tcp附加tls-1-2加密的tls传输和基于WebSocket的ws传输："><a href="#NNG-支持的传输模式主要有以下三种常用，其他还有tcp附加tls-1-2加密的tls传输和基于WebSocket的ws传输：" class="headerlink" title="NNG 支持的传输模式主要有以下三种常用，其他还有tcp附加tls 1.2加密的tls传输和基于WebSocket的ws传输："></a>NNG 支持的传输模式主要有以下三种常用，其他还有tcp附加tls 1.2加密的tls传输和基于WebSocket的ws传输：</h2><p>inproc 进程内线程间传输<br>ipc 主机内进程间传输<br>tcp 网络内主机间传输</p>
+<p>通信协议里除了 PAIR 之外，基本都是一对多的通信模式</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/07/11/开源库/zmq/nng-study/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -483,7 +488,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/03/11/功能分类/filesystem/win-filePath/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/07/10/功能分类/windows/MFC/CMenu/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -502,7 +507,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/03/11/功能分类/filesystem/win-filePath/" itemprop="url">win-filePath</a></h1>
+                <a class="post-title-link" href="/2019/07/10/功能分类/windows/MFC/CMenu/" itemprop="url">CMenu</a></h1>
         
 
         <div class="post-meta">
@@ -514,1212 +519,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-11T10:29:14+08:00">2019-03-11</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="分割路径"><a href="#分割路径" class="headerlink" title="分割路径"></a>分割路径</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">_splitpath_s</span><br><span class="line"></span><br><span class="line"><span class="function">BOOL <span class="title">SetCurrentPathToModulePath</span><span class="params">(HMODULE hModule)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	TCHAR szPath[MAX_PATH];</span><br><span class="line">	<span class="keyword">if</span>(::GetModuleFileName(hModule, szPath, MAX_PATH))</span><br><span class="line">	&#123;</span><br><span class="line">		TCHAR drive[MAX_PATH], dir[MAX_PATH], fname[MAX_PATH], ext[MAX_PATH];</span><br><span class="line">		_tsplitpath_s(szPath,drive, MAX_PATH,dir, MAX_PATH,fname, MAX_PATH,ext, MAX_PATH);</span><br><span class="line">		lstrcpy(szPath, drive);</span><br><span class="line">		lstrcat(szPath, dir);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> ::SetCurrentDirectory(szPath);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> FALSE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="路径是否存在"><a href="#路径是否存在" class="headerlink" title="路径是否存在"></a>路径是否存在</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (FALSE == PathFileExists( (m_configPath + _T(<span class="string">"logs"</span>)).c_str))</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// directory not exist</span></span><br><span class="line">	DWORD dwErrCode = GetLastError();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="crate-folder"><a href="#crate-folder" class="headerlink" title="crate folder"></a>crate folder</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//create a path with title name</span></span><br><span class="line"><span class="keyword">if</span> ( FALSE == CreateDirectory(tmpSrcPath,<span class="literal">NULL</span>) )</span><br><span class="line">&#123;</span><br><span class="line">	AfxMessageBox(TEXT(<span class="string">"Create directory failed"</span>));</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="文件相关处理-copy-move-delete"><a href="#文件相关处理-copy-move-delete" class="headerlink" title="文件相关处理,copy,move,delete"></a>文件相关处理,copy,move,delete</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line">CopyFile(),DeleteFile(),MoveFile()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> OP_RENAME		0</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> OP_COPY			1</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> OP_DELETE		2</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> OP_MOVE			3</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	rename file or directory</span></span><br><span class="line"><span class="comment">	@param iType [in] 0 rename, 1 copy,2 delete,3 move</span></span><br><span class="line"><span class="comment">	0 success</span></span><br><span class="line"><span class="comment">	not zero failed.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">filePathProc</span><span class="params">(<span class="keyword">const</span> <span class="keyword">wchar_t</span> *pFrom, <span class="keyword">const</span> <span class="keyword">wchar_t</span> *pTo, <span class="keyword">int</span> iType)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	SHFILEOPSTRUCT FileOp = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	<span class="keyword">wchar_t</span> src[MAX_PATH] = &#123; <span class="string">'\0'</span> &#125;;</span><br><span class="line">	<span class="keyword">wchar_t</span> dst[MAX_PATH] = &#123; <span class="string">'\0'</span> &#125;;</span><br><span class="line">	<span class="keyword">if</span> ( <span class="literal">NULL</span> == pTo )</span><br><span class="line">	&#123;</span><br><span class="line">		FileOp.pTo = <span class="literal">NULL</span>;</span><br><span class="line">	&#125; <span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		_tcscpy(dst, pTo);</span><br><span class="line">		FileOp.pTo = dst;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> ( <span class="literal">NULL</span> == pFrom )</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	_tcscpy(src, pFrom);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">switch</span> (iType)</span><br><span class="line">	&#123;</span><br><span class="line">	<span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">		FileOp.wFunc = FO_RENAME;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">		FileOp.wFunc = FO_COPY;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">		FileOp.wFunc = FO_DELETE;</span><br><span class="line">		FileOp.pTo = <span class="literal">NULL</span>;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">		FileOp.wFunc = FO_MOVE;</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	FileOp.fFlags = FOF_NOCONFIRMATION | FOF_ALLOWUNDO | FOF_NOCONFIRMMKDIR;   <span class="comment">//不出现确认对话框 </span></span><br><span class="line">	FileOp.pFrom = src;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> SHFileOperation(&amp;FileOp);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> bRet = filePathProc((utf16Path + TEXT(<span class="string">"123"</span>)).c_str(), (utf16Path + TEXT(<span class="string">"456"</span>)).c_str(), OP_RENAME);</span><br><span class="line">_ASSERT(<span class="literal">false</span> == bRet);</span><br><span class="line"></span><br><span class="line"><span class="built_in">string</span> strUtf8;</span><br><span class="line">UnicodeConverter::toUTF8(utf16Path + TEXT(<span class="string">"456"</span>), strUtf8);</span><br><span class="line"><span class="function">File <span class="title">f1</span><span class="params">( strUtf8 )</span></span>;</span><br><span class="line">_ASSERT(<span class="literal">true</span> == f1.exists());</span><br><span class="line"></span><br><span class="line">bRet = filePathProc((utf16Path + TEXT(<span class="string">"456"</span>)).c_str(), (utf16Path + TEXT(<span class="string">"123"</span>)).c_str(), OP_RENAME);</span><br><span class="line">_ASSERT(<span class="literal">false</span> == bRet);</span><br><span class="line">UnicodeConverter::toUTF8(utf16Path + TEXT(<span class="string">"123"</span>), strUtf8);</span><br><span class="line">f1 = (strUtf8);</span><br><span class="line">_ASSERT(<span class="literal">true</span> == f1.exists());</span><br><span class="line"></span><br><span class="line">bRet = filePathProc((utf16Path + TEXT(<span class="string">"123"</span>)).c_str(), (utf16Path + TEXT(<span class="string">"1233"</span>)).c_str(), OP_COPY);</span><br><span class="line">_ASSERT(<span class="literal">false</span> == bRet);</span><br><span class="line">UnicodeConverter::toUTF8(utf16Path + TEXT(<span class="string">"1233"</span>), strUtf8);</span><br><span class="line">f1 = (strUtf8);</span><br><span class="line">_ASSERT(<span class="literal">true</span> == f1.exists());</span><br><span class="line"></span><br><span class="line">bRet = filePathProc((utf16Path + TEXT(<span class="string">"123"</span>)).c_str(), (utf16Path + TEXT(<span class="string">"1234"</span>)).c_str(), OP_COPY);</span><br><span class="line">_ASSERT(<span class="literal">false</span> == bRet);</span><br><span class="line">UnicodeConverter::toUTF8(utf16Path + TEXT(<span class="string">"1234"</span>), strUtf8);</span><br><span class="line">f1 = (strUtf8);</span><br><span class="line">_ASSERT(<span class="literal">true</span> == f1.exists());</span><br><span class="line"></span><br><span class="line">bRet = filePathProc((utf16Path + TEXT(<span class="string">"1234"</span>)).c_str(), (utf16Path + TEXT(<span class="string">"1233"</span>)).c_str(), OP_MOVE);</span><br><span class="line">_ASSERT(<span class="literal">false</span> == bRet);</span><br><span class="line">UnicodeConverter::toUTF8(utf16Path + TEXT(<span class="string">"1233\\1234"</span>), strUtf8);</span><br><span class="line">f1 = (strUtf8);</span><br><span class="line">_ASSERT(<span class="literal">true</span> == f1.exists());</span><br><span class="line"></span><br><span class="line">bRet = filePathProc((utf16Path + TEXT(<span class="string">"1233"</span>)).c_str(), <span class="literal">NULL</span>, OP_DELETE);</span><br><span class="line">_ASSERT(<span class="literal">false</span> == bRet);</span><br><span class="line">UnicodeConverter::toUTF8(utf16Path + TEXT(<span class="string">"123"</span>), strUtf8);</span><br><span class="line">f1 = (strUtf8);</span><br><span class="line">_ASSERT(<span class="literal">true</span> == f1.exists());</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/03/08/语言相关/go/go-调用Dll/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/08/语言相关/go/go-调用Dll/" itemprop="url">go_调用Dll</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-08T14:10:56+08:00">2019-03-08</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">callHK</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	HCNetSDK, err := syscall.LoadLibrary(<span class="string">"HCNetSDK.dll"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		abort(<span class="string">"LoadLibrary"</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> syscall.FreeLibrary(HCNetSDK)</span><br><span class="line">	proc, err := syscall.GetProcAddress(HCNetSDK, <span class="string">"NET_DVR_Init"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		abort(<span class="string">"NET_DVR_Init"</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	r, _, _ := syscall.Syscall(<span class="keyword">uintptr</span>(proc), <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">	fmt.Print(<span class="keyword">uint32</span>(r))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/03/08/语言相关/go/go-windows界面库walk/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/08/语言相关/go/go-windows界面库walk/" itemprop="url">go_windows界面库walk</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-08T14:03:58+08:00">2019-03-08</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://github.com/lxn/walk" target="_blank" rel="noopener">github</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get github.com/lxn/walk</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/03/08/开源库/cpp-web库/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/08/开源库/cpp-web库/" itemprop="url">cpp_web库</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-08T13:38:36+08:00">2019-03-08</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>An elegant C++ REST framework.<br><a href="http://pistache.io/quickstart" target="_blank" rel="noopener">Pistache</a></p>
-<p>Fast and easy C++ RESTful WebServices framework<br><a href="https://github.com/loentar/ngrest" target="_blank" rel="noopener">https://github.com/loentar/ngrest</a></p>
-<p><a href="https://www.gnu.org/software/libmicrohttpd/" target="_blank" rel="noopener">https://www.gnu.org/software/libmicrohttpd/</a></p>
-<p>LibHTTP – Open Source HTTP Library in C<br><a href="https://www.libhttp.org/" target="_blank" rel="noopener">https://www.libhttp.org/</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/03/06/功能分类/process_thread/获取应用当前路径/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/06/功能分类/process_thread/获取应用当前路径/" itemprop="url">获取应用当前路径</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-06T17:44:43+08:00">2019-03-06</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="MFC"><a href="#MFC" class="headerlink" title="MFC"></a>MFC</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CString appPath;</span><br><span class="line">GetModuleFileName(<span class="literal">NULL</span>,appPath.GetBuffer(MAX_PATH),MAX_PATH);</span><br><span class="line">appPath.ReleaseBuffer();</span><br><span class="line">appPath = appPath.Left( appPath.ReverseFind(<span class="string">'\\'</span>) + <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
-<h1 id="win32"><a href="#win32" class="headerlink" title="win32"></a>win32</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">getAppPath</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    TCHAR path[MAX_PATH + <span class="number">2</span>] = &#123; <span class="string">'\0'</span> &#125;;</span><br><span class="line">    <span class="keyword">if</span> (<span class="number">0</span> == GetModuleFileName(<span class="literal">NULL</span>, path, MAX_PATH))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//failed</span></span><br><span class="line">        AfxMessageBox(TEXT(<span class="string">"Get File Path Failed"</span>));</span><br><span class="line">        ASSERT(FALSE);</span><br><span class="line">    &#125;</span><br><span class="line">    TCHAR* pf = _tcsrchr(path, <span class="string">'\\'</span>);<span class="comment">//strrchr</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="literal">NULL</span> == pf)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//not found</span></span><br><span class="line">        AfxMessageBox(TEXT(<span class="string">"Invalide File Path"</span>));</span><br><span class="line">        ASSERT(FALSE);</span><br><span class="line">    &#125;</span><br><span class="line">    *(pf + <span class="number">1</span>) = <span class="string">'\0'</span>;<span class="comment">//path is xx\\</span></span><br><span class="line">                    </span><br><span class="line">    <span class="built_in">string</span> str = &amp;path[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">return</span> str;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">int GetAppPath(std::string &amp;sPath)</span><br><span class="line">&#123;</span><br><span class="line">    char buf[4097] = &#123; 0 &#125;;</span><br><span class="line">    long size;</span><br><span class="line">    char *ptr;</span><br><span class="line">    size = pathconf(&quot;.&quot;, _PC_PATH_MAX);</span><br><span class="line">    if ((ptr = new char(size)) != NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        memset(ptr, 0, size);</span><br><span class="line">        sprintf(ptr, &quot;/proc/%d/exe&quot;, getpid());</span><br><span class="line">    &#125; else return -1;</span><br><span class="line">    readlink(ptr, buf, size);</span><br><span class="line">    delete[] ptr;</span><br><span class="line">    ptr = NULL;</span><br><span class="line">    sPath = buf;</span><br><span class="line">    int nPos = sPath.find_last_of(&quot;/&quot;);</span><br><span class="line">    sPath = sPath.substr(0, nPos + 1);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/03/06/功能分类/windows/获取应用当前路径/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/06/功能分类/windows/获取应用当前路径/" itemprop="url">获取应用当前路径</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-06T17:44:43+08:00">2019-03-06</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="MFC"><a href="#MFC" class="headerlink" title="MFC"></a>MFC</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CString appPath;</span><br><span class="line">GetModuleFileName(<span class="literal">NULL</span>,appPath.GetBuffer(MAX_PATH),MAX_PATH);</span><br><span class="line">appPath.ReleaseBuffer();</span><br><span class="line">appPath = appPath.Left( appPath.ReverseFind(<span class="string">'\\'</span>) + <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
-<h1 id="win32"><a href="#win32" class="headerlink" title="win32"></a>win32</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">getAppPath</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    TCHAR path[MAX_PATH + <span class="number">2</span>] = &#123; <span class="string">'\0'</span> &#125;;</span><br><span class="line">    <span class="keyword">if</span> (<span class="number">0</span> == GetModuleFileName(<span class="literal">NULL</span>, path, MAX_PATH))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//failed</span></span><br><span class="line">        AfxMessageBox(TEXT(<span class="string">"Get File Path Failed"</span>));</span><br><span class="line">        ASSERT(FALSE);</span><br><span class="line">    &#125;</span><br><span class="line">    TCHAR* pf = _tcsrchr(path, <span class="string">'\\'</span>);<span class="comment">//strrchr</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="literal">NULL</span> == pf)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//not found</span></span><br><span class="line">        AfxMessageBox(TEXT(<span class="string">"Invalide File Path"</span>));</span><br><span class="line">        ASSERT(FALSE);</span><br><span class="line">    &#125;</span><br><span class="line">    *(pf + <span class="number">1</span>) = <span class="string">'\0'</span>;<span class="comment">//path is xx\\</span></span><br><span class="line">                    </span><br><span class="line">    <span class="built_in">string</span> str = &amp;path[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">return</span> str;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">int GetAppPath(std::string &amp;sPath)</span><br><span class="line">&#123;</span><br><span class="line">    char buf[4097] = &#123; 0 &#125;;</span><br><span class="line">    long size;</span><br><span class="line">    char *ptr;</span><br><span class="line">    size = pathconf(&quot;.&quot;, _PC_PATH_MAX);</span><br><span class="line">    if ((ptr = new char(size)) != NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        memset(ptr, 0, size);</span><br><span class="line">        sprintf(ptr, &quot;/proc/%d/exe&quot;, getpid());</span><br><span class="line">    &#125; else return -1;</span><br><span class="line">    readlink(ptr, buf, size);</span><br><span class="line">    delete[] ptr;</span><br><span class="line">    ptr = NULL;</span><br><span class="line">    sPath = buf;</span><br><span class="line">    int nPos = sPath.find_last_of(&quot;/&quot;);</span><br><span class="line">    sPath = sPath.substr(0, nPos + 1);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/03/06/语言相关/python/windows安装anaconda/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/06/语言相关/python/windows安装anaconda/" itemprop="url">windows安装anaconda</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-06T16:57:57+08:00">2019-03-06</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="添加环境变量"><a href="#添加环境变量" class="headerlink" title="添加环境变量"></a>添加环境变量</h2><p>三个路径</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">F:\Anaconda3</span><br><span class="line">F:\Anaconda3\Scripts</span><br><span class="line">F:\Anaconda3\Library\bin</span><br></pre></td></tr></table></figure>
-<h2 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h2><p>找到 Uninstall-Anaconda.exe 运行即可</p>
-<h2 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h2><p>找到 .condarc 文件，添加下面代理</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ssl_verify: true</span><br><span class="line">channels:</span><br><span class="line">  - defaults</span><br><span class="line">proxy_servers:</span><br><span class="line">    http: http://127.0.0.1:1081</span><br><span class="line">    https: http://127.0.0.1:1081</span><br><span class="line">    ALL_PROXY: socks5://127.0.0.1:1080</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/03/06/功能分类/数据库/MySQL/cpp-使用MySql/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/06/功能分类/数据库/MySQL/cpp-使用MySql/" itemprop="url">cpp 使用MySql</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-06T09:56:49+08:00">2019-03-06</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://dev.mysql.com/downloads/installer/" target="_blank" rel="noopener">MySql Server</a><br>当前版本：mysql-installer-community-8.0.15.0.msi</p>
-<h1 id="MySql-库连接"><a href="#MySql-库连接" class="headerlink" title="MySql++ 库连接"></a>MySql++ 库连接</h1><p><a href="https://tangentsoft.com/mysqlpp/home" target="_blank" rel="noopener">MySql++</a></p>
-<p>编译 MySql++，注意这里只能动态连接。静态链接官网说可能会有法律后果，具体没细看。</p>
-<p>需要安装 MySQL Connector C 6.1，MySql++是基于这个接口库开发的。<br>C:\Program Files\MySQL\MySQL Connector C 6.1\include<br>路径下面有 vc 工程。打开设置 MySQL Connector C 6.1 的 include 和 lib，编译即可<br>mysql++-3.2.4\vc2008\</p>
-<p>使用的时候，还需要 libmysql.dll</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mysql++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _DEBUG</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"mysqlpp_d.lib"</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"mysqlpp.lib"</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
-<p>连接 MySql 8.0 是提示错误<br>DB connection failed: Authentication plugin ‘caching_sha2_password’ cannot be loaded: 找不到指定的模块。</p>
-<h1 id="使用-mysql-官方接口"><a href="#使用-mysql-官方接口" class="headerlink" title="使用 mysql 官方接口"></a>使用 mysql 官方接口</h1><p>使用下面的接口有问题，暂时不处理。</p>
-<p><a href="https://dev.mysql.com/downloads/connector/cpp/" target="_blank" rel="noopener">Connector/C++</a><br>当前版本：mysql-connector-c++-8.0.15-winx64.msi</p>
-<p><a href="https://dev.mysql.com/doc/connector-cpp/8.0/en/" target="_blank" rel="noopener">Developer Guide</a></p>
-<p>Connector/C++ 是连接MySQL的库，我们在C++中需要使用该库来连接数据库。</p>
-<h1 id="新建-MFC-工程"><a href="#新建-MFC-工程" class="headerlink" title="新建 MFC 工程"></a>新建 MFC 工程</h1><p>添加 Connector 的 include 和 lib 路径</p>
-<h2 id="动态链接"><a href="#动态链接" class="headerlink" title="动态链接"></a>动态链接</h2><p>可以编译通过</p>
-<table>
-<thead>
-<tr>
-<th>Connector Type</th>
-<th>Import Library</th>
-<th>Dynamic Library</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>X DevAPI, X DevAPI for C</td>
-<td>LIB/vs14/mysqlcppconn8.lib</td>
-<td>LIB/mysqlcppconn8-1-vs14.dll</td>
-</tr>
-<tr>
-<td>JDBC</td>
-<td>LIB/vs14/mysqlcppconn.lib</td>
-<td>LIB/mysqlcppconn-7-vs14.dll</td>
-</tr>
-</tbody>
-</table>
-<h2 id="静态链接"><a href="#静态链接" class="headerlink" title="静态链接"></a>静态链接</h2><p>这个编译有问题，暂时没通</p>
-<table>
-<thead>
-<tr>
-<th>Connector Type</th>
-<th>Static Library</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>X DevAPI, X DevAPI for C</td>
-<td>LIB/vs14/mysqlcppconn8-static.lib</td>
-</tr>
-<tr>
-<td>JDBC</td>
-<td>LIB/vs14/mysqlcppconn-static.lib</td>
-</tr>
-</tbody>
-</table>
-<p>定义宏  STATIC_CONCPP</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/02/27/功能分类/windows/MFC/加载资源信息/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/27/功能分类/windows/MFC/加载资源信息/" itemprop="url">加载资源信息</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-27T09:59:36+08:00">2019-02-27</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-10T10:09:55+08:00">2019-07-10</time>
             
 
             
@@ -1783,7 +583,1236 @@
       
         
           
-            <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">LoadStringA</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  HINSTANCE hInstance,</span></span></span><br><span class="line"><span class="function"><span class="params">  UINT      uID,</span></span></span><br><span class="line"><span class="function"><span class="params">  LPSTR     lpBuffer,</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">int</span>       cchBufferMax</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
+            <h2 id="右键菜单"><a href="#右键菜单" class="headerlink" title="右键菜单"></a>右键菜单</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> CChildView::OnContextMenu(CWnd* <span class="comment">/*pWnd*/</span>, CPoint point)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (point.x == <span class="number">-1</span> &amp;&amp; point.y == <span class="number">-1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//keystroke invocation</span></span><br><span class="line">        CRect rect;</span><br><span class="line">        GetClientRect(rect);</span><br><span class="line">        ClientToScreen(rect);</span><br><span class="line"></span><br><span class="line">        point = rect.TopLeft();</span><br><span class="line">        point.Offset(<span class="number">5</span>, <span class="number">5</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    CMenu menu;</span><br><span class="line">    VERIFY(menu.LoadMenu(IDR_RMENU));</span><br><span class="line"></span><br><span class="line">    CMenu* pPopup = menu.GetSubMenu(<span class="number">0</span>);</span><br><span class="line">    ASSERT(pPopup != <span class="literal">NULL</span>);</span><br><span class="line">    CWnd* pWndPopupOwner = <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (pWndPopupOwner-&gt;GetStyle() &amp; WS_CHILD)</span><br><span class="line">        pWndPopupOwner = pWndPopupOwner-&gt;GetParent();</span><br><span class="line"></span><br><span class="line">    pPopup-&gt;TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y,</span><br><span class="line">        pWndPopupOwner);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="显示，隐藏菜单"><a href="#显示，隐藏菜单" class="headerlink" title="显示，隐藏菜单"></a>显示，隐藏菜单</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// hide</span></span><br><span class="line"><span class="keyword">this</span>-&gt;SetMenu(<span class="literal">NULL</span>);</span><br><span class="line"><span class="keyword">this</span>-&gt;DrawMenuBar();</span><br><span class="line"></span><br><span class="line"><span class="comment">// show </span></span><br><span class="line">CMenu m_Menu;</span><br><span class="line">m_Menu.LoadMenuW(IDR_MENU1);</span><br><span class="line">SetMenu(&amp;m_Menu);</span><br><span class="line"><span class="keyword">this</span>-&gt;DrawMenuBar();</span><br></pre></td></tr></table></figure>
+<h2 id="修改系统菜单"><a href="#修改系统菜单" class="headerlink" title="修改系统菜单"></a>修改系统菜单</h2><p>已经有代码了，直接添加自定义菜单就可以了。<br>需要在 Resource.h 里面手动添加一个菜单 ID <code>#define IDM_SYSCOMMAND_CUSTOM            32771</code><br>别忘了修改一下下面的下一个可用 id 序号，</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Next default values for new objects</span></span><br><span class="line"><span class="comment">// </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> APSTUDIO_INVOKED</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> APSTUDIO_READONLY_SYMBOLS</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _APS_NEXT_RESOURCE_VALUE        135</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _APS_NEXT_COMMAND_VALUE         32772</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _APS_NEXT_CONTROL_VALUE         1005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _APS_NEXT_SYMED_VALUE           104</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">BOOL CMRLGaugerDlg::OnInitDialog()</span><br><span class="line">&#123;</span><br><span class="line">	CDialogEx::OnInitDialog();</span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">	CMenu* pSysMenu = GetSystemMenu(FALSE);</span><br><span class="line">	<span class="keyword">if</span> (pSysMenu != <span class="literal">nullptr</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		BOOL bNameValid;</span><br><span class="line">		CString strAboutMenu;</span><br><span class="line">		bNameValid = strAboutMenu.LoadString(IDS_ABOUTBOX);</span><br><span class="line">		ASSERT(bNameValid);</span><br><span class="line">		<span class="keyword">if</span> (!strAboutMenu.IsEmpty())</span><br><span class="line">		&#123;</span><br><span class="line">			pSysMenu-&gt;AppendMenu(MF_SEPARATOR);</span><br><span class="line">			pSysMenu-&gt;AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 设置系统菜单</span></span><br><span class="line">        <span class="comment">// 设置系统菜单 第一个参数可以设置选中，未选中 MF_UNCHECKED </span></span><br><span class="line">		<span class="comment">// m_pSysMenu-&gt;AppendMenu(MF_CHECKED, IDM_SYSCOMMAND_CUSTOM, _T("Custom Menu"));</span></span><br><span class="line">	<span class="comment">//	pSysMenu-&gt;AppendMenu(0, IDM_SYSCOMMAND_CUSTOM, _T("Custom Menu"));</span></span><br><span class="line">		pSysMenu-&gt;InsertMenuW(<span class="number">0</span>,MF_CHECKED| MF_BYPOSITION, IDM_SYSCOMMAND_CUSTOM, _T(<span class="string">"菜单栏"</span>));</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> CMRLGaugerDlg::OnSysCommand(UINT nID, LPARAM lParam)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> ((nID &amp; <span class="number">0xFFF0</span>) == IDM_ABOUTBOX)</span><br><span class="line">	&#123;</span><br><span class="line">		CAboutDlg dlgAbout;</span><br><span class="line">		dlgAbout.DoModal();</span><br><span class="line">	&#125;<span class="keyword">else</span> <span class="keyword">if</span> (nID == IDM_SYSCOMMAND_CUSTOM)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">// toggle menu </span></span><br><span class="line">		<span class="keyword">if</span> (MF_CHECKED == m_pSysMenu-&gt;GetMenuState(IDM_SYSCOMMAND_CUSTOM,MF_BYCOMMAND))</span><br><span class="line">		&#123;</span><br><span class="line">			m_pSysMenu-&gt;CheckMenuItem(IDM_SYSCOMMAND_CUSTOM, MF_UNCHECKED);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			m_pSysMenu-&gt;CheckMenuItem(IDM_SYSCOMMAND_CUSTOM, MF_CHECKED);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		CDialogEx::OnSysCommand(nID, lParam);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/07/09/功能分类/数据库/sqlite/sqlite-select/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/09/功能分类/数据库/sqlite/sqlite-select/" itemprop="url">sqlite-select</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-09T19:00:00+08:00">2019-07-09</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>参考网页。<br><a href="https://www.guru99.com/sqlite-query.html#4" target="_blank" rel="noopener">https://www.guru99.com/sqlite-query.html#4</a></p>
+<h1 id="limit-offset"><a href="#limit-offset" class="headerlink" title="limit,offset"></a>limit,offset</h1><p>跳过前 4 行，最多返回 3 行</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Students <span class="keyword">LIMIT</span> <span class="number">4</span>,<span class="number">3</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="选出最新的一行"><a href="#选出最新的一行" class="headerlink" title="选出最新的一行"></a>选出最新的一行</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> COMPANY <span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="keyword">NAME</span> <span class="keyword">DESC</span> <span class="keyword">limit</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="选择非空的行"><a href="#选择非空的行" class="headerlink" title="选择非空的行"></a>选择非空的行</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> f_ui_id,f_param <span class="keyword">from</span> t_user <span class="keyword">where</span> f_param <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">and</span> f_param !=<span class="string">''</span></span><br></pre></td></tr></table></figure>
+<h1 id="选择日期"><a href="#选择日期" class="headerlink" title="选择日期"></a>选择日期</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> table1 <span class="keyword">where</span> t1&gt;=<span class="string">'2017-06-01'</span> <span class="keyword">and</span> t1&lt;=<span class="string">'2017-06-05'</span></span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/07/09/开源库/RPC/rpc相关技术调研/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/09/开源库/RPC/rpc相关技术调研/" itemprop="url">rpc相关技术调研</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-09T09:56:54+08:00">2019-07-09</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>REST：无状态的数据传输结构，适用于通用、快速迭代和标准化语义的场景。<br>gRPC：轻量的传输方式，特殊适合对性能高要求或者环境苛刻的场景，比如 IOT。<br>GraphQL: 请求者可以自定义返回格式，某些程度上可以减少前后端联调成本。<br>Webhooks: 推送服务，主要用于服务器主动更新客户端资源的场景。</p>
+<h2 id="nanomsg"><a href="#nanomsg" class="headerlink" title="nanomsg"></a>nanomsg</h2><p><a href="https://nanomsg.org/index.html" target="_blank" rel="noopener">website</a></p>
+<p>zmq作者重新设计的一个框架，解决了一些zmq的问题。</p>
+<p>作者的博客<br><a href="http://250bpm.com/" target="_blank" rel="noopener">http://250bpm.com/</a></p>
+<h3 id="go-实现"><a href="#go-实现" class="headerlink" title="go 实现"></a>go 实现</h3><p><a href="">github</a></p>
+<p><a href="https://bravenewgeek.com/fast-scalable-networking-in-go-with-mangos/" target="_blank" rel="noopener">https://bravenewgeek.com/fast-scalable-networking-in-go-with-mangos/</a></p>
+<h3 id="scalability-protocols-are-currently-available"><a href="#scalability-protocols-are-currently-available" class="headerlink" title="scalability protocols are currently available"></a>scalability protocols are currently available</h3><ul>
+<li>PAIR - simple one-to-one communication</li>
+<li>BUS - simple many-to-many communication</li>
+<li>REQREP - allows to build clusters of stateless services to process user requests</li>
+<li>PUBSUB - distributes messages to large sets of interested subscribers</li>
+<li>PIPELINE - aggregates messages from multiple sources and load balances them among many destinations</li>
+<li>SURVEY - allows to query state of multiple applications in a single go</li>
+</ul>
+<h3 id="transports-mechanisms"><a href="#transports-mechanisms" class="headerlink" title="transports mechanisms"></a>transports mechanisms</h3><ul>
+<li>INPROC - transport within a process (between threads, modules etc.)</li>
+<li>IPC - transport between processes on a single machine</li>
+<li>TCP - network transport via TCP</li>
+<li>WS - websockets over TCP</li>
+</ul>
+<h2 id="gRPC"><a href="#gRPC" class="headerlink" title="gRPC"></a>gRPC</h2><p>The grpc library uses HTTP2 as a transport layer and provides a code generator based on the protocol buffer syntax making it very simple to use.</p>
+<h2 id="GraphQL"><a href="#GraphQL" class="headerlink" title="GraphQL"></a>GraphQL</h2><p>GraphQL 不是 REST 的替代品，而是另一种交互形式：前端决定后端的返回结果。</p>
+<p>GraphQL 带来的最大好处是精简请求响应内容，不会出现冗余字段，前端可以决定后端返回什么数据。但要注意的是，前端的决定权取决于后端支持什么数据，因此 GraphQL 更像是精简了返回值的 REST，而后端接口也可以一次性定义完所有功能，而不需要逐个开发。</p>
+<p>GraphQL 需要配套<br>GraphQL 不是 REST 的替代品，所以不要想着团队从 Http 接口迁移到 GraphQL 就能提升 X% 的开发效率。GraphQL 方案是一种新的前后端交互约定，所以上手成本会比较高，同时，为了方便前端同学拼 query，等于把一部分后端工作量转移给了前端，如果此时没有一个足够好用的平台快速查阅、生成、维护这些定义，开发效率可能不升反降。</p>
+<p>总的来说，对外开放 API 或者拥有完整配套的场景，使用 GraphQL 是比较理想的，但对于快速迭代，平台又不够成熟的团队，继续使用标准 Http 接口可以更快完成项目。</p>
+<h2 id="Protocol-Buffers-vs-json"><a href="#Protocol-Buffers-vs-json" class="headerlink" title="Protocol Buffers vs json"></a>Protocol Buffers vs json</h2><p>优点：</p>
+<ul>
+<li>資料輕量化：資料非常輕量，省去了不必要的 { 或 : 累贅。</li>
+<li>混淆性：在一般人眼中無法輕易地猜測出資料結構為何，因為有經過編碼。</li>
+<li>效能高：處理速度很快。</li>
+<li>極具方便性：結構就是你的資料模型，你能夠直接在程式中使用這些結構，而不用建立新的物件來接納、映射（Mapping）這些資料。</li>
+<li>清晰明瞭、無需文件：.proto 檔案本身就是你的文件，不需要額外撰寫 API 或結構文件來告訴別人你接受怎樣的資料。</li>
+</ul>
+<p>适合使用 json 的场景：</p>
+<ul>
+<li>當你希望資料是人類可解讀的時候。</li>
+<li>你不打算直接把接收到的資料拿來處理，你希望從中拿取部分資料作為處理。</li>
+<li>你希望在純文字、終端機的情況下就能夠與伺服器溝通。</li>
+<li>不想經過任何特殊處理，想直接在瀏覽器中解讀。</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/07/08/Web开发/php服务端开发/php-问题集/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/08/Web开发/php服务端开发/php-问题集/" itemprop="url">php-问题集</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-08T07:08:11+08:00">2019-07-08</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/服务端/" itemprop="url" rel="index"><span itemprop="name">服务端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="unable-to-open-database-file"><a href="#unable-to-open-database-file" class="headerlink" title="unable to open database file"></a>unable to open database file</h1><p>sqlite数据库进行写操作时，会先生成缓存文件，对缓存进行操作<br>生成的缓存文件的读写权限默认和父目录相同</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 修改项目权限</span></span><br><span class="line">chmod <span class="number">777</span> /usr/share/nginx/html</span><br><span class="line"><span class="comment">// 修改数据文件权限</span></span><br><span class="line">chmod <span class="number">777</span> /usr/share/nginx/html/database</span><br><span class="line">chmod <span class="number">666</span> /usr/share/nginx/html/database/test.db</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/07/06/读过的书/投机的艺术/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/06/读过的书/投机的艺术/" itemprop="url">投机的艺术</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-06T17:25:17+08:00">2019-07-06</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>一本花了一早上就看完的书，没啥收获。表示看不懂。都是在讲一些故事之类的。</p>
+<p><img alt="20190706_172710.png" src="/2019/07/06/读过的书/投机的艺术/20190706_172710.png" width="400" height=""></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/06/30/语言相关/python/tushare/tushare-学习笔记003-选股策略均线多头排列/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/30/语言相关/python/tushare/tushare-学习笔记003-选股策略均线多头排列/" itemprop="url">tushare-学习笔记003-选股策略均线多头排列</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-30T09:02:44+08:00">2019-06-30</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>均线天数自定义，数量自定义，选出符合多头排列的股票。<br>增加索引，选股结果保存到 .csv 文件中</p>
+<p>思路比较简单，根据选股策略，准备数据，然后执行策略，保存结果。</p>
+<p><a href="https://github.com/tyler2018/stocker.git" target="_blank" rel="noopener">github 链接</a></p>
+<p>下面是部分代码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置选股日期为最后一个有效交易日</span></span><br><span class="line">valid_screen_date = get_last_valid_trade_date()</span><br><span class="line"><span class="comment"># [[func,param],[func,param]]</span></span><br><span class="line">strategies = [[name_filter, [<span class="string">'ST'</span>]], [close_filter, <span class="number">25</span>], [ma_divergency, [<span class="number">10</span>, <span class="number">25</span>, <span class="number">43</span>, <span class="number">60</span>]]]</span><br><span class="line"><span class="comment"># 市场,选股日期,[[func,param],[func,param]]</span></span><br><span class="line">pickup_list = screen_stock(<span class="string">'ALL'</span>, valid_screen_date, strategies)</span><br><span class="line">print(<span class="string">'选股策略执行完毕'</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">screen_stock</span><span class="params">(market, screen_date, strategies)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    负责根据策略选股操作</span></span><br><span class="line"><span class="string">    :param market: 选股的市场，目前支持 ALL，SH，SZ 三种</span></span><br><span class="line"><span class="string">    :param screen_date: 指定选股日期</span></span><br><span class="line"><span class="string">    :param strategies: 指定选股策略</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># 如果数据为准备好，根据选股策略，获取对应的数据</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> g_is_data_prepared:</span><br><span class="line">        <span class="comment"># 20秒</span></span><br><span class="line">        <span class="comment"># start = time.clock()</span></span><br><span class="line">        datas = prepare_data(market, screen_date, strategies)</span><br><span class="line">        <span class="comment"># end = time.clock()</span></span><br><span class="line">        <span class="comment"># print('CPU执行时间: ', end - start)</span></span><br><span class="line"></span><br><span class="line">    pickup_list = []</span><br><span class="line">    <span class="keyword">for</span> data <span class="keyword">in</span> datas:</span><br><span class="line">        bFound = <span class="keyword">True</span></span><br><span class="line">        <span class="keyword">for</span> row <span class="keyword">in</span> strategies:</span><br><span class="line">            <span class="comment"># 股票名称过滤策略在获取数据的时候应用，这里不需要执行</span></span><br><span class="line">            <span class="keyword">if</span> row[<span class="number">0</span>] == name_filter:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="comment"># print(row)</span></span><br><span class="line">            pickup = row[<span class="number">0</span>](data, row[<span class="number">1</span>])</span><br><span class="line">            <span class="keyword">if</span> pickup <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">                bFound = <span class="keyword">False</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">if</span> bFound:</span><br><span class="line">            <span class="comment"># print(pickup)</span></span><br><span class="line">            pickup_list.append(pickup)</span><br><span class="line">    <span class="keyword">return</span> pickup_list</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/06/29/语言相关/python/pymongo学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/29/语言相关/python/pymongo学习/" itemprop="url">pymongo学习</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-29T10:37:07+08:00">2019-06-29</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>use PyMongo</p>
+<h1 id="Getting-a-Database"><a href="#Getting-a-Database" class="headerlink" title="Getting a Database"></a>Getting a Database</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># attribute style access</span></span><br><span class="line">db = client.test_database</span><br><span class="line"></span><br><span class="line"><span class="comment"># dictionary style access</span></span><br><span class="line">db = client[<span class="string">'test-database'</span>]</span><br></pre></td></tr></table></figure>
+<h1 id="Getting-a-Collection"><a href="#Getting-a-Collection" class="headerlink" title="Getting a Collection"></a>Getting a Collection</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">collection = db.test_collection</span><br><span class="line">collection = db[<span class="string">'test-collection'</span>]</span><br></pre></td></tr></table></figure>
+<h1 id="集合是否存在"><a href="#集合是否存在" class="headerlink" title="集合是否存在"></a>集合是否存在</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">collection_list = dbDoc.collection_names()</span><br><span class="line"><span class="keyword">if</span> table_name <span class="keyword">not</span> <span class="keyword">in</span> collection_list:</span><br><span class="line">   <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<h1 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">collection.insert(&#123;<span class="string">'code'</span>: code, <span class="string">'startDate'</span>: start_date, <span class="string">'endDate'</span>: end_date, <span class="string">'klines'</span>: klines&#125;)</span><br></pre></td></tr></table></figure>
+<h1 id="Error"><a href="#Error" class="headerlink" title="Error"></a>Error</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">解决bson.errors.InvalidDocument: Cannot encode object:错误的一种方法</span><br><span class="line">这是因为pandas库在读取数值型值时返回的结果不是整型或者浮点型，而是numpy.int64类型的一个对象，mongodb是无法对一个对象进行编码存储的，所以这里需要对读取到的结果进行强制类型转换</span><br><span class="line">dates = []</span><br><span class="line">for i in range(0, 2):</span><br><span class="line">   print(cal.iloc[i][&apos;cal_date&apos;], cal.iloc[i][&apos;is_open&apos;])</span><br><span class="line">   print(cal.iloc[i][&apos;cal_date&apos;] + &apos; %d&apos; %cal.iloc[i][&apos;is_open&apos;])</span><br><span class="line">   a = int(cal.iloc[i][&apos;is_open&apos;])</span><br><span class="line">   print(type(a))</span><br><span class="line">   dates.append(&#123;&apos;cal_date&apos;:cal.iloc[i][&apos;cal_date&apos;], &apos;is_open&apos;:int(cal.iloc[i][&apos;is_open&apos;])&#125;)</span><br><span class="line"></span><br><span class="line">result = calender.insert_many(dates)</span><br><span class="line">print(result)</span><br><span class="line">print(result.inserted_ids)</span><br></pre></td></tr></table></figure>
+<h1 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pymongo</span><br><span class="line">conn = pymongo.MongoClient(<span class="string">'127.0.0.1'</span>, <span class="number">27017</span>)</span><br><span class="line"><span class="comment"># database name is stock</span></span><br><span class="line">db = conn[<span class="string">'stock'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">#有密码连接</span></span><br><span class="line"><span class="keyword">import</span> pymongo</span><br><span class="line">mongo_client = pymongo.MongoClient(<span class="string">'127.0.0.1'</span>, <span class="number">26666</span>)</span><br><span class="line">mongo_auth = mongo_client.admin <span class="comment">#或 mongo_client['admin'] admin为authenticationDatabase</span></span><br><span class="line">mongo_auth.authenticate(<span class="string">'用户名'</span>, <span class="string">'密码'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="upsert"><a href="#upsert" class="headerlink" title="upsert"></a>upsert</h2><p>当key不存在的时候执行插入操作，当存在的时候更新除key以外的set内的值</p>
+<p>最后的参数 True ,则是指明,当update不存在的_id时，执行插入操作。默认是false，只更新，不插入。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">collectionConfig.update(&#123;<span class="string">'_id'</span>: resultConfig[<span class="string">'id'</span>]&#125;, &#123;<span class="string">'$set'</span>: &#123;<span class="string">'trade_data'</span>: <span class="number">1</span>&#125;&#125;, <span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="单条插入"><a href="#单条插入" class="headerlink" title="单条插入"></a>单条插入</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">result = collection.insert_one(student)</span><br><span class="line">print(result)</span><br><span class="line">print(result.inserted_id)</span><br></pre></td></tr></table></figure>
+<h1 id="批量插入"><a href="#批量插入" class="headerlink" title="批量插入"></a>批量插入</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment"># 创建集合，相当于表</span></span><br><span class="line">t_codes = db[<span class="string">'codes'</span>]</span><br><span class="line"><span class="comment"># 插入获取的代码</span></span><br><span class="line">result = t_codes.insert_many(dataArr)</span><br><span class="line">print(result)</span><br><span class="line">print(result.inserted_ids)</span><br></pre></td></tr></table></figure>
+<h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">t_codes = db[<span class="string">'codes'</span>]</span><br><span class="line">   <span class="comment"># 获取所有索引</span></span><br><span class="line">   all_index = t_codes.index_information()</span><br><span class="line">   <span class="comment"># print(list(all_index))</span></span><br><span class="line">   <span class="comment"># 判断有无索引</span></span><br><span class="line">   has_id_index = all_index.get(<span class="string">"idx_ts_code"</span>, <span class="keyword">False</span>)</span><br><span class="line">   <span class="keyword">if</span> has_id_index:</span><br><span class="line">      <span class="comment"># 是否为唯一索引</span></span><br><span class="line">      <span class="keyword">if</span> all_index[<span class="string">'idx_ts_code'</span>].get(<span class="string">'unique'</span>, <span class="keyword">False</span>):</span><br><span class="line">         <span class="keyword">pass</span></span><br><span class="line">      <span class="keyword">else</span>:</span><br><span class="line">         t_codes.drop_index(<span class="string">"idx_ts_code"</span>)</span><br><span class="line">         t_codes.create_index([(<span class="string">"ts_code"</span>, <span class="number">1</span>)], name=<span class="string">'idx_ts_code'</span>, unique=<span class="keyword">True</span>, background=<span class="keyword">True</span>)</span><br><span class="line">   <span class="keyword">else</span>:</span><br><span class="line">      t_codes.create_index([(<span class="string">"ts_code"</span>, <span class="number">1</span>)], name=<span class="string">'idx_ts_code'</span>, unique=<span class="keyword">True</span>, background=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="删除集合"><a href="#删除集合" class="headerlink" title="删除集合"></a>删除集合</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">t_codes = db[<span class="string">'codes'</span>]</span><br><span class="line">t_codes.drop()</span><br><span class="line"><span class="comment"># 这里可以重新插入数据，会创建新的集合</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 也可以使用 db 操作</span></span><br><span class="line">db.drop_collection(collection_name)</span><br></pre></td></tr></table></figure>
+<h1 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h1><h2 id="返回是否为空"><a href="#返回是否为空" class="headerlink" title="返回是否为空"></a>返回是否为空</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> results.count():</span><br><span class="line">   print(<span class="string">'not empty'</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">   print(<span class="string">'empty'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="查询返回-datafram"><a href="#查询返回-datafram" class="headerlink" title="查询返回 datafram"></a>查询返回 datafram</h2><p>没有数据时返回 datafram 空值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">t_data = db[code[<span class="string">'ts_code'</span>]]</span><br><span class="line">   cursor_result = t_data.find(</span><br><span class="line">      &#123;<span class="string">'ts_code'</span>: code[<span class="string">'ts_code'</span>], <span class="string">'trade_date'</span>: &#123;<span class="string">'$gte'</span>: start_date.strftime(<span class="string">'%Y%m%d'</span>),</span><br><span class="line">                                                   <span class="string">'$lte'</span>: end_date.strftime(<span class="string">'%Y%m%d'</span>)&#125;&#125;).sort(<span class="string">'trade_date'</span>,</span><br><span class="line">                                                                                             pymongo.DESCENDING)</span><br><span class="line">   labels = [<span class="string">'ts_code'</span>, <span class="string">'trade_date'</span>, <span class="string">'open'</span>, <span class="string">'high'</span>, <span class="string">'low'</span>, <span class="string">'close'</span>, <span class="string">'vol'</span>, <span class="string">'amount'</span>]</span><br><span class="line">   df = pd.DataFrame(list(cursor_result), columns=labels)</span><br></pre></td></tr></table></figure>
+<h2 id="查询一条"><a href="#查询一条" class="headerlink" title="查询一条"></a>查询一条</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查询第一条数据</span></span><br><span class="line">row = handler.find_one()</span><br><span class="line">print(row)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 最后一条</span></span><br><span class="line">row = handler.find_one(sort=[(<span class="string">'_id'</span>, <span class="number">-1</span>)])</span><br></pre></td></tr></table></figure>
+<h2 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rows = handler.find().sort(<span class="string">'_id'</span>, <span class="number">-1</span>)</span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> rows:</span><br><span class="line">    print(row)  <span class="comment"># 此时会倒序输出内容</span></span><br></pre></td></tr></table></figure>
+<h2 id="查询所有数据"><a href="#查询所有数据" class="headerlink" title="查询所有数据"></a>查询所有数据</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获得一个游标操作对象，并迭代</span></span><br><span class="line">rows = handler.find()</span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> rows:</span><br><span class="line">    print(row)</span><br></pre></td></tr></table></figure>
+<h2 id="时间范围"><a href="#时间范围" class="headerlink" title="时间范围"></a>时间范围</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result = t_codes.find(&#123;<span class="string">'trade_date'</span>:&#123;<span class="string">'$gte'</span>:start,<span class="string">'$lte'</span>:end&#125;&#125;).sort(<span class="string">'trade_date'</span>, pymongo.DESCENDING)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查询集合中的所有文档记录（表中的行记录）</span></span><br><span class="line">myColl.find() </span><br><span class="line"><span class="comment"># 返回一个查询结果的游标，可迭代对象</span></span><br><span class="line"></span><br><span class="line">results = t_codes.find().sort(<span class="string">'trade_date'</span>, pymongo.DESCENDING).limit(<span class="number">1</span>)</span><br><span class="line">start_trade_date = datetime.datetime.strptime(results[<span class="number">0</span>][<span class="string">'trade_date'</span>], <span class="string">'%Y%m%d'</span>)</span><br><span class="line"></span><br><span class="line">result = t_calender.find(</span><br><span class="line">        &#123;<span class="string">'cal_date'</span>: &#123;<span class="string">'$gte'</span>: pre_base_date.strftime(<span class="string">'%Y%m%d'</span>),</span><br><span class="line">                      <span class="string">'$lte'</span>: base_date.strftime(<span class="string">'%Y%m%d'</span>)&#125;&#125;).sort(<span class="string">'cal_date'</span>,</span><br><span class="line">                                                                   pymongo.DESCENDING)</span><br><span class="line"><span class="keyword">for</span> value <span class="keyword">in</span> result:</span><br><span class="line">   <span class="keyword">if</span> value[<span class="string">'is_open'</span>]:</span><br><span class="line">      <span class="keyword">return</span> datetime.datetime.strptime(value[<span class="string">'cal_date'</span>], <span class="string">'%Y%m%d'</span>)</span><br><span class="line">print(<span class="string">'Warning: xx'</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">b. 查询限定操作（也就是sql中的 where 语句)</span><br><span class="line">   i. myColl.find(&#123;<span class="string">'name'</span>:<span class="string">'liming'</span>&#125;) 查询集合中 字段 name = liming的记录</span><br><span class="line">      <span class="number">1</span>) 注意：括号内部是一个 字典，或者 json格式的数据（其实都一个卵样)</span><br><span class="line">      <span class="number">2</span>) 字典 key = 集合内文档的字段，value = 字段的值</span><br><span class="line">      <span class="number">3</span>) 相当于sql中：</span><br><span class="line">            select * </span><br><span class="line">            <span class="keyword">from</span> myColl </span><br><span class="line">            where name = <span class="string">'liming'</span></span><br><span class="line">   ii. 一些高级操作：</span><br><span class="line">      <span class="number">1</span>) 比较操作：</span><br><span class="line">            a) 小于比较：</span><br><span class="line">               i) myColl.find(&#123;<span class="string">'age'</span>:&#123;<span class="string">'$lt'</span>:<span class="number">30</span>&#125;&#125;</span><br><span class="line">               ii) 查询age字段值 小于<span class="number">30</span>的所有文档记录</span><br><span class="line">               iii) 注意：括号内是一个 字典</span><br><span class="line">               iv) 字典 key = 文档字段，value 是一个字典，其中 key = 比较操作符, value =比较值</span><br><span class="line">               v) 相当于sql中：</span><br><span class="line">                  select * </span><br><span class="line">                  <span class="keyword">from</span> myColl</span><br><span class="line">                  where age &lt; <span class="number">30</span></span><br><span class="line">            b) 其他比较操作符</span><br><span class="line">               $gt 大于</span><br><span class="line">               $gte    大于等于</span><br><span class="line">               $lt 小于</span><br><span class="line">               $lte    小于等于</span><br><span class="line">               $ne 不等于</span><br><span class="line">      <span class="number">2</span>) 组合查询：</span><br><span class="line">            a) 逻辑与 <span class="keyword">and</span> </span><br><span class="line">               i) myColl.find(&#123;<span class="string">'name'</span>:<span class="string">'liming'</span>,<span class="string">'age'</span>:<span class="number">30</span>&#125;)</span><br><span class="line">               ii) 查询 name = liming 和 age = <span class="number">30</span> 的所有文档记录</span><br><span class="line">               iii) 注意：括号内是一个字典，两个元素。用 逗号分隔开，key = 字段，value=字段值</span><br><span class="line">               iv) 相当于sql：</span><br><span class="line">                  select * </span><br><span class="line">                  <span class="keyword">from</span> myColl</span><br><span class="line">                  where name = <span class="string">'liming'</span> <span class="keyword">and</span> age = <span class="number">30</span></span><br><span class="line">            b) 逻辑或 <span class="keyword">or</span></span><br><span class="line">               i) myColl.find(&#123;<span class="string">'$or'</span>:[&#123;<span class="string">'name'</span>:<span class="string">'liming'</span>&#125;,&#123;<span class="string">'age'</span>:<span class="number">30</span>&#125;]&#125;)</span><br><span class="line">               ii) 查询name = <span class="string">'liming'</span> 或 age = <span class="number">30</span>的所有文档记录</span><br><span class="line">               iii) 注意：括号内是一个字典，key = <span class="string">'$or'</span> 逻辑或操作符，value = 一个列表</span><br><span class="line">                  列表内是两个字典，key = 字段，value=字段值</span><br><span class="line">               iv) 相当于sql：</span><br><span class="line">                  select * </span><br><span class="line">                  <span class="keyword">from</span> myColl</span><br><span class="line">                  where name = <span class="string">'liming'</span> <span class="keyword">or</span> age = <span class="number">30</span></span><br><span class="line">      <span class="number">3</span>) 对查询结果进行排序：</span><br><span class="line">            a) myColl.find().sort(<span class="string">'name'</span>,pymongo.DESCENDING)</span><br><span class="line">               i) 对查询结果按照字段 name进行排序，默认为升序，可以指定排序方向，</span><br><span class="line">                  DESCENDING是降序</span><br><span class="line">               ii) 相当于sql：</span><br><span class="line">                  select *</span><br><span class="line">                  <span class="keyword">from</span> myColl</span><br><span class="line">                  order by name DESC</span><br><span class="line">            b) myColl.find().sort([&#123;<span class="string">'name'</span>:pymongo.DESEDING<span class="string">',&#123;'</span>age<span class="string">':pymongo.DESEDING'</span>&#125;])</span><br><span class="line">               i) 对查询结果排序，指定排序方向为 降序，默认为升序。</span><br><span class="line">                  先按照name字段排序，在按照age字段排序</span><br><span class="line">               ii) 相当于sql：</span><br><span class="line">                  select * </span><br><span class="line">                  <span class="keyword">from</span> myColl</span><br><span class="line">                  order by name DESC ,age DESC</span><br><span class="line">               DESC关键字只适用于 DESC前面的字段，需要的话，可以对每个字段指定一次 DESC</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/06/29/功能分类/数据库/mongoDB/pymongo学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/29/功能分类/数据库/mongoDB/pymongo学习/" itemprop="url">pymongo学习</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-29T10:37:07+08:00">2019-06-29</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>use PyMongo</p>
+<h1 id="Getting-a-Database"><a href="#Getting-a-Database" class="headerlink" title="Getting a Database"></a>Getting a Database</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># attribute style access</span></span><br><span class="line">db = client.test_database</span><br><span class="line"></span><br><span class="line"><span class="comment"># dictionary style access</span></span><br><span class="line">db = client[<span class="string">'test-database'</span>]</span><br></pre></td></tr></table></figure>
+<h1 id="Getting-a-Collection"><a href="#Getting-a-Collection" class="headerlink" title="Getting a Collection"></a>Getting a Collection</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">collection = db.test_collection</span><br><span class="line">collection = db[<span class="string">'test-collection'</span>]</span><br></pre></td></tr></table></figure>
+<h1 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">collection.insert(&#123;<span class="string">'code'</span>: code, <span class="string">'startDate'</span>: start_date, <span class="string">'endDate'</span>: end_date, <span class="string">'klines'</span>: klines&#125;)</span><br></pre></td></tr></table></figure>
+<h1 id="Error"><a href="#Error" class="headerlink" title="Error"></a>Error</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">解决bson.errors.InvalidDocument: Cannot encode object:错误的一种方法</span><br><span class="line">这是因为pandas库在读取数值型值时返回的结果不是整型或者浮点型，而是numpy.int64类型的一个对象，mongodb是无法对一个对象进行编码存储的，所以这里需要对读取到的结果进行强制类型转换</span><br><span class="line">dates = []</span><br><span class="line">for i in range(0, 2):</span><br><span class="line">   print(cal.iloc[i][&apos;cal_date&apos;], cal.iloc[i][&apos;is_open&apos;])</span><br><span class="line">   print(cal.iloc[i][&apos;cal_date&apos;] + &apos; %d&apos; %cal.iloc[i][&apos;is_open&apos;])</span><br><span class="line">   a = int(cal.iloc[i][&apos;is_open&apos;])</span><br><span class="line">   print(type(a))</span><br><span class="line">   dates.append(&#123;&apos;cal_date&apos;:cal.iloc[i][&apos;cal_date&apos;], &apos;is_open&apos;:int(cal.iloc[i][&apos;is_open&apos;])&#125;)</span><br><span class="line"></span><br><span class="line">result = calender.insert_many(dates)</span><br><span class="line">print(result)</span><br><span class="line">print(result.inserted_ids)</span><br></pre></td></tr></table></figure>
+<h1 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pymongo</span><br><span class="line">conn = pymongo.MongoClient(<span class="string">'127.0.0.1'</span>, <span class="number">27017</span>)</span><br><span class="line"><span class="comment"># database name is stock</span></span><br><span class="line">db = conn[<span class="string">'stock'</span>]</span><br></pre></td></tr></table></figure>
+<h1 id="单条插入"><a href="#单条插入" class="headerlink" title="单条插入"></a>单条插入</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">result = collection.insert_one(student)</span><br><span class="line">print(result)</span><br><span class="line">print(result.inserted_id)</span><br></pre></td></tr></table></figure>
+<h1 id="批量插入"><a href="#批量插入" class="headerlink" title="批量插入"></a>批量插入</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment"># 创建集合，相当于表</span></span><br><span class="line">t_codes = db[<span class="string">'codes'</span>]</span><br><span class="line"><span class="comment"># 插入获取的代码</span></span><br><span class="line">result = t_codes.insert_many(dataArr)</span><br><span class="line">print(result)</span><br><span class="line">print(result.inserted_ids)</span><br></pre></td></tr></table></figure>
+<h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">t_codes = db[<span class="string">'codes'</span>]</span><br><span class="line">   <span class="comment"># 获取所有索引</span></span><br><span class="line">   all_index = t_codes.index_information()</span><br><span class="line">   <span class="comment"># print(list(all_index))</span></span><br><span class="line">   <span class="comment"># 判断有无索引</span></span><br><span class="line">   has_id_index = all_index.get(<span class="string">"idx_ts_code"</span>, <span class="keyword">False</span>)</span><br><span class="line">   <span class="keyword">if</span> has_id_index:</span><br><span class="line">      <span class="comment"># 是否为唯一索引</span></span><br><span class="line">      <span class="keyword">if</span> all_index[<span class="string">'idx_ts_code'</span>].get(<span class="string">'unique'</span>, <span class="keyword">False</span>):</span><br><span class="line">         <span class="keyword">pass</span></span><br><span class="line">      <span class="keyword">else</span>:</span><br><span class="line">         t_codes.drop_index(<span class="string">"idx_ts_code"</span>)</span><br><span class="line">         t_codes.create_index([(<span class="string">"ts_code"</span>, <span class="number">1</span>)], name=<span class="string">'idx_ts_code'</span>, unique=<span class="keyword">True</span>, background=<span class="keyword">True</span>)</span><br><span class="line">   <span class="keyword">else</span>:</span><br><span class="line">      t_codes.create_index([(<span class="string">"ts_code"</span>, <span class="number">1</span>)], name=<span class="string">'idx_ts_code'</span>, unique=<span class="keyword">True</span>, background=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="删除集合"><a href="#删除集合" class="headerlink" title="删除集合"></a>删除集合</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">t_codes = db[<span class="string">'codes'</span>]</span><br><span class="line">t_codes.drop()</span><br><span class="line"><span class="comment"># 这里可以重新插入数据，会创建新的集合</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 也可以使用 db 操作</span></span><br><span class="line">db.drop_collection(collection_name)</span><br></pre></td></tr></table></figure>
+<h1 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h1><h2 id="返回是否为空"><a href="#返回是否为空" class="headerlink" title="返回是否为空"></a>返回是否为空</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> results.count():</span><br><span class="line">   print(<span class="string">'not empty'</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">   print(<span class="string">'empty'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="查询返回-datafram"><a href="#查询返回-datafram" class="headerlink" title="查询返回 datafram"></a>查询返回 datafram</h2><p>没有数据时返回 datafram 空值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">t_data = db[code[<span class="string">'ts_code'</span>]]</span><br><span class="line">   cursor_result = t_data.find(</span><br><span class="line">      &#123;<span class="string">'ts_code'</span>: code[<span class="string">'ts_code'</span>], <span class="string">'trade_date'</span>: &#123;<span class="string">'$gte'</span>: start_date.strftime(<span class="string">'%Y%m%d'</span>),</span><br><span class="line">                                                   <span class="string">'$lte'</span>: end_date.strftime(<span class="string">'%Y%m%d'</span>)&#125;&#125;).sort(<span class="string">'trade_date'</span>,</span><br><span class="line">                                                                                             pymongo.DESCENDING)</span><br><span class="line">   labels = [<span class="string">'ts_code'</span>, <span class="string">'trade_date'</span>, <span class="string">'open'</span>, <span class="string">'high'</span>, <span class="string">'low'</span>, <span class="string">'close'</span>, <span class="string">'vol'</span>, <span class="string">'amount'</span>]</span><br><span class="line">   df = pd.DataFrame(list(cursor_result), columns=labels)</span><br></pre></td></tr></table></figure>
+<h2 id="查询所有数据"><a href="#查询所有数据" class="headerlink" title="查询所有数据"></a>查询所有数据</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查询集合中的所有文档记录（表中的行记录）</span></span><br><span class="line">myColl.find() </span><br><span class="line"><span class="comment"># 返回一个查询结果的游标，可迭代对象</span></span><br><span class="line"></span><br><span class="line">results = t_codes.find().sort(<span class="string">'trade_date'</span>, pymongo.DESCENDING).limit(<span class="number">1</span>)</span><br><span class="line">start_trade_date = datetime.datetime.strptime(results[<span class="number">0</span>][<span class="string">'trade_date'</span>], <span class="string">'%Y%m%d'</span>)</span><br><span class="line"></span><br><span class="line">result = t_calender.find(</span><br><span class="line">        &#123;<span class="string">'cal_date'</span>: &#123;<span class="string">'$gte'</span>: pre_base_date.strftime(<span class="string">'%Y%m%d'</span>),</span><br><span class="line">                      <span class="string">'$lte'</span>: base_date.strftime(<span class="string">'%Y%m%d'</span>)&#125;&#125;).sort(<span class="string">'cal_date'</span>,</span><br><span class="line">                                                                   pymongo.DESCENDING)</span><br><span class="line"><span class="keyword">for</span> value <span class="keyword">in</span> result:</span><br><span class="line">   <span class="keyword">if</span> value[<span class="string">'is_open'</span>]:</span><br><span class="line">      <span class="keyword">return</span> datetime.datetime.strptime(value[<span class="string">'cal_date'</span>], <span class="string">'%Y%m%d'</span>)</span><br><span class="line">print(<span class="string">'Warning: xx'</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">b. 查询限定操作（也就是sql中的 where 语句)</span><br><span class="line">   i. myColl.find(&#123;<span class="string">'name'</span>:<span class="string">'liming'</span>&#125;) 查询集合中 字段 name = liming的记录</span><br><span class="line">      <span class="number">1</span>) 注意：括号内部是一个 字典，或者 json格式的数据（其实都一个卵样)</span><br><span class="line">      <span class="number">2</span>) 字典 key = 集合内文档的字段，value = 字段的值</span><br><span class="line">      <span class="number">3</span>) 相当于sql中：</span><br><span class="line">            select * </span><br><span class="line">            <span class="keyword">from</span> myColl </span><br><span class="line">            where name = <span class="string">'liming'</span></span><br><span class="line">   ii. 一些高级操作：</span><br><span class="line">      <span class="number">1</span>) 比较操作：</span><br><span class="line">            a) 小于比较：</span><br><span class="line">               i) myColl.find(&#123;<span class="string">'age'</span>:&#123;<span class="string">'$lt'</span>:<span class="number">30</span>&#125;&#125;</span><br><span class="line">               ii) 查询age字段值 小于<span class="number">30</span>的所有文档记录</span><br><span class="line">               iii) 注意：括号内是一个 字典</span><br><span class="line">               iv) 字典 key = 文档字段，value 是一个字典，其中 key = 比较操作符, value =比较值</span><br><span class="line">               v) 相当于sql中：</span><br><span class="line">                  select * </span><br><span class="line">                  <span class="keyword">from</span> myColl</span><br><span class="line">                  where age &lt; <span class="number">30</span></span><br><span class="line">            b) 其他比较操作符</span><br><span class="line">               $gt 大于</span><br><span class="line">               $gte    大于等于</span><br><span class="line">               $lt 小于</span><br><span class="line">               $lte    小于等于</span><br><span class="line">               $ne 不等于</span><br><span class="line">      <span class="number">2</span>) 组合查询：</span><br><span class="line">            a) 逻辑与 <span class="keyword">and</span> </span><br><span class="line">               i) myColl.find(&#123;<span class="string">'name'</span>:<span class="string">'liming'</span>,<span class="string">'age'</span>:<span class="number">30</span>&#125;)</span><br><span class="line">               ii) 查询 name = liming 和 age = <span class="number">30</span> 的所有文档记录</span><br><span class="line">               iii) 注意：括号内是一个字典，两个元素。用 逗号分隔开，key = 字段，value=字段值</span><br><span class="line">               iv) 相当于sql：</span><br><span class="line">                  select * </span><br><span class="line">                  <span class="keyword">from</span> myColl</span><br><span class="line">                  where name = <span class="string">'liming'</span> <span class="keyword">and</span> age = <span class="number">30</span></span><br><span class="line">            b) 逻辑或 <span class="keyword">or</span></span><br><span class="line">               i) myColl.find(&#123;<span class="string">'$or'</span>:[&#123;<span class="string">'name'</span>:<span class="string">'liming'</span>&#125;,&#123;<span class="string">'age'</span>:<span class="number">30</span>&#125;]&#125;)</span><br><span class="line">               ii) 查询name = <span class="string">'liming'</span> 或 age = <span class="number">30</span>的所有文档记录</span><br><span class="line">               iii) 注意：括号内是一个字典，key = <span class="string">'$or'</span> 逻辑或操作符，value = 一个列表</span><br><span class="line">                  列表内是两个字典，key = 字段，value=字段值</span><br><span class="line">               iv) 相当于sql：</span><br><span class="line">                  select * </span><br><span class="line">                  <span class="keyword">from</span> myColl</span><br><span class="line">                  where name = <span class="string">'liming'</span> <span class="keyword">or</span> age = <span class="number">30</span></span><br><span class="line">      <span class="number">3</span>) 对查询结果进行排序：</span><br><span class="line">            a) myColl.find().sort(<span class="string">'name'</span>,pymongo.DESCENDING)</span><br><span class="line">               i) 对查询结果按照字段 name进行排序，默认为升序，可以指定排序方向，</span><br><span class="line">                  DESCENDING是降序</span><br><span class="line">               ii) 相当于sql：</span><br><span class="line">                  select *</span><br><span class="line">                  <span class="keyword">from</span> myColl</span><br><span class="line">                  order by name DESC</span><br><span class="line">            b) myColl.find().sort([&#123;<span class="string">'name'</span>:pymongo.DESEDING<span class="string">',&#123;'</span>age<span class="string">':pymongo.DESEDING'</span>&#125;])</span><br><span class="line">               i) 对查询结果排序，指定排序方向为 降序，默认为升序。</span><br><span class="line">                  先按照name字段排序，在按照age字段排序</span><br><span class="line">               ii) 相当于sql：</span><br><span class="line">                  select * </span><br><span class="line">                  <span class="keyword">from</span> myColl</span><br><span class="line">                  order by name DESC ,age DESC</span><br><span class="line">               DESC关键字只适用于 DESC前面的字段，需要的话，可以对每个字段指定一次 DESC</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/06/29/语言相关/python/tushare/tushare-学习笔记002-获取基本数据/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/29/语言相关/python/tushare/tushare-学习笔记002-获取基本数据/" itemprop="url">tushare-学习笔记002-获取基本数据</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-29T09:10:46+08:00">2019-06-29</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="http://zhenghanyun.top/index.php?share/file&amp;user=1&amp;sid=aGCpbQW9" target="_blank" rel="noopener">2019.06.28为止的sql完整数据</a></p>
+<p><a href="https://github.com/tyler2018/stocker.git" target="_blank" rel="noopener">github 链接</a></p>
+<h2 id="先获取-“股票代码表”"><a href="#先获取-“股票代码表”" class="headerlink" title="先获取 “股票代码表”"></a>先获取 “股票代码表”</h2><p>我这里是使用 mongodb 存储的。<br>项目有结构不方便放上来，这里是代码片段。具体请参见 github 仓库</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch_code</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    从接口获取代码，存入数据库，返回结构样例</span></span><br><span class="line"><span class="string">             ts_code  symbol  name      area industry list_date</span></span><br><span class="line"><span class="string">        0     000001.SZ  000001  平安银行   深圳       银行  19910403</span></span><br><span class="line"><span class="string">        1     000002.SZ  000002   万科A   深圳     全国地产  19910129</span></span><br><span class="line"><span class="string">        3541  603936.SH  603936  博敏电子   广东      元器件  20151209</span></span><br><span class="line"><span class="string">        3542  603937.SH  603937  丽岛新材   江苏        铝  20171102</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># 查询当前所有正常上市交易的股票列表</span></span><br><span class="line">    datas = ts_pro.query(<span class="string">'stock_basic'</span>, exchange=<span class="string">''</span>, list_status=<span class="string">'L'</span>, fields=<span class="string">'ts_code,symbol,name,area,industry,list_date'</span>)</span><br><span class="line">    dataArr = datas.to_dict(<span class="string">'records'</span>)</span><br><span class="line">    <span class="comment"># 创建集合，相当于表</span></span><br><span class="line">    t_codes = db[<span class="string">'codes'</span>]</span><br><span class="line">    t_codes.drop()</span><br><span class="line">    <span class="comment"># 插入获取的代码</span></span><br><span class="line">    result = t_codes.insert_many(dataArr)</span><br><span class="line">    <span class="keyword">if</span> len(result.inserted_ids) != len(dataArr):</span><br><span class="line">        <span class="keyword">assert</span> <span class="keyword">False</span></span><br><span class="line">        print(<span class="string">'插入代码表数据失败.请检查。'</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">"插入代码表数据成功"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="获取交易日历"><a href="#获取交易日历" class="headerlink" title="获取交易日历"></a>获取交易日历</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch_calender</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">        从接口获取有效交易日信息，存入数据库，返回结构样例</span></span><br><span class="line"><span class="string">                  exchange  cal_date  is_open</span></span><br><span class="line"><span class="string">        0           SSE  20180101        0</span></span><br><span class="line"><span class="string">        1           SSE  20180102        1</span></span><br><span class="line"><span class="string">        2           SSE  20180103        1</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    calender = ts_pro.trade_cal(start_date=<span class="string">'20190101'</span>, end_date=<span class="string">'20191231'</span>)</span><br><span class="line">    <span class="comment"># 创建集合，相当于表</span></span><br><span class="line">    t_calender = db[<span class="string">'calender'</span>]</span><br><span class="line">    dataArr = calender.to_dict(<span class="string">'records'</span>)</span><br><span class="line">    result = t_calender.insert_many(dataArr)</span><br><span class="line">    <span class="keyword">if</span> len(result.inserted_ids) != len(dataArr):</span><br><span class="line">        <span class="keyword">assert</span> <span class="keyword">False</span></span><br><span class="line">        print(<span class="string">'插入代码表数据失败.请检查。'</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">"插入代码表数据成功"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="获取历史数据"><a href="#获取历史数据" class="headerlink" title="获取历史数据"></a>获取历史数据</h2><p>代码有些多，看 github 吧<br>每个股票代码作为一个集合保存数据。从数据库中取出代码，然后遍历获取数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_code</span><span class="params">(market)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">     获取股票代码表</span></span><br><span class="line"><span class="string">    market [in] string</span></span><br><span class="line"><span class="string">        SH 上海,SZ 深圳,ALL 所有市场</span></span><br><span class="line"><span class="string">    output:</span></span><br><span class="line"><span class="string">        &#123;'ts_code': '600000.SH', 'symbol': '600000', 'name': '浦发银行', 'list_date': '19991110'&#125;</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># 打开代码表集合</span></span><br><span class="line">    t_codes = db[<span class="string">'codes'</span>]</span><br><span class="line">    <span class="keyword">if</span> market == <span class="string">'ALL'</span>:</span><br><span class="line">        codes = list(t_codes.find(&#123;&#125;, &#123;<span class="string">"_id"</span>: <span class="number">0</span>, <span class="string">"ts_code"</span>: <span class="number">1</span>, <span class="string">"symbol"</span>: <span class="number">1</span>, <span class="string">"name"</span>: <span class="number">1</span>, <span class="string">"industry"</span>: <span class="number">1</span>, <span class="string">"list_date"</span>: <span class="number">1</span>&#125;))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        codes = list(t_codes.find(&#123;<span class="string">"ts_code"</span>: &#123;<span class="string">"$regex"</span>: <span class="string">".&#123;&#125;"</span>.format(market)&#125;&#125;,</span><br><span class="line">                             &#123;<span class="string">"_id"</span>: <span class="number">0</span>, <span class="string">"ts_code"</span>: <span class="number">1</span>, <span class="string">"symbol"</span>: <span class="number">1</span>, <span class="string">"name"</span>: <span class="number">1</span>, <span class="string">"industry"</span>: <span class="number">1</span>, <span class="string">"list_date"</span>: <span class="number">1</span>&#125;))</span><br><span class="line">    <span class="keyword">return</span> codes</span><br></pre></td></tr></table></figure>
+<p>到这里基本数据就准备完毕了，在下一个笔记就可以选股操作了。</p>
+
           
         
       
@@ -1825,7 +1854,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/30/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><span class="page-number current">31</span><a class="page-number" href="/page/32/">32</a><span class="space">&hellip;</span><a class="page-number" href="/page/100/">100</a><a class="extend next" rel="next" href="/page/32/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/30/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><span class="page-number current">31</span><a class="page-number" href="/page/32/">32</a><span class="space">&hellip;</span><a class="page-number" href="/page/113/">113</a><a class="extend next" rel="next" href="/page/32/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1872,7 +1901,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">999</span>
+                    <span class="site-state-item-count">1124</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2037,7 +2066,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">76</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">78</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -2456,7 +2489,19 @@
                     
                       
                     
-                    <span class="site-state-item-count">203</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">209</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

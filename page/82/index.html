@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">76</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">78</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">999</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1124</span>
       </a>
 </li>
 
@@ -328,7 +328,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2017/12/31/生活小知识/医药健康/芳香疗法/精油疗法-百里香精油/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/03/31/语言相关/go/go-get使用代理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -347,7 +347,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/31/生活小知识/医药健康/芳香疗法/精油疗法-百里香精油/" itemprop="url">精油疗法-百里香精油</a></h1>
+                <a class="post-title-link" href="/2018/03/31/语言相关/go/go-get使用代理/" itemprop="url">go-get使用代理</a></h1>
         
 
         <div class="post-meta">
@@ -359,7 +359,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-31T09:33:41+08:00">2017-12-31</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-31T15:13:57+08:00">2018-03-31</time>
             
 
             
@@ -380,7 +380,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/健康/" itemprop="url" rel="index"><span itemprop="name">健康</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
 
                 
                 
@@ -415,10 +415,468 @@
 
       
         
-          <p>从百里香中萃取出来，被称作是最具防腐性功效的精油之一。还可以用来治疗感冒，咳嗽和喉咙痛等，有效抑制头皮屑和掉发。也能促进血液循环，改善消化系统，泌尿系统及妇科疾病。</p>
+          
+            <p>有的库使用go get无法访问。这里可以通过shadowsocks代理来实现。<br>首先要有个shadowsocks服务才可以。</p>
+<h1 id="windows"><a href="#windows" class="headerlink" title="windows"></a>windows</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> http_proxy=http:<span class="comment">//localhost:1080</span></span><br><span class="line"><span class="built_in">set</span> https_proxy=http:<span class="comment">//localhost:1080</span></span><br></pre></td></tr></table></figure>
+<h1 id="mac"><a href="#mac" class="headerlink" title="mac"></a>mac</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">export http_proxy=http://127.0.0.1:1080</span><br><span class="line">export https_proxy=http://127.0.0.1:1080</span><br><span class="line">下面这个不知道是否有用，如果上面不行，就试试下面的</span><br><span class="line">export GIT_SSL_NO_VERIFY=true</span><br><span class="line"></span><br><span class="line">下面是关于git的配置</span><br><span class="line">git config --global https.proxy http://127.0.0.1:1080</span><br><span class="line">git config --global https.proxy https://127.0.0.1:1080</span><br><span class="line">git config --global --unset http.proxy</span><br><span class="line">git config --global --unset https.proxy</span><br><span class="line"></span><br><span class="line">git是可以直接支持socks5代理的，如果只安装了shadowsocks，而不安Privoxy设置方法如下：</span><br><span class="line"></span><br><span class="line">git config --global http.proxy &apos;socks5://127.0.0.1:1080&apos;</span><br><span class="line">git config --global https.proxy &apos;socks5://127.0.0.1:1080&apos;</span><br></pre></td></tr></table></figure>
+<p><a href="http://liyangliang.me/posts/2015/05/bypass-gfw-with-shadowsocks/" target="_blank" rel="noopener">一个工具</a><br>brew install privoxy<br>nano /usr/local/etc/privoxy/config</p>
+<p>找到#        forward-socks5t   /               127.0.0.1:9050 .在下面添加<br>forward           /               127.0.0.1:1080</p>
+<p>启动<br>sudo /usr/local/sbin/privoxy /usr/local/etc/privoxy/config</p>
+<p>查看是否启动<br>ps aux | grep privoxy<br>查看端口监听是否成功：<br>netstat -an | grep 8118</p>
+<p>export http_proxy=<a href="http://127.0.0.1:8118/" target="_blank" rel="noopener">http://127.0.0.1:8118/</a><br>export https_proxy=<a href="http://127.0.0.1:8118/" target="_blank" rel="noopener">http://127.0.0.1:8118/</a><br>然后执行go get</p>
+<p>关闭Privoxy，首先查看privoxy的进程ID：<br>sudo killall privoxy<br>若以上方法都无法关闭Privoxy，请使用Privoxy提供的脚本进行关闭：<br>sudo /Applications/Privoxy/stopPrivoxy.sh</p>
+<p>//=======<br>brew install proxychains-ng<br>配置文件：<br>/usr/local/etc/proxychains.conf<br>将socks4 127.0.0.1 9095改为<br>socks5 127.0.0.1 1080</p>
+<p>proxychains4 go get -u google.golang.org/grpc</p>
+<p>curl ip.cn<br>curl cip.cc<br>curl myip.ipip.net</p>
+<p>proxy</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/03/31/语言相关/javascript/js字符串操作/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/31/语言相关/javascript/js字符串操作/" itemprop="url">js字符串操作</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-31T10:53:36+08:00">2018-03-31</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="字符串转数字"><a href="#字符串转数字" class="headerlink" title="字符串转数字"></a>字符串转数字</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">parseInt</span>(string, radix)</span><br></pre></td></tr></table></figure>
+<h2 id="字符串查找"><a href="#字符串查找" class="headerlink" title="字符串查找"></a>字符串查找</h2><p>返回查找到的第一个子字符串的起始下标值，如果没有找到则返回 -1。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="string">"JavaScript"</span>;</span><br><span class="line"><span class="keyword">var</span> i = s.indexOf(<span class="string">"a"</span>);</span><br><span class="line"><span class="built_in">console</span>.log(i);  <span class="comment">//返回值为1，即字符串中第二个字符</span></span><br></pre></td></tr></table></figure>
+<h2 id="数字转字符串"><a href="#数字转字符串" class="headerlink" title="数字转字符串"></a>数字转字符串</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NumberObject.toString(radix)</span><br></pre></td></tr></table></figure>
+<h2 id="多行字符串"><a href="#多行字符串" class="headerlink" title="多行字符串"></a>多行字符串</h2><p>ES6 的有一个新的特性，Template Strings, 这是语言层面上第一次实现了多行字符串</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> tmpl =</span><br><span class="line">   <span class="string">`!!! 5</span></span><br><span class="line"><span class="string">    html</span></span><br><span class="line"><span class="string">      include header</span></span><br><span class="line"><span class="string">      body</span></span><br><span class="line"><span class="string">        //if IE 6</span></span><br><span class="line"><span class="string">            .alert.alert-error</span></span><br><span class="line"><span class="string">                center 对不起，我们不支持IE6，请升级你的浏览器</span></span><br><span class="line"><span class="string">                    a(href="http://windows.microsoft.com/zh-CN/internet-explorer/download-ie") | IE8官方下载</span></span><br><span class="line"><span class="string">                    a(href="https://www.google.com/intl/en/chrome/browser/") | Chrome下载</span></span><br><span class="line"><span class="string">        include head</span></span><br><span class="line"><span class="string">        .container</span></span><br><span class="line"><span class="string">            .row-fluid</span></span><br><span class="line"><span class="string">                .span8</span></span><br><span class="line"><span class="string">                    block main</span></span><br><span class="line"><span class="string">                    include pagerbar</span></span><br><span class="line"><span class="string">                .span4</span></span><br><span class="line"><span class="string">                    include sidebar</span></span><br><span class="line"><span class="string">        include footer</span></span><br><span class="line"><span class="string">        include script`</span></span><br></pre></td></tr></table></figure>
+<p>这是一种很有技巧的解决办法, 利用了function的toString方法</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">heredoc</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> fn.toString().split(<span class="string">'\n'</span>).slice(<span class="number">1</span>,<span class="number">-1</span>).join(<span class="string">'\n'</span>) + <span class="string">'\n'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> tmpl = heredoc(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;<span class="comment">/*</span></span><br><span class="line"><span class="comment">    !!! 5</span></span><br><span class="line"><span class="comment">    html</span></span><br><span class="line"><span class="comment">      include header</span></span><br><span class="line"><span class="comment">      body</span></span><br><span class="line"><span class="comment">        //if IE 6</span></span><br><span class="line"><span class="comment">            .alert.alert-error</span></span><br><span class="line"><span class="comment">                center 对不起，我们不支持IE6，请升级你的浏览器</span></span><br><span class="line"><span class="comment">                    a(href="http://windows.microsoft.com/zh-CN/internet-explorer/download-ie") | IE8官方下载</span></span><br><span class="line"><span class="comment">                    a(href="https://www.google.com/intl/en/chrome/browser/") | Chrome下载</span></span><br><span class="line"><span class="comment">        include head</span></span><br><span class="line"><span class="comment">        .container</span></span><br><span class="line"><span class="comment">            .row-fluid</span></span><br><span class="line"><span class="comment">                .span8</span></span><br><span class="line"><span class="comment">                    block main</span></span><br><span class="line"><span class="comment">                    include pagerbar</span></span><br><span class="line"><span class="comment">                .span4</span></span><br><span class="line"><span class="comment">                    include sidebar</span></span><br><span class="line"><span class="comment">        include footer</span></span><br><span class="line"><span class="comment">        include script</span></span><br><span class="line"><span class="comment"> */</span>&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="字符串切片"><a href="#字符串切片" class="headerlink" title="字符串切片"></a>字符串切片</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">stringObject.slice(start,end)</span><br><span class="line"><span class="keyword">var</span> newStr = dt.slice(<span class="number">2</span>,<span class="number">4</span>);</span><br><span class="line"><span class="comment">// 去掉尾部的一个字符</span></span><br><span class="line">newStr = dt.slice(<span class="number">0</span>,<span class="number">-1</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="字符串插入"><a href="#字符串插入" class="headerlink" title="字符串插入"></a>字符串插入</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//插入 参数说明：str表示原字符串变量，flg表示要插入的字符串，sn表示要插入的位置</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">str_insert</span>(<span class="params">src, insertStr, pos</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> newStr = <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; src.length; i += pos) &#123;</span><br><span class="line">        <span class="keyword">var</span> tmp = src.substring(i, i + pos);</span><br><span class="line">        newStr += tmp + insertStr;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> newStr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="格式化"><a href="#格式化" class="headerlink" title="格式化"></a>格式化</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 替换所有匹配exp的字符串为指定字符串</span></span><br><span class="line"><span class="comment"> * @param exp 被替换部分的正则</span></span><br><span class="line"><span class="comment"> * @param newStr 替换成的字符串</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="built_in">String</span>.prototype.replaceAll = <span class="function"><span class="keyword">function</span> (<span class="params">exp, newStr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.replace(<span class="keyword">new</span> <span class="built_in">RegExp</span>(exp, <span class="string">"gm"</span>), newStr);</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 原型：字符串格式化</span></span><br><span class="line"><span class="comment"> * @param args 格式化参数值</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="built_in">String</span>.prototype.format = <span class="function"><span class="keyword">function</span>(<span class="params">args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> result = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">arguments</span>.length &lt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">var</span> data = <span class="built_in">arguments</span>; <span class="comment">// 如果模板参数是数组</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">arguments</span>.length == <span class="number">1</span> &amp;&amp; <span class="keyword">typeof</span> (args) == <span class="string">"object"</span>) &#123;</span><br><span class="line">        <span class="comment">// 如果模板参数是对象</span></span><br><span class="line">        data = args;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">var</span> key <span class="keyword">in</span> data) &#123;</span><br><span class="line">        <span class="keyword">var</span> value = data[key];</span><br><span class="line">        <span class="keyword">if</span> (<span class="literal">undefined</span> != value) &#123;</span><br><span class="line">            result = result.replaceAll(<span class="string">"\\&#123;"</span> + key + <span class="string">"\\&#125;"</span>, value);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//两种调用方式</span></span><br><span class="line"><span class="keyword">var</span> template1=<span class="string">"我是&#123;0&#125;，今年&#123;1&#125;了"</span>;</span><br><span class="line"><span class="keyword">var</span> result1=template1.format(<span class="string">"loogn"</span>,<span class="number">22</span>);</span><br><span class="line"> </span><br><span class="line"><span class="keyword">var</span> template2=<span class="string">"我是&#123;name&#125;，今年&#123;age&#125;了"</span>;</span><br><span class="line"><span class="keyword">var</span> result2=template2.format(&#123;<span class="attr">name</span>:<span class="string">"loogn"</span>,<span class="attr">age</span>:<span class="number">22</span>&#125;);</span><br><span class="line"> </span><br><span class="line"><span class="comment">//两个结果都是"我是loogn，今年22了"</span></span><br><span class="line"><span class="keyword">var</span> template1=<span class="string">"我是&#123;0&#125;，今年&#123;1&#125;了, lucy今年也&#123;1&#125;了"</span>;</span><br><span class="line"><span class="keyword">var</span> result1=template1.format(<span class="string">"loogn"</span>,<span class="number">22</span>);</span><br><span class="line"> </span><br><span class="line"><span class="comment">//结果是"我是loogn，今年22了, lucy今年也22了"</span></span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/03/29/功能分类/数据库/MySQL/gourp-by和order-by同时使用的排序问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/29/功能分类/数据库/MySQL/gourp-by和order-by同时使用的排序问题/" itemprop="url">gourp_by和order_by同时使用的排序问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-29T19:30:47+08:00">2018-03-29</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>当同时使用时order by无效了，因为在group by后面。</p>
+<p>这里使用group_concat，就是效率比较差。先用起来再说吧，应该有更好的方式。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">SELECT barCode,</span><br><span class="line">    SUBSTRING_INDEX( group_concat(priCommodityID ORDER BY createDate DESC), &apos;,&apos;, 1</span><br><span class="line">    ) AS priCommodityID,</span><br><span class="line">    SUBSTRING_INDEX(group_concat(createDate ORDER BY createDate DESC),&apos;,&apos;,1) AS createDate</span><br><span class="line">FROM</span><br><span class="line">    tb_history_version</span><br><span class="line">WHERE</span><br><span class="line">    barCode = &apos;4565789&apos;</span><br><span class="line">GROUP BY</span><br><span class="line">    barCode;</span><br></pre></td></tr></table></figure></p>
+<p>SUBSTRING_INDEX(str,delim,count)函数用法<br>返回字符串 str 中在第 count 个出现的分隔符 delim 之前的子串<br>count正数从左开始，负数时从右开始</p>
+<p>SELECT SUBSTRING(str,pos,len)函数用法<br>返回字符串 str 中以 pos 作为起始位置,长度为 len 的子字符串</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/03/29/开源库/SOUI/soui添加系统托盘图标/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/29/开源库/SOUI/soui添加系统托盘图标/" itemprop="url">soui添加系统托盘图标</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-29T17:33:05+08:00">2018-03-29</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/UI/" itemprop="url" rel="index"><span itemprop="name">UI</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>添加系统托盘图标。创建工程的时候可以选择默认支持，我这里是后添加的。</p>
+<h2 id="修改uires-idx文件"><a href="#修改uires-idx文件" class="headerlink" title="修改uires.idx文件"></a>修改uires.idx文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;ICON&gt;</span><br><span class="line">  &lt;file name=&quot;ICON_LOGO&quot;  path=&quot;image\soui.ico&quot;/&gt;</span><br><span class="line">&lt;/ICON&gt;</span><br><span class="line">&lt;SMENU&gt;</span><br><span class="line">  &lt;file name=&quot;menu_tray&quot; path=&quot;xml\menu_tray.xml&quot;/&gt;</span><br><span class="line">&lt;/SMENU&gt;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/31/生活小知识/医药健康/芳香疗法/精油疗法-百里香精油/#more" rel="contents">
+            <a class="btn" href="/2018/03/29/开源库/SOUI/soui添加系统托盘图标/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -474,7 +932,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2017/12/31/生活小知识/园艺/园艺-芳草种植注意事项/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/03/29/学习笔记/linux/linux设置环境变量的地方/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -493,7 +951,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/31/生活小知识/园艺/园艺-芳草种植注意事项/" itemprop="url">园艺-芳草种植注意事项</a></h1>
+                <a class="post-title-link" href="/2018/03/29/学习笔记/linux/linux设置环境变量的地方/" itemprop="url">linux设置环境变量的地方</a></h1>
         
 
         <div class="post-meta">
@@ -505,7 +963,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-31T09:06:16+08:00">2017-12-31</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-29T16:56:16+08:00">2018-03-29</time>
             
 
             
@@ -526,7 +984,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/园艺/" itemprop="url" rel="index"><span itemprop="name">园艺</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a></span>
 
                 
                 
@@ -562,942 +1020,23 @@
       
         
           
-            <h2 id="购买幼苗的时间"><a href="#购买幼苗的时间" class="headerlink" title="购买幼苗的时间"></a>购买幼苗的时间</h2><blockquote>
-<p>香草在不同季节会呈现不同的状态，因此我们需要在小苗最健康的季节购入。<br>一般4月中旬-5月中旬是最适合的。每年这段时间会很容易买到各种香草幼苗。</p>
-</blockquote>
-<h2 id="购买幼苗看什么"><a href="#购买幼苗看什么" class="headerlink" title="购买幼苗看什么"></a>购买幼苗看什么</h2><blockquote>
-<p>叶子能体现出香草的全部状态。购买时要上下左右，翻转过来好好检查叶子。<br>如果幼苗节与节之间很长，而且长的还很高，叶子小，就不好了。<br>看花盆底部，如果根部露出过长，甚至有些干枯，说明放了很长时间了。我们要选购那些只露出一点儿的幼苗。<br>即使根没有露出，茎看起来很结实，我们也需要抓住颈部轻轻摇晃一下，看看根部是否牢固<br>如果购买花苗时，要选择带花骨朵的，越多越好。</p>
-</blockquote>
-<h2 id="倒盆"><a href="#倒盆" class="headerlink" title="倒盆"></a>倒盆</h2><blockquote>
-<p>如果花盆底部露出很多根，或者没露出根，但是生长缓慢，叶子变黄，变小，这些情况一般是停止生长的时候才会出现。<br>说明需要倒盆了，根部已经长满整个花盆，导致营养不良。<br>春秋两季适合倒盆，一般倒盆之后要浇透水，放在半阳地几天。<br>繁殖能力低的香草一般1-3年倒1次盆，繁殖能力强的1年倒1-2次盆。</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2017/12/30/读过的书/芳香精油图鉴/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/30/读过的书/芳香精油图鉴/" itemprop="url">芳香精油图鉴</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-30T11:54:53+08:00">2017-12-30</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>这是一本介绍芳香疗法方面的书籍，主要介绍了常用的各种精油和基础，以及使用方法，注意事项等。<br>对于想要了解精油相关知识的人来说，挺不错的，推荐阅读。<br>我的博客也摘录了一些备查。  </p>
-<p><img alt="08aa71ed.png" src="/2017/12/30/读过的书/芳香精油图鉴/08aa71ed.png" width="300" height=""></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2017/12/30/生活小知识/医药健康/芳香疗法/精油疗法-薄荷/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/30/生活小知识/医药健康/芳香疗法/精油疗法-薄荷/" itemprop="url">精油疗法-薄荷</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-30T11:30:00+08:00">2017-12-30</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/健康/" itemprop="url" rel="index"><span itemprop="name">健康</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>从薄荷中蒸馏而得来，清爽凉快，振奋心神，清咽润喉，对清除口臭具有很好的功效，并有舒缓身心的独特疗效。  </p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/30/生活小知识/医药健康/芳香疗法/精油疗法-薄荷/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2017/12/30/生活小知识/医药健康/芳香疗法/精油疗法-迷迭香/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/30/生活小知识/医药健康/芳香疗法/精油疗法-迷迭香/" itemprop="url">精油疗法-迷迭香</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-30T11:16:05+08:00">2017-12-30</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/健康/" itemprop="url" rel="index"><span itemprop="name">健康</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>从迷迭香植物中萃取出来的。味道清新，不仅可以增强大脑的记忆力，还能帮助理清纷繁的思绪。<br>还具有治疗各种呼吸道问题，肌肉僵硬，感冒等功效。<br>也能用于改善肝脏和胆囊功能，此外对头发的护理和头皮的保健也有积极的效果。  </p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/30/生活小知识/医药健康/芳香疗法/精油疗法-迷迭香/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2017/12/30/生活小知识/医药健康/芳香疗法/精油疗法-茶树/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/30/生活小知识/医药健康/芳香疗法/精油疗法-茶树/" itemprop="url">精油疗法-茶树</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-30T11:03:51+08:00">2017-12-30</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/健康/" itemprop="url" rel="index"><span itemprop="name">健康</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>茶树精油是从茶树植物中提炼出来，原产于中国。具有抗菌，防腐及抑制霉菌的功效，对于伤风感冒，咳嗽，鼻炎，哮喘，生殖器感染等有很大的帮助。<br>对于油性及粉刺肌肤也很有好处，可以治疗伤口化脓，晒伤，头皮削等皮肤病。<br>同时还能唤醒大脑，提振精神。  </p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/30/生活小知识/医药健康/芳香疗法/精油疗法-茶树/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2017/12/30/生活小知识/医药健康/芳香疗法/精油疗法-快乐鼠尾草/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/30/生活小知识/医药健康/芳香疗法/精油疗法-快乐鼠尾草/" itemprop="url">精油疗法-快乐鼠尾草</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-30T10:48:54+08:00">2017-12-30</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/健康/" itemprop="url" rel="index"><span itemprop="name">健康</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>从快乐鼠尾草植物中提炼出来，缓解精神压抑和紧张情绪，治疗妇科疾病，强化内脏，健胃，助消化，舒缓痉挛。</p>
-<h2 id="精油档案"><a href="#精油档案" class="headerlink" title="精油档案"></a>精油档案</h2><ul>
-<li>别名：洋苏草等</li>
-<li>英文名：Clary Sage</li>
-<li>学名：Salvia Slarea</li>
-<li>萃取部位：花朵和叶子</li>
-<li>主要产地：法国，意大利，俄罗斯，摩洛哥，乌克兰</li>
-<li>特征：清澈到淡黄的油质水性物</li>
-<li>香味：清甜的坚果芳香，还有类似薰衣草的味道</li>
-<li>挥发性：高度挥发</li>
-</ul>
-<h2 id="适合搭配精油"><a href="#适合搭配精油" class="headerlink" title="适合搭配精油"></a>适合搭配精油</h2><ul>
-<li>佛手柑；雪松；乳香；天竺葵；葡萄柚；薰衣草；甜橙，檀香</li>
-</ul>
-<h2 id="功效"><a href="#功效" class="headerlink" title="功效"></a>功效</h2><ul>
-<li>皮肤：促进细胞再生，有利于头发生长，清洁头皮，抑制分泌过剩的皮脂</li>
-<li>心理：抗抑郁，能镇定紧张的情绪，改善头痛，偏头痛；还是非常好用的壮阳催情剂</li>
-<li>医学：<ul>
-<li>平衡子宫与性激素的良好补药，对女性的生殖系统很有帮助，缓解更年期症状</li>
-<li>安抚情绪，防治产后抑郁症</li>
-<li>降低皮脂腺（尤其是头部）的分泌，保护头皮健康，告别头屑尴尬</li>
-<li>具有温暖的特性，调理内脏和消化系统，强胃健脾，促进消化，抑制痉挛等</li>
-</ul>
+            <h2 id="动态库路径配置"><a href="#动态库路径配置" class="headerlink" title="动态库路径配置"></a>动态库路径配置</h2><ol>
+<li><p>用ln将需要的so文件链接到/usr/lib或者/lib这两个默认的目录下边</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s /where/you/install/lib/*.so /usr/lib</span><br></pre></td></tr></table></figure>
 </li>
-</ul>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ul>
-<li>镇静效果强烈，生理期，怀孕期不宜使用</li>
-<li>哺乳期和饮酒后不宜使用</li>
-<li>低血压，癌症患者避免使用</li>
-<li>建议低剂量使用，浓度控制在1%一下。</li>
-</ul>
-<h2 id="保存"><a href="#保存" class="headerlink" title="保存"></a>保存</h2><ul>
-<li>深色玻璃瓶，放在木盒中，避免阳光直射，又可以保持恒温。</li>
-<li>未开封通常可保存3-5年，已开封1年用完，调和好的2月内用完。</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2017/12/30/生活小知识/医药健康/芳香疗法/精油疗法-天竺葵/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/30/生活小知识/医药健康/芳香疗法/精油疗法-天竺葵/" itemprop="url">精油疗法-天竺葵</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-30T08:45:38+08:00">2017-12-30</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/健康/" itemprop="url" rel="index"><span itemprop="name">健康</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>天竺葵精油是从天竺葵花朵提炼出来的。味道略似玫瑰。<br>天竺葵精油非常容易与其他精油融合，能止痛，抗菌，活血通经，平衡皮肤油脂，去除脚气脚臭，促进皮肤细胞新生，修复疤痕，妊娠纹。  </p>
-<h2 id="精油档案"><a href="#精油档案" class="headerlink" title="精油档案"></a>精油档案</h2><ul>
-<li>别名：驱蚊草，玫瑰天竺葵</li>
-<li>英文名：Geranium</li>
-<li>主要产地： 法国，西班牙，埃及，摩洛哥及中国各地普遍栽植</li>
-<li>特征：无色或淡绿色的澄明油状物</li>
-<li>化学成分：香茅醇，香叶醇，沉香醇等</li>
-<li>香味特征：具有强烈的综合甜味，有点像玫瑰</li>
-<li>挥发性：中度挥发</li>
-</ul>
-<h2 id="适合混用的精油"><a href="#适合混用的精油" class="headerlink" title="适合混用的精油"></a>适合混用的精油</h2><ul>
-<li>佛手柑；雪松；快乐鼠尾草；薰衣草；葡萄柚；迷迭香；洋甘菊；檀香；杜松</li>
-</ul>
-<h2 id="功效"><a href="#功效" class="headerlink" title="功效"></a>功效</h2><ul>
-<li>皮肤：适合各种肤质，平衡油脂分泌，对松垮，毛孔阻塞也很有效果。清洁皮肤，治疗湿疹，烫伤，带状疱疹及冻疮</li>
-<li>心理：安抚焦虑，抑郁，沮丧等情绪，通过影响肾上腺皮质，让心理压力得以缓解，恢复平衡</li>
-<li>医学：<ul>
-<li>抗菌消炎，止痛，补血</li>
-<li>改善经前症候群，更年期问题，如：沮丧，抑郁，阴道干涩，经血过多等</li>
-<li>促进血液循环，帮助肝，肾排毒，利尿</li>
-</ul>
+<li><p>修改 ld.so.conf 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">nano /etc/ld.so.conf</span><br><span class="line"></span><br><span class="line">//文件为添加下面一行</span><br><span class="line">/usr/local/lib</span><br><span class="line"></span><br><span class="line">// 更新一下</span><br><span class="line">/sbin/ldconfig –v</span><br></pre></td></tr></table></figure>
 </li>
-</ul>
-<h2 id="保存"><a href="#保存" class="headerlink" title="保存"></a>保存</h2><blockquote>
-<p>深色玻璃瓶，放在木盒中，避免阳光直射，又可以保持恒温。<br>未开封通常可保存3-5年，已开封1年用完，调和好的2月内用完。</p>
-</blockquote>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><blockquote>
-<p>有调节性激素的效果，孕妇禁用<br>调和时浓度控制在1%-2%。<br>对某些敏感肤质会有刺激作用，应谨慎使用</p>
-</blockquote>
+<li><p>临时解决方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export LD_LIBRARY_PATH=/usr/local/mysql/lib:$LD_LIBRARY_PATH</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="系统环境变量"><a href="#系统环境变量" class="headerlink" title="系统环境变量"></a>系统环境变量</h2><p>操作系统启动后会自动执行下面路径下的脚本<br>首先执行/etc/init.d<br>然后用户登录<br>命令行+ssh：<br>/etc/profile</p>
+<p>下面文件中只要有一个存在就不再继续读其他2个文件了<br>~/.bash_profile<br>~/.bash_login<br>~/.profile</p>
+<p>图形界面登录：<br>只加载 /etc/profile 和 ~/.profile。</p>
+<p>/etc/profile是永久性的环境变量,是全局变量，<br>/etc/profile.d/设置所有用户生效</p>
+<p>/etc/profile.d/比/etc/profile好维护，不想要什么变量直接删除/etc/profile.d/下对应的shell脚本即可，不用像/etc/profile需要改动此文件</p>
+<p>用户登录时执行顺序<br>/etc/profile (for all users)<br>/etc/profile.d下的所有脚本，这里放程序初始化信息比较适合<br>~/.bash_profile<br>~/.bashrc</p>
 
           
         
@@ -1551,7 +1090,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2017/12/29/学习笔记/数学/数学-中位数/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/03/29/语言相关/python/后端/supervisor的使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1570,7 +1109,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/29/学习笔记/数学/数学-中位数/" itemprop="url">数学-中位数</a></h1>
+                <a class="post-title-link" href="/2018/03/29/语言相关/python/后端/supervisor的使用/" itemprop="url">supervisor的使用</a></h1>
         
 
         <div class="post-meta">
@@ -1582,7 +1121,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-29T20:49:46+08:00">2017-12-29</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-29T10:20:37+08:00">2018-03-29</time>
             
 
             
@@ -1603,7 +1142,14 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数学/" itemprop="url" rel="index"><span itemprop="name">数学</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端/" itemprop="url" rel="index"><span itemprop="name">后端</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a></span>
 
                 
                 
@@ -1638,11 +1184,11 @@
 
       
         
-          <h2 id="单项式"><a href="#单项式" class="headerlink" title="单项式"></a>单项式</h2><p>由数或字母的积组成的代数式叫做单项式，单独的一个数或一个字母也叫做单项式<br>单项式中的数字因数叫做这个单项式的系数（Coefficient）<br>一个单项式中，所有字母的指数的和叫做这个单项式的次数（Degree of a monomial)。单项式是几次，就叫做几次单项式。  </p>
-<h2 id="多项式"><a href="#多项式" class="headerlink" title="多项式"></a>多项式</h2><p>由若干个单项式相加组成的代数式叫做多项式（若有减法：减一个数等于加上它的相反数）。<br>多项式中的每个单项式叫做多项式的项，这些单项式中的最高项次数，就是这个多项式的次数。其中多项式中不含字母的项叫做常数项。<br></p>
+          <p>Supervisor python2 环境。官方还没有出py3的版本，不过不影响管理py3的进程。<br>supervisord 提供实际的服务，服务端<br>supervisorctl 命令行解释器，客户端</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ubuntu 18.04 bionic</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install python-pip</span><br><span class="line">使用 root 用户安装</span><br><span class="line">pip install supervisor</span><br><span class="line">Note: after install, need reconnect ssh terminal otherwise cannot find the supervisor</span><br><span class="line"></span><br><span class="line">not root user install path this will cause start problem:</span><br><span class="line">/home/ubuntu/.local/bin/</span><br><span class="line">/home/ubuntu/.local/lib/python2.7/site-packages/supervisor</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/29/学习笔记/数学/数学-中位数/#more" rel="contents">
+            <a class="btn" href="/2018/03/29/语言相关/python/后端/supervisor的使用/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1698,7 +1244,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2017/12/29/业余爱好/爱好-羽毛球/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/03/28/学习笔记/linux/linux目录的作用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1717,7 +1263,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/29/业余爱好/爱好-羽毛球/" itemprop="url">爱好-羽毛球</a></h1>
+                <a class="post-title-link" href="/2018/03/28/学习笔记/linux/linux目录的作用/" itemprop="url">linux目录的作用</a></h1>
         
 
         <div class="post-meta">
@@ -1729,7 +1275,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-29T20:00:34+08:00">2017-12-29</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-28T22:46:49+08:00">2018-03-28</time>
             
 
             
@@ -1750,7 +1296,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/爱好/" itemprop="url" rel="index"><span itemprop="name">爱好</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a></span>
 
                 
                 
@@ -1786,12 +1332,450 @@
       
         
           
-            <p>弹性线选择 BG66UM 线或者 NBG98 线，YONEX BG65，NBG-95：0.69 毫米的线径，这些型号的羽线中，VS-550 和 VS-800 销量最大。</p>
-<h2 id="线径"><a href="#线径" class="headerlink" title="线径"></a>线径</h2><p>0.69mm-0.70mm 属于耐打线，强调的是耐打，尤其是 28 磅以上时，这种线在与高弹线相比性能差不多的情况下耐打度大大提升。综合来说这种线弹性一般，耐打度高，入门优先考虑<br>0.65mm-0.69mm 属于弹性线，这类线不硬，强调弹性，优点弹性出众，控球优良，缺点耐打性降低，新手也可用～<br>0.61mm-0.65mm，属于控球线，线径最细，最容易断，带来的是控球精确，这类线较贵且很不耐打，感兴趣的可以整几根试一下，不建议常用，土豪自便～</p>
-<h2 id="磅数"><a href="#磅数" class="headerlink" title="磅数"></a>磅数</h2><p>低磅（&lt;=20）,低磅下弹性很好，拍线非常松，优点弹性大，缺点控球非常不准确，滞留感非常强，很难达到自己想要的点上。<br>中低磅（20-23），中低磅下弹性不错，滞留感会减小，优点弹性大，缺点控球仍然不准确，但相比低磅下有所提升。<br>中磅（23-25），作为大多数羽球爱好者所选择的磅数，中磅下弹性和滞留感达到一个相对平衡的状态，击球手感大大提升，控球大大提升，缺点在这个磅数下羽线耐久度开始有所影响。<br>中高磅（25-28），中高磅下明显开始感觉到拍面的硬，滞留感显著减少，控球提升明显，但弹性明显降低，这时力气较小的球友们就会开始感到击球明显费力而且打不到后场，适合进阶球友使用。<br>高磅（&gt;=28），高磅下击球非常硬（有多硬，想想拿着平底锅打球什么感觉就知道了），弹性非常小，滞留感几乎消失，用多大力打多远球，指哪打哪（前提是打的好），大部分职业运动员和业余高手使用，不建议一般球友使用，盲目使用会导致手腕受伤。</p>
-<h2 id="重量"><a href="#重量" class="headerlink" title="重量"></a>重量</h2><p>5U：约75克~80克<br>4U：约80克~85克<br>3U：约85克~90克<br>2U：约90克~95克</p>
-<h2 id="拍杆软硬"><a href="#拍杆软硬" class="headerlink" title="拍杆软硬"></a>拍杆软硬</h2><p>拍杆较软的话，回弹性好，击球时羽毛球就会飞得更快<br>拍杆比较硬的话，弹性弱，力量就直接传到羽毛球上，这样打出的球更有威力。</p>
-<h2 id="手柄粗细"><a href="#手柄粗细" class="headerlink" title="手柄粗细"></a>手柄粗细</h2><p>球拍的侧面标有“4UG5”符号，其中，“G5”这一部分的5指的就是手柄的尺寸大小。跟重量一样，数字越小，手柄越粗。大多数制造商制造的是“4”、“5”、“6”的尺寸。选择适合自己手掌大小的球柄，击球、挥拍时的感觉会更加自如。</p>
+            <p>/bin 二进制可执行命令<br>/dev 设备特殊文件<br>/etc 系统管理和配置文件<br>/etc/rc.d 启动的配置文件和脚本<br>/home 用户主目录的基点，比如用户user的主目录就是/home/user，可以用~user表示<br>/lib 标准程序设计库，又叫动态链接共享库，作用类似windows里的.dll文件<br>/sbin 系统管理命令，这里存放的是系统管理员使用的管理程序<br>/tmp 公用的临时文件存储点<br>/root 系统管理员的主目录（呵呵，特权阶级）<br>/mnt 系统提供这个目录是让用户临时挂载其他的文件系统。<br>/lost+found 这个目录平时是空的，系统非正常关机而留下“无家可归”的文件（windows下叫什么.chk）就在这里<br>/proc 虚拟的目录，是系统内存的映射。可直接访问这个目录来获取系统信息。<br>/var 某些大文件的溢出区，比方说各种服务的日志文件<br>/usr 最庞大的目录，要用到的应用程序和文件几乎都在这个目录。其中包含：<br>/usr/x11r6 存放x window的目录<br>/usr/bin 众多的应用程序<br>/usr/sbin 超级用户的一些管理程序<br>/usr/doc linux文档<br>/usr/include linux下开发和编译应用程序所需要的头文件<br>/usr/lib 常用的动态链接库和软件包的配置文件<br>/usr/man 帮助文档<br>/usr/src 源代码，linux内核的源代码就放在/usr/src/linux里<br>/usr/local/bin 本地增加的命令<br>/usr/local/lib 本地增加的库</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/03/28/学习笔记/linux/cron定时器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/28/学习笔记/linux/cron定时器/" itemprop="url">cron定时器</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-28T14:10:49+08:00">2018-03-28</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>通过crontab 命令，我们可以在固定的间隔时间执行指定的系统指令或 shell script脚本。时间间隔的单位可以是分钟、小时、日、月、周及以上的任意组合。这个命令非常适合周期性的日志分析或数据备份等工作。</p>
+<p><img alt="4611a6ea.png" src="/2018/03/28/学习笔记/linux/cron定时器/4611a6ea.png" width="" height=""></p>
+<h2 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h2><h3 id="新建一个定时任务"><a href="#新建一个定时任务" class="headerlink" title="新建一个定时任务"></a>新建一个定时任务</h3><p>使用nano编辑，完成后会自动安装定时任务。  </p>
+<p><code>EDITOR=nano crontab -e</code></p>
+<p>然后随便选一个下面的就可以了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">01 * * * * root echo &quot;This command is run at one min past every hour&quot;</span><br><span class="line">17 8 * * * root echo &quot;This command is run daily at 8:17 am&quot;</span><br><span class="line">17 20 * * * root echo &quot;This command is run daily at 8:17 pm&quot;</span><br><span class="line">00 4 * * 0 root echo &quot;This command is run at 4 am every Sunday&quot;</span><br><span class="line">* 4 * * Sun root echo &quot;So is this&quot;</span><br><span class="line">42 4 1 * * root echo &quot;This command is run 4:42 am every 1st of the month&quot;</span><br><span class="line">01 * 19 07 * root echo &quot;This command is run hourly on the 19th of July&quot;</span><br></pre></td></tr></table></figure></p>
+<h3 id="查看定时任务"><a href="#查看定时任务" class="headerlink" title="查看定时任务"></a>查看定时任务</h3><p><code>crontab -l</code></p>
+<h2 id="重启"><a href="#重启" class="headerlink" title="重启"></a>重启</h2><p><code>service cron restart</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">服务操作说明：</span><br><span class="line"></span><br><span class="line">/sbin/service crond start //启动服务</span><br><span class="line">/sbin/service crond stop //关闭服务</span><br><span class="line">/sbin/service crond restart //重启服务</span><br><span class="line">/sbin/service crond reload //重新载入配置</span><br><span class="line">service crond status  //查看crontab服务状态</span><br><span class="line">加入开机自动启动:</span><br><span class="line">chkconfig –level 35 crond on</span><br><span class="line">查看crontab服务是否已设置为开机启动，执行命令：ntsysv</span><br></pre></td></tr></table></figure>
+<h2 id="python脚本"><a href="#python脚本" class="headerlink" title="python脚本"></a>python脚本</h2><p>crontab中python命令使用绝对路径<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*/5 * * * * /usr/local/bin/python2.7 /home/work/user/main.py &gt; /yyy.log 2&gt;&amp;1</span><br></pre></td></tr></table></figure></p>
+<p>程序中涉及文件路径，相对路径改为绝对路径，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">file = &apos;conf&apos;  </span><br><span class="line">改为：  </span><br><span class="line">file = &apos;/home/work/user/conf&apos;</span><br></pre></td></tr></table></figure></p>
+<p> 预安装python版本可能非实际使用版本，可使用绝对路径解决<br> 如果需要生效你的bash信息，可以在前面加上“source ~/.bashrc &amp;&amp;”<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*/5 * * * * source ~/.bashrc &amp;&amp; /usr/local/bin/python2.7 /home/work/user/main.py &gt; /yyy.log 2&gt;&amp;1</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/03/28/Web开发/apache-nginx实用参考/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/28/Web开发/apache-nginx实用参考/" itemprop="url">apache_nginx实用参考</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-28T09:53:02+08:00">2018-03-28</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端/" itemprop="url" rel="index"><span itemprop="name">后端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><a href="https://www.digitalocean.com/community/tutorials/apache-vs-nginx-practical-considerations" target="_blank" rel="noopener">原文</a><br>发表时间January 28, 2015</p>
+<p>这两个开源项目在很多方面有共性，但是又各有特色，不能简单的考虑使用一个完全的替代另一个。<br>需要根据不同的应用场景来选择。</p>
+<p>未完结。待续</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/28/Web开发/apache-nginx实用参考/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/03/27/工具相关/wordpress-配置相关/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/27/工具相关/wordpress-配置相关/" itemprop="url">wordpress-配置相关</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-27T22:50:24+08:00">2018-03-27</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/其他/" itemprop="url" rel="index"><span itemprop="name">其他</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="英文、中文切换"><a href="#英文、中文切换" class="headerlink" title="英文、中文切换"></a>英文、中文切换</h2><p>下载的英文版，后台还要给其他人使用，所以需要安装中文语言包。<br>官网下载语言包之后，解压到WordPress网站/wp-content/languages/目录下<br>打开站点根目录下的wp_config.php<br>找到define(‘WPLANG’，修改为：<br>define(‘WPLANG’, ‘zh_CN’);</p>
+<p>回到浏览器，刷新页面，可以在设置里面看到中文选项。保存刷新即可。</p>
 
           
         
@@ -1834,7 +1818,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/81/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/81/">81</a><span class="page-number current">82</span><a class="page-number" href="/page/83/">83</a><span class="space">&hellip;</span><a class="page-number" href="/page/100/">100</a><a class="extend next" rel="next" href="/page/83/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/81/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/81/">81</a><span class="page-number current">82</span><a class="page-number" href="/page/83/">83</a><span class="space">&hellip;</span><a class="page-number" href="/page/113/">113</a><a class="extend next" rel="next" href="/page/83/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1881,7 +1865,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">999</span>
+                    <span class="site-state-item-count">1124</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2046,7 +2030,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">76</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">78</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -2465,7 +2453,19 @@
                     
                       
                     
-                    <span class="site-state-item-count">203</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">209</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -3007,69 +3007,7 @@
         onPopupClose();
       }
     });
-  </script>
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-  
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-        
-      
-    
-      
-    
-  
-
-  
-    
-      <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-      var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -3088,7 +3026,44 @@
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->
 
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
     
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+
   
 
 

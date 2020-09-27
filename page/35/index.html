@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">76</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">78</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">999</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1124</span>
       </a>
 </li>
 
@@ -328,7 +328,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/01/10/开源库/消息中间件比较ZeroMq-RabbitMQ-ActiveMQ/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/05/22/开源库/MQTT/mqtt-demo样例/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -347,7 +347,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/10/开源库/消息中间件比较ZeroMq-RabbitMQ-ActiveMQ/" itemprop="url">消息中间件比较ZeroMq-RabbitMQ-ActiveMQ</a></h1>
+                <a class="post-title-link" href="/2019/05/22/开源库/MQTT/mqtt-demo样例/" itemprop="url">mqtt-demo样例</a></h1>
         
 
         <div class="post-meta">
@@ -359,7 +359,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-10T10:57:04+08:00">2019-01-10</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-22T18:13:50+08:00">2019-05-22</time>
             
 
             
@@ -381,6 +381,13 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
 
                 
                 
@@ -416,11 +423,299 @@
       
         
           
-            <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>总体上分为 broker 和 brokerless  两种<br>broker 是需要安装中间服务的.</p>
-<p>zmq 是属于 brokerless<br>activemq 两种都有<br>rabbitmq 是属于 broker</p>
-<h1 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h1><p>is one of the leading implementation of the AMQP protocol (along with Apache Qpid). Therefore, it implements a broker architecture, meaning that messages are queued on a central node before being sent to clients. This approach makes RabbitMQ very easy to use and deploy, because advanced scenarios like routing, load balancing or persistent message queuing are supported in just a few lines of code. However, it also makes it less scalable and “slower” because the central node adds latency and message envelopes are quite big.</p>
-<h1 id="ZeroMq"><a href="#ZeroMq" class="headerlink" title="ZeroMq"></a>ZeroMq</h1><p>is a very lightweight messaging system specially designed for high throughput/low latency scenarios like the one you can find in the financial world. Zmq supports many advanced messaging scenarios but contrary to RabbitMQ, you’ll have to implement most of them yourself by combining various pieces of the framework (e.g : sockets and devices). Zmq is very flexible but you’ll have to study the 80 pages or so of the guide (which I recommend reading for anybody writing distributed system, even if you don’t use Zmq) before being able to do anything more complicated than sending messages between 2 peers.</p>
-<h1 id="ActiveMQ"><a href="#ActiveMQ" class="headerlink" title="ActiveMQ"></a>ActiveMQ</h1><p>is in the middle ground. Like Zmq, it can be deployed with both broker and P2P topologies. Like RabbitMQ, it’s easier to implement advanced scenarios but usually at the cost of raw performance. It’s the Swiss army knife of messaging :-).</p>
+            <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">volatile</span> MQTTClient_deliveryToken deliveredtoken;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">delivered</span><span class="params">(<span class="keyword">void</span> *context, MQTTClient_deliveryToken dt)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Message with token value %d delivery confirmed\n"</span>, dt);</span><br><span class="line">	deliveredtoken = dt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">msgarrvd</span><span class="params">(<span class="keyword">void</span> *context, <span class="keyword">char</span> *topicName, <span class="keyword">int</span> topicLen, MQTTClient_message *message)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	wstring str = getAppPath();</span><br><span class="line">	CDllHelper dllMqtt;</span><br><span class="line">	DWORD dwRet = dllMqtt.addDllSearchPath(str + <span class="string">L"ini"</span>);</span><br><span class="line">	dwRet = dllMqtt.loadDll(str + <span class="string">L"ini/paho-mqtt3c.dll"</span>);</span><br><span class="line">	<span class="keyword">if</span> (dwRet)</span><br><span class="line">	&#123;</span><br><span class="line">		ASSERT(FALSE);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">auto</span> pMQTTClient_freeMessage = dllMqtt.getDllFunc&lt;<span class="keyword">void</span>(MQTTClient_message** message)&gt;(<span class="string">"MQTTClient_freeMessage"</span>);</span><br><span class="line"><span class="comment">//	m_pMQTTClient_freeMessage = dllMqtt.getDllFunc&lt;void(MQTTClient_message** message)&gt;("MQTTClient_freeMessage");</span></span><br><span class="line">	<span class="keyword">auto</span> pMQTTClient_free = dllMqtt.getDllFunc&lt;<span class="keyword">void</span>(<span class="keyword">void</span>* memory)&gt;(<span class="string">"MQTTClient_free"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">	<span class="keyword">char</span>* payloadptr;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Message arrived\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"     topic: %s\n"</span>, topicName);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"   message: "</span>);</span><br><span class="line"></span><br><span class="line">	payloadptr = (<span class="keyword">char</span> *)message-&gt;payload;</span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; message-&gt;payloadlen; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">putchar</span>(*payloadptr++);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">putchar</span>(<span class="string">'\n'</span>);</span><br><span class="line">	pMQTTClient_freeMessage(&amp;message);</span><br><span class="line">	pMQTTClient_free(topicName);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">connlost</span><span class="params">(<span class="keyword">void</span> *context, <span class="keyword">char</span> *cause)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"\nConnection lost\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"     cause: %s\n"</span>, cause);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">wstring str = getAppPath();</span><br><span class="line">	CDllHelper dllMqtt;</span><br><span class="line">	DWORD dwRet = dllMqtt.addDllSearchPath(str + <span class="string">L"ini"</span>);</span><br><span class="line">	dwRet = dllMqtt.loadDll(str + <span class="string">L"ini/paho-mqtt3c.dll"</span>);</span><br><span class="line">	<span class="keyword">if</span> (dwRet)</span><br><span class="line">	&#123;</span><br><span class="line">		ASSERT(FALSE);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">auto</span> pMQTTClient_create = dllMqtt.getDllFunc&lt;<span class="keyword">int</span>(MQTTClient*, <span class="keyword">const</span> <span class="keyword">char</span>*, <span class="keyword">const</span> <span class="keyword">char</span>*,<span class="keyword">int</span> , <span class="keyword">void</span>*)&gt;(<span class="string">"MQTTClient_create"</span>);</span><br><span class="line">	<span class="keyword">auto</span> pMQTTClient_connect = dllMqtt.getDllFunc&lt;<span class="keyword">int</span>(MQTTClient, MQTTClient_connectOptions*)&gt;(<span class="string">"MQTTClient_connect"</span>);</span><br><span class="line">	<span class="keyword">auto</span> pMQTTClient_destroy = dllMqtt.getDllFunc&lt;<span class="keyword">void</span>(MQTTClient*)&gt;(<span class="string">"MQTTClient_destroy"</span>);</span><br><span class="line">	<span class="keyword">auto</span> pMQTTClient_disconnect = dllMqtt.getDllFunc&lt;<span class="keyword">int</span>(MQTTClient, <span class="keyword">int</span>)&gt;(<span class="string">"MQTTClient_disconnect"</span>);</span><br><span class="line">	<span class="keyword">auto</span> pMQTTClient_setCallbacks = dllMqtt.getDllFunc&lt;<span class="keyword">int</span>(MQTTClient handle, <span class="keyword">void</span>* context, MQTTClient_connectionLost* cl,</span><br><span class="line">		MQTTClient_messageArrived* ma, MQTTClient_deliveryComplete* dc)&gt;(<span class="string">"MQTTClient_setCallbacks"</span>);</span><br><span class="line">	<span class="keyword">auto</span> pMQTTClient_subscribe = dllMqtt.getDllFunc&lt;<span class="keyword">int</span>(MQTTClient handle, <span class="keyword">const</span> <span class="keyword">char</span>* topic, <span class="keyword">int</span> qos)&gt;(<span class="string">"MQTTClient_subscribe"</span>);</span><br><span class="line">	<span class="keyword">auto</span> pMQTTClient_unsubscribe = dllMqtt.getDllFunc&lt;<span class="keyword">int</span>(MQTTClient handle, <span class="keyword">const</span> <span class="keyword">char</span>* topic)&gt;(<span class="string">"MQTTClient_unsubscribe"</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ADDRESS     <span class="meta-string">"tcp://localhost:1883"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CLIENTID    <span class="meta-string">"66889710-BA34-4BBC-811A-ABFC2AD281EB"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TOPIC       <span class="meta-string">"event/#"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PAYLOAD     <span class="meta-string">"Hello World!"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> QOS         1</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TIMEOUT     10000L</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// subscribe</span></span><br><span class="line">	MQTTClient client;</span><br><span class="line">	MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;</span><br><span class="line">	<span class="keyword">int</span> rc;</span><br><span class="line">	<span class="keyword">int</span> ch;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> iRet = pMQTTClient_create(&amp;client, ADDRESS, CLIENTID,MQTTCLIENT_PERSISTENCE_NONE, <span class="literal">NULL</span>);</span><br><span class="line">	<span class="keyword">if</span> (MQTTCLIENT_SUCCESS != iRet)</span><br><span class="line">	&#123;</span><br><span class="line">		ASSERT(FALSE);</span><br><span class="line">	&#125;</span><br><span class="line">	conn_opts.keepAliveInterval = <span class="number">20</span>;</span><br><span class="line">	conn_opts.cleansession = <span class="number">1</span>;</span><br><span class="line">	conn_opts.connectTimeout = <span class="number">2</span>;</span><br><span class="line">	conn_opts.username = <span class="string">"admin"</span>;</span><br><span class="line">	conn_opts.password = <span class="string">"123456"</span>;</span><br><span class="line">	conn_opts.MQTTVersion = MQTTVERSION_DEFAULT;</span><br><span class="line"></span><br><span class="line">	iRet = pMQTTClient_setCallbacks(client, <span class="literal">NULL</span>, connlost, msgarrvd, delivered);</span><br><span class="line">	<span class="keyword">if</span> (MQTTCLIENT_SUCCESS != iRet)</span><br><span class="line">	&#123;</span><br><span class="line">		ASSERT(FALSE);</span><br><span class="line">	&#125;</span><br><span class="line">	iRet = pMQTTClient_connect(client, &amp;conn_opts);</span><br><span class="line">	<span class="keyword">if</span> (iRet != MQTTCLIENT_SUCCESS)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Failed to connect, return code %d\n"</span>, iRet);</span><br><span class="line">		<span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Subscribing to topic %s\nfor client %s using QoS%d\n\n"</span></span><br><span class="line">		<span class="string">"Press Q&lt;Enter&gt; to quit\n\n"</span>, TOPIC, CLIENTID, QOS);</span><br><span class="line">	iRet = pMQTTClient_subscribe(client, TOPIC, QOS);</span><br><span class="line">	<span class="keyword">if</span> (MQTTCLIENT_SUCCESS != iRet)</span><br><span class="line">	&#123;</span><br><span class="line">		ASSERT(FALSE);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">do</span></span><br><span class="line">	&#123;</span><br><span class="line">		ch = getchar();</span><br><span class="line">	&#125; <span class="keyword">while</span> (ch != <span class="string">'Q'</span> &amp;&amp; ch != <span class="string">'q'</span>);</span><br><span class="line"></span><br><span class="line">	pMQTTClient_unsubscribe(client, TOPIC);</span><br><span class="line">	pMQTTClient_disconnect(client, <span class="number">10000</span>);</span><br><span class="line">	pMQTTClient_destroy(&amp;client);</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/05/20/功能分类/数据库/db-Access/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/20/功能分类/数据库/db-Access/" itemprop="url">db-Access</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-20T13:45:53+08:00">2019-05-20</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><ol>
+<li>not support UTF8 sql string</li>
+<li>Access 2016版本之前不支持bitint</li>
+</ol>
+<p><a href="https://support.office.com/zh-cn/article/%E4%BD%BF%E7%94%A8%E5%A4%A7%E6%95%B0%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-5b623f6e-641d-4e97-8bdf-b77bae076f70" target="_blank" rel="noopener">https://support.office.com/zh-cn/article/%E4%BD%BF%E7%94%A8%E5%A4%A7%E6%95%B0%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-5b623f6e-641d-4e97-8bdf-b77bae076f70</a></p>
+<p>大数数据类型可存储非货币的数值，并与 ODBC 中的 SQL_BIGINT 数据类型兼容。请使用这种数据类型以高效计算大数。</p>
+<p>大数数据类型的范围<br>可将大数作为字段添加到 Access 表中。还可通过相应的数据类型（如 SQL Server bigint 数据类型）链接到数据库或从数据库导入。若要添加大数数据类型，需要 Access 2016（16.0.7812 或更高版本）。</p>
+<h1 id="where-条件"><a href="#where-条件" class="headerlink" title="where 条件"></a>where 条件</h1><p>如果想筛选Access数据表中 Null 和 “” 空字符串 以及 “ “ 空格的数据，则可以使用 trim(nz(字段名))=””</p>
+<h1 id="报错-用户-‘admin’-以独占方式的锁定数据表"><a href="#报错-用户-‘admin’-以独占方式的锁定数据表" class="headerlink" title="报错: 用户 ‘admin’ 以独占方式的锁定数据表"></a>报错: 用户 ‘admin’ 以独占方式的锁定数据表</h1><p>还没找到好的处理方法.暂时捕获异常,延迟,然后重新执行.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">skip_retry:</span><br><span class="line">TRY&#123;</span><br><span class="line">    <span class="comment">// some sql process</span></span><br><span class="line">&#125;CATCH(CDBException, e) &#123;</span><br><span class="line">		<span class="keyword">char</span> buf[<span class="number">1024</span>] = &#123; <span class="string">'\0'</span> &#125;;</span><br><span class="line">		e-&gt;GetErrorMessage(&amp;buf[<span class="number">0</span>], <span class="number">1024</span>);</span><br><span class="line">		<span class="keyword">if</span> (<span class="literal">nullptr</span> != <span class="built_in">strstr</span>(buf, <span class="string">"独占方式"</span>))</span><br><span class="line">		&#123;</span><br><span class="line">			Sleep(<span class="number">500</span>);</span><br><span class="line">			<span class="keyword">goto</span> skip_retry;</span><br><span class="line">		&#125;</span><br><span class="line">		ASSERT(FALSE);</span><br><span class="line">		<span class="keyword">if</span> (g_bWriteLog)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">string</span> strLog = <span class="string">"1biao6shi: manForce Database error: "</span> + e-&gt;m_strError;</span><br><span class="line">			OutputDebugString(strLog.c_str());</span><br><span class="line">			<span class="keyword">if</span> (g_logger)</span><br><span class="line">			&#123;</span><br><span class="line">				g_logger-&gt;error(strLog);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	END_CATCH;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/05/19/Web开发/php服务端开发/php-pdo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/19/Web开发/php服务端开发/php-pdo/" itemprop="url">php-pdo</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-19T22:52:38+08:00">2019-05-19</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/服务端/" itemprop="url" rel="index"><span itemprop="name">服务端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>PHP 数据对象PDO扩展为PHP访问数据库定义了一个轻量级的一致接口。PDO 提供了一个数据访问抽象层，这意味着，不管使用哪种数据库，都可以用相同的函数（方法）来查询和获取数据。</p>
 
           
         
@@ -474,7 +769,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/01/09/语言相关/CPP/cpp-面试题/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/05/19/Web开发/php服务端开发/php-sqlite/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -493,7 +788,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/09/语言相关/CPP/cpp-面试题/" itemprop="url">cpp-面试题</a></h1>
+                <a class="post-title-link" href="/2019/05/19/Web开发/php服务端开发/php-sqlite/" itemprop="url">php-sqlite</a></h1>
         
 
         <div class="post-meta">
@@ -505,7 +800,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-09T11:33:15+08:00">2019-01-09</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-19T18:54:28+08:00">2019-05-19</time>
             
 
             
@@ -526,7 +821,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/服务端/" itemprop="url" rel="index"><span itemprop="name">服务端</span></a></span>
 
                 
                 
@@ -561,33 +856,609 @@
 
       
         
-          <h1 id="C-11-relative"><a href="#C-11-relative" class="headerlink" title="C++ 11 relative"></a>C++ 11 relative</h1><h2 id="move-semantic"><a href="#move-semantic" class="headerlink" title="move semantic"></a>move semantic</h2><p>为了提高效率，避免复制构造函数的拷贝动作。</p>
-<h2 id="perfect-forwarding"><a href="#perfect-forwarding" class="headerlink" title="perfect forwarding"></a>perfect forwarding</h2><p>会保留参数的左右值类型<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">template &lt;typename T&gt;</span><br><span class="line">void func(T t) &#123;</span><br><span class="line">    cout &lt;&lt; &quot;in func &quot; &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template &lt;typename T&gt;</span><br><span class="line">void relay(T&amp;&amp; t) &#123;</span><br><span class="line">    cout &lt;&lt; &quot;in relay &quot; &lt;&lt; endl;</span><br><span class="line">    func(std::forward&lt;T&gt;(t));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="smart-pointer"><a href="#smart-pointer" class="headerlink" title="smart pointer"></a>smart pointer</h2><ul>
-<li>unique_ptr: 如果内存资源的所有权不需要共享，就应当使用这个（它没有拷贝构造函数），但是它可以转让给另一个unique_ptr（存在move构造函数）。</li>
-<li>shared_ptr:  如果内存资源需要共享，那么使用这个（所以叫这个名字）。</li>
-<li>weak_ptr: 持有被shared_ptr所管理对象的引用，但是不会改变引用计数值。它被用来打破依赖循环（想象在一个tree结构中，父节点通过一个共享所有权的引用(chared_ptr)引用子节点，同时子节点又必须持有父节点的引用。如果这第二个引用也共享所有权，就会导致一个循环，最终两个节点内存都无法释放）。</li>
-</ul>
-<p>显示地使用shared_ptr构造函数来构造则至少需要两次内存分配。除了会产生额外的开销，还可能会导致内存泄漏。<br>使用make_shared就不会有这个问题了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// 下面两个是等价的</span><br><span class="line">std::shared_ptr&lt;int&gt; p1(new int(42));</span><br><span class="line">auto p3 = std::make_shared&lt;int&gt;(42);</span><br></pre></td></tr></table></figure></p>
-<h2 id="Lambda"><a href="#Lambda" class="headerlink" title="Lambda"></a>Lambda</h2><h2 id="nullptr"><a href="#nullptr" class="headerlink" title="nullptr"></a>nullptr</h2><p>关键字 nullptr 是 <code>std::nullptr_t</code> 类型的值，用来指代空指针。nullptr 和任何指针类型以及类成员指针类型的空值之间可以发生隐式类型转换，同样也可以隐式转换为 bool 型（取值为 false）。但是不存在到整形的隐式类型转换。</p>
-<p>NULL 的定义是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ifdef __cplusplus</span><br><span class="line">#define NULL 0</span><br><span class="line">#else</span><br><span class="line">#define NULL ((void *)0)</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">比如f（char*）和f（int），参数传NULL的话到底该调用哪个？事实上，在VS下测试这样的函数重载会优先调用f（int），但是f（char *）也是正确的，因此C++引入nullptr来避免这个问题。</span><br></pre></td></tr></table></figure>
-<h2 id="range-for"><a href="#range-for" class="headerlink" title="range for"></a>range for</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int arr[] = &#123;1,2,3,4,5&#125;;</span><br><span class="line">for(int&amp; e : arr)</span><br><span class="line">&#123;</span><br><span class="line">  e = e*e;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><ul>
-<li>单例模式<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 懒汉式单例模式</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	Singleton() &#123; &#125;</span><br><span class="line">	<span class="keyword">static</span> Singleton * pInstance;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">static</span> Singleton * <span class="title">GetInstance</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (pInstance == <span class="literal">nullptr</span>)</span><br><span class="line">			pInstance = <span class="keyword">new</span> Singleton();</span><br><span class="line">		<span class="keyword">return</span> pInstance;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 线程安全的单例模式</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	Singleton() &#123; &#125;</span><br><span class="line">	~Singleton() &#123; &#125;</span><br><span class="line">	Singleton(<span class="keyword">const</span> Singleton &amp;);</span><br><span class="line">	Singleton &amp; <span class="keyword">operator</span> = (<span class="keyword">const</span> Singleton &amp;);</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">static</span> Singleton &amp; <span class="title">GetInstance</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">static</span> Singleton instance;</span><br><span class="line">		<span class="keyword">return</span> instance;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          
+            <h2 id="connect"><a href="#connect" class="headerlink" title="connect"></a>connect</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    $db = <span class="keyword">new</span> PDO(<span class="string">'sqlite:/var/www/php56/db/pduService.db'</span>, <span class="keyword">null</span>,<span class="keyword">null</span>,</span><br><span class="line">        <span class="keyword">array</span>(PDO::ATTR_PERSISTENT =&gt; <span class="keyword">true</span>));</span><br><span class="line"></span><br><span class="line">    $sql = <span class="string">"</span></span><br><span class="line"><span class="string">            INSERT INTO t_demo</span></span><br><span class="line"><span class="string">                (name, age)</span></span><br><span class="line"><span class="string">            VALUES</span></span><br><span class="line"><span class="string">                (:name,:age);</span></span><br><span class="line"><span class="string">        "</span>;</span><br><span class="line">    $handler-&gt;debug($sql, <span class="string">'db'</span>);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line"><span class="comment">//        $db-&gt;exec("INSERT INTO t_demo(name, age) VALUES('Audi', 52642)") or die(print_r($db-&gt;errorInfo(), true));</span></span><br><span class="line"></span><br><span class="line">        $stmt = $db-&gt;prepare($sql);</span><br><span class="line">        $name = <span class="string">'Tom'</span>;</span><br><span class="line">        $age = <span class="number">32</span>;</span><br><span class="line">        <span class="comment">// Bind parameters to statement variables, 两种方法都可以</span></span><br><span class="line"><span class="comment">//        $stmt-&gt;bindParam(1, $name);</span></span><br><span class="line"><span class="comment">//        $stmt-&gt;bindParam(2, $age);</span></span><br><span class="line">        $stmt-&gt;bindValue(<span class="string">':name'</span>, <span class="string">'Tom'</span>, SQLITE3_TEXT);</span><br><span class="line">        $stmt-&gt;bindValue(<span class="string">':age'</span>, <span class="number">34</span>, SQLITE3_INTEGER);</span><br><span class="line"></span><br><span class="line">        $bRet = $stmt-&gt;execute();</span><br><span class="line">        <span class="keyword">if</span> ($bRet == <span class="keyword">false</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            $handler-&gt;debug($db-&gt;errorInfo(),<span class="string">"db error"</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            $handler-&gt;debug(<span class="string">"execute sql success"</span>,<span class="string">"db success"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        $handler-&gt;debug($stmt-&gt;rowCount(), <span class="string">'db rowCount'</span>);</span><br><span class="line">        $handler-&gt;debug($db-&gt;lastInsertId(),<span class="string">"db lastInsertId"</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (PDOException $e) &#123;</span><br><span class="line">        $handler-&gt;debug($e-&gt;getMessage(), <span class="string">'db exception'</span>);</span><br><span class="line">        <span class="keyword">exit</span>($e-&gt;getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">    $result = $db-&gt;query(<span class="string">"SELECT * FROM t_demo"</span>) <span class="keyword">or</span> <span class="keyword">die</span>(<span class="string">"query failed."</span>);</span><br><span class="line">    var_dump($result-&gt;fetchAll());</span><br><span class="line">&#125;<span class="keyword">catch</span> (PDOException $e)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">echo</span> $e-&gt;getMessage();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/05/19/功能分类/数据库/sqlite/sqlite-command-line-usage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/19/功能分类/数据库/sqlite/sqlite-command-line-usage/" itemprop="url">sqlite-command line usage</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-19T16:16:01+08:00">2019-05-19</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="创建-打开数据库"><a href="#创建-打开数据库" class="headerlink" title="创建/打开数据库"></a>创建/打开数据库</h2><p><code>sqlite3 DatabaseName.db</code></p>
+<h2 id="查询表"><a href="#查询表" class="headerlink" title="查询表"></a>查询表</h2><p>命令行输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.tables</span><br><span class="line">select * from t_account;</span><br></pre></td></tr></table></figure>
+<h2 id="查看表DDL语句"><a href="#查看表DDL语句" class="headerlink" title="查看表DDL语句"></a>查看表DDL语句</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.schema</span><br></pre></td></tr></table></figure>
+<h2 id="退出"><a href="#退出" class="headerlink" title="退出"></a>退出</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.exit</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/05/17/读过的书/大投机家的证券心理学/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/17/读过的书/大投机家的证券心理学/" itemprop="url">大投机家的证券心理学</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-17T06:59:20+08:00">2019-05-17</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>又是一本看完之后，晕晕乎乎的书。不知道为什么畅销。也在里面学到了一些东西，但是很少。</p>
+<p><img alt="20190517_070148.png" src="/2019/05/17/读过的书/大投机家的证券心理学/20190517_070148.png" width="200" height=""></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/05/16/功能分类/数据库/MySQL/mysql-字符集/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/16/功能分类/数据库/MySQL/mysql-字符集/" itemprop="url">mysql-字符集</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-16T15:30:46+08:00">2019-05-16</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="编码注意"><a href="#编码注意" class="headerlink" title="编码注意"></a>编码注意</h1><h2 id="搜索中文"><a href="#搜索中文" class="headerlink" title="搜索中文"></a>搜索中文</h2><p>目前可用的是在连接数据库的时候指定编码 dbString = “ODBC;DSN=cxDMSmainMySQL;Trusted_Connection=Yes;CharSet=gbk;”;<br>使用 gbk 就可以正常了 </p>
+<p>当编码设为 utf8mb4 的时候,发现无法搜索到中文字段.<br>使用这个限定符 binary ucase. 之后,搜索的是全部数据,仍然不可用.<br>ucase 是忽略大小写.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sql = str::cstr::format(&quot;SELECT f_plate,f_plate_type,f_car_type,f_name,f_phone_1 FROM t_person_car_info,t_person_info WHERE \</span><br><span class="line">(t_person_info.f_identification_number = t_person_car_info.f_identification_no) and\</span><br><span class="line">(t_person_car_info.f_plate like binary ucase(&apos;%s&apos;))&quot;, param.c_str());</span><br></pre></td></tr></table></figure>
+<p>查看字符集</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">variables</span> <span class="keyword">like</span> <span class="string">'%char%'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SHOW</span> <span class="keyword">VARIABLES</span> <span class="keyword">WHERE</span> Variable_name <span class="keyword">LIKE</span> <span class="string">'character\_set\_%'</span> <span class="keyword">OR</span> Variable_name <span class="keyword">LIKE</span> <span class="string">'collation%'</span>;</span><br></pre></td></tr></table></figure>
+<p><img alt="20190528_151006.png" src="/2019/05/16/功能分类/数据库/MySQL/mysql-字符集/20190528_151006.png" width="400" height=""></p>
+<p>连接登录设置字符集</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql --default-character-set=字符集-u root -p</span><br></pre></td></tr></table></figure>
+<h2 id="设置字符集"><a href="#设置字符集" class="headerlink" title="设置字符集"></a>设置字符集</h2><p>这里的设置,只是当前有效,重启数据库后,会恢复默认的.</p>
+<p>可以通过修改 my.ini 来设置默认字符集</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">character-set-server=utf8mb4</span><br><span class="line">collation-server=utf8mb4_unicode_ci</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SET names utf8mb4 COLLATE utf8mb4_unicode_ci;</span><br><span class="line"></span><br><span class="line">set character_set_database=utf8mb4;</span><br><span class="line">set character_set_server=utf8mb4;</span><br><span class="line"></span><br><span class="line">set collation_server=utf8mb4_unicode_ci;</span><br><span class="line">set collation_database=utf8mb4_unicode_ci;</span><br><span class="line">set collation_connection=utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SET names utf8 COLLATE utf8_unicode_ci;</span><br><span class="line"></span><br><span class="line">set character_set_database=utf8;</span><br><span class="line">set character_set_server=utf8;</span><br><span class="line"></span><br><span class="line">set collation_server=utf8_unicode_ci;</span><br><span class="line">set collation_database=utf8_unicode_ci;</span><br><span class="line">set collation_connection=utf8_unicode_ci;</span><br></pre></td></tr></table></figure>
+<h2 id="设置字节序-collation"><a href="#设置字节序-collation" class="headerlink" title="设置字节序 collation"></a>设置字节序 collation</h2><p>字符序确定在同一字符集内字符之间的比较规则</p>
+<p>查看当前字节序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show variables like &apos;%colla%&apos;;</span><br></pre></td></tr></table></figure>
+<p>查看安装的字符序</p>
+<p><code>show collation;</code></p>
+<p>查看安装的字符集</p>
+<p><code>show character set;</code></p>
+<h3 id="字节序的选择"><a href="#字节序的选择" class="headerlink" title="字节序的选择"></a>字节序的选择</h3><p>结论就是使用 utf8mb4_unicode_ci.</p>
+<p>字符除了需要存储，还需要排序或比较大小，涉及到与编码字符集对应的 排序字符集（collation）。ut8mb4对应的排序字符集常用的有 utf8mb4_unicode_ci, utf8mb4_general_ci</p>
+<p>主要从排序准确性和性能两方面看：</p>
+<ul>
+<li><p>准确性<br>utf8mb4_unicode_ci 是基于标准的Unicode来排序和比较，能够在各种语言之间精确排序<br>utf8mb4_general_ci 没有实现Unicode排序规则，在遇到某些特殊语言或字符是，排序结果可能不是所期望的。<br>但是在绝大多数情况下，这种特殊字符的顺序一定要那么精确吗。比如Unicode把ß、Œ当成ss和OE来看；而general会把它们当成s、e，再如ÀÁÅåāă各自都与 A 相等。</p>
+</li>
+<li><p>性能<br>utf8mb4_general_ci 在比较和排序的时候更快<br>utf8mb4_unicode_ci 在特殊情况下，Unicode排序规则为了能够处理特殊字符的情况，实现了略微复杂的排序算法。<br>但是在绝大多数情况下，不会发生此类复杂比较。general理论上比Unicode可能快些，但相比现在的CPU来说，它远远不足以成为考虑性能的因素，索引涉及、SQL设计才是。 我个人推荐是 utf8mb4_unicode_ci，将来 8.0 里也极有可能使用变为默认的规则。相比选择哪一种collation，使用者应该更关心字符集与排序规则在db里要统一就好。</p>
 </li>
 </ul>
-<h1 id="const"><a href="#const" class="headerlink" title="const"></a>const</h1><p>作用：</p>
-<ul>
-<li>修饰变量，说明该变量不可以被改变；</li>
-<li>修饰指针，分为指向常量的指针和指针常量；<br>常量指针：只能读取内存数据，不能修改内存数据的指针。<br>指针常量：是指指针所指向的位置不能改变，即指针本身是一个常量，但是指针所指向的内容可以改变。</li>
-<li>常量引用，经常用于形参类型，即避免了拷贝，又避免了函数对值的修改；</li>
-<li>修饰成员函数，说明该成员函数内不能修改成员变量。</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义变量</span></span><br><span class="line"><span class="keyword">int</span> a=<span class="number">1</span>;</span><br><span class="line"><span class="comment">//定义常量</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> b=<span class="number">2</span>;</span><br><span class="line"><span class="comment">//定义常量指针</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *ptr1=&amp;a;</span><br><span class="line"><span class="comment">//定义指针常量，必须赋值</span></span><br><span class="line"><span class="keyword">int</span>* <span class="keyword">const</span> ptr2=&amp;a;</span><br><span class="line"></span><br><span class="line"><span class="comment">//错误，不能把常量的地址赋给指针变量</span></span><br><span class="line"><span class="keyword">int</span> *ptr3=&amp;b;</span><br><span class="line"><span class="comment">//正确，可以把常量的地址赋给常量指针</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span>* ptr4=&amp;b;</span><br><span class="line"><span class="comment">//错误，间接引用常量指针不可以修改内存中的数据</span></span><br><span class="line">*ptr1=<span class="number">3</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="数据库配置文件"><a href="#数据库配置文件" class="headerlink" title="数据库配置文件"></a>数据库配置文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[client]</span><br><span class="line">default-character-set=utf8mb4</span><br><span class="line"> </span><br><span class="line">[mysqld]</span><br><span class="line">character-set-server = utf8mb4</span><br><span class="line">collation-server = utf8mb4_unicode_ci</span><br><span class="line">init_connect=&apos;SET NAMES utf8mb4&apos;</span><br><span class="line">skip-character-set-client-handshake = true</span><br><span class="line"> </span><br><span class="line">[mysql]</span><br><span class="line">default-character-set = utf8mb4</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/05/16/功能分类/windows/Win32/win32-combobox/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/16/功能分类/windows/Win32/win32-combobox/" itemprop="url">win32-combobox</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-16T09:33:34+08:00">2019-05-16</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><a href="https://docs.microsoft.com/en-us/windows/desktop/Controls/combo-boxes" target="_blank" rel="noopener">doc</a></p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/01/09/语言相关/CPP/cpp-面试题/#more" rel="contents">
+            <a class="btn" href="/2019/05/16/功能分类/windows/Win32/win32-combobox/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -643,7 +1514,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/01/08/学习笔记/区块链/Substrate/substrate-runtime-demo/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/05/16/功能分类/数据库/ODBC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -662,7 +1533,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/08/学习笔记/区块链/Substrate/substrate-runtime-demo/" itemprop="url">substrate runtime demo</a></h1>
+                <a class="post-title-link" href="/2019/05/16/功能分类/数据库/ODBC/" itemprop="url">ODBC</a></h1>
         
 
         <div class="post-meta">
@@ -674,7 +1545,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-08T17:08:38+08:00">2019-01-08</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-16T09:17:18+08:00">2019-05-16</time>
             
 
             
@@ -695,7 +1566,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
 
                 
                 
@@ -731,8 +1602,11 @@
       
         
           
-            <p><a href="https://substrate.readme.io/docs/substrate-runtime-recipes" target="_blank" rel="noopener">official site</a></p>
-<h1 id="create-template"><a href="#create-template" class="headerlink" title="create template"></a>create template</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git clone --branch polkadot-ui https://github.com/paritytech/substrate-node-template.git substrate-example</span><br><span class="line"></span><br><span class="line">cd substrate-example</span><br><span class="line">./init.sh</span><br><span class="line">./build.sh</span><br><span class="line">cargo build --release</span><br><span class="line">./target/release/template-node --dev</span><br></pre></td></tr></table></figure>
+            <h2 id="add-source-by-code"><a href="#add-source-by-code" class="headerlink" title="add source by code"></a>add source by code</h2><p>SQLCreateDataSource displays a dialog box with which the user can add a data source.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SQLCreateDataSource</span><br></pre></td></tr></table></figure>
+<h2 id="连接字符串"><a href="#连接字符串" class="headerlink" title="连接字符串"></a>连接字符串</h2><h3 id="ODBC"><a href="#ODBC" class="headerlink" title="ODBC"></a>ODBC</h3><h4 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">strConnect = _T(&quot;Driver=&#123;MySQL ODBC 3.51 Driver&#125;;Server=localhost;&quot;</span><br><span class="line">&quot;Database=MyDatabase;User=MyUserName;Password=MyPassword;Option=4;useUnicode=true&amp;characterEncoding=UTF-8&quot;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line">A：使用ODBC方式</span><br><span class="line"> </span><br><span class="line">1:dBASE连接字符串</span><br><span class="line">strConnection = _T(&quot;Driver=&#123;Microsoft dBASE Driver (*.dbf)&#125;;DriverID=277;&quot;</span><br><span class="line">                   &quot;Dbq=c:\\DatabasePath;&quot;);</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">2:Excel连接字符串</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">strConnection = _T(&quot;Driver=&#123;Microsoft Excel Driver (*.xls)&#125;;DriverId=790;&quot;</span><br><span class="line">    bq=C:\\DatabasePath\\DBSpreadSheet.xls;DefaultDir=c:\\databasepath;&quot;);</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">3：Text连接字符串</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">strConnection = _T(&quot;Driver=&#123;Microsoft Text Driver (*.txt; *.csv)&#125;;&quot;</span><br><span class="line">        &quot;Dbq=C:\\DatabasePath\\;Extensions=asc,csv,tab,txt;&quot;);</span><br><span class="line"> </span><br><span class="line">4:Visual FoxPro连接字符串</span><br><span class="line"> </span><br><span class="line">strConnection = _T(&quot;Driver=&#123;Microsoft Visual Foxpro Driver&#125;;UID=;&quot;</span><br><span class="line">    urceType=DBC;SourceDB=C:\\DatabasePath\\MyDatabase.dbc;Exclusive=No&quot;);</span><br><span class="line"> </span><br><span class="line">strConnection = _T(&quot;Driver=&#123;Microsoft Visual Foxpro Driver&#125;;UID=;&quot;</span><br><span class="line">    &quot;SourceType=DBF;SourceDB=C:\\DatabasePath\\MyDatabase.dbc;Exclusive=No&quot;);</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">5：Access连接字符串</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">strConnection = _T(&quot;Driver=&#123;Microsoft Access Driver (*.mdb)&#125;;&quot;</span><br><span class="line">        &quot;Dbq=c:\\DatabasePath\\dbaccess.mdb;Uid=;Pwd=;&quot;);</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">6：:SQL Server连接字符串</span><br><span class="line"> </span><br><span class="line">strConnection = _T(&quot;Driver=&#123;SQL Server&#125;;Server=MyServerName;&quot;</span><br><span class="line">        &quot;Trusted_Connection=no;&quot;</span><br><span class="line">        &quot;Database=MyDatabaseName;Uid=MyUserName;Pwd=MyPassword;&quot;);</span><br><span class="line"> </span><br><span class="line">7:Oracle连接字符串</span><br><span class="line"> </span><br><span class="line">strConnect = _T(&quot;Driver=&#123;Microsoft ODBC for Oracle&#125;;Server=OracleServer.world;&quot;</span><br><span class="line">        &quot;Uid=MyUsername;Pwd=MyPassword;&quot;);</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">9：SyBase连接字符串</span><br><span class="line">strConnect = _T(&quot;Driver=&#123;Sybase System 10&#125;;Srvr=MyServerName;Uid=MyUsername;&quot;</span><br><span class="line">       &quot;Pwd=myPassword;&quot;);</span><br><span class="line"> </span><br><span class="line">10：SqlAnyWhere连接字符串</span><br><span class="line">strConnect = _T(&quot;ODBC;Driver=Sybase SQL Anywhere 5.0;&quot;</span><br><span class="line">    &quot;DefaultDir=C:\\DatabasePath\;Dbf=C:\\SqlAnyWhere50\\MyDatabase.db;&quot;</span><br><span class="line">    &quot;Uid=MyUsername;Pwd=MyPassword;Dsn=\&quot;\&quot;;&quot;);</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">B：使用OLE方式</span><br><span class="line"> </span><br><span class="line">1：SQL Server连接字符串</span><br><span class="line">标准的：strConnect = _T(&quot;Provider=sqloledb;Data Source=MyServerName;&quot;</span><br><span class="line">        &quot;Initial Catalog=MyDatabaseName;&quot;</span><br><span class="line">        &quot;User Id=MyUsername;Password=MyPassword;&quot;);</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">2：MySQL 连接字符串</span><br><span class="line">strConnection = _T(&quot;Provider=MySQLProv;Data Source=test&quot;);</span><br><span class="line"> </span><br><span class="line">3：AS400连接字符串</span><br><span class="line">strConnect = _T(&quot;Provider=IBMDA400;Data source=myAS400;User Id=myUsername;&quot;</span><br><span class="line">     &quot;Password=myPassword;&quot;);</span><br><span class="line"> </span><br><span class="line">4：DB2连接字符串</span><br><span class="line">使用TCPID</span><br><span class="line">strConnect = _T(&quot;Provider=DB2OLEDB;Network Transport Library=TCPIP;&quot;</span><br><span class="line">        &quot;Network Address=130.120.110.001;&quot;</span><br><span class="line">        &quot;Initial Catalog=MyCatalog;Package Collection=MyPackageCollection;&quot;</span><br><span class="line">        &quot;Default Schema=MySchema;User ID=MyUsername;Password=MyPassword;&quot;);</span><br><span class="line">使用APPC</span><br><span class="line">strConnect = _T(&quot;Provider=DB2OLEDB;APPC Local LU Alias=MyLocalLUAlias;&quot;</span><br><span class="line">        &quot;APPC Remote LU Alias=MyRemoteLUAlias;Initial Catalog=MyCatalog;&quot;</span><br><span class="line">        &quot;Package Collection=MyPackageCollection;Default Schema=MySchema;&quot;</span><br><span class="line">        &quot;User ID=MyUsername;Password=MyPassword;&quot;);</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">5:Microsoft Jet连接字符串</span><br><span class="line">标准的：strConnect = _T(&quot;Provider=Microsoft.Jet.OLEDB.4.0;&quot;</span><br><span class="line">        &quot;Data Source=C:\\DatabasePath\\MmDatabase.mdb;&quot;</span><br><span class="line">        &quot;User Id=admin;Password=;&quot;);</span><br><span class="line"> </span><br><span class="line">6：使用OLE连接某一个Excel表</span><br><span class="line">strConnect = _T(&quot;Provider=Microsoft.Jet.OLEDB.4.0;&quot;</span><br><span class="line">        &quot;Data Source=C:\\DatabasePath\\DBSpreadSheet.xls;&quot;</span><br><span class="line">        &quot;Extended Properties=\&quot;\&quot;Excel 8.0;HDR=Yes;\&quot;\&quot;;&quot;);</span><br><span class="line"> </span><br><span class="line">注意 HDR=Yes 是第一行是字段，会自动过滤</span><br><span class="line"> </span><br><span class="line">7：OLAP连接字符串</span><br><span class="line">strConnect = _T(&quot;Provider=MSOLAP;Data Source=MyOLAPServerName;&quot;</span><br><span class="line">     &quot;Initial Catalog=MyOLAPDatabaseName;&quot;);</span><br><span class="line"> </span><br><span class="line">8：Oracle连接字符串</span><br><span class="line"> </span><br><span class="line">trConnect = _T(&quot;Provider=MSDAORA;Data Source=MyOracleDB;User Id=myUsername;&quot;</span><br><span class="line">     &quot;Password=myPassword;&quot;);</span><br><span class="line"> </span><br><span class="line">8：Data Link Connections字符串</span><br><span class="line"> </span><br><span class="line">strConnection = _T(&quot;File Name=c:\\DataBasePath\\DatabaseName.udl;&quot;);</span><br></pre></td></tr></table></figure>
+<h2 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><h3 id="无法解析的外部符号-imp-vsnprintf"><a href="#无法解析的外部符号-imp-vsnprintf" class="headerlink" title="无法解析的外部符号 imp_vsnprintf"></a>无法解析的外部符号 <strong>imp_</strong>vsnprintf</h3><p>在 vs2015 工程选项，链接器附加依赖项里面添加 legacy_stdio_definitions.lib 即可。<br>出现这个问题的原因是 vs2015 默认编译时将许多标准库采用内联方式处理，因而没有可以链接的标准库文件，所以要专门添加标准库文件来链接标准库中的函数。</p>
 
           
         
@@ -786,7 +1660,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/01/08/学习笔记/算法/Ed25519算法/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/05/16/学习笔记/linux/centos/centos7-server-config/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -805,7 +1679,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/08/学习笔记/算法/Ed25519算法/" itemprop="url">Ed25519算法</a></h1>
+                <a class="post-title-link" href="/2019/05/16/学习笔记/linux/centos/centos7-server-config/" itemprop="url">centos7-server config</a></h1>
         
 
         <div class="post-meta">
@@ -817,7 +1691,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-08T14:18:02+08:00">2019-01-08</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-16T05:17:45+08:00">2019-05-16</time>
             
 
             
@@ -838,7 +1712,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/算法/" itemprop="url" rel="index"><span itemprop="name">算法</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a></span>
 
                 
                 
@@ -874,960 +1748,18 @@
       
         
           
-            <p>公共钥只有32字节，私钥只有64字节</p>
-<p>Curve25519/Ed25519/X25519 是著名密码学家 Daniel J. Bernstein 在 2006 年独立设计的椭圆曲线加密 /签名 /密钥交换算法，和现有的任何椭圆曲线算法都完全独立</p>
-<p>Curve25519 是目前最高水平的 Diffie-Hellman函数，适用于广泛的场景，由Daniel J. Bernstein教授设计。由于NIST P-256的设计过程不透明，有来历不明的参数，被广泛怀疑有后门，所以设计了Curve25519，Curve25519的设计过程完全公开，没有任何来历不明的参数。</p>
-<p><a href="https://vincent.bernat.ch/en/blog/2011-ssl-perfect-forward-secrecy" target="_blank" rel="noopener">forward-secrecy</a></p>
-<p>完全开放设计，算法各个参数直接了当，明确，很大的概率通过缓存、时间、恶意输入摧毁安全性，而 25519 系列椭圆曲线经过特别设计，尽可能的将出错的概率降到了最低，25519 系列曲线是目前最快的椭圆曲线加密算法，NIST 采用的椭圆曲线中有一些诡异的参数，这些参数被广泛地认为是NSA植入的后门。</p>
-<h1 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h1><p>由于密钥空间是非线性的，无法兼容 BIP 的 Hierarchical Deterministic Key Derivation。<br><a href="https://cardanolaunch.com/assets/Ed25519_BIP.pdf" target="_blank" rel="noopener">https://cardanolaunch.com/assets/Ed25519_BIP.pdf</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/01/07/学习笔记/MacOS/mac-install-tomcat-9-0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/07/学习笔记/MacOS/mac-install-tomcat-9-0/" itemprop="url">mac install tomcat 9.0</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-07T16:07:50+08:00">2019-01-07</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/操作系统/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="check-java-environment"><a href="#check-java-environment" class="headerlink" title="check java environment"></a>check java environment</h1><p>Tomcat 9.x requires Java 8 or later.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure>
-<h1 id="Installing-Tomcat"><a href="#Installing-Tomcat" class="headerlink" title="Installing Tomcat"></a>Installing Tomcat</h1><ol>
-<li>download binary distribution apache-tomcat-9.0.14 from <a href="https://tomcat.apache.org/download-90.cgi" target="_blank" rel="noopener">here</a></li>
-<li>extract to /usr/local/apache-tomcat-9.0.14</li>
-<li>remove old link and create new one</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo rm -f /Library/Tomcat</span><br><span class="line">sudo ln -s /usr/local/apache-tomcat-9.0.14 /Library/Tomcat</span><br></pre></td></tr></table></figure>
-<ol>
-<li>change ownership and permission</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo chown -R &lt;your_username&gt; /Library/Tomcat</span><br><span class="line">sudo chmod +x /Library/Tomcat/bin/*.sh</span><br></pre></td></tr></table></figure>
-<ol>
-<li>start and stop</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/Library/Tomcat/bin/startup.sh</span><br><span class="line">/Library/Tomcat/bin/shutdown.sh</span><br></pre></td></tr></table></figure>
-<p>browse <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/01/07/学习笔记/区块链/Substrate/substrate-Create-a-Custom-chain/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/07/学习笔记/区块链/Substrate/substrate-Create-a-Custom-chain/" itemprop="url">substrate Create a Custom chain</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-07T15:43:22+08:00">2019-01-07</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>展示如何构建一个 Substrate 区块链的 Runtime Library</p>
-<h1 id="先决条件"><a href="#先决条件" class="headerlink" title="先决条件"></a>先决条件</h1><ol>
-<li>make sure node and npm is installed</li>
-<li>Rust and other dependencies for substrate</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl https://getsubstrate.io -sSf | bash</span><br></pre></td></tr></table></figure>
-<p><a href="https://github.com/paritytech/substrate-up" target="_blank" rel="noopener">scripts for utils</a></p>
-<p>进入到上面的项目中。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./substrate-node-new substrate-node-template &lt;author-name&gt;</span><br><span class="line">./substrate-ui-new substrate</span><br></pre></td></tr></table></figure></p>
-<p>This will create a folder called substrate-node-template and substrate-ui with the corresponding repositories cloned in them.</p>
-<h1 id="Launch-a-Blockchain"><a href="#Launch-a-Blockchain" class="headerlink" title="Launch a Blockchain"></a>Launch a Blockchain</h1><p>If you have set up everything correctly, you can now start a substrate dev chain! In substrate-node-template run:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./target/release/substrate-node-template --dev</span><br></pre></td></tr></table></figure></p>
-<p>if you run into any errors starting or running your node, you may need to purge the chain files on your computer. You can do this by running:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 优先使用这个</span><br><span class="line">rm -rf ~/Library/Application\ Support/Substrate/chains/dev/</span><br><span class="line">// or</span><br><span class="line">cargo run -- purge-chain --dev</span><br></pre></td></tr></table></figure></p>
-<p>If everything is working it should start producing blocks!</p>
-<p>To interact with the blockchain, you need to start the Substrate UI. Navigate to the substrate-ui folder and run:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
-<p>Finally, if open your browser to <a href="http://localhost:8000" target="_blank" rel="noopener">http://localhost:8000</a>, you should be able to interact with your new chain!</p>
-<h1 id="Add-Alice-to-your-network"><a href="#Add-Alice-to-your-network" class="headerlink" title="Add Alice to your network"></a>Add Alice to your network</h1><p>Alice is a hard-coded account in the substrate system, which is pre-funded to make your life easier. Alice may already be added to your network if you used the latest version of the substrate-node-template.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">subkey restore Alice</span><br><span class="line"></span><br><span class="line">&gt; Seed</span><br><span class="line">&gt; 0x416c696365202020202020202020202020202020202020202020202020202020 is account:</span><br><span class="line">&gt;    SS58: 5GoKvZWG5ZPYL1WUovuHW3zJBWBP5eT8CbqjdRY4Q6iMaDtZ</span><br><span class="line">     Hex: 0xd172a74cda4c865912c32ba0a80a57ae69abae410e5ccb59dee84e2f4432db4f</span><br></pre></td></tr></table></figure>
-<p>Then in the Substrate UI, you can go into the Wallet section and add Alice using her seed and name.<br><img alt="402e50b0.png" src="/2019/01/07/学习笔记/区块链/Substrate/substrate-Create-a-Custom-chain/402e50b0.png" width="" height=""></p>
-<p>If all is working correctly, you can now go into the Send Funds section and send funds from Alice to Default. You will see that Alice has a bunch of units pre-funded in her account, so send some and wait for the green checkmark and an updated balance for Default to show that the transfer has been successfully recorded on the blockchain.</p>
-<h1 id="Create-a-new-runtime-module"><a href="#Create-a-new-runtime-module" class="headerlink" title="Create a new runtime module"></a>Create a new runtime module</h1><p>Now it’s time to create our own runtime.</p>
-<p>Open up the substrate-node-template folder and create a new file:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./runtime/src/demo.rs</span><br></pre></td></tr></table></figure></p>
-<p>This is where our new runtime module will live. Inline comments will hopefully give you insight to what the code is doing.</p>
-<p>First, we will need to import a few libraries at the top of our file:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// Encoding library</span><br><span class="line">use parity_codec::Encode;</span><br><span class="line"></span><br><span class="line">// Enables access to the runtime storage</span><br><span class="line">use srml_support::&#123;StorageValue, dispatch::Result&#125;;</span><br><span class="line"></span><br><span class="line">// Enables us to do hashing</span><br><span class="line">use runtime_primitives::traits::Hash;</span><br><span class="line"></span><br><span class="line">// Enables access to account balances and interacting with signed messages</span><br><span class="line">use &#123;balances, system::&#123;self, ensure_signed&#125;&#125;;</span><br><span class="line"></span><br><span class="line">// Includes the standard rust imports for things like Vec</span><br><span class="line">use rstd::prelude::*;</span><br></pre></td></tr></table></figure></p>
-<p>All modules need to expose a configuration trait. In this case, our trait inherits from the Balances module’s trait since we will be using features and functions made available to us there.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pub trait Trait: balances::Trait &#123;&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="Upgrade-our-chain"><a href="#Upgrade-our-chain" class="headerlink" title="Upgrade our chain"></a>Upgrade our chain</h1>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/01/07/学习笔记/区块链/Substrate/substrate-翻译Substrate-in-a-nutshell/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/07/学习笔记/区块链/Substrate/substrate-翻译Substrate-in-a-nutshell/" itemprop="url">substrate 翻译Substrate in a nutshell</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-07T10:58:59+08:00">2019-01-07</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://www.parity.io/substrate-in-a-nutshell/" target="_blank" rel="noopener">原文</a></p>
-<p>今天我们讨论一下 Substrate，可以帮助你构建定制化区块链的库。 Substrate 是由 <a href="https://www.parity.io/" target="_blank" rel="noopener">Parity Technologies</a> 创建，并且为 <a href="https://polkadot.network/" target="_blank" rel="noopener">Polkadot</a> 提供基础设施。</p>
-<h1 id="什么是-Substrate"><a href="#什么是-Substrate" class="headerlink" title="什么是 Substrate?"></a>什么是 Substrate?</h1><p>从字典定义，或者字面理解 Substrate 可以用来构建，或者发展某些项目。在我们这里，我们可以构建区块链，对于 Polkadot 来说，是构建整个区块链家族。</p>
-<h1 id="为什么我们需要-Substrate？"><a href="#为什么我们需要-Substrate？" class="headerlink" title="为什么我们需要 Substrate？"></a>为什么我们需要 Substrate？</h1><p>软件充满了抽象。计算机科学的历史展示给我们的就是不断的抽象，从硬件，到开发语言，编程接口。</p>
-<p>每个抽象层都想要解决特定的问题。Substrate 想要解决什么问题呢？<br>在回答这个问题之前，我们先看一下，在你想要实现一个全新的区块链，要考虑哪些方面：</p>
-<ul>
-<li>为什么需要另一个区块链?!</li>
-<li>各种各样的原始加密算法，签名等等.</li>
-<li>共识算法和容错选举.</li>
-<li>POW，POS或者完全不同的概念?</li>
-<li>区块结构，高效存储，信息序列化.</li>
-<li>P2P 网络, 节点发现, 区块和交易传播.</li>
-<li>状态机，运行时，智能合约.</li>
-<li>轻客户端的支持</li>
-</ul>
-<p>尽管 Substrate 不能帮你实现第一条，至少可以帮你做余下的事情。开箱即用的实现，是基于多年开发区块链的经验，设计，实现，极度用心的测试。<br>通过提供典型算法的通用实现，可以使开发者专注于项目的业务逻辑，比如：状态机。</p>
-<p>让我们看看区块链最核心的部分，以及 Substrate 可以为我们做什么。</p>
-<h1 id="区块链的持久化"><a href="#区块链的持久化" class="headerlink" title="区块链的持久化"></a>区块链的持久化</h1><p>区块链唯一的目的就是在非可信环境下，提供一个途径可以在任意时间点验证，达成共识，全局持久化，并且一旦确认真实可靠，就不可更改。</p>
-<p>Substrate 提供了一种高效并且非常易用的，和 Wasm 运行时紧密继承的持久化。</p>
-<h1 id="区块链作为函数"><a href="#区块链作为函数" class="headerlink" title="区块链作为函数"></a>区块链作为函数</h1><p>为了更新区块链状态，根据挂起的操作更改存储，我们需要一个时间点来执行这些操作。<br>这些时间的可以表示为一个函数，根据当前的状态和挂起的操作，生成另一个状态，可以认为是区块链的真实当前状态。我们把这个函数称作 state transition function 或者简称 STF</p>
-<p>Substrate 允许开发者以一种可管理，可移植的方式来定义这个函数。就像 Web 页面执行的 JavaScript 一样，可以提供一组函数作为运行时来提供 STF 服务。此外该实现可以是可移植的，跨平台的，支持浏览器等等方式。</p>
-<p><img alt="c02249f1.png" src="/2019/01/07/学习笔记/区块链/Substrate/substrate-翻译Substrate-in-a-nutshell/c02249f1.png" width="" height=""></p>
-<p>Substrate 使用 WebAssembly 作为通用的运行时。</p>
-<h1 id="安全和速度"><a href="#安全和速度" class="headerlink" title="安全和速度"></a>安全和速度</h1><p>使用 WebAssembly 实现业务逻辑和智能合约意味着可以借用现有的工具快速可靠的执行。Substrate 提供了另一种可以更快执行代码的途径-没有虚拟机的开销。</p>
-<p>Substrate 具有革命性创新之一的就是运行时镜像和 STF 同其他数据一样保存在链上。这意味着，运行时和链的业务逻辑可以通过安全，可校验的方式来更新。并且 Substrate 和 Substrate Runtime Module Library（SRML）是使用 Rust 语言实现的，可以编译为本地代码和 Wasm。</p>
-<p><img alt="eb09d960.png" src="/2019/01/07/学习笔记/区块链/Substrate/substrate-翻译Substrate-in-a-nutshell/eb09d960.png" width="" height=""></p>
-<p>在任意时间点，客户端拥有两份已编译的运行时。一个是本地编译的，一个是 Wasm 镜像可以在 VM 里面执行。当执行运行时函数时，客户端先检查链上的运行时版本和本地的版本是否一致，如果一致，执行本地的版本。</p>
-<h1 id="不分叉的升级"><a href="#不分叉的升级" class="headerlink" title="不分叉的升级"></a>不分叉的升级</h1><p>当链上的运行时镜像升级，一些客户端软件没有升级时，客户端会使用链上的运行时镜像版本来执行。所以在任何时候，所有节点都能够正确的同步区块，防止分叉。</p>
-<h1 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h1><p>使用了 libp2p 库来实现去中心化网络环境。<br>译者注：libp2p 是 IPFS 项目分出来的独立项目。</p>
-<h1 id="定制消息"><a href="#定制消息" class="headerlink" title="定制消息"></a>定制消息</h1><p>对于简单的场景，你不需要考虑网络，因为 Substrate 做了所有的事情。你只需要提供区块链的 STF 即可。如果你需要发送定制化信息，可以通过提供特殊化的网络协议定义消息和处理逻辑来定制和扩展网络子系统。</p>
-<h1 id="共识"><a href="#共识" class="headerlink" title="共识"></a>共识</h1><p>有一个 STF 可以从一个状态转换到另一个状态还不够，还需要所有的节点都对转换后的状态达成共识。</p>
-<p>Substrate 实现的每个共识引擎会有一个运行时模块，处理不良行为的证明。评估的处理结果由运行时来决定。<br>Substrate 提供了一个 BFT 的实现可以开箱即用。并且还会不断的完善，增加其他的算法进来。根据应用场景，开发者可能使用现存在产块逻辑，也可能提供自己的。</p>
-<p>Substrate 是一个完全可定制化，可扩展的框架，开发者可以定义自己的共识算法。实际上 Substrate 非常的灵活，可以提供非传统区块链结构的解决方案。</p>
-<h1 id="轻客户端支持"><a href="#轻客户端支持" class="headerlink" title="轻客户端支持"></a>轻客户端支持</h1><p>全节点需要同步所有的数据，并且不是简单的同步数据，出于安全原因考虑，还需要重新执行所有交易，计算量比较繁重。<br>Substrate 从设计上就考虑了轻客户端的支持，可以开箱即用。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/01/05/学习笔记/区块链/Substrate/substrate-入门操作/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/05/学习笔记/区块链/Substrate/substrate-入门操作/" itemprop="url">substrate 入门操作</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-05T21:18:30+08:00">2019-01-05</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="install"><a href="#install" class="headerlink" title="install"></a>install</h1><p>To get going as fast as possible, there is a simple script that installs all required dependencies and installs Substrate into your path. Just open a terminal and run:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl https://getsubstrate.io -sSf | bash</span><br></pre></td></tr></table></figure>
-<p>You can start a local Substrate development chain with running <code>substrate --dev</code></p>
-<p>Specify the chain specification (one of dev, local or staging)</p>
-<p>To create your own global network/cryptocurrency, make a chainspec file<br>First let’s get a template chainspec that you can edit. We’ll use the “staging” chain, a sort of default chain that the node comes pre-configured with:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">substrate --chain=dev build-spec &gt; ~/chainspec.json</span><br></pre></td></tr></table></figure></p>
-<p>Error: Execution: Instantiation: Export ext_storage_changes_root has different signature Signature { params: [I64, I32], return_type: Some(I32) }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rm -rf ~/.local/share/Substrate/</span><br><span class="line">or</span><br><span class="line">substrate --dev purge-chain</span><br></pre></td></tr></table></figure></p>
-<h1 id="Building-from-source"><a href="#Building-from-source" class="headerlink" title="Building from source"></a>Building from source</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl https://sh.rustup.rs -sSf | sh</span><br><span class="line">rustup update nightly</span><br><span class="line">rustup target add wasm32-unknown-unknown --toolchain nightly</span><br><span class="line">rustup update stable</span><br><span class="line">cargo install --git https://github.com/alexcrichton/wasm-gc</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install cmake pkg-config openssl git llvm</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/paritytech/substrate.git</span><br><span class="line">cd substrate</span><br><span class="line">./scripts/build.sh  		# Builds the WebAssembly binaries</span><br><span class="line">cargo build 				# Builds all native code</span><br></pre></td></tr></table></figure>
-<p>You can run the tests if you like:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cargo test --all</span><br></pre></td></tr></table></figure></p>
-<p>You can start a development chain with:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cargo run -- --dev</span><br><span class="line"></span><br><span class="line">// Detailed log</span><br><span class="line">RUST_LOG=debug RUST_BACKTRACE=1 cargo run —- --dev</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/01/05/语言相关/Rust/rust-control-flow/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/05/语言相关/Rust/rust-control-flow/" itemprop="url">rust control flow</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-05T19:02:26+08:00">2019-01-05</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="if"><a href="#if" class="headerlink" title="if"></a>if</h1><h1 id="match"><a href="#match" class="headerlink" title="match"></a>match</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">enum Coin &#123;</span><br><span class="line">    Penny,</span><br><span class="line">    Nickel,</span><br><span class="line">    Dime,</span><br><span class="line">    Quarter,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fn value_in_cents(coin: Coin) -&gt; u32 &#123;</span><br><span class="line">    match coin &#123;</span><br><span class="line">        Coin::Penny =&gt; 1,</span><br><span class="line">        Coin::Nickel =&gt; 5,</span><br><span class="line">        Coin::Dime =&gt; 10,</span><br><span class="line">        Coin::Quarter =&gt; 25,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/01/05/语言相关/Rust/rust-functional/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/05/语言相关/Rust/rust-functional/" itemprop="url">rust functional</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-05T18:10:38+08:00">2019-01-05</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li>Closures, a function-like construct you can store in a variable</li>
-<li>Iterators, a way of processing a series of elements</li>
-<li>How to use these two features to improve the I/O project in Chapter 12</li>
-<li>The performance of these two features (Spoiler alert: they’re faster than you might think!)</li>
-</ul>
-<h1 id="Closure"><a href="#Closure" class="headerlink" title="Closure"></a>Closure</h1><p>Closures: Anonymous Functions that Can Capture Their Environment</p>
-<p>Rust’s closures are anonymous functions you can save in a variable or pass as arguments to other functions. You can create the closure in one place and then call the closure to evaluate it in a different context. Unlike functions, closures can capture values from the scope in which they’re defined.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">use std::thread;</span><br><span class="line">use std::time::Duration;</span><br><span class="line"></span><br><span class="line">let expensive_closure = |num| &#123;</span><br><span class="line">    println!(&quot;calculating slowly...&quot;);</span><br><span class="line">    thread::sleep(Duration::from_secs(2));</span><br><span class="line">    num</span><br><span class="line">&#125;;</span><br><span class="line">expensive_closure(5);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>if has multiple parameter<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">|param1, param2|</span><br></pre></td></tr></table></figure></p>
-<p>can add annotation for clarity<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">use std::thread;</span><br><span class="line">use std::time::Duration;</span><br><span class="line"></span><br><span class="line">let expensive_closure = |num: u32| -&gt; u32 &#123;</span><br><span class="line">    println!(&quot;calculating slowly...&quot;);</span><br><span class="line">    thread::sleep(Duration::from_secs(2));</span><br><span class="line">    num</span><br><span class="line">&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h1 id="generic-parameter"><a href="#generic-parameter" class="headerlink" title="generic parameter"></a>generic parameter</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#![allow(unused_variables)]</span><br><span class="line">fn main() &#123;</span><br><span class="line">struct Cacher&lt;T&gt;</span><br><span class="line">    where T: Fn(u32) -&gt; u32</span><br><span class="line">&#123;</span><br><span class="line">    calculation: T,</span><br><span class="line">    value: Option&lt;u32&gt;,</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>The <code>Cacher</code> struct has a <code>calculation</code> field of the generic type <code>T</code>. The trait bounds on <code>T</code> specify that it’s a closure by using the <code>Fn</code> trait. Any closure we want to store in the <code>calculation</code> field must have one <code>u32</code> parameter (specified within the parentheses after <code>Fn</code>) and must return a <code>u32</code> (specified after the <code>-&gt;</code>).</p>
-
+            <p>centos7.2 64bit<br>nginx version: nginx/1.12.2<br>sqlite 3.7.17-8.el7</p>
+<p>使用 docker 搭建生产环境</p>
+<h2 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">yum -y update</span><br><span class="line">yum install epel-release</span><br><span class="line">yum install nginx</span><br><span class="line"></span><br><span class="line">systemctl start nginx</span><br><span class="line">systemctl enable nginx</span><br><span class="line">systemctl status nginx</span><br></pre></td></tr></table></figure>
+<p>the configuration file /etc/nginx/nginx.conf</p>
+<h3 id="配置防火墙"><a href="#配置防火墙" class="headerlink" title="配置防火墙"></a>配置防火墙</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone=public --permanent --add-service=http</span><br><span class="line">firewall-cmd --zone=public --permanent --add-service=https</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p><a href="http://SERVER_DOMAIN_NAME_OR_IP" target="_blank" rel="noopener">http://SERVER_DOMAIN_NAME_OR_IP</a></p>
+<h3 id="配置文件和路径"><a href="#配置文件和路径" class="headerlink" title="配置文件和路径"></a>配置文件和路径</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">默认web服务路径/etc/nginx</span><br><span class="line">主配置文件 /etc/nginx/nginx.conf</span><br><span class="line">虚拟主机配置文件可以添加到 /etc/nginx/conf.d</span><br><span class="line">默认文档 /usr/share/nginx/html</span><br></pre></td></tr></table></figure>
+<h2 id="sqlite3"><a href="#sqlite3" class="headerlink" title="sqlite3"></a>sqlite3</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install sqlite-devel</span><br><span class="line">sqlite3 -version</span><br></pre></td></tr></table></figure>
+<h2 id="php5"><a href="#php5" class="headerlink" title="php5"></a>php5</h2><p>配置yum源</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install epel-release</span><br><span class="line">sudo rpm -ivh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm</span><br></pre></td></tr></table></figure>
+<p>查看可安装的包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo yum list --enablerepo=remi --enablerepo=remi-php56 | grep php</span><br><span class="line">sudo yum install yum-utils</span><br></pre></td></tr></table></figure>
           
         
       
@@ -1869,7 +1801,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/34/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><span class="page-number current">35</span><a class="page-number" href="/page/36/">36</a><span class="space">&hellip;</span><a class="page-number" href="/page/100/">100</a><a class="extend next" rel="next" href="/page/36/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/34/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><span class="page-number current">35</span><a class="page-number" href="/page/36/">36</a><span class="space">&hellip;</span><a class="page-number" href="/page/113/">113</a><a class="extend next" rel="next" href="/page/36/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1916,7 +1848,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">999</span>
+                    <span class="site-state-item-count">1124</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2081,7 +2013,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">76</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">78</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -2500,7 +2436,19 @@
                     
                       
                     
-                    <span class="site-state-item-count">203</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">209</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

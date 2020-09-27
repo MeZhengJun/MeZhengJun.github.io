@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">76</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">78</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">999</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1124</span>
       </a>
 </li>
 
@@ -328,7 +328,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/08/06/功能分类/数据库/sqlite/sqlite-insert/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/20/语言相关/CPP/cpp-大小端转换/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -347,7 +347,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/08/06/功能分类/数据库/sqlite/sqlite-insert/" itemprop="url">sqlite-insert</a></h1>
+                <a class="post-title-link" href="/2020/03/20/语言相关/CPP/cpp-大小端转换/" itemprop="url">cpp-大小端转换</a></h1>
         
 
         <div class="post-meta">
@@ -359,718 +359,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-06T13:57:03+08:00">2019-08-06</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="一次插入多行"><a href="#一次插入多行" class="headerlink" title="一次插入多行"></a>一次插入多行</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">sql = "<span class="keyword">INSERT</span> <span class="keyword">INTO</span> t_outlet (<span class="keyword">id</span>,parentId) <span class="keyword">VALUES</span> (<span class="literal">null</span>,?),<span class="string">";</span></span><br><span class="line"><span class="string">for (int i = 0; i &lt; 7; ++i)</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    sql += "</span> (<span class="literal">null</span>,?),<span class="string">";</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">sql.remove(sql.length() - 1, 1);</span></span><br><span class="line"><span class="string">for (int i = 0; i &lt; 8; ++i)</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    m_pDb-&gt;setSqlParam(dbID);</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">if (m_pDb-&gt;exec(sql.toStdWString().c_str()) || m_pDb-&gt;changes() != 8)</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    m_lastErrorString = m_pDb-&gt;getLastError();</span></span><br><span class="line"><span class="string">    return -1;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
-<h2 id="替换"><a href="#替换" class="headerlink" title="替换"></a>替换</h2><p>先删除，后插入，key 会有增长</p>
-<p>The idea of the REPLACE statement is that when a UNIQUE or PRIMARY KEY constraint violation occurs, it does the following:</p>
-<p>First, delete the existing row that causes a constraint violation.<br>Second, insert a new row.<br>In the second step, if any constraint violation e.g., NOT NULL constraint occurs, the REPLACE statement will abort the action and roll back the transaction.</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">REPLACE</span> <span class="keyword">INTO</span> <span class="keyword">table</span>(column_list)</span><br><span class="line"><span class="keyword">VALUES</span>(value_list);</span><br></pre></td></tr></table></figure>
-<h2 id="upsert"><a href="#upsert" class="headerlink" title="upsert"></a>upsert</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">wstring sql = L"<span class="keyword">INSERT</span> <span class="keyword">INTO</span> t_geometric_coeff (f_id,f_name,f_notes,f_value) <span class="keyword">VALUES</span>  (?,?,?,?) <span class="keyword">ON</span> CONFLICT (f_id) <span class="keyword">DO</span> <span class="keyword">UPDATE</span> <span class="keyword">SET</span> f_name=excluded.f_name,f_notes=excluded.f_notes,f_value=excluded.f_value <span class="keyword">where</span> f_id=excluded.f_id;";</span><br><span class="line">int itemCount = m_ctrl_list_geometric_coeff.GetItemCount();</span><br><span class="line">// 用来保存新插入数据的id，如果没抛异常就设置</span><br><span class="line">vector&lt;pair&lt;int64_t,int64_t&gt;&gt; vSetDataIdxs;</span><br><span class="line">try &#123;</span><br><span class="line">    m_spSqlite-&gt;beinTransaction();</span><br><span class="line">    vector&lt;CString&gt; vStr;</span><br><span class="line">    add_count = 0;</span><br><span class="line">    </span><br><span class="line">    for (size_t i = 0; i &lt; itemCount; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        size_t bindIndex = 1;</span><br><span class="line">        dwID = m_ctrl_list_geometric_coeff.GetItemData(i);</span><br><span class="line">        m_spSqlite-&gt;statement(sql);</span><br><span class="line">        if (dwID != 0)</span><br><span class="line">        &#123;</span><br><span class="line">            m_spSqlite-&gt;bind((add_count * 4 + bindIndex), dwID);</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            m_spSqlite-&gt;bind((add_count * 4 + bindIndex));</span><br><span class="line">        &#125;</span><br><span class="line">        // 3 param need bind</span><br><span class="line">        for (size_t j = 1; j &lt; m_ctrl_list_geometric_coeff.GetHeaderCtrl()-&gt;GetItemCount(); ++j)</span><br><span class="line">        &#123;</span><br><span class="line">            ++bindIndex;</span><br><span class="line">            m_spSqlite-&gt;bind((add_count * 4) + bindIndex, (m_ctrl_list_geometric_coeff.GetItemText(i, j).GetBuffer()));</span><br><span class="line">        &#125;</span><br><span class="line">        int iRet = m_spSqlite-&gt;exec();</span><br><span class="line">        if (iRet != 1)</span><br><span class="line">        &#123;</span><br><span class="line">            string strErr = fmt::format("<span class="keyword">insert</span> <span class="keyword">to</span> <span class="keyword">database</span> failed. iRet=&#123;&#125;,add_count=&#123;&#125;<span class="string">", iRet, add_count);</span></span><br><span class="line"><span class="string">            g_logger-&gt;error(strErr);</span></span><br><span class="line"><span class="string">            AfxMessageBox(utils::s2w(strErr).c_str());</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">        vSetDataIdxs.push_back(std::make_pair(i,m_spSqlite-&gt;getLastRowId()));</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">    m_spSqlite-&gt;endTransaction();</span></span><br><span class="line"><span class="string">    for (auto&amp;it:vSetDataIdxs)</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">        m_ctrl_list_geometric_coeff.SetItemData(it.first, it.second);</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">catch (std::exception&amp; e)</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    m_spSqlite-&gt;rollbackTransaction();</span></span><br><span class="line"><span class="string">    string strErr = fmt::format("</span><span class="keyword">save</span> geometric coeff failed. err=&#123;&#125;<span class="string">", e.what());</span></span><br><span class="line"><span class="string">    g_logger-&gt;error(strErr);</span></span><br><span class="line"><span class="string">    AfxMessageBox(utils::s2w(strErr).c_str());</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/08/05/功能分类/数据库/sqlite/sqlite-参数化/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/05/功能分类/数据库/sqlite/sqlite-参数化/" itemprop="url">sqlite-参数化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-05T16:44:52+08:00">2019-08-05</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> sql = <span class="string">"select count(*) from t_user where f_name=? and f_pwd=?"</span>;</span><br><span class="line">iRet = sqlite3_bind_text(pStmt, i + <span class="number">1</span>, m_param.at(i).typeChar, <span class="number">-1</span>, SQLITE_STATIC);</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/08/02/学习笔记/金融投资/融资融券/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/02/学习笔记/金融投资/融资融券/" itemprop="url">融资融券</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-02T07:31:57+08:00">2019-08-02</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/投资/" itemprop="url" rel="index"><span itemprop="name">投资</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>借钱买股和借股卖股的过程也叫开仓。<br>在这个过程中，有两个角色，分别是客户和券商，券商借给你钱，借给你券，你呢，为此支付利息，年化8%~14%之间。</p>
-<p>你借的钱，和股票，就叫做负债<br>借了钱，借了股票当然要还，这个期限最长不能超过180天，当然，在这期限之内，你可以随借随还</p>
-<p>你还钱的过程，叫做还款，可以直接现金还，也可以用卖了股票得来的资金还。<br>你还股票的过程，叫做还券，可以直接用持仓的股票还，也可以买入股票还。<br>当然，还款和还券的同时，要把对应的利息和手续费一起还上。<br>还钱还股票的过程，也叫平仓。</p>
-<p>买涨过程，就和我们现在的买股票是一模一样的，先买后卖。收益就是价差。<br>卖空，就是先把从券商借来的股票按照当前价卖掉，然后在找个低价买回来。</p>
-<p>买涨股票好理解，买入的时候有了买入成本价，持有的时候，现价就是你的卖出价，你的收益就是【（卖出价（现价）-买入成本价】<em>数量。<br>卖空操作呢，是先有了卖出价，你的买入成本价成了随时变动的现价，啥时候你买入了，这个时候你的收益就是【卖出价-现价（买入价）】</em>数量</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/08/02/学习笔记/金融投资/股指期货介绍/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/02/学习笔记/金融投资/股指期货介绍/" itemprop="url">股指期货介绍</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-02T07:17:13+08:00">2019-08-02</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>股指期货品种：<br>沪深300指数期货（代码IF）2010年4月16日<br>上证50指数期货（代码IH）2015年4月16日<br>中证500指数期货（代码IC）2015年4月16日</p>
-<p>特点:<br>杠杆性</p>
-<p><img alt="20190802_072321.png" src="/2019/08/02/学习笔记/金融投资/股指期货介绍/20190802_072321.png" width="400" height=""></p>
-<p><img alt="20190802_072454.png" src="/2019/08/02/学习笔记/金融投资/股指期货介绍/20190802_072454.png" width="400" height=""></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/08/01/语言相关/CPP/cpp-随机数/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/01/语言相关/CPP/cpp-随机数/" itemprop="url">cpp-随机数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-01T13:10:47+08:00">2019-08-01</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>随机数生成算法有很多，C++11之前的C/C++只用了一种。C++11则提供下面三种可供选择：</p>
-<ul>
-<li>linear_congruential_engine线性同余法</li>
-<li>mersenne_twister_engine梅森旋转法</li>
-<li>substract_with_carry_engine滞后Fibonacci</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/08/01/语言相关/CPP/cpp-随机数/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/07/30/语言相关/CPP/cpp-atomic/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/30/语言相关/CPP/cpp-atomic/" itemprop="url">cpp-atomic</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-30T17:20:26+08:00">2019-07-30</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-20T13:42:33+08:00">2020-03-20</time>
             
 
             
@@ -1127,8 +416,237 @@
       
         
           
-            <p>C++11中的原子操作</p>
-<p>原子操作, 它表示在多个线程访问同一个全局资源的时候, 能够确保所有其他的线程都不在同一时间内访问相同的资源. 也就是他确保了在同一时刻只有唯一的线程对这个资源进行访问. 这有点类似互斥对象对共享资源的访问的保护, 但是原子操作更加接近底层, 因而效率更高.</p>
+            <p>如果使用 vc 可以使用下面的函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// For 16 bit numbers:</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">short</span> _byteswap_ushort(<span class="keyword">unsigned</span> <span class="keyword">short</span> value);</span><br><span class="line"><span class="comment">// For 32 bit numbers:</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> _byteswap_ulong(<span class="keyword">unsigned</span> <span class="keyword">long</span> value);</span><br><span class="line"><span class="comment">// For 64 bit numbers:</span></span><br><span class="line"><span class="keyword">unsigned</span> __int64 _byteswap_uint64(<span class="keyword">unsigned</span> __int64 value);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;climits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function">T <span class="title">swap_endian</span><span class="params">(T u)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">static_assert</span> (CHAR_BIT == <span class="number">8</span>, <span class="string">"CHAR_BIT != 8"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">union</span></span><br><span class="line">    &#123;</span><br><span class="line">        T u;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">char</span> u8[<span class="keyword">sizeof</span>(T)];</span><br><span class="line">    &#125; source, dest;</span><br><span class="line"></span><br><span class="line">    source.u = u;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> k = <span class="number">0</span>; k &lt; <span class="keyword">sizeof</span>(T); k++)</span><br><span class="line">        dest.u8[k] = source.u8[<span class="keyword">sizeof</span>(T) - k - <span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> dest.u;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">swap_endian&lt;<span class="keyword">uint32_t</span>&gt;(<span class="number">42</span>);</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/17/学习笔记/PLC/PLC-西门子S7Comm以太网通讯协议/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/17/学习笔记/PLC/PLC-西门子S7Comm以太网通讯协议/" itemprop="url">PLC-西门子S7Comm以太网通讯协议</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-17T17:44:27+08:00">2020-03-17</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://blog.csdn.net/powersun1981/article/details/54289776" target="_blank" rel="noopener">ref.1</a></p>
+<p>正常项目，一般都是网线tcp通讯的那种，官方叫 iso on tcp 这种方式<br>西门子的做法和 现在的大众软件方法类似，开放一个默认端口，是102，可以同时连接多个客户端；<br>tcp 客户端连上西门子的102端口后，必须做一个特定报文的交互，然后才能做正常的读取操作；</p>
+<p>可能由于西门子的102端口是1对多的，所以它比较拽，一旦发现通讯数据格式或内容不正确，不但不回复，而且直接跟你把通讯通道断开，<br>    不理你了； 三菱遇到异常报文时，通讯不会断的，只是回复你异常数据，并且有异常代码；</p>
+<p>解析的是以 0x32 开始的报文结构</p>
+<p>借助WireShark抓包，可以看到，S7Comm 以太网协议基于OSI模型：</p>
+<table>
+<thead>
+<tr>
+<th>OSI layer</th>
+<th>Protocol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7 Application Layer</td>
+<td>S7 communication</td>
+</tr>
+<tr>
+<td>6 Presentation Layer</td>
+<td>S7 communication(COTP)</td>
+</tr>
+<tr>
+<td>5 Session Layer</td>
+<td>S7 communication(TPKT)</td>
+</tr>
+<tr>
+<td>4 Transport Layer</td>
+<td>ISO-on-TCP (RFC 1006)</td>
+</tr>
+<tr>
+<td>3 Network Layer</td>
+<td>IP</td>
+</tr>
+<tr>
+<td>2 Data Link Layer</td>
+<td>Ethernet</td>
+</tr>
+<tr>
+<td>1 Physical Layer</td>
+<td>Ethernet</td>
+</tr>
+</tbody>
+</table>
+<p>其中，第1~4层会由计算机自己完成（底层驱动程序）；<br>第5层TPKT，应用程数据传输协议，介于TCP和COTP协议之间；这是一个传输服务协议，主要用来在COTP和TCP之间建立桥梁；</p>
+<p>“TPKT is an”encapsulation” protocol. It carries the OSI packet in its ownpacket’s data payload and then passes the resulting structure to TCP, from thenon, the packet is processed as a TCP/IP packet. The OSI programs passing datato TPKT are unaware that their data will be carried over TCP/IP because TPKTemulates the OSI protocol Transport Service Access Point (TSAP).”</p>
+<p>第6层COTP，按照维基百科的解释，COTP 是 OSI 7层协议定义的位于TCP之上的协议。COTP 以“Packet”为基本单位来传输数据，这样接收方会得到与发送方具有相同边界的数据；</p>
+<p>第7层，S7 communication，这一层和用户数据相关，对PLC数据的读取报文在这里完成；</p>
+<p>刚看到TPKT和COPT也许会很迷惑，其实在具体的报文中，TPKT的作用是包含用户协议（5~7层）的数据长度（字节数）；COTP的作用是定义了数据传输的基本单位（在S7Comm中 PDU TYPE：DT data）；</p>
+<p>S7Comm与标准TCP/IP比较：S7Comm是一个7层协议；TCP/IP是四层协议，用户数据在第四层TCP层完成；</p>
+<p>计算机与PLC进行通讯，可以连接102端口，这是西门子开放的一个通讯端口；</p>
+<p>第七层 S7 communication协议</p>
+<p>S7 communication包含三部分：1-Header；2-Parameter；3 - Data。</p>
+<p>根据实现的功能不同，S7 communication协议的结构会有所不同；例如，请求数据报文只包含前两部分；</p>
+<pre><code> &lt;1&gt;Header     
+
+   *01(1 byte): protocol Id: 0x32;
+
+   *02a(1 byte): ROSCTR: Job (01);
+
+   *02b(2 byte): redundancy identification (reserved): 0x0000;
+
+   *2c(2 byte): protocol data unit reference; it’s increased by request event;
+
+   *2d(2 byte): parameter length - the total length (bytes) of parameter part;
+
+   *2e(2 byte): data length; 读取PLC内部数据，此处为00 00；对于其他功能，例如：读取CPU的型号，此处为Data部分的数据长度；
+
+&lt;2&gt;Parameter（读取数据）
+
+  *3(1 byte): function code: Read Var (0x04)；writeVar (0x05);
+
+    *4(1 byte): item count;
+
+    *5(1 byte): variable specification: 0x12;
+
+    *6(1 byte): length of following address specification – is 7~12length in byte;
+
+    *7(1 byte): syntax Id: S7ANY (0x10);
+
+    *8(1 byte):transport size: BYTE(2);
+
+    *9(2 byte): requested data length;
+
+    *10(2 byte): DB number; 如果访问的不是DB区域，此处为00 00；
+
+    *11(1 byte): Area: 0x84= data block(DB); 0X82= outputs(Q); 0x81=inputs(I); 0x83= Flags(M); 0x1d= S7 timers(T); 0x1c= S7counters(C);
+
+    *12(3 byte):address- start address from zero bit
+
+    *5~*12构成了一个基本的数据请求单元[Item],对多个不同地址区域的数据请求，就是有多个[Item]构成的。
+
+     Parameter部分的数据结构可以总结为：
+
+                 [Function code ]+ [Item count] + Item[1] + Item[2]  . . . Item[n]  
+
+    &lt;3&gt;Data
+
+      这一部分与功能有关，例如：读取CPU型号、向CPU存储区写数据；在请求数据报文中此部分不包含任何数据。
+</code></pre><h2 id="S7Comm以太网通讯过程"><a href="#S7Comm以太网通讯过程" class="headerlink" title="S7Comm以太网通讯过程"></a>S7Comm以太网通讯过程</h2><ol>
+<li>需要”通讯请求”过程。这个过程包含两次报文交换</li>
+</ol>
+<p>1&gt; PC 发送COTP报文给PLC；在COTP报文中包含“连接请求”和“destination TSAP” - 明确CPU的机架号和槽号；<br>PLC反馈COTP报文，包含“连接确认”；<br> 这样PLC就清楚了需要和那个CPU来进行数据通讯；</p>
+<p>握手1<br>03 00 00 16 11 e0 00 00 00 04 00 c1 02 01 00 c2 02 01 02 c0 01 0a<br>握手2<br>03 00 00 19 02 f0 80 32 01 00 00 02 00 00 08 00 00 f0 00 00 01 00 01 01 e0</p>
+<p>2&gt; PC 发送S7Comm报文给PLC；在S7 communicaton报文中包含“通讯请求”；<br>PLC反馈S7Comm报文。</p>
+<ol>
+<li>交换数据<br>数据读写就在这个过程内完成。我们可以组织报文来实现我们需要的功能。这个过程内的报文是S7Comm格式；<br>具体实现时，需要对S7Comm中的第5、6、7层进行编程。</li>
+</ol>
 
           
         
@@ -1182,7 +700,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/07/30/学习笔记/算法/算法-分布式id生成int64-SnowFlake/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/17/功能分类/PLC/PLC-西门子S7Comm以太网通讯协议/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1201,7 +719,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/07/30/学习笔记/算法/算法-分布式id生成int64-SnowFlake/" itemprop="url">算法-分布式id生成int64_SnowFlake</a></h1>
+                <a class="post-title-link" href="/2020/03/17/功能分类/PLC/PLC-西门子S7Comm以太网通讯协议/" itemprop="url">PLC-西门子S7Comm以太网通讯协议</a></h1>
         
 
         <div class="post-meta">
@@ -1213,7 +731,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-30T16:28:35+08:00">2019-07-30</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-17T17:44:27+08:00">2020-03-17</time>
             
 
             
@@ -1222,24 +740,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/算法/" itemprop="url" rel="index"><span itemprop="name">算法</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -1270,23 +770,113 @@
       
         
           
-            <p>SnowFlake算法生成id的结果是一个64bit大小的整数，它的结构如下图：</p>
-<p><img alt="20190730_162938.png" src="/2019/07/30/学习笔记/算法/算法-分布式id生成int64-SnowFlake/20190730_162938.png" width="400" height=""></p>
-<ul>
-<li>1位，不用。二进制中最高位为1的都是负数，但是我们生成的id一般都使用整数，所以这个最高位固定是0</li>
-<li>41位，用来记录时间戳（毫秒）。</li>
-</ul>
-<p>41位可以表示$2^{41}-1$个数字，<br>如果只用来表示正整数（计算机中正数包含0），可以表示的数值范围是：0 至 $2^{41}-1$，减1是因为可表示的数值范围是从0开始算的，而不是1。<br>也就是说41位可以表示$2^{41}-1$个毫秒的值，转化成单位年则是$(2^{41}-1) / (1000 <em> 60 </em> 60 <em> 24 </em> 365) = 69$年<br>注意, 这里存储的不是当前的时间戳，而是存储时间戳的差值(当前时间截 - 开始时间截), 可以表示69年的时间.</p>
-<ul>
-<li>10位，用来记录工作机器id。</li>
-</ul>
-<p>可以部署在$2^{10} = 1024$个节点，包括5位datacenterId和5位workerId<br>5位（bit）可以表示的最大正整数是$2^{5}-1 = 31$，即可以用0、1、2、3、….31这32个数字，来表示不同的datecenterId或workerId</p>
-<ul>
-<li>12位，序列号，用来记录同毫秒内产生的不同id。</li>
-</ul>
-<p>12位（bit）可以表示的最大正整数是$2^{12}-1 = 4095$，即可以用0、1、2、3、….4094这4095个数字，来表示同一机器同一时间截（毫秒)内产生的4095个ID序号</p>
-<p>SnowFlake可以保证：</p>
-<p>所有生成的id按时间趋势递增<br>整个分布式系统内不会产生重复id（因为有datacenterId和workerId来做区分）</p>
+            <p><a href="https://blog.csdn.net/powersun1981/article/details/54289776" target="_blank" rel="noopener">ref.1</a></p>
+<p>正常项目，一般都是网线tcp通讯的那种，官方叫 iso on tcp 这种方式<br>西门子的做法和 现在的大众软件方法类似，开放一个默认端口，是102，可以同时连接多个客户端；<br>tcp 客户端连上西门子的102端口后，必须做一个特定报文的交互，然后才能做正常的读取操作；</p>
+<p>可能由于西门子的102端口是1对多的，所以它比较拽，一旦发现通讯数据格式或内容不正确，不但不回复，而且直接跟你把通讯通道断开，<br>    不理你了； 三菱遇到异常报文时，通讯不会断的，只是回复你异常数据，并且有异常代码；</p>
+<p>解析的是以 0x32 开始的报文结构</p>
+<p>借助WireShark抓包，可以看到，S7Comm 以太网协议基于OSI模型：</p>
+<table>
+<thead>
+<tr>
+<th>OSI layer</th>
+<th>Protocol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7 Application Layer</td>
+<td>S7 communication</td>
+</tr>
+<tr>
+<td>6 Presentation Layer</td>
+<td>S7 communication(COTP)</td>
+</tr>
+<tr>
+<td>5 Session Layer</td>
+<td>S7 communication(TPKT)</td>
+</tr>
+<tr>
+<td>4 Transport Layer</td>
+<td>ISO-on-TCP (RFC 1006)</td>
+</tr>
+<tr>
+<td>3 Network Layer</td>
+<td>IP</td>
+</tr>
+<tr>
+<td>2 Data Link Layer</td>
+<td>Ethernet</td>
+</tr>
+<tr>
+<td>1 Physical Layer</td>
+<td>Ethernet</td>
+</tr>
+</tbody>
+</table>
+<p>其中，第1~4层会由计算机自己完成（底层驱动程序）；<br>第5层TPKT，应用程数据传输协议，介于TCP和COTP协议之间；这是一个传输服务协议，主要用来在COTP和TCP之间建立桥梁；</p>
+<p>“TPKT is an”encapsulation” protocol. It carries the OSI packet in its ownpacket’s data payload and then passes the resulting structure to TCP, from thenon, the packet is processed as a TCP/IP packet. The OSI programs passing datato TPKT are unaware that their data will be carried over TCP/IP because TPKTemulates the OSI protocol Transport Service Access Point (TSAP).”</p>
+<p>第6层COTP，按照维基百科的解释，COTP 是 OSI 7层协议定义的位于TCP之上的协议。COTP 以“Packet”为基本单位来传输数据，这样接收方会得到与发送方具有相同边界的数据；</p>
+<p>第7层，S7 communication，这一层和用户数据相关，对PLC数据的读取报文在这里完成；</p>
+<p>刚看到TPKT和COPT也许会很迷惑，其实在具体的报文中，TPKT的作用是包含用户协议（5~7层）的数据长度（字节数）；COTP的作用是定义了数据传输的基本单位（在S7Comm中 PDU TYPE：DT data）；</p>
+<p>S7Comm与标准TCP/IP比较：S7Comm是一个7层协议；TCP/IP是四层协议，用户数据在第四层TCP层完成；</p>
+<p>计算机与PLC进行通讯，可以连接102端口，这是西门子开放的一个通讯端口；</p>
+<p>第七层 S7 communication协议</p>
+<p>S7 communication包含三部分：1-Header；2-Parameter；3 - Data。</p>
+<p>根据实现的功能不同，S7 communication协议的结构会有所不同；例如，请求数据报文只包含前两部分；</p>
+<pre><code> &lt;1&gt;Header     
+
+   *01(1 byte): protocol Id: 0x32;
+
+   *02a(1 byte): ROSCTR: Job (01);
+
+   *02b(2 byte): redundancy identification (reserved): 0x0000;
+
+   *2c(2 byte): protocol data unit reference; it’s increased by request event;
+
+   *2d(2 byte): parameter length - the total length (bytes) of parameter part;
+
+   *2e(2 byte): data length; 读取PLC内部数据，此处为00 00；对于其他功能，例如：读取CPU的型号，此处为Data部分的数据长度；
+
+&lt;2&gt;Parameter（读取数据）
+
+  *3(1 byte): function code: Read Var (0x04)；writeVar (0x05);
+
+    *4(1 byte): item count;
+
+    *5(1 byte): variable specification: 0x12;
+
+    *6(1 byte): length of following address specification – is 7~12length in byte;
+
+    *7(1 byte): syntax Id: S7ANY (0x10);
+
+    *8(1 byte):transport size: BYTE(2);
+
+    *9(2 byte): requested data length;
+
+    *10(2 byte): DB number; 如果访问的不是DB区域，此处为00 00；
+
+    *11(1 byte): Area: 0x84= data block(DB); 0X82= outputs(Q); 0x81=inputs(I); 0x83= Flags(M); 0x1d= S7 timers(T); 0x1c= S7counters(C);
+
+    *12(3 byte):address- start address from zero bit
+
+    *5~*12构成了一个基本的数据请求单元[Item],对多个不同地址区域的数据请求，就是有多个[Item]构成的。
+
+     Parameter部分的数据结构可以总结为：
+
+                 [Function code ]+ [Item count] + Item[1] + Item[2]  . . . Item[n]  
+
+    &lt;3&gt;Data
+
+      这一部分与功能有关，例如：读取CPU型号、向CPU存储区写数据；在请求数据报文中此部分不包含任何数据。
+</code></pre><h2 id="S7Comm以太网通讯过程"><a href="#S7Comm以太网通讯过程" class="headerlink" title="S7Comm以太网通讯过程"></a>S7Comm以太网通讯过程</h2><ol>
+<li>需要”通讯请求”过程。这个过程包含两次报文交换</li>
+</ol>
+<p>1&gt; PC 发送COTP报文给PLC；在COTP报文中包含“连接请求”和“destination TSAP” - 明确CPU的机架号和槽号；<br>PLC反馈COTP报文，包含“连接确认”；<br> 这样PLC就清楚了需要和那个CPU来进行数据通讯；</p>
+<p>握手1<br>03 00 00 16 11 e0 00 00 00 04 00 c1 02 01 00 c2 02 01 02 c0 01 0a<br>握手2<br>03 00 00 19 02 f0 80 32 01 00 00 02 00 00 08 00 00 f0 00 00 01 00 01 01 e0</p>
+<p>2&gt; PC 发送S7Comm报文给PLC；在S7 communicaton报文中包含“通讯请求”；<br>PLC反馈S7Comm报文。</p>
+<ol>
+<li>交换数据<br>数据读写就在这个过程内完成。我们可以组织报文来实现我们需要的功能。这个过程内的报文是S7Comm格式；<br>具体实现时，需要对S7Comm中的第5、6、7层进行编程。</li>
+</ol>
 
           
         
@@ -1340,7 +930,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/07/30/语言相关/CPP/cpp-move/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/17/功能分类/windows/MFC/MFC-自定义控件/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1359,7 +949,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/07/30/语言相关/CPP/cpp-move/" itemprop="url">cpp-move</a></h1>
+                <a class="post-title-link" href="/2020/03/17/功能分类/windows/MFC/MFC-自定义控件/" itemprop="url">MFC-自定义控件</a></h1>
         
 
         <div class="post-meta">
@@ -1371,7 +961,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-30T11:08:56+08:00">2019-07-30</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-17T14:28:40+08:00">2020-03-17</time>
             
 
             
@@ -1392,7 +982,14 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
 
                 
                 
@@ -1428,11 +1025,178 @@
       
         
           
-            <p>std::move 并不会真正地移动对象，真正的移动操作是在移动构造函数、移动赋值函数等完成的，std::move 只是将参数转换为右值引用而已（相当于一个 static_cast）</p>
-<p>std::move函数可以以非常简单的方式将左值引用转换为右值引用。</p>
-<p>通过std::move，可以避免不必要的拷贝操作。</p>
-<p>std::move是为性能而生。</p>
-<p>std::move是将对象的状态或者所有权从一个对象转移到另一个对象，只是转移，没有内存的搬迁或者内存拷贝。</p>
+            <p>在对话框程序中使用。</p>
+<p><a href="https://www.codeproject.com/Articles/5032/Creating-and-Using-custom-controls-in-VC" target="_blank" rel="noopener">ref.1</a></p>
+<ol>
+<li>资源管理其中，拖拽自定义控件到对话框中</li>
+<li>右键菜单创建 class，继承至 CWnd</li>
+<li>比较重要的一步，需要注册自定义的控件，并且必须在构造函数里面注册</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> WNDCLASS_NAME (<span class="meta-string">L"CCanvas"</span>)</span></span><br><span class="line"></span><br><span class="line">BOOL CCanvas::RegisterWndClass()</span><br><span class="line">&#123;</span><br><span class="line">	WNDCLASS windowclass;</span><br><span class="line">	HINSTANCE hInst = AfxGetInstanceHandle();</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Check weather the class is registerd already</span></span><br><span class="line">	<span class="keyword">if</span> (!(::GetClassInfo(hInst, WNDCLASS_NAME, &amp;windowclass)))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//If not then we have to register the new class</span></span><br><span class="line">		windowclass.style = CS_DBLCLKS;<span class="comment">// | CS_HREDRAW | CS_VREDRAW;</span></span><br><span class="line">		windowclass.lpfnWndProc = ::DefWindowProc;</span><br><span class="line">		windowclass.cbClsExtra = windowclass.cbWndExtra = <span class="number">0</span>;</span><br><span class="line">		windowclass.hInstance = hInst;</span><br><span class="line">		windowclass.hIcon = <span class="literal">NULL</span>;</span><br><span class="line">		windowclass.hCursor = AfxGetApp()-&gt;LoadStandardCursor(IDC_ARROW);</span><br><span class="line">		windowclass.hbrBackground = ::GetSysColorBrush(COLOR_WINDOW);</span><br><span class="line">		windowclass.lpszMenuName = <span class="literal">NULL</span>;</span><br><span class="line">		windowclass.lpszClassName = WNDCLASS_NAME;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (!AfxRegisterClass(&amp;windowclass))</span><br><span class="line">		&#123;</span><br><span class="line">			AfxThrowResourceException();</span><br><span class="line">			<span class="keyword">return</span> FALSE;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> TRUE;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CCanvas::CCanvas()</span><br><span class="line">&#123;</span><br><span class="line">	RegisterWndClass();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>绑定类和自定义控件。右键单击-属性-class 里面填写类定义里面的 “CCanvas”</li>
+<li>数据绑定，在对话框主程序中添加</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CCanvas m_canvas;<span class="comment">//This is our custom control</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> CdrawDemoDlg::DoDataExchange(CDataExchange* pDX)</span><br><span class="line">&#123;</span><br><span class="line">	CDialogEx::DoDataExchange(pDX);</span><br><span class="line">	DDX_Control(pDX, IDC_STATIC_FRAME, m_ctrl_draw);</span><br><span class="line">	DDX_Control(pDX, IDOK, m_btn_ok);</span><br><span class="line">	DDX_Control(pDX, IDC_CUSTOM1, m_canvas);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/17/学习笔记/数学/数学-三角函数-正弦等/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/17/学习笔记/数学/数学-三角函数-正弦等/" itemprop="url">数学-三角函数-正弦等</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-17T10:09:20+08:00">2020-03-17</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数学/" itemprop="url" rel="index"><span itemprop="name">数学</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>初三学三角函数：正弦，余弦和正切都是研究三角形边角关系的。等你学的时候会要求你知道角会求边，知道边会求角，比如说求船的航行路程，仰角俯角求建筑物高度，还有，有时还会和勾股定理一起用</p>
+<h2 id="名称来源"><a href="#名称来源" class="headerlink" title="名称来源"></a>名称来源</h2><p>来源是文言文。把词语拆成字逐个分析。“弦”代表长，也就是斜边，从“勾三股四弦五”中迁移过来。“正”就是正对，表示直角三角形中角的对边。“余”代表相邻，表示直角三角形中与角相邻的直角边。“切”有垂直之意，在圆的切线中有体现。这样一来，正弦就是对边比斜边，余弦就是邻边比斜边，正切就是对边比（与对边垂直的）邻边。我们常说切割，在数学里，切和割是相差很远的，比如切线和割线。所以在三角函数里，切割相反。</p>
+<h2 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h2><p>从已知两边求角度</p>
+<p>例子<br>梯子搁在墙上，如图。梯子与墙之间的 角度 是多少？</p>
+<p><img alt="20200317_124139.png" src="/2020/03/17/学习笔记/数学/数学-三角函数-正弦等/20200317_124139.png" width="500" height=""></p>
+<p>例子：在这个梯子的例子，我们知道：<br>角 “x” 的 对边的长度：2.5<br>最长的边（斜边）的长度：5</p>
+<p>$Sin (x) = 对边 / 斜边 = 2.5 / 5 = 0.5$</p>
+<p>解方程！</p>
+<p>$sin(x) = 0.5$</p>
+<p>我们可以重写为：</p>
+<p>$x = sin^{-1}(0.5)$</p>
+<p>我们用计算器来做：输入 0.5，按 $sin^{-1}$ 键，答案便出来了：</p>
+<p>$x = 30°$</p>
+<p>但…… $sin^{-1}$ 的意思是什么？<br>正弦函数 “sin” 以角度为输入来计算 “对边/斜边” 的比，</p>
+<p><img alt="20200317_134548.png" src="/2020/03/17/学习笔记/数学/数学-三角函数-正弦等/20200317_134548.png" width="500" height=""></p>
+<p>$sin^{-1}$（叫 “反正弦”）是正弦的相反……<br>……它以 “对边/斜边” 的比为输入来计算角度。</p>
+<p>例子：<br>正弦函数：sin(30°) = 0.5<br>反正弦函数：sin-1(0.5) = 30°</p>
+<h2 id="正弦、余弦和正切"><a href="#正弦、余弦和正切" class="headerlink" title="正弦、余弦和正切"></a>正弦、余弦和正切</h2><p>正弦 （sine）, 余弦 （cosine） 和 正切 （tangent） （英语符号简写为 sin, cos 和 tan) 是 直角三角形 边长的比：</p>
+<p><img alt="20200818_111751.png" src="/2020/03/17/学习笔记/数学/数学-三角函数-正弦等/20200818_111751.png" width="500" height=""></p>
 
           
         
@@ -1486,7 +1250,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/07/30/语言相关/javascript/js-页面加载后调用/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/16/功能分类/windows/MFC/MFC-调用控制台调试/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1505,7 +1269,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/07/30/语言相关/javascript/js-页面加载后调用/" itemprop="url">js-页面加载后调用</a></h1>
+                <a class="post-title-link" href="/2020/03/16/功能分类/windows/MFC/MFC-调用控制台调试/" itemprop="url">MFC-调用控制台调试</a></h1>
         
 
         <div class="post-meta">
@@ -1517,7 +1281,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-30T07:01:37+08:00">2019-07-30</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-16T11:31:40+08:00">2020-03-16</time>
             
 
             
@@ -1538,7 +1302,14 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
 
                 
                 
@@ -1574,10 +1345,8 @@
       
         
           
-            <p>document.ready和onload的区别——JavaScript文档加载完成事件<br>页面加载完成有两种事件：</p>
-<p>一是ready，表示文档结构已经加载完成（不包含图片等非文字媒体文件）</p>
-<p>二是onload，指示页面包含图片等文件在内的所有元素都加载完成。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=”text/javascript”&gt;</span><br><span class="line"></span><br><span class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> userName=”xiaoming”;</span><br><span class="line"></span><br><span class="line">    alert(userName);</span><br><span class="line"></span><br><span class="line">&#125;);</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+            <p>AllocConsole 为调用进程分配一个新的控制台</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _DEBUG  </span></span><br><span class="line">	AllocConsole();</span><br><span class="line">	_cprintf(<span class="string">"Debuging....\r\n"</span>);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> </span></span><br><span class="line"></span><br><span class="line">HANDLE　hOutputHandle=GetStdHandle(STD_OUTPUT_HANDLE);<span class="comment">//获得控制台输出句柄</span></span><br><span class="line">DWORD　nRet=<span class="number">0</span>;</span><br><span class="line">TCHAR　buf[<span class="number">100</span>]=&#123;<span class="number">0</span>&#125;;<span class="comment">//用来输出字符的缓冲区</span></span><br><span class="line">lstrcpy(buf,_T(<span class="string">"Hello"</span>));</span><br><span class="line">WriteConsole(hOutputHandle,buf,lstrlen(buf),&amp;nRet,<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 退出时释放</span></span><br><span class="line">FreeConsole();</span><br></pre></td></tr></table></figure>
           
         
       
@@ -1630,7 +1399,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/07/26/功能分类/数据库/postgreSQL/postgreSQL-介绍/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/16/功能分类/windows/MFC/MFC-对话框绘图/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1649,7 +1418,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/07/26/功能分类/数据库/postgreSQL/postgreSQL-介绍/" itemprop="url">postgreSQL-介绍</a></h1>
+                <a class="post-title-link" href="/2020/03/16/功能分类/windows/MFC/MFC-对话框绘图/" itemprop="url">MFC-对话框绘图</a></h1>
         
 
         <div class="post-meta">
@@ -1661,7 +1430,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-26T13:01:16+08:00">2019-07-26</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-16T11:19:35+08:00">2020-03-16</time>
             
 
             
@@ -1682,7 +1451,14 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
 
                 
                 
@@ -1718,20 +1494,465 @@
       
         
           
-            <h1 id="PostgreSQL-的优点"><a href="#PostgreSQL-的优点" class="headerlink" title="PostgreSQL 的优点"></a>PostgreSQL 的优点</h1><p>开源且遵从SQL标准<br>PostgreSQL 是一款开源的、免费的、功能非常强大的关系型数据库。</p>
-<p>强大的社区<br>由一个忠实的、经验丰富的社区支持，用户可以通过知识库和 Q&amp;A 网站获得全天候的免费服务。</p>
-<p>强有力的第三方支持<br>除了非常先进的特性之外，PostgreSQL 还有很多优秀的、开源的第三方工具可以辅助系统的设计、管理和使用。</p>
-<p>可扩展<br>可以通过存储过程扩展 PostgreSQL 的功能。</p>
-<p>面向对象<br>PostgreSQL 不仅是一个关系型数据库，它还是一个面向对象的数据库——支持嵌套等功能。</p>
-<h1 id="PostgreSQL-的缺点"><a href="#PostgreSQL-的缺点" class="headerlink" title="PostgreSQL 的缺点"></a>PostgreSQL 的缺点</h1><p>性能:<br>对于简单繁重的读取操作，使用 PostgreSQL 可能有点小题大做，同时性能也比 MySQL 这样的同类产品要差。</p>
-<p>流行程度<br>尽管有大量的部署，但是鉴于该数据库的性质，它的受欢迎程序并不高。</p>
-<h1 id="何时应该使用-PostgreSQL"><a href="#何时应该使用-PostgreSQL" class="headerlink" title="何时应该使用 PostgreSQL"></a>何时应该使用 PostgreSQL</h1><p>数据完整性<br>当绝对需要可靠性和数据完整性的时候，PostgreSQL 是更好的选择。</p>
-<p>复杂的定制程序<br>如果需要数据库执行定制程序，那么可扩展的 PostgreSQL 是更好的选择。</p>
-<p>集成:<br>如果将来可能需要将整个数据库迁移到其他合适的解决方案上（例如 Oracle），那么 PostgreSQL 可能兼容性最好也更容易切换。</p>
-<p>复杂的设计<br>与其他开源且免费的数据库相比，对于复杂的数据库设计 PostgreSQL 在功能方面最全面，潜力最大，不需要你放弃其他有价值的资产。</p>
-<h1 id="何时不应该使用-PostgreSQL"><a href="#何时不应该使用-PostgreSQL" class="headerlink" title="何时不应该使用 PostgreSQL"></a>何时不应该使用 PostgreSQL</h1><p>速度<br>如果你只需要快速读取操作，那么 PostgreSQL 并不合适。</p>
-<p>简单<br>除非你需要绝对的数据完整性，ACID 遵从性或者设计复杂，否则 PostgreSQL 对于简单的场景而言有点多余。</p>
-<p>复制<br>对于缺少数据库和系统管理经验的人而言使用 MySQL 实现复制要更简单，除非你愿意花费时间、精力和资源。</p>
+            <p>和绘图效率的一个重要相关因素是绘图引擎。Windows环境下二维绘图引擎有多种选择：GDI、GDI+、DirectDraw、QT、Agg、Cairo、skia、Direct2D、Direct3D、OpenGL等</p>
+<p>使用 CDC 绘图</p>
+<p>添加一个 Picture Control 设置 Notify 属性为 True</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">My_Draw</span> :</span> <span class="keyword">public</span> CStatic </span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="使用自定义控件"><a href="#使用自定义控件" class="headerlink" title="使用自定义控件"></a>使用自定义控件</h2><p>创建一个自定义控件，然后绑定一个 Wnd 子类，在子类里面绘图</p>
+<h2 id="填充背景"><a href="#填充背景" class="headerlink" title="填充背景"></a>填充背景</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">RECT rcClient;</span><br><span class="line">GetClientRect(&amp;rcClient);</span><br><span class="line"><span class="comment">// 填充客户区颜色</span></span><br><span class="line">dc.FillSolidRect(&amp;rcClient, RGB(<span class="number">0x99</span>,<span class="number">0x99</span>,<span class="number">0x99</span>));</span><br></pre></td></tr></table></figure>
+<h2 id="绘制矩形"><a href="#绘制矩形" class="headerlink" title="绘制矩形"></a>绘制矩形</h2><p>矩形框，内部不填充</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m_memDC.FrameRect(&amp;m_rc_measure, m_spBrushWhite.get());</span><br></pre></td></tr></table></figure>
+<h2 id="绘制多个点连线"><a href="#绘制多个点连线" class="headerlink" title="绘制多个点连线"></a>绘制多个点连线</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (FALSE == m_memDC.PolylineTo(&amp;it.pt[<span class="number">0</span>], it.pt.size()))</span><br><span class="line">&#123;</span><br><span class="line">    ASSERT(FALSE);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="脏矩形"><a href="#脏矩形" class="headerlink" title="脏矩形"></a>脏矩形</h2><p>就是每次画面的刷新只更新需要更新的那一块区域</p>
+<p>实际上，在OnDraw(CDC *pDC)中绘制的图并不是所有都显示了的，例如：你 在OnDraw中画了两个矩形，在一次重绘中虽然两个矩形的绘制函数都有执行，但是很有可能只有一个显示了，这是因为MFC本身为了提高重绘的效率设置了裁剪区。裁剪区的作用就是：只有在这个区内的绘图过程才会真正有效，在区外的是无效的，即使在区外执行了绘图函数也是不会显示的。因为多数情况下窗口重绘的产生大多是因为窗口部分被遮挡或者窗口有滚动发生，改变的区域并不是整个图形而只有一小部分，这一部分需要改变的就是pDC中的裁剪区了。因为显示（往内存或者显存都叫显示）比绘图过程的计算要费时得多，有了裁剪区后显示的就只是应该显示的部分，大大提高了显示效率。但是这个裁剪区是MFC设置的，它已经为我们提高了显示效率，在进行复杂图形的绘制时如何进一步提高效率呢？那就只有去掉在裁剪区外的绘图过程了。可以先用pDC-&gt;GetClipBox()得到裁剪区，然后在绘图时判断你的图形是否在这个区内，如果在就画，不在就不画。 如果你的绘图过程不复杂，这样做可能对你的绘图效率不会有提高。</p>
+<p>invalidaterect（）<br>想产生“区域无效”的系统消息的话，可以用GDI的，InvalidateRect或者ValidateRgn</p>
+<h2 id="闪烁问题"><a href="#闪烁问题" class="headerlink" title="闪烁问题"></a>闪烁问题</h2><p>当窗口由于任何原因需要重绘时，总是先用背景色将显示区清除，然后才调用OnPaint进行重绘，而背景色往往与绘图内容反差很大，这样在短时间内背景色与显示图形的交替出现，使得显示窗口看起来在闪。</p>
+<p>当窗口中有控件时，需要把窗口对话框属性Clip Children设置为True，这样在重绘父窗口时就不会刷新子控件的背景，否则界面重绘时控件由于重绘还是会发生闪烁。</p>
+<p>然后重载窗口的OnEraseBkgnd()函数，使背景刷变成透明的，实现代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BOOL <span class="title">OnEraseBkgnd</span><span class="params">(CDC* pDC)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> TRUE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="设置颜色"><a href="#设置颜色" class="headerlink" title="设置颜色"></a>设置颜色</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置文字背景色</span></span><br><span class="line">SetBkColor(hdc, RGB(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>));</span><br><span class="line"><span class="comment">// 设置文字颜色</span></span><br><span class="line">SetTextColor(hdc, RGB(<span class="number">255</span>,<span class="number">255</span>,<span class="number">255</span>));</span><br></pre></td></tr></table></figure>
+<h2 id="文本背景透明"><a href="#文本背景透明" class="headerlink" title="文本背景透明"></a>文本背景透明</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SetBkMode(m_memDC, TRANSPARENT);</span><br></pre></td></tr></table></figure>
+<h2 id="输出文本"><a href="#输出文本" class="headerlink" title="输出文本"></a>输出文本</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 居中显示</span></span><br><span class="line">pDC-&gt;SetTextAlign( TA_BASELINE | TA_CENTER ); </span><br><span class="line">pDC-&gt;TextOut( rect.right / <span class="number">2</span>, rect.bottom / <span class="number">2</span>, s, s.GetLength() );</span><br></pre></td></tr></table></figure>
+<h2 id="获取坐标值"><a href="#获取坐标值" class="headerlink" title="获取坐标值"></a>获取坐标值</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">POINT point;</span><br><span class="line"><span class="comment">// 获取鼠标指针位置（屏幕坐标）</span></span><br><span class="line">GetCursorPos(&amp;point);</span><br><span class="line"><span class="comment">// 将鼠标指针位置转换为窗口坐标</span></span><br><span class="line"><span class="keyword">this</span>-&gt;ScreenToClient(&amp;point);</span><br></pre></td></tr></table></figure>
+<h2 id="判断点是否在矩形内"><a href="#判断点是否在矩形内" class="headerlink" title="判断点是否在矩形内"></a>判断点是否在矩形内</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (PtInRect(&amp;rc, itData.pt[i]));</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//测试框内的数据</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/16/语言相关/python/python-distribute/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/16/语言相关/python/python-distribute/" itemprop="url">python-distribute</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-16T10:27:48+08:00">2020-03-16</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="pyinstaller"><a href="#pyinstaller" class="headerlink" title="pyinstaller"></a>pyinstaller</h2><p><a href="https://pyinstaller.readthedocs.io/en/stable/" target="_blank" rel="noopener">doc</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">pip install pyinstaller</span><br><span class="line">pyinstaller yourprogram.py</span><br><span class="line">Pyinstaller.exe –F -i path/youricon.ico path/yourscript.py</span><br><span class="line">-i 参数指定exe图标，-F参数将脚本打包成单一的exe文件</span><br><span class="line">-n 为生成的exe起个名字</span><br><span class="line"></span><br><span class="line">需要 upx 在目录下面，就能生成一个独立的 exe 了</span><br><span class="line">Pyinstaller.exe –F path/yourscript.py</span><br></pre></td></tr></table></figure>
+<h2 id="nuitka"><a href="#nuitka" class="headerlink" title="nuitka"></a>nuitka</h2><p><a href="https://nuitka.net/" target="_blank" rel="noopener">website</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/07/语言相关/python/python-比较浮点数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/07/语言相关/python/python-比较浮点数/" itemprop="url">python-比较浮点数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-07T08:45:47+08:00">2020-03-07</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python <span class="number">3.5</span>之后，PEP485提案中给出了解决方案。</span><br><span class="line">math.isclose(val, rval, rel_tol=<span class="number">1e-10</span>)</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/06/语言相关/python/pandas/python-numpy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/06/语言相关/python/pandas/python-numpy/" itemprop="url">python-numpy</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-06T11:06:27+08:00">2020-03-06</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>numpy是C实现的</p>
+<p>blas+lapack、intel MKL、OpenBlas、ATLAS</p>
+<p>numpy底层使用BLAS做向量，矩阵运算</p>
+<p>NumPy doesn’t depend on any other Python packages, however, it does depend on an accelerated linear algebra library - typically Intel MKL or OpenBLAS. </p>
+<h2 id="blas-vs-openblas"><a href="#blas-vs-openblas" class="headerlink" title="blas vs openblas"></a>blas vs openblas</h2><p>下面安装的是 openblas，这个大小要比 blas 小很多。不过速度可能会慢些</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install -c conda-forge numpy</span><br></pre></td></tr></table></figure>
+<h2 id="获取一列"><a href="#获取一列" class="headerlink" title="获取一列"></a>获取一列</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_adjust[:,<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="生成数据"><a href="#生成数据" class="headerlink" title="生成数据"></a>生成数据</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 用于创建一个一维数组，并且是等差数列构成的一维数组，它最常用的有三个参数  </span></span><br><span class="line"><span class="comment"># 第一个参数表示起始点，第二个参数表示终止点，第三个参数表示数列的个数，默认包括 终止值</span></span><br><span class="line">a = np.linspace(<span class="number">1</span>,<span class="number">10</span>,<span class="number">10</span>)</span><br><span class="line"><span class="comment"># 输出 array([  1.,   2.,   3.,   4.,   5.,   6.,   7.,   8.,   9.,  10.]) dtype('float64')</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以使用参数endpoint来决定是否包含终止值，默认是True</span></span><br><span class="line">a = np.linspace(<span class="number">1</span>,<span class="number">10</span>,<span class="number">10</span>,endpoint=<span class="keyword">False</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="保存数据"><a href="#保存数据" class="headerlink" title="保存数据"></a>保存数据</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.savetxt(<span class="string">"data.csv"</span>, y_20, delimiter=<span class="string">","</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="曲线拟合"><a href="#曲线拟合" class="headerlink" title="曲线拟合"></a>曲线拟合</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">x = np.linspace(<span class="number">0</span>, <span class="number">10</span>, <span class="number">50</span>)</span><br><span class="line">y = x**<span class="number">2</span> + <span class="number">5</span> * x + <span class="number">10</span></span><br><span class="line"></span><br><span class="line">print(np.polyfit(x, y, <span class="number">2</span>))</span><br><span class="line">print(np.polynomial.polynomial.polyfit(x, y, <span class="number">2</span>))</span><br><span class="line"></span><br><span class="line">[ <span class="number">1.</span>  <span class="number">5.</span> <span class="number">10.</span>]</span><br><span class="line">[<span class="number">10.</span>  <span class="number">5.</span>  <span class="number">1.</span>]</span><br><span class="line"></span><br><span class="line">print(np.polynomial.polynomial.Polynomial(np.polynomial.polynomial.polyfit(x, y, <span class="number">2</span>)))</span><br><span class="line">print(np.polynomial.polynomial.Polynomial(np.polyfit(x, y, <span class="number">2</span>)))</span><br></pre></td></tr></table></figure>
+<p>print(np.poly1d(np.polyfit(x, y, 2)))</p>
+<p>文档推荐新代码使用这个接口，注意这个接口返回的顺序和 polyfit 是反的<br>print(np.poly1d(np.polynomial.polynomial.polyfit(x, y, 2)))</p>
+<p>np.polynomial.polynomial.Polynomial</p>
 
           
         
@@ -1774,7 +1995,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/100/">100</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/113/">113</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1821,7 +2042,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">999</span>
+                    <span class="site-state-item-count">1124</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1986,7 +2207,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">76</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">78</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -2405,7 +2630,19 @@
                     
                       
                     
-                    <span class="site-state-item-count">203</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">209</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -2947,7 +3184,69 @@
         onPopupClose();
       }
     });
-  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -2966,44 +3265,7 @@
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->
 
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-  
     
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-  
-
   
 
 

@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">76</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">78</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">999</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1124</span>
       </a>
 </li>
 
@@ -328,7 +328,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/02/27/功能分类/filesystem/读写ini文件/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/06/28/开源库/rapidJson/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -347,7 +347,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/02/27/功能分类/filesystem/读写ini文件/" itemprop="url">读写ini文件</a></h1>
+                <a class="post-title-link" href="/2019/06/28/开源库/rapidJson/" itemprop="url">rapidJson</a></h1>
         
 
         <div class="post-meta">
@@ -359,7 +359,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-27T09:48:13+08:00">2019-02-27</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-28T15:23:34+08:00">2019-06-28</time>
             
 
             
@@ -380,587 +380,14 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="读取"><a href="#读取" class="headerlink" title="读取"></a>读取</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">3</span> 是默认值</span><br><span class="line"><span class="keyword">int</span> extensions = GetPrivateProfileInt(<span class="string">"sectionName"</span>,<span class="string">"key"</span>,<span class="number">3</span>,g_szIniFileName);</span><br><span class="line"></span><br><span class="line">CString tmp,str;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX_LENGTH 216</span></span><br><span class="line">GetPrivateProfileString(<span class="string">"sectionName"</span>,key,<span class="literal">NULL</span>,str.GetBuffer(MAX_LENGTH),MAX_LENGTH,g_szIniFileName);</span><br><span class="line">...处理代码</span><br><span class="line">str.ReleaseBuffer(MAX_LENGTH);</span><br></pre></td></tr></table></figure>
-<h1 id="写入"><a href="#写入" class="headerlink" title="写入"></a>写入</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WritePrivateProfileString(<span class="string">"sectionName"</span>,<span class="string">"key"</span>,<span class="string">"value"</span>,g_szIniFileName);</span><br></pre></td></tr></table></figure>
-<h1 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取所有 section 内容</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> nBufferSize = <span class="number">5120</span>;</span><br><span class="line">TCHAR lpszReturnBuffer[nBufferSize] = &#123; <span class="string">'\0'</span> &#125;;</span><br><span class="line">DWORD dwRet = GetPrivateProfileSectionNames(lpszReturnBuffer, nBufferSize, path.c_str());</span><br><span class="line"><span class="keyword">if</span> (<span class="number">0</span>==dwRet)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line">m_listSections.clear();</span><br><span class="line"><span class="built_in">list</span>&lt;wstring&gt; listKVs;</span><br><span class="line">TCHAR* pNextSection = <span class="literal">NULL</span>;</span><br><span class="line">pNextSection = lpszReturnBuffer;</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (*pNextSection != <span class="number">0x00</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        m_listSections.push_back(pNextSection);</span><br><span class="line">        <span class="comment">// 获取 section 下面所有key:value对</span></span><br><span class="line">        listKVs = getSectionData(pNextSection);</span><br><span class="line">        Json::Value jsonTmp;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span>&amp;it:listKVs)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">vector</span>&lt;wstring&gt; wv = strHelper::strSplit(it, <span class="string">L"="</span>);</span><br><span class="line">            <span class="keyword">if</span> (wv.size() == <span class="number">2</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                jsonTmp[strHelper::w2s(wv[<span class="number">0</span>]).c_str()] = strHelper::w2s(wv[<span class="number">1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                g_logger-&gt;error(<span class="string">"CIniTools::loadIni: kv parse failed. &#123;&#125;"</span>, strHelper::w2s(it));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        m_json[strHelper::w2s(pNextSection)] = jsonTmp;</span><br><span class="line">    &#125;</span><br><span class="line">    pNextSection = pNextSection + lstrlen(pNextSection) + <span class="number">1</span>;</span><br><span class="line">&#125; <span class="keyword">while</span> (*pNextSection != <span class="number">0x00</span>);</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/02/21/功能分类/debug/debug工具/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/21/功能分类/debug/debug工具/" itemprop="url">debug工具</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-21T15:08:59+08:00">2019-02-21</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://github.com/dynamorio/drmemory" target="_blank" rel="noopener">https://github.com/dynamorio/drmemory</a></p>
-<p>Visual Leak Detector<br><a href="https://github.com/KindDragon/vld" target="_blank" rel="noopener">https://github.com/KindDragon/vld</a><br>Works with<br>Visual Studio 2008, 2010, 2012, 2013, 2015</p>
-<p>添加头文件和库路径<br>在项目里面包含 vld.h 文件</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vld.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"vld.lib"</span>)</span></span><br></pre></td></tr></table></figure>
-<p>拷贝文件到程序 debug 目录<br><img alt="20190806_112712.png" src="/2019/02/21/功能分类/debug/debug工具/20190806_112712.png" width="500" height=""></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/02/20/功能分类/windows/创建进程/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/20/功能分类/windows/创建进程/" itemprop="url">创建进程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-20T10:13:11+08:00">2019-02-20</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>CreateProcess</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/02/20/功能分类/process_thread/创建进程/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/20/功能分类/process_thread/创建进程/" itemprop="url">创建进程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-20T10:13:11+08:00">2019-02-20</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>CreateProcess</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/02/20/功能分类/windows/MFC/自定义消息/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/20/功能分类/windows/MFC/自定义消息/" itemprop="url">自定义消息</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-20T09:55:16+08:00">2019-02-20</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
 
                 
                 
                   , 
                 
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
 
                 
                 
@@ -996,12 +423,331 @@
       
         
           
-            <h1 id="定义消息"><a href="#定义消息" class="headerlink" title="定义消息"></a>定义消息</h1><p>WM_USER through 0x7FFF</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> WM_MYMESSAGE (WM_USER+5)</span></span><br></pre></td></tr></table></figure>
-<h2 id="添加消息处理函数"><a href="#添加消息处理函数" class="headerlink" title="添加消息处理函数"></a>添加消息处理函数</h2><p>类视图-&gt;添加函数<br>返回类型:LRESULT<br>参数:WPARAM wParam,LPARAM lParam<br>函数名：OnMyMessage<br>然后在OnMyMessage 成员函数声明前加上 afx_msg</p>
-<h2 id="添加消息映射"><a href="#添加消息映射" class="headerlink" title="添加消息映射"></a>添加消息映射</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">*.h</span><br><span class="line"><span class="function">afx_msg LRESULT <span class="title">OnMyMessage</span><span class="params">(WPARAM wParam, LPARAM lParam)</span></span>;</span><br><span class="line"></span><br><span class="line">*.cpp</span><br><span class="line">LRESULT CComBoxDemoDlg::OnShowMessage(WPARAM wParam, LPARAM lParam)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// Put in shared_ptr so it is automatically destroyed.</span></span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;wstring&gt; ptr(<span class="keyword">reinterpret_cast</span>&lt;wstring*&gt;(wParam));</span><br><span class="line"></span><br><span class="line">	showText(IDC_RICHEDIT21, ptr-&gt;c_str(), COLOR_GREEN);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">BEGIN_MESSAGE_MAP(Cmfc01aDlg, CDialog)</span><br><span class="line">    ON_MESSAGE(WM_MYMESSAGE,OnMyMessage) <span class="comment">//这里添加消息映射</span></span><br><span class="line">    <span class="comment">//&#125;&#125;AFX_MSG_MAP</span></span><br><span class="line">END_MESSAGE_MAP()</span><br></pre></td></tr></table></figure>
-<h2 id="批量响应消息"><a href="#批量响应消息" class="headerlink" title="批量响应消息"></a>批量响应消息</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> WM_DEMO_LOG_CLEAR		(WM_USER + 1)	<span class="comment">//清空日志输出</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> WM_DEMO_ADD_DEVICE		(WM_USER + 2)	<span class="comment">//添加设备</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> WM_DEMO_DEL_DEVICE		(WM_USER + 3)	<span class="comment">//删除设备</span></span></span><br><span class="line"></span><br><span class="line">BEGIN_MESSAGE_MAP(CZLNetSDKDemoDlg, CDialogEx)</span><br><span class="line">...</span><br><span class="line">ON_COMMAND_RANGE(WM_DEMO_LOG_CLEAR, WM_DEMO_DEL_DEVICE, &amp;DemoDlg::OnTreeMessage)</span><br><span class="line">...</span><br><span class="line">END_MESSAGE_MAP()</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> CZLNetSDKDemoDlg::OnTreeMessage(UINT nID)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//设备树右键菜单消息处理</span></span><br><span class="line">	<span class="keyword">switch</span> (nID)</span><br><span class="line">	&#123;</span><br><span class="line">	<span class="keyword">case</span> WM_DEMO_LOG_CLEAR:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> WM_DEMO_ADD_DEVICE:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> WM_DEMO_DEL_DEVICE:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="字符串消息"><a href="#字符串消息" class="headerlink" title="字符串消息"></a>字符串消息</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Put in shared_ptr so it is automatically destroyed.</span></span><br><span class="line"><span class="built_in">shared_ptr</span>&lt;<span class="built_in">string</span>&gt; msg = <span class="keyword">reinterpret_cast</span>&lt;<span class="built_in">string</span>*&gt;(lParam);</span><br></pre></td></tr></table></figure>
+            <p>目前还不知道如何访问，下面类型的数据</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">    &#123;&#125;,&#123;&#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h1 id="解析字符串"><a href="#解析字符串" class="headerlink" title="解析字符串"></a>解析字符串</h1><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"key"</span>:[&#123;&#125;,&#123;&#125;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Document doc;</span><br><span class="line">doc.Parse(strConfig.c_str());</span><br><span class="line"><span class="function">ParseErrorCode <span class="title">error</span><span class="params">(kParseErrorNone)</span></span>;</span><br><span class="line">error = doc.GetParseError();  </span><br><span class="line"><span class="keyword">if</span> (error != kParseErrorNone)  </span><br><span class="line">&#123; </span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (!doc.HasMember(<span class="string">"dev_th"</span>) || !doc[<span class="string">"dev_th"</span>].IsArray())</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line">Value &amp; arrAlarmHost = doc[<span class="string">"dev_th"</span>];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; arrAlarmHost.Size(); ++index)</span><br><span class="line">&#123;</span><br><span class="line">    Value &amp;objDev = arrAlarmHost[index];</span><br><span class="line">    <span class="keyword">if</span> (!objDev.HasMember(<span class="string">"port"</span>) || !objDev[<span class="string">"port"</span>].IsInt())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="解析对象数组"><a href="#解析对象数组" class="headerlink" title="解析对象数组"></a>解析对象数组</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"defendConfig"</span> :</span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">"addr"</span> : <span class="string">"01234567"</span>,</span><br><span class="line">        <span class="string">"defendCode"</span> : <span class="string">"008"</span>,</span><br><span class="line">        <span class="string">"name"</span> : <span class="string">"东南角防区"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">"addr"</span> : <span class="string">"7654321"</span>,</span><br><span class="line">        <span class="string">"defendCode"</span> : <span class="string">"009"</span>,</span><br><span class="line">        <span class="string">"name"</span> : <span class="string">"西南角防区"</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">Document doc;</span><br><span class="line">doc.Parse(m_sCmd.c_str());</span><br><span class="line"><span class="function">ParseErrorCode <span class="title">error</span><span class="params">(kParseErrorNone)</span></span>;</span><br><span class="line"><span class="keyword">if</span> (<span class="literal">false</span> == doc.HasParseError() &amp;&amp;</span><br><span class="line">    doc.IsArray())</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; doc.Size(); ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        Value&amp; v = doc[i];</span><br><span class="line">        tagDHFlowCountRegion region;</span><br><span class="line">        region.addr = v[<span class="string">"addr"</span>].GetInt();</span><br><span class="line">        region.defendCode = v[<span class="string">"defendCode"</span>].GetInt();</span><br><span class="line">        region.strName = v[<span class="string">"name"</span>].GetString();</span><br><span class="line">        m_vecConfig.emplace_back(region);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="构建-json"><a href="#构建-json" class="headerlink" title="构建 json"></a>构建 json</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">&#123;</span></span><br><span class="line"><span class="comment">"layout":"2*2",</span></span><br><span class="line"><span class="comment">"Settings":</span></span><br><span class="line"><span class="comment">[</span></span><br><span class="line"><span class="comment">&#123;</span></span><br><span class="line"><span class="comment">"group":"1",</span></span><br><span class="line"><span class="comment">"windows":"1#2",</span></span><br><span class="line"><span class="comment">"cycletime":"10",</span></span><br><span class="line"><span class="comment">"channels":</span></span><br><span class="line"><span class="comment">[</span></span><br><span class="line"><span class="comment">&#123;</span></span><br><span class="line"><span class="comment">"loginID":"1234",</span></span><br><span class="line"><span class="comment">"channel":"2"</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">]</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">]</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">TestGenerateJsonArray</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">string</span> result = <span class="string">""</span>;</span><br><span class="line">	rapidjson::StringBuffer strBuf;</span><br><span class="line">	<span class="comment">//rapidjson::Writer&lt;rapidjson::StringBuffer&gt; writer(strBuf);</span></span><br><span class="line">	rapidjson::PrettyWriter&lt;rapidjson::StringBuffer&gt; writer(strBuf);</span><br><span class="line"></span><br><span class="line">	writer.StartObject();</span><br><span class="line">	writer.Key(<span class="string">"layout"</span>);</span><br><span class="line">	writer.String(<span class="string">"2*2"</span>);</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">	writer.Key(<span class="string">"Settings"</span>);</span><br><span class="line">	writer.StartArray();</span><br><span class="line">	writer.StartObject();</span><br><span class="line">	writer.Key(<span class="string">"group"</span>);</span><br><span class="line">	writer.String(<span class="string">"1"</span>);</span><br><span class="line">	writer.Key(<span class="string">"windows"</span>);</span><br><span class="line">	writer.String(<span class="string">"1#2"</span>);</span><br><span class="line">	writer.Key(<span class="string">"cycletime"</span>);</span><br><span class="line">	writer.String(<span class="string">"10"</span>);</span><br><span class="line">	writer.Key(<span class="string">"channels"</span>);</span><br><span class="line">	writer.StartArray();</span><br><span class="line">	writer.StartObject();</span><br><span class="line">	writer.Key(<span class="string">"loginID"</span>);</span><br><span class="line">	writer.String(<span class="string">"1234"</span>);</span><br><span class="line">	writer.Key(<span class="string">"channel"</span>);</span><br><span class="line">	writer.String(<span class="string">"2"</span>);</span><br><span class="line">	writer.EndObject();</span><br><span class="line">	writer.EndArray();</span><br><span class="line">	writer.EndObject();</span><br><span class="line">	writer.EndArray();</span><br><span class="line">	writer.EndObject();</span><br><span class="line">	result = strBuf.GetString();</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; result &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Document docHuminity; <span class="comment">// Null</span></span><br><span class="line">docHuminity.SetArray();</span><br><span class="line">rapidjson::Document::AllocatorType&amp; allocatorHuminity = docHuminity.GetAllocator();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> it = m_mapDevInfo[id_cmd_chan].listChartDataTemperature.begin();it != m_mapDevInfo[id_cmd_chan].listChartDataTemperature.end();++it)</span><br><span class="line">&#123;</span><br><span class="line">    rapidjson::Value obj;</span><br><span class="line">    obj.SetObject();</span><br><span class="line">    obj.AddMember(<span class="string">"name"</span>,rapidjson::StringRef(it-&gt;strName.c_str()),allocatorHuminity);</span><br><span class="line"></span><br><span class="line">    rapidjson::<span class="function">Value <span class="title">arr</span><span class="params">(rapidjson::kArrayType)</span></span>;</span><br><span class="line">    arr.PushBack(rapidjson::StringRef(it-&gt;strDatetime.c_str()), allocatorHuminity);</span><br><span class="line">    arr.PushBack(rapidjson::StringRef(it-&gt;strValue.c_str()), allocatorHuminity);</span><br><span class="line"></span><br><span class="line">    obj.AddMember(<span class="string">"value"</span>,arr,allocatorHuminity);</span><br><span class="line">    docHuminity.PushBack(obj,allocatorHuminity);</span><br><span class="line">&#125;</span><br><span class="line">rapidjson::StringBuffer bufferH;</span><br><span class="line">rapidjson::Writer&lt;rapidjson::StringBuffer&gt; writerH(bufferH);</span><br><span class="line">docHuminity.Accept(writerH);</span><br><span class="line">strChartHumidity = bufferH.GetString();</span><br></pre></td></tr></table></figure>
+<h2 id="对象数组"><a href="#对象数组" class="headerlink" title="对象数组"></a>对象数组</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"value"</span> : </span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">"addr"</span> : <span class="string">"01234567"</span>,</span><br><span class="line">        <span class="string">"defendCode"</span> : <span class="string">"008"</span>,</span><br><span class="line">        <span class="string">"name"</span> : <span class="string">"东南角防区"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">"addr"</span> : <span class="string">"7654321"</span>,</span><br><span class="line">        <span class="string">"defendCode"</span> : <span class="string">"009"</span>,</span><br><span class="line">        <span class="string">"name"</span> : <span class="string">"西南角防区"</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">rapidjson::Document jsonDoc;</span><br><span class="line">rapidjson::Document::AllocatorType &amp;allocator = jsonDoc.GetAllocator(); <span class="comment">//获取分配器</span></span><br><span class="line"><span class="comment">//将当前的Document设置为一个object，也就是说，整个Document是一个Object类型的dom元素</span></span><br><span class="line">jsonDoc.SetObject();</span><br><span class="line"><span class="comment">//生成array</span></span><br><span class="line">rapidjson::<span class="function">Value <span class="title">jsonArr</span><span class="params">(rapidjson::kArrayType)</span></span>;<span class="comment">//创建一个Array类型的元素</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> iter = m_vecConfig.begin(); iter != m_vecConfig.end(); ++iter)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">string</span> sdev;</span><br><span class="line">    <span class="comment">// 构建json字符串</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加属性</span></span><br><span class="line">    jsonDoc.AddMember(<span class="string">"name"</span>, iter-&gt;strName, allocator);</span><br><span class="line">    jsonDoc.AddMember(<span class="string">"addr"</span>, iter-&gt;strAddr, allocator);</span><br><span class="line">    jsonDoc.AddMember(<span class="string">"defendCode"</span>, iter-&gt;strDefendCode, allocator);</span><br><span class="line">    </span><br><span class="line">    jsonArr.PushBack(jsonDoc, allocator);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="转字符串"><a href="#转字符串" class="headerlink" title="转字符串"></a>转字符串</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">JsonToString</span><span class="params">(rapidjson::Value&amp; valRoot)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    rapidjson::StringBuffer strBuf;</span><br><span class="line">    strBuf.Clear();</span><br><span class="line">    rapidjson::Writer&lt;rapidjson::StringBuffer&gt; writer(strBuf);</span><br><span class="line">    valRoot.Accept(writer);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> strJson = strBuf.GetString();</span><br><span class="line">    <span class="keyword">return</span> strJson;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="综合样例"><a href="#综合样例" class="headerlink" title="综合样例"></a>综合样例</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//生成一串如下的json格式字符串，并解析</span></span><br><span class="line"><span class="comment">// &#123;</span></span><br><span class="line"><span class="comment">// "name":"qfl",</span></span><br><span class="line"><span class="comment">// "age":20,</span></span><br><span class="line"><span class="comment">// "letter":["a","b","c"],</span></span><br><span class="line"><span class="comment">// "location": &#123;"province":"fujian","city":"xiamen","number":16&#125;</span></span><br><span class="line"><span class="comment">// "book":[&#123;"name":"book1", "isbn":"123"&#125;,&#123;"name":"book2","isbn":"456"&#125;],</span></span><br><span class="line"><span class="comment">// "healthy":true,</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//生成Json串</span></span><br><span class="line">rapidjson::Document jsonDoc;    <span class="comment">//生成一个dom元素Document</span></span><br><span class="line">rapidjson::Document::AllocatorType &amp;allocator = jsonDoc.GetAllocator(); <span class="comment">//获取分配器</span></span><br><span class="line">jsonDoc.SetObject();    <span class="comment">//将当前的Document设置为一个object，也就是说，整个Document是一个Object类型的dom元素</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//添加属性</span></span><br><span class="line">jsonDoc.AddMember(<span class="string">"name"</span>, <span class="string">"qfl"</span>, allocator);    <span class="comment">//添加字符串值</span></span><br><span class="line">jsonDoc.AddMember(<span class="string">"age"</span>, <span class="number">20</span>, allocator);        <span class="comment">//添加int类型值</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//生成array</span></span><br><span class="line">rapidjson::<span class="function">Value <span class="title">letterArray</span><span class="params">(rapidjson::kArrayType)</span></span>;<span class="comment">//创建一个Array类型的元素</span></span><br><span class="line">letterArray.PushBack(<span class="string">"a"</span>, allocator);</span><br><span class="line">letterArray.PushBack(<span class="string">"b"</span>, allocator);</span><br><span class="line">letterArray.PushBack(<span class="string">"c"</span>, allocator);</span><br><span class="line">jsonDoc.AddMember(<span class="string">"letter"</span>, letterArray, allocator);    <span class="comment">//添加数组</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//生成一个object</span></span><br><span class="line">rapidjson::<span class="function">Value <span class="title">locationObj</span><span class="params">(rapidjson::kObjectType)</span></span>;<span class="comment">//创建一个Object类型的元素</span></span><br><span class="line">locationObj.AddMember(<span class="string">"province"</span>, <span class="string">"fujian"</span>, allocator);</span><br><span class="line">locationObj.AddMember(<span class="string">"city"</span>, <span class="string">"xiamen"</span>, allocator);</span><br><span class="line">locationObj.AddMember(<span class="string">"number"</span>, <span class="number">16</span>, allocator);</span><br><span class="line">jsonDoc.AddMember(<span class="string">"location"</span>, locationObj, allocator);  <span class="comment">//添加object到Document中</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//生成一个object数组</span></span><br><span class="line">rapidjson::<span class="function">Value <span class="title">bookArray</span><span class="params">(rapidjson::kArrayType)</span></span>;<span class="comment">//生成一个Array类型的元素，用来存放Object</span></span><br><span class="line">rapidjson::<span class="function">Value <span class="title">book1</span><span class="params">(rapidjson::kObjectType)</span></span>; <span class="comment">//生成book1</span></span><br><span class="line">book1.AddMember(<span class="string">"name"</span>, <span class="string">"book1"</span>, allocator);</span><br><span class="line">book1.AddMember(<span class="string">"isbn"</span>, <span class="string">"123"</span>, allocator);</span><br><span class="line">bookArray.PushBack(book1, allocator);           <span class="comment">//添加到数组</span></span><br><span class="line"></span><br><span class="line">rapidjson::<span class="function">Value <span class="title">book2</span><span class="params">(rapidjson::kObjectType)</span></span>; <span class="comment">//生成book2</span></span><br><span class="line">book2.AddMember(<span class="string">"name"</span>, <span class="string">"book2"</span>, allocator);</span><br><span class="line">book2.AddMember(<span class="string">"isbn"</span>, <span class="string">"456"</span>, allocator);</span><br><span class="line">bookArray.PushBack(book2, allocator);           <span class="comment">//添加到数组</span></span><br><span class="line">jsonDoc.AddMember(<span class="string">"book"</span>, bookArray, allocator);</span><br><span class="line"></span><br><span class="line"><span class="comment">//添加属性</span></span><br><span class="line">jsonDoc.AddMember(<span class="string">"healthy"</span>, <span class="literal">true</span>, allocator);  <span class="comment">//添加bool类型值</span></span><br><span class="line"><span class="comment">// jsonDoc.AddMember("sports", NULL, allocator);//添加空值,这里会导致报错</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//生成字符串</span></span><br><span class="line">rapidjson::StringBuffer buffer;</span><br><span class="line">rapidjson::Writer&lt;rapidjson::StringBuffer&gt; writer(buffer);</span><br><span class="line">jsonDoc.Accept(writer);</span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span> strJson = buffer.GetString();</span><br><span class="line"><span class="built_in">log</span>(<span class="string">"-----生成的Json:\n%s"</span>, strJson.c_str());</span><br><span class="line"></span><br><span class="line"><span class="comment">//写到文件</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span> strPath = FileUtils::getInstance()-&gt;getWritablePath() + <span class="string">"JsonFile.txt"</span>;</span><br><span class="line">FILE* myFile = fopen(strPath.c_str(), <span class="string">"w"</span>);  <span class="comment">//windows平台要使用wb</span></span><br><span class="line"><span class="keyword">if</span> (myFile) &#123;</span><br><span class="line">    <span class="built_in">fputs</span>(buffer.GetString(), myFile);</span><br><span class="line">    fclose(myFile);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//JsonFile.txt文件内容</span></span><br><span class="line"><span class="comment">//&#123;"name":"qfl","age":20,"letter":["a","b","c"],"location":&#123;"province":"fujian","city":"xiamen","number":16&#125;,"book":[&#123;"name":"book1","isbn":"123"&#125;,&#123;"name":"book2","isbn":"456"&#125;],"healthy":true&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">log</span>(<span class="string">"-----读取Json内容:"</span>);</span><br><span class="line"><span class="comment">//从文件中读取（注意和上面分开，不能确定文件是否生成完毕，这里读取可能有问题）</span></span><br><span class="line">rapidjson::Document newDoc;</span><br><span class="line">myFile = fopen(strPath.c_str(), <span class="string">"r"</span>);   <span class="comment">//windows平台使用rb</span></span><br><span class="line"><span class="keyword">if</span> (myFile) &#123;</span><br><span class="line">    rapidjson::<span class="function">FileStream <span class="title">inputStream</span><span class="params">(myFile)</span></span>;  <span class="comment">//创建一个输入流</span></span><br><span class="line">    newDoc.ParseStream&lt;<span class="number">0</span>&gt;(inputStream); <span class="comment">//将读取的内容转换为dom元素</span></span><br><span class="line">    fclose(myFile); <span class="comment">//关闭文件，很重要</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//判断解析从流中读取的字符串是否有错误</span></span><br><span class="line"><span class="keyword">if</span> (newDoc.HasParseError()) &#123;</span><br><span class="line">    <span class="built_in">log</span>(<span class="string">"Json Parse error:%d"</span>, newDoc.GetParseError()); <span class="comment">//打印错误编号</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">//获取json串中的数据</span></span><br><span class="line">    <span class="comment">//先判断是否有这个字段，如果使用不存在的key去取值会导致直接崩溃</span></span><br><span class="line">    <span class="keyword">if</span> (newDoc.HasMember(<span class="string">"name"</span>)) &#123;</span><br><span class="line">        <span class="built_in">log</span>(<span class="string">"name:%s"</span>, newDoc[<span class="string">"name"</span>].GetString()); <span class="comment">//必须要获取对应的数据类型，rapidjson不会帮你转换类型</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (newDoc.HasMember(<span class="string">"age"</span>)) &#123;</span><br><span class="line">        <span class="built_in">log</span>(<span class="string">"age:%d"</span>, newDoc[<span class="string">"age"</span>].GetInt());  <span class="comment">//获取正确的类型</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (newDoc.HasMember(<span class="string">"letter"</span>)) &#123;</span><br><span class="line">        rapidjson::Value letter;    <span class="comment">//使用一个新的rapidjson::Value来存放array的内容</span></span><br><span class="line">        letter = newDoc[<span class="string">"letter"</span>];</span><br><span class="line"></span><br><span class="line">        <span class="comment">//确保它是一个Array，而且有内容</span></span><br><span class="line">        <span class="keyword">if</span> (letter.IsArray() &amp;&amp; !letter.Empty()) &#123;</span><br><span class="line">            <span class="comment">//遍历Array中的内容</span></span><br><span class="line">            <span class="keyword">for</span> (rapidjson::SizeType i = <span class="number">0</span>; i &lt; letter.Size(); i++) &#123;</span><br><span class="line">                <span class="built_in">log</span>(<span class="string">"letter:%s"</span>, letter[i].GetString());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (newDoc.HasMember(<span class="string">"location"</span>)) &#123;</span><br><span class="line">        rapidjson::Value location;      <span class="comment">//使用一个新的rapidjson::Value来存放object</span></span><br><span class="line">        location = newDoc[<span class="string">"location"</span>];</span><br><span class="line"></span><br><span class="line">        <span class="comment">//确保它是一个Object</span></span><br><span class="line">        <span class="keyword">if</span> (location.IsObject()) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (location.HasMember(<span class="string">"province"</span>)) &#123;</span><br><span class="line">                <span class="built_in">log</span>(<span class="string">"location:province:%s"</span>, location[<span class="string">"province"</span>].GetString());</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;&#125;</span><br><span class="line">            <span class="keyword">if</span> (location.HasMember(<span class="string">"city"</span>)) &#123;</span><br><span class="line">                <span class="built_in">log</span>(<span class="string">"location:city:%s"</span>, location[<span class="string">"city"</span>].GetString());</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;&#125;</span><br><span class="line">            <span class="keyword">if</span> (location.HasMember(<span class="string">"number"</span>)) &#123;</span><br><span class="line">                <span class="built_in">log</span>(<span class="string">"location:number:%d"</span>, location[<span class="string">"number"</span>].GetInt());</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//book是一个包含了2个object的array。按照上面的步骤来取值就行</span></span><br><span class="line">    <span class="keyword">if</span> (newDoc.HasMember(<span class="string">"book"</span>)) &#123;</span><br><span class="line">        rapidjson::Value book;</span><br><span class="line">        book = newDoc[<span class="string">"book"</span>];</span><br><span class="line"></span><br><span class="line">        <span class="comment">//先取Array</span></span><br><span class="line">        <span class="keyword">if</span> (book.IsArray() &amp;&amp; !book.Empty()) &#123;</span><br><span class="line"></span><br><span class="line">            rapidjson::Value tempBook;</span><br><span class="line">            <span class="keyword">for</span> (rapidjson::SizeType i = <span class="number">0</span>; i &lt; book.Size(); i++) &#123;</span><br><span class="line">                tempBook = book[i]; <span class="comment">//Array中每个元素又是一个Object</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (tempBook.IsObject()) &#123;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (tempBook.HasMember(<span class="string">"name"</span>) &amp;&amp; tempBook.HasMember(<span class="string">"isbn"</span>)) &#123;</span><br><span class="line">                        <span class="built_in">log</span>(<span class="string">"book:%d:name:%s, isbn:%s"</span>, i, tempBook[<span class="string">"name"</span>].GetString(), tempBook[<span class="string">"isbn"</span>].GetString());</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">else</span> &#123;&#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123;&#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (newDoc.HasMember(<span class="string">"healthy"</span>)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (newDoc[<span class="string">"healthy"</span>].GetBool()) &#123;</span><br><span class="line">            <span class="built_in">log</span>(<span class="string">"healthy:true"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">log</span>(<span class="string">"healthy:false"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/06/28/语言相关/javascript/js-random/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/28/语言相关/javascript/js-random/" itemprop="url">js-random</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-28T10:11:29+08:00">2019-06-28</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>js只有一个Math.random() 函数返回一个浮点, 伪随机数在范围[0，1)。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Math</span>.ceil() <span class="comment">//向上取整</span></span><br><span class="line"><span class="built_in">Math</span>.floor() <span class="comment">//向下取整</span></span><br><span class="line"><span class="built_in">Math</span>.round() <span class="comment">//四舍五入</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">Math</span>.random() * <span class="number">10</span> <span class="comment">//会随机生成 [0,10)，但是浮点数；</span></span><br></pre></td></tr></table></figure>
+<p>生成[0,10]的随机整数，Math.round(Math.random() <em> 10) ，通过四舍五入可以将大于9.5的数值转换为10；<br>生成[0,10)的随机整数，Math.floor(Math.random() </em> 10 )；<br>生成(0,10]的随机整数，Math.ceil(Math.random() * 10 )；</p>
+<h1 id="min-≤-r-≤-max"><a href="#min-≤-r-≤-max" class="headerlink" title="min ≤ r ≤ max"></a>min ≤ r ≤ max</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Random</span>(<span class="params">min, max</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.round(<span class="built_in">Math</span>.random() * (max - min)) + min;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="min-lt-r-≦-max"><a href="#min-lt-r-≦-max" class="headerlink" title="min&lt; r ≦ max"></a>min&lt; r ≦ max</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Random</span>(<span class="params">min, max</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.ceil(<span class="built_in">Math</span>.random() * (max - min)) + min;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Random</span>(<span class="params">min, max</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.round(<span class="built_in">Math</span>.random() * (max - min)) === <span class="number">0</span>? (min+<span class="number">1</span>):<span class="built_in">Math</span>.round(<span class="built_in">Math</span>.random() * (max - min)) + min;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="min≦-r-lt-max"><a href="#min≦-r-lt-max" class="headerlink" title="min≦ r &lt; max"></a>min≦ r &lt; max</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Random</span>(<span class="params">min, max</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * (max - min)) + min;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Random</span>(<span class="params">min, max</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.round(<span class="built_in">Math</span>.random() * (max - min)) === max ? (max<span class="number">-1</span>):<span class="built_in">Math</span>.round(<span class="built_in">Math</span>.random() * (max - min)) + min;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="min-lt-r-lt-max"><a href="#min-lt-r-lt-max" class="headerlink" title="min &lt; r &lt; max"></a>min &lt; r &lt; max</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Random</span>(<span class="params">min, max</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * (max - min)) === min  ? (min + <span class="number">1</span>) : <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * (max - min)) + min;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Random</span>(<span class="params">min, max</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * ((max<span class="number">-1</span>) - (min+<span class="number">1</span>))) + (min+<span class="number">1</span>);相当于 min+<span class="number">1</span> ≤ r ≤ max - <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/06/27/语言相关/python/tushare/tushare-学习笔记001-环境搭建/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/27/语言相关/python/tushare/tushare-学习笔记001-环境搭建/" itemprop="url">tushare-学习笔记001-环境搭建</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-27T10:13:35+08:00">2019-06-27</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://github.com/tyler2018/stocker.git" target="_blank" rel="noopener">github链接</a></p>
+<h1 id="windows-环境"><a href="#windows-环境" class="headerlink" title="windows 环境"></a>windows 环境</h1><ol>
+<li>安装 anaconda<br><a href="https://www.anaconda.com/" target="_blank" rel="noopener">官网</a></li>
+</ol>
+<p><a href="https://repo.anaconda.com/archive/Anaconda3-2019.03-Windows-x86_64.exe" target="_blank" rel="noopener">https://repo.anaconda.com/archive/Anaconda3-2019.03-Windows-x86_64.exe</a></p>
+<p>升级 conda 的版本，<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conda update conda</span><br><span class="line">conda update anaconda</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>安装 mongodb：注意安装的时候选择自定义，安装过程中去掉 compass 的选项。否则会卡住几个小时都有可能</li>
+<li>创建虚拟环境 stock_tushare. 基于 python3.7 版本创建一个名字为 pyt3_stock_tushare 的环境，同时安装 anaconda<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda create -n pyt3_stock_tushare python=<span class="number">3.7</span> anaconda</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>安装完毕后通过 <code>conda env list</code> 查看所有的环境</p>
+<ol>
+<li>激活环境 <code>activate pyt3_stock_tushare</code>，退出环境 <code>deactivate</code></li>
+<li>安装 tushare <code>pip install tushare</code></li>
+<li><p>安装 talib 因为 python 是 64 位的，所以这里也需要 64 位的<br><a href="https://www.lfd.uci.edu/~gohlke/pythonlibs/#ta-lib" target="_blank" rel="noopener">https://www.lfd.uci.edu/~gohlke/pythonlibs/#ta-lib</a><br>下载 TA_Lib‑0.4.17‑cp37‑cp37m‑win_amd64.whl<br>执行 <code>pip install TA_Lib‑0.4.17‑cp37‑cp37m‑win_amd64.whl</code></p>
+<p>下面的方法，实际使用有问题，暂时留着备查。<br> <code>http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-msvc.zip</code> 然后安装 python 库 32位的 <code>pip install TA-Lib</code><br><a href="http://ta-lib.org/hdr_dw.html" target="_blank" rel="noopener">talib</a><br>下载的ta-lib-0.4.0-msvc.zip 中ta-lib的C库是32位的，需要重新在64位下编译ta-lib库。在此，需要安装Microsoft Visual Studio来实现，我安装的是Microsoft Visual Studio2015。<br>运行Visual Studio x86 x64 Cross Tools Command Prompt，接着cd c:\ta-lib\c\make\cdr\win32\msvc，在该目录下执行nmake完成文件的编译<br>待执行完毕后，再在该目录下执行 <code>pip install TA-Lib</code></p>
+</li>
+<li><p>安装 <code>pip install pymongo</code></p>
+</li>
+<li>打开 pycharm 新建项目，使用 conda 创建环境。</li>
+</ol>
+<p>现在可以分享运行环境了，直接导入即可：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conda env export &gt; BackupEnv.yaml    <span class="comment"># 将当前运行环境的package信息导出到名为BackupEnv的YAML文件</span></span><br><span class="line">conda env create --name env_name --file=BackupEnv.yaml <span class="comment"># 使用YAML文件创建运行环境,</span></span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>测试代码</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tushare <span class="keyword">as</span> ts</span><br><span class="line"></span><br><span class="line">ts.set_token(<span class="string">'xxx'</span>)</span><br><span class="line">pro = ts.pro_api()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    print(<span class="string">"tushare version:"</span> + ts.__version__)</span><br></pre></td></tr></table></figure>
+<p>正常输出版本信息，环境就算搭建好了。</p>
 
           
         
@@ -1055,7 +801,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/02/19/学习笔记/其他/PEM文件权限问题/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/06/27/功能分类/数据库/sqlite/sqlite-datatype/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1074,7 +820,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/02/19/学习笔记/其他/PEM文件权限问题/" itemprop="url">PEM文件权限问题</a></h1>
+                <a class="post-title-link" href="/2019/06/27/功能分类/数据库/sqlite/sqlite-datatype/" itemprop="url">sqlite-datatype</a></h1>
         
 
         <div class="post-meta">
@@ -1086,7 +832,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-19T20:36:49+08:00">2019-02-19</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-27T08:59:16+08:00">2019-06-27</time>
             
 
             
@@ -1107,7 +853,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/其他/" itemprop="url" rel="index"><span itemprop="name">其他</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
 
                 
                 
@@ -1143,8 +889,9 @@
       
         
           
-            <p>键入ssh命令后，显示错误如下<br>Permissions 0644 for ‘xx.pem’ are too open.</p>
-<p>修改一下权限就可以了<br>chmod 600 xx.pem</p>
+            <p><a href="https://www.sqlite.org/datatype3.html" target="_blank" rel="noopener">datatype</a></p>
+<p>NULL. The value is a NULL value.<br>INTEGER. The value is a signed integer, stored in 1, 2, 3, 4, 6, or 8 bytes depending on the magnitude of the value.<br>REAL. The value is a floating point value, stored as an 8-byte IEEE floating point number.<br>TEXT. The value is a text string, stored using the database encoding (UTF-8, UTF-16BE or UTF-16LE).<br>BLOB. The value is a blob of data, stored exactly as it was input.</p>
+<p>在SQLite3中支持的比较表达式有：”=”, “==”, “&lt;”, “&lt;=”, “&gt;”, “&gt;=”, “!=”, “&lt;&gt;”, “IN”, “NOT IN”, “BETWEEN”, “IS” and “IS NOT”。</p>
 
           
         
@@ -1198,7 +945,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/02/19/学习笔记/物体识别相关/人脸识别/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/06/25/语言相关/php/php-datetime/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1217,7 +964,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/02/19/学习笔记/物体识别相关/人脸识别/" itemprop="url">人脸识别</a></h1>
+                <a class="post-title-link" href="/2019/06/25/语言相关/php/php-datetime/" itemprop="url">php-datetime</a></h1>
         
 
         <div class="post-meta">
@@ -1229,7 +976,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-19T09:07:18+08:00">2019-02-19</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-25T07:13:56+08:00">2019-06-25</time>
             
 
             
@@ -1250,7 +997,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/机器学习/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
 
                 
                 
@@ -1286,9 +1033,7 @@
       
         
           
-            <p>use ubuntu18.04 + python3 + dlib</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Step 1: Install OS libraries</span><br><span class="line">sudo apt install build-essential cmake pkg-config </span><br><span class="line">sudo apt install libx11-dev libatlas-base-dev</span><br><span class="line">sudo apt install libgtk-3-dev libboost-python-dev</span><br><span class="line"></span><br><span class="line"># 下面的可选</span><br><span class="line">sudo apt install -y python3-setuptools git g++</span><br><span class="line"></span><br><span class="line">Step 2: Install Python libraries</span><br><span class="line">sudo apt install python-dev python-pip python3-dev python3-pip</span><br><span class="line"></span><br><span class="line">git clone https://github.com/davisking/dlib.git</span><br><span class="line">cd dlib</span><br><span class="line">mkdir build; cd build; cmake ..; cmake --build . --config Release</span><br><span class="line"></span><br><span class="line">// 下面可能是不需要的</span><br><span class="line">sudo make install</span><br><span class="line">sudo ldconfig</span><br><span class="line"></span><br><span class="line">进入 python 虚拟环境</span><br><span class="line">cd ..</span><br><span class="line">sudo python setup.py install</span><br><span class="line"></span><br><span class="line">pip install wheel</span><br><span class="line">pip install face_recognition</span><br><span class="line">pip install opencv-contrib-python</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt-get install python3-venv</span><br><span class="line">sudo apt install build-essential cmake libopenblas-dev liblapack-dev libx11-dev libgtk-3-dev python3 python3-dev python3-pip</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sudo apt install build-essential cmake</span><br><span class="line">sudo apt install libopenblas-dev liblapack-dev </span><br><span class="line">sudo apt install libx11-dev libgtk-3-dev</span><br><span class="line">sudo apt install python python-dev python-pip</span><br><span class="line">sudo apt install python3 python3-dev python3-pip</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">python3 -m venv face_recognition</span><br><span class="line">source ./face_recognition/bin/activate</span><br><span class="line"></span><br><span class="line">// 应该会自动安装依赖</span><br><span class="line">pip install face_recognition</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">pip install numpy scipy matplotlib scikit-image scikit-learn ipython</span><br><span class="line"></span><br><span class="line">pip3 install numpy</span><br><span class="line">pip3 install dlib</span><br><span class="line"></span><br><span class="line">deactivate</span><br></pre></td></tr></table></figure>
+            <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">echo</span> date(‘Y-m-d’) ，输出结果：<span class="number">2012</span><span class="number">-03</span><span class="number">-22</span></span><br><span class="line"><span class="keyword">echo</span> date(‘Y-m-d H:i:s’)，输出结果：<span class="number">2012</span><span class="number">-03</span><span class="number">-22</span> <span class="number">23</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**************格式中可使用字母的含义**************/</span></span><br><span class="line">a – <span class="string">"am"</span> 或是 <span class="string">"pm"</span> </span><br><span class="line">A – <span class="string">"AM"</span> 或是 <span class="string">"PM"</span> </span><br><span class="line">d – 几日，二位数字，若不足二位则前面补零; 如: <span class="string">"01"</span> 至 <span class="string">"31"</span> </span><br><span class="line">D – 星期几，三个英文字母; 如: <span class="string">"Fri"</span> </span><br><span class="line">F – 月份，英文全名; 如: <span class="string">"January"</span> </span><br><span class="line">h – <span class="number">12</span> 小时制的小时; 如: <span class="string">"01"</span> 至 <span class="string">"12"</span> </span><br><span class="line">H – <span class="number">24</span> 小时制的小时; 如: <span class="string">"00"</span> 至 <span class="string">"23"</span> </span><br><span class="line">g – <span class="number">12</span> 小时制的小时，不足二位不补零; 如: <span class="string">"1"</span> 至 <span class="number">12</span><span class="string">" </span></span><br><span class="line"><span class="string">G – 24 小时制的小时，不足二位不补零; 如: "</span><span class="number">0</span><span class="string">" 至 "</span><span class="number">23</span><span class="string">" </span></span><br><span class="line"><span class="string">i – 分钟; 如: "</span><span class="number">00</span><span class="string">" 至 "</span><span class="number">59</span><span class="string">" </span></span><br><span class="line"><span class="string">j – 几日，二位数字，若不足二位不补零; 如: "</span><span class="number">1</span><span class="string">" 至 "</span><span class="number">31</span><span class="string">" </span></span><br><span class="line"><span class="string">l – 星期几，英文全名; 如: "</span>Friday<span class="string">" </span></span><br><span class="line"><span class="string">m – 月份，二位数字，若不足二位则在前面补零; 如: "</span><span class="number">01</span><span class="string">" 至 "</span><span class="number">12</span><span class="string">" </span></span><br><span class="line"><span class="string">n – 月份，二位数字，若不足二位则不补零; 如: "</span><span class="number">1</span><span class="string">" 至 "</span><span class="number">12</span><span class="string">" </span></span><br><span class="line"><span class="string">M – 月份，三个英文字母; 如: "</span>Jan<span class="string">" </span></span><br><span class="line"><span class="string">s – 秒; 如: "</span><span class="number">00</span><span class="string">" 至 "</span><span class="number">59</span><span class="string">" </span></span><br><span class="line"><span class="string">S – 字尾加英文序数，二个英文字母; 如: "</span>th<span class="string">"，"</span>nd<span class="string">" </span></span><br><span class="line"><span class="string">t – 指定月份的天数; 如: "</span><span class="number">28</span><span class="string">" 至 "</span><span class="number">31</span><span class="string">" </span></span><br><span class="line"><span class="string">U – 总秒数 </span></span><br><span class="line"><span class="string">w – 数字型的星期几，如: "</span><span class="number">0</span><span class="string">" (星期日) 至 "</span><span class="number">6</span><span class="string">" (星期六) </span></span><br><span class="line"><span class="string">Y – 年，四位数字; 如: "</span><span class="number">1999</span><span class="string">" </span></span><br><span class="line"><span class="string">y – 年，二位数字; 如: "</span><span class="number">99</span><span class="string">" </span></span><br><span class="line"><span class="string">z – 一年中的第几天; 如: "</span><span class="number">0</span><span class="string">" 至 "</span><span class="number">365</span><span class="string">"</span></span><br></pre></td></tr></table></figure>
           
         
       
@@ -1341,7 +1086,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/02/15/工具相关/vscode/vscode使用配置/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/06/24/语言相关/CPP/cpp-bind学习/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1360,7 +1105,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/02/15/工具相关/vscode/vscode使用配置/" itemprop="url">vscode使用配置</a></h1>
+                <a class="post-title-link" href="/2019/06/24/语言相关/CPP/cpp-bind学习/" itemprop="url">cpp-bind学习</a></h1>
         
 
         <div class="post-meta">
@@ -1372,7 +1117,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-15T13:31:28+08:00">2019-02-15</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-24T16:12:19+08:00">2019-06-24</time>
             
 
             
@@ -1393,7 +1138,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具相关/" itemprop="url" rel="index"><span itemprop="name">工具相关</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
 
                 
                 
@@ -1429,155 +1174,11 @@
       
         
           
-            <h1 id="C-相关环境"><a href="#C-相关环境" class="headerlink" title="C++ 相关环境"></a>C++ 相关环境</h1><p>修改 c_cpp_properties.json 里面的配置</p>
-<p>下面的路径是 vs2010 IDE 的，win10 下面<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&quot;includePath&quot;: [</span><br><span class="line">                &quot;$&#123;workspaceFolder&#125;/**&quot;,</span><br><span class="line">                &quot;$&#123;workspaceRoot&#125;&quot;,</span><br><span class="line">                &quot;D:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/include&quot;,</span><br><span class="line">                &quot;D:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/atlmfc/include&quot;</span><br><span class="line">            ]</span><br></pre></td></tr></table></figure></p>
-<h1 id="显示函数列表"><a href="#显示函数列表" class="headerlink" title="显示函数列表"></a>显示函数列表</h1><p>方法一：显示大纲</p>
-<p>方法二：Shift+Ctl+O</p>
-<p>Code → Preferences → Settings or ⌘,:</p>
-<h1 id="tab-to-space"><a href="#tab-to-space" class="headerlink" title="tab to space"></a>tab to space</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// The number of spaces a tab is equal to. This setting is overridden</span><br><span class="line">// based on the file contents when `editor.detectIndentation` is true.</span><br><span class="line">&quot;editor.tabSize&quot;: 4,</span><br><span class="line"></span><br><span class="line">// Insert spaces when pressing Tab. This setting is overriden</span><br><span class="line">// based on the file contents when `editor.detectIndentation` is true.</span><br><span class="line">&quot;editor.insertSpaces&quot;: true,</span><br><span class="line"></span><br><span class="line">// When opening a file, `editor.tabSize` and `editor.insertSpaces`</span><br><span class="line">// will be detected based on the file contents. Set to false to keep</span><br><span class="line">// the values you&apos;ve explicitly set, above.</span><br><span class="line">&quot;editor.detectIndentation&quot;: false</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/02/12/工具相关/git/git-私有库的克隆/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/12/工具相关/git/git-私有库的克隆/" itemprop="url">git 私有库的克隆</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-12T18:24:33+08:00">2019-02-12</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具相关/" itemprop="url" rel="index"><span itemprop="name">工具相关</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Recently I create a private repository and I want clone it as usual,<br>but response with <code>remote: Repository not found.</code>, I do some research and find out.</p>
-<p>I can do it with ssh way.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &quot;xx@email.com&quot;</span><br><span class="line"></span><br><span class="line">把公钥添加到 github 里面</span><br><span class="line"></span><br><span class="line">GIT_SSH_COMMAND=&quot;ssh -i /path/to/id_rsa&quot; git clone git@github.com:xx/xx.git</span><br></pre></td></tr></table></figure>
+            <p><a href="http://blog.think-async.com/2010/04/bind-illustrated.html" target="_blank" rel="noopener">原文</a></p>
+<p>bind 可以用来将用户提供的需要一个参数的函数转换成不需要参数的函数对象。绑定的值（在这个例子中是123）存储在函数对象内并且会被自动传递给用户指定的函数：</p>
+<p><img alt="20190624_161458.png" src="/2019/06/24/语言相关/CPP/cpp-bind学习/20190624_161458.png" width="400" height=""></p>
+<p>参数绑定也可以用于将类成员函数转换成零参数的函数对象。非静态成员函数需要一个隐式的 this 参数。这意味着需要绑定一个合适的类实例指针到这个函数对象： </p>
+<p><img alt="20190624_161559.png" src="/2019/06/24/语言相关/CPP/cpp-bind学习/20190624_161559.png" width="400" height=""></p>
 
           
         
@@ -1631,7 +1232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/02/04/随笔/2019年寄语/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/06/24/学习笔记/金融投资/股票操作系统/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1650,7 +1251,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/02/04/随笔/2019年寄语/" itemprop="url">2019年寄语</a></h1>
+                <a class="post-title-link" href="/2019/06/24/学习笔记/金融投资/股票操作系统/" itemprop="url">股票操作系统</a></h1>
         
 
         <div class="post-meta">
@@ -1662,7 +1263,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-04T13:10:43+08:00">2019-02-04</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-24T06:34:32+08:00">2019-06-24</time>
             
 
             
@@ -1683,7 +1284,164 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/随笔/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>经验的总结。</p>
+<p>趋势是核心，把握时机就是把握一切。买入点，卖出点的把握</p>
+<h1 id="操作原则"><a href="#操作原则" class="headerlink" title="操作原则"></a>操作原则</h1><ol>
+<li>确定大盘的趋势，根据所处的趋势采取相应的策略，个股和大盘共振才能使赢的概率变大。</li>
+<li>确定入场的性质，支撑点反弹（短期操作，不可贪心），趋势形成（阶段性操作，根据卖出信号操作）</li>
+<li>判断错误，及时认错，注意风险回报比是否合算。</li>
+<li>卖出信号：<ul>
+<li>趋势中，出现短期均线纠缠，说明原有趋势出现了不确定性。</li>
+</ul>
+</li>
+</ol>
+<p>记录每笔交易<br>月底分析每笔交易，总结经验，不断的学习改进。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/06/24/学习笔记/金融投资/股票操作系统/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/06/23/语言相关/php/php-debug-log/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/23/语言相关/php/php-debug-log/" itemprop="url">php-debug log</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-23T18:39:02+08:00">2019-06-23</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
 
                 
                 
@@ -1719,7 +1477,283 @@
       
         
           
-            <p>2018年过去了，艰辛，挣扎的一年，下半年的全心付出，让我学到了人生珍贵的一课。人生经历又圆满了许多。<br>感谢上帝给我的眷顾，一次次的机会放在我的面前，我在不断的成长，我要为我人生的下半场努力，另一个40年开始了。</p>
+            <p><a href="https://github.com/barbushin/php-console" target="_blank" rel="noopener">php-console</a></p>
+<p>这个专门调试 php 的。<br>下载源代码，包含 <code>src\PhpConsole\</code> </p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include_once</span> <span class="string">"PhpConsole/__autoload.php"</span>;</span><br><span class="line"></span><br><span class="line">$handler = PhpConsole\Handler::getInstance();</span><br><span class="line"><span class="comment">/* You can override default Handler behavior:</span></span><br><span class="line"><span class="comment">$handler-&gt;setHandleErrors(false); // disable errors handling</span></span><br><span class="line"><span class="comment">$handler-&gt;setHandleExceptions(false); // disable exceptions handling</span></span><br><span class="line"><span class="comment">$handler-&gt;setCallOldHandlers(false); // disable passing errors &amp; exceptions to prviously defined handlers */</span></span><br><span class="line">$handler-&gt;start(); <span class="comment">// initialize handlers</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//$handler-&gt;debug('called from handler debug', 'some.three.tags');</span></span><br><span class="line"><span class="comment">//$array = array(</span></span><br><span class="line"><span class="comment">//    'test' =&gt; 1,</span></span><br><span class="line"><span class="comment">//    'test2' =&gt; 1,</span></span><br><span class="line"><span class="comment">//    'key' =&gt; array(</span></span><br><span class="line"><span class="comment">//        1, 2, 3, 4,</span></span><br><span class="line"><span class="comment">//    ),</span></span><br><span class="line"><span class="comment">//);</span></span><br><span class="line"><span class="comment">//$handler-&gt;debug($array, 'test.wiki.wade.zhan');</span></span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/06/23/读过的书/高胜算股价形态图解手册/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/23/读过的书/高胜算股价形态图解手册/" itemprop="url">高胜算股价形态图解手册</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-23T10:03:14+08:00">2019-06-23</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>讲的是一些基本的形态，作为入门书籍还是可以的。如果对各种常见形态都熟悉了就不用看了。</p>
+<p><img alt="20190623_100529.png" src="/2019/06/23/读过的书/高胜算股价形态图解手册/20190623_100529.png" width="400" height=""></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/06/23/学习笔记/金融投资/股票形态学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/23/学习笔记/金融投资/股票形态学习/" itemprop="url">股票形态学习</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-23T08:41:00+08:00">2019-06-23</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/投资/" itemprop="url" rel="index"><span itemprop="name">投资</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>股票在形成形态之前的走势幅度，近似于形成形态之后的走势。所以要找走势幅度大的股票参与进去。</p>
+<p><img alt="20190623_094729.png" src="/2019/06/23/学习笔记/金融投资/股票形态学习/20190623_094729.png" width="400" height=""></p>
+<h1 id="常见形态"><a href="#常见形态" class="headerlink" title="常见形态"></a>常见形态</h1><p><img alt="20190623_090832.png" src="/2019/06/23/学习笔记/金融投资/股票形态学习/20190623_090832.png" width="400" height=""><br><img alt="20190623_090846.png" src="/2019/06/23/学习笔记/金融投资/股票形态学习/20190623_090846.png" width="400" height=""><br><img alt="20190623_090900.png" src="/2019/06/23/学习笔记/金融投资/股票形态学习/20190623_090900.png" width="400" height=""><br><img alt="20190623_090914.png" src="/2019/06/23/学习笔记/金融投资/股票形态学习/20190623_090914.png" width="400" height=""></p>
+<h1 id="矩形形态"><a href="#矩形形态" class="headerlink" title="矩形形态"></a>矩形形态</h1><p>最好有三个支撑点形成的矩形，比较可靠。向上突破时注意成交量的配合放大，还有一定的概率回踩确认。<br>该形态不常见，通常形成周期较长</p>
+<p><img alt="20190623_090621.png" src="/2019/06/23/学习笔记/金融投资/股票形态学习/20190623_090621.png" width="400" height=""><br><img alt="20190623_090640.png" src="/2019/06/23/学习笔记/金融投资/股票形态学习/20190623_090640.png" width="400" height=""></p>
+<h1 id="上升三角形"><a href="#上升三角形" class="headerlink" title="上升三角形"></a>上升三角形</h1><p>高点连成一条近似水平线，低点不断抬高，形成向上的趋势线。成交量递减，尤其在突破前期。<br>突破方向不定，但是上行概率较大。</p>
+<p><img alt="20190623_091641.png" src="/2019/06/23/学习笔记/金融投资/股票形态学习/20190623_091641.png" width="400" height=""><br><img alt="20190623_091651.png" src="/2019/06/23/学习笔记/金融投资/股票形态学习/20190623_091651.png" width="400" height=""><br><img alt="20190623_091700.png" src="/2019/06/23/学习笔记/金融投资/股票形态学习/20190623_091700.png" width="400" height=""><img alt="20190623_094715.png" src="/2019/06/23/学习笔记/金融投资/股票形态学习/20190623_094715.png" width="400" height=""></p>
+<h1 id="下降三角形"><a href="#下降三角形" class="headerlink" title="下降三角形"></a>下降三角形</h1><p>低点连成一条近似水平线，高点逐渐降低，形成向下的趋势线。成交量递减，尤其在突破前期。<br>突破方向不定，但是下行概率较大。</p>
+<p><img alt="20190623_095155.png" src="/2019/06/23/学习笔记/金融投资/股票形态学习/20190623_095155.png" width="400" height=""><br><img alt="20190623_095204.png" src="/2019/06/23/学习笔记/金融投资/股票形态学习/20190623_095204.png" width="400" height=""></p>
 
           
         
@@ -1762,7 +1796,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/31/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/31/">31</a><span class="page-number current">32</span><a class="page-number" href="/page/33/">33</a><span class="space">&hellip;</span><a class="page-number" href="/page/100/">100</a><a class="extend next" rel="next" href="/page/33/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/31/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/31/">31</a><span class="page-number current">32</span><a class="page-number" href="/page/33/">33</a><span class="space">&hellip;</span><a class="page-number" href="/page/113/">113</a><a class="extend next" rel="next" href="/page/33/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1809,7 +1843,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">999</span>
+                    <span class="site-state-item-count">1124</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1974,7 +2008,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">76</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">78</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -2393,7 +2431,19 @@
                     
                       
                     
-                    <span class="site-state-item-count">203</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">209</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

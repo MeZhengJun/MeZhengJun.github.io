@@ -106,7 +106,7 @@
 <meta property="og:site_name" content="郑君的学习笔记">
 <meta property="og:description" content="sol2这个目前看比较适合 lua 直接包含源码进来就可以了，不用编译成库。下面是一个小例子 123function sum(x, y)    return x + yend 123456789101112131415161718192021#include &amp;lt;lua/lua.hpp&amp;gt;int LuaHelper::test(int x, int y)&amp;#123;	string strE">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-04-17T06:29:48.000Z">
+<meta property="og:updated_time" content="2020-05-30T03:32:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="lua-cpp绑定">
 <meta name="twitter:description" content="sol2这个目前看比较适合 lua 直接包含源码进来就可以了，不用编译成库。下面是一个小例子 123function sum(x, y)    return x + yend 123456789101112131415161718192021#include &amp;lt;lua/lua.hpp&amp;gt;int LuaHelper::test(int x, int y)&amp;#123;	string strE">
@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">76</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">78</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">999</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1124</span>
       </a>
 </li>
 
@@ -419,6 +419,7 @@
 <h2 id="读取-lua-数据"><a href="#读取-lua-数据" class="headerlink" title="读取 lua 数据"></a>读取 lua 数据</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">void lua_pushnil      (lua_State *L);</span><br><span class="line">void lua_pushboolean  (lua_State *L, int bool);</span><br><span class="line">void lua_pushnumber   (lua_State *L, lua_Number n);</span><br><span class="line">void lua_pushinteger  (lua_State *L, lua_Integer n);</span><br><span class="line">void lua_pushlstring  (lua_State *L, const <span class="built_in">char</span> *s, size_t <span class="built_in">len</span>);</span><br><span class="line">void lua_pushstring   (lua_State *L, const <span class="built_in">char</span> *s);</span><br></pre></td></tr></table></figure>
 <h2 id="全局变量"><a href="#全局变量" class="headerlink" title="全局变量"></a>全局变量</h2><p>C 接口</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int lua_getglobal (lua_State *L, const <span class="built_in">char</span> *name);</span><br><span class="line">Pushes onto the stack the value of the global name. Returns the <span class="built_in">type</span> of that value.</span><br><span class="line"></span><br><span class="line">void lua_setglobal (lua_State *L, const <span class="built_in">char</span> *name);</span><br><span class="line">Pops a value from the stack <span class="keyword">and</span> sets it as the new value of global name.</span><br></pre></td></tr></table></figure>
+<h2 id="cpp-读取-lua-表"><a href="#cpp-读取-lua-表" class="headerlink" title="cpp 读取 lua 表"></a>cpp 读取 lua 表</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (lua_istable(m_luaState,<span class="number">-1</span>))</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// Push another reference to the table on top of the stack (so we know</span></span><br><span class="line">	<span class="comment">// where it is, and this function can work for negative, positive and</span></span><br><span class="line">	<span class="comment">// pseudo indices</span></span><br><span class="line">	lua_pushvalue(m_luaState, <span class="number">-1</span>);</span><br><span class="line">	<span class="comment">// stack now contains: -1 =&gt; table</span></span><br><span class="line">	lua_pushnil(m_luaState);</span><br><span class="line">	<span class="comment">// stack now contains: -1 =&gt; nil; -2 =&gt; table</span></span><br><span class="line">	<span class="keyword">while</span> (lua_next(m_luaState, <span class="number">-2</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">// stack now contains: -1 =&gt; value; -2 =&gt; key; -3 =&gt; table</span></span><br><span class="line">		<span class="comment">// copy the key so that lua_tostring does not modify the original</span></span><br><span class="line">		lua_pushvalue(m_luaState, <span class="number">-2</span>);</span><br><span class="line">		<span class="comment">// stack now contains: -1 =&gt; key; -2 =&gt; value; -3 =&gt; key; -4 =&gt; table</span></span><br><span class="line">		<span class="built_in">string</span> strKey = lua_tostring(m_luaState, <span class="number">-1</span>);</span><br><span class="line">		retVar = lua_tonumber(m_luaState, <span class="number">-2</span>);</span><br><span class="line">		<span class="comment">// pop value + copy of key, leaving original key</span></span><br><span class="line">		lua_pop(m_luaState, <span class="number">2</span>);</span><br><span class="line">		<span class="comment">// stack now contains: -1 =&gt; key; -2 =&gt; table</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="栈操作"><a href="#栈操作" class="headerlink" title="栈操作"></a>栈操作</h2><p>默认栈空间是 20 个。一般情况下都可以用。</p>
 <p>可以使用下面函数检查栈空间是否可用。</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 返回错误码</span></span><br><span class="line">int lua_checkstack (lua_State *L, int sz);</span><br><span class="line"><span class="comment">-- 返回错误信息</span></span><br><span class="line">void luaL_checkstack (lua_State *L, int sz, const <span class="built_in">char</span> *msg);</span><br></pre></td></tr></table></figure>
@@ -431,6 +432,7 @@
 <h3 id="获取元素个数"><a href="#获取元素个数" class="headerlink" title="获取元素个数"></a>获取元素个数</h3><p>获取栈中的元素个数<br>int lua_gettop (lua_State *L);</p>
 <h3 id="放入数据"><a href="#放入数据" class="headerlink" title="放入数据"></a>放入数据</h3><p>函数原型：lua_push<em><br>放置 </em> 元素到栈顶</p>
 <p>lua_pushboolean<br>lua_pushcclosure<br>lua_pushcfunction<br>lua_pushfstring<br>lua_pushinteger<br>lua_pushlightuserdata<br>lua_pushliteral<br>lua_pushlstring （arbitrary strings (char *)）<br>lua_pushnil<br>lua_pushnumber （double）<br>lua_pushstring （zero-terminated strings）<br>lua_pushthread<br>lua_pushvalue<br>lua_pushvfstring</p>
+<h3 id="放入数组"><a href="#放入数组" class="headerlink" title="放入数组"></a>放入数组</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 建一个新表 栈高度+1, 栈顶元素是新table</span></span><br><span class="line"><span class="comment">// 创建一个新的table, 并把它放在栈顶. narr和nrec分别指定该table的array部分和hash部分的预分配元素数量</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">lua_createtable</span> <span class="params">(lua_State *L, <span class="keyword">int</span> narr, <span class="keyword">int</span> nrec)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 用于设置table元素的方法</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">lua_settable</span> <span class="params">(lua_State *L, <span class="keyword">int</span> index)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">lua_rawset</span> <span class="params">(lua_State *L, <span class="keyword">int</span> index)</span></span>;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">lua_setfield</span> <span class="params">(lua_State *L, <span class="keyword">int</span> index, <span class="keyword">const</span> <span class="keyword">char</span> *k)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">lua_rawseti</span> <span class="params">(lua_State *L, <span class="keyword">int</span> index, <span class="keyword">int</span> n)</span></span>;</span><br></pre></td></tr></table></figure>
 <h3 id="类型判断"><a href="#类型判断" class="headerlink" title="类型判断"></a>类型判断</h3><p>函数原型：lua_is*</p>
 <p>int  lua_isstring(lua_State <em>L, int index)<br>判断index指明位置上的元素是为对应的</em>类型，这里是string.  如果是则返回1，否则返回0；不会改变栈的大小，内容</p>
 <h3 id="获取数据"><a href="#获取数据" class="headerlink" title="获取数据"></a>获取数据</h3><p>使用 lua_to* 函数。</p>
@@ -585,7 +587,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">999</span>
+                    <span class="site-state-item-count">1124</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -750,7 +752,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">76</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">78</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -1169,7 +1175,19 @@
                     
                       
                     
-                    <span class="site-state-item-count">203</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">209</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -1226,7 +1244,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#读取-lua-数据"><span class="nav-number">1.</span> <span class="nav-text">读取 lua 数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#全局变量"><span class="nav-number">2.</span> <span class="nav-text">全局变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#栈操作"><span class="nav-number">3.</span> <span class="nav-text">栈操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取元素个数"><span class="nav-number">3.1.</span> <span class="nav-text">获取元素个数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#放入数据"><span class="nav-number">3.2.</span> <span class="nav-text">放入数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型判断"><span class="nav-number">3.3.</span> <span class="nav-text">类型判断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取数据"><span class="nav-number">3.4.</span> <span class="nav-text">获取数据</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#读取-lua-数据"><span class="nav-number">1.</span> <span class="nav-text">读取 lua 数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#全局变量"><span class="nav-number">2.</span> <span class="nav-text">全局变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cpp-读取-lua-表"><span class="nav-number">3.</span> <span class="nav-text">cpp 读取 lua 表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#栈操作"><span class="nav-number">4.</span> <span class="nav-text">栈操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取元素个数"><span class="nav-number">4.1.</span> <span class="nav-text">获取元素个数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#放入数据"><span class="nav-number">4.2.</span> <span class="nav-text">放入数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#放入数组"><span class="nav-number">4.3.</span> <span class="nav-text">放入数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型判断"><span class="nav-number">4.4.</span> <span class="nav-text">类型判断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取数据"><span class="nav-number">4.5.</span> <span class="nav-text">获取数据</span></a></li></ol></li></ol></div>
             
 
           </div>
