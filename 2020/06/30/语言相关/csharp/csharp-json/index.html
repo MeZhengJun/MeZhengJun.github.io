@@ -107,7 +107,7 @@
 <meta property="og:site_name" content="郑君的学习笔记">
 <meta property="og:description" content="样例类 12345678910111213public class Model_driverProtocolSensorSimulator&amp;#123;    [JsonIgnore]    public const int CMD_TYPE_LOGIN = 1;    [JsonIgnore]    public const int CMD_TYPE_SENSOR_INFO = 2;    [Js">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-08-19T03:16:16.000Z">
+<meta property="og:updated_time" content="2020-11-27T09:03:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="csharp-json">
 <meta name="twitter:description" content="样例类 12345678910111213public class Model_driverProtocolSensorSimulator&amp;#123;    [JsonIgnore]    public const int CMD_TYPE_LOGIN = 1;    [JsonIgnore]    public const int CMD_TYPE_SENSOR_INFO = 2;    [Js">
@@ -236,7 +236,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">78</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">79</span>
       </a>
 </li>
 
@@ -246,7 +246,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1124</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1161</span>
       </a>
 </li>
 
@@ -420,6 +420,7 @@
 <a id="more"></a>
 <h2 id="解析json字符串"><a href="#解析json字符串" class="headerlink" title="解析json字符串"></a>解析json字符串</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public class Model_driverProtocol</span><br><span class="line">&#123;</span><br><span class="line">    public int CMD_TYPE_LOGIN = 1;</span><br><span class="line"></span><br><span class="line">    public int CmdType;</span><br><span class="line">    public string param;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var obj = JsonConvert.DeserializeObject&lt;Model_driverProtocol&gt;(msg);</span><br><span class="line">switch (obj.CmdType)</span><br><span class="line">&#123;</span><br><span class="line">    case 1:</span><br><span class="line">        break;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 方法二</span><br><span class="line">string json=&quot;&#123;\&quot;PingResult\&quot;:100&#125;&quot;; </span><br><span class="line">JObject jo = JObject.Parse(json); </span><br><span class="line">JToken jToken = jo[&quot;PingResult&quot;];</span><br><span class="line">int result = (int)jToken;</span><br></pre></td></tr></table></figure>
 <h2 id="类保存为json"><a href="#类保存为json" class="headerlink" title="类保存为json"></a>类保存为json</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class ModelMasterIdMapping</span><br><span class="line">&#123;</span><br><span class="line">    [PrimaryKey, AutoIncrement]</span><br><span class="line">    public int ID &#123; get; set; &#125;</span><br><span class="line">    public string LocalIdMaster &#123; get; set; &#125;</span><br><span class="line">    public string RemoteIdMaster &#123; get; set; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    var param = JsonConvert.SerializeObject(App.db.m_masterIdMapping);</span><br><span class="line">    var notifyPath = new FileInfo(spc_path).Directory.FullName + &quot;/masterIdMapping.json&quot;;</span><br><span class="line">    FileStream fs = new FileStream(notifyPath, FileMode.Create);</span><br><span class="line">    StreamWriter sw = new StreamWriter(fs);</span><br><span class="line">    sw.Write(param);</span><br><span class="line">    sw.Flush();</span><br><span class="line">    sw.Close();</span><br><span class="line">    fs.Close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="序列化-json-后-首字母小写"><a href="#序列化-json-后-首字母小写" class="headerlink" title="序列化 json 后 首字母小写"></a>序列化 json 后 首字母小写</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var user = new &#123; Name = &quot;john&quot;, Age = 19 &#125;; </span><br><span class="line">var serializerSettings = new JsonSerializerSettings</span><br><span class="line">        &#123;</span><br><span class="line">            // 设置为驼峰命名</span><br><span class="line">            ContractResolver = new CamelCasePropertyNamesContractResolver()</span><br><span class="line">        &#125;;</span><br><span class="line">var userStr = JsonConvert.SerializeObject(user, Formatting.None, serializerSettings);</span><br></pre></td></tr></table></figure>
 <h2 id="从文件加载-json"><a href="#从文件加载-json" class="headerlink" title="从文件加载 json"></a>从文件加载 json</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">strResponse = System.IO.File.ReadAllText(appPath + &quot;/taskResp.json&quot;);</span><br><span class="line">var obj = JsonConvert.DeserializeObject&lt;ModelResp&lt;ModelTask&gt;&gt;(strResponse);</span><br></pre></td></tr></table></figure>
       
     </div>
@@ -482,8 +483,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/06/29/语言相关/csharp/wpf/wpf-杂项/" rel="next" title="wpf-杂项">
-                <i class="fa fa-chevron-left"></i> wpf-杂项
+              <a href="/2020/06/29/语言相关/csharp/wpf/wpf-datepicker/" rel="next" title="wpf-datepicker">
+                <i class="fa fa-chevron-left"></i> wpf-datepicker
               </a>
             
           </div>
@@ -572,7 +573,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">1124</span>
+                    <span class="site-state-item-count">1161</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -741,7 +742,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">78</span>
+                      
+                    
+                    <span class="site-state-item-count">79</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -1172,7 +1175,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">209</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">211</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -1229,7 +1236,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#生成json字符串"><span class="nav-number">1.</span> <span class="nav-text">生成json字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解析json字符串"><span class="nav-number">2.</span> <span class="nav-text">解析json字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类保存为json"><span class="nav-number">3.</span> <span class="nav-text">类保存为json</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从文件加载-json"><span class="nav-number">4.</span> <span class="nav-text">从文件加载 json</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#生成json字符串"><span class="nav-number">1.</span> <span class="nav-text">生成json字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解析json字符串"><span class="nav-number">2.</span> <span class="nav-text">解析json字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类保存为json"><span class="nav-number">3.</span> <span class="nav-text">类保存为json</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#序列化-json-后-首字母小写"><span class="nav-number">4.</span> <span class="nav-text">序列化 json 后 首字母小写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从文件加载-json"><span class="nav-number">5.</span> <span class="nav-text">从文件加载 json</span></a></li></ol></div>
             
 
           </div>
@@ -1254,7 +1261,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

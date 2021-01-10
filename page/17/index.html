@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">78</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">79</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1124</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1161</span>
       </a>
 </li>
 
@@ -328,7 +328,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/02/语言相关/python/python-数值分析-归一化/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/05/14/语言相关/CPP/cpp-array/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -347,7 +347,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/03/02/语言相关/python/python-数值分析-归一化/" itemprop="url">python-数值分析-归一化</a></h1>
+                <a class="post-title-link" href="/2020/05/14/语言相关/CPP/cpp-array/" itemprop="url">cpp-array</a></h1>
         
 
         <div class="post-meta">
@@ -359,7 +359,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-02T09:36:23+08:00">2020-03-02</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-14T10:33:01+08:00">2020-05-14</time>
             
 
             
@@ -380,7 +380,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
 
                 
                 
@@ -416,28 +416,156 @@
       
         
           
-            <p>归一化和标准化的本质都是缩放和平移，他们的区别直观的说就是归一化的缩放是 “拍扁” 统一到区间（0-1），而标准化的缩放是更加 “弹性” 和 “动态” 的，和整体样本的分布有很大的关系。<br>从输出范围角度来看， 归一化的输出结果必须在 0-1 间。而标准化的输出范围不受限制，通常情况下比归一化更广。</p>
-<p><img alt="20200302_094105.png" src="/2020/03/02/语言相关/python/python-数值分析-归一化/20200302_094105.png" width="500" height=""></p>
-<h2 id="线性函数归一化-Min-Max-scaling"><a href="#线性函数归一化-Min-Max-scaling" class="headerlink" title="线性函数归一化(Min-Max scaling)"></a>线性函数归一化(Min-Max scaling)</h2><p>线性函数将原始数据线性化的方法转换到[0 1]的范围，归一化公式如下：</p>
-<p><img alt="20200302_093804.png" src="/2020/03/02/语言相关/python/python-数值分析-归一化/20200302_093804.png" width="500" height=""></p>
-<p>该方法实现对原始数据的等比例缩放，其中Xnorm为归一化后的数据，X为原始数据，Xmax、Xmin分别为原始数据集的最大值和最小值。</p>
-<h3 id="归一化"><a href="#归一化" class="headerlink" title="归一化"></a>归一化</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> preprocessing</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> MinMaxScaler</span><br><span class="line"></span><br><span class="line">scaler_mm = MinMaxScaler(feature_range=(<span class="number">0</span>, <span class="number">1</span>))  <span class="comment"># 自动将dtype转换成float64</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 需要二维数组，不改变数值</span></span><br><span class="line">angle_standard = angle_standard.reshape(<span class="number">-1</span>, <span class="number">1</span>)</span><br><span class="line">value_standard = value_standard.reshape(<span class="number">-1</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">angle_standard_scale = scaler_mm.fit_transform(angle_standard)</span><br><span class="line">value_standard_scale = scaler_mm.fit_transform(value_standard)</span><br></pre></td></tr></table></figure>
-<h2 id="0均值标准化-Z-score-standardization"><a href="#0均值标准化-Z-score-standardization" class="headerlink" title="0均值标准化(Z-score standardization)"></a>0均值标准化(Z-score standardization)</h2><p>叫 z-score 标准化(也就是统计学中的标准分，或者叫Z分)<br>0均值归一化方法将原始数据集归一化为均值为0、方差1的数据集，归一化公式如下：<br>(输入数据-均值)/标准差</p>
-<p><img alt="20200302_093837.png" src="/2020/03/02/语言相关/python/python-数值分析-归一化/20200302_093837.png" width="500" height=""></p>
-<p>其中，μ、σ分别为原始数据集的均值和方法。该种归一化方式要求原始数据的分布可以近似为高斯分布，否则归一化的效果会变得很糟糕。</p>
-<ol>
-<li>标准化是通过特征的平均值和标准差，将特征缩放成一个标准的正态分布，缩放后均值为0，方差为1。但即使数据不服从正态分布，也可以用此法。特别适用于数据的最大值和最小值未知，或存在孤立点。</li>
-<li>标准化是为了方便数据的下一步处理，而进行的数据缩放等变换，不同于归一化，并不是为了方便与其他数据一同处理或比较。</li>
-</ol>
-<h2 id="方法的选择"><a href="#方法的选择" class="headerlink" title="方法的选择"></a>方法的选择</h2><ol>
-<li>在分类、聚类算法中，需要使用距离来度量相似性的时候、或者使用PCA技术进行降维的时候，第二种方法(Z-score standardization)表现更好。</li>
-<li>在不涉及距离度量、协方差计算、数据不符合正太分布的时候，可以使用第一种方法或其他归一化方法。比如图像处理中，将RGB图像转换为灰度图像后将其值限定在[0 255]的范围。</li>
-<li>如果对输出结果范围有要求，用归一化。</li>
-<li>如果数据较为稳定，不存在极端的最大最小值，用归一化。</li>
-<li>如果数据存在异常值和较多噪音，用标准化，可以间接通过中心化避免异常值和极端值的影响。</li>
-<li>符合正态分布的使用标准化</li>
-</ol>
-<p>总结来说，在算法、后续计算中涉及距离度量(聚类分析)或者协方差分析(PCA、LDA等)的，同时数据分布可以近似为正态分布，应当使用0均值的归一化方法。其他应用中更具需要选用合适的归一化方法。</p>
+            <p><a href="https://en.cppreference.com/w/cpp/container/array" target="_blank" rel="noopener">website</a></p>
+<p>固定长度的数组，传递给函数时不会无效</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;array&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">int</span>, 3&gt; myArray; <span class="comment">// declare an integer array with length 3</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">int</span>, 5&gt; myArray = &#123; <span class="number">9</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">1</span> &#125;; <span class="comment">// initializer list</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">int</span>, 5&gt; myArray2 &#123; <span class="number">9</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">1</span> &#125;; <span class="comment">// uniform initialization</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// c++ 17 可以忽略类型和长度</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span> myArray &#123; <span class="number">9</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">1</span> &#125;; <span class="comment">// The type is deduced to std::array&lt;int, 5&gt;</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span> myArray &#123; <span class="number">9.7</span>, <span class="number">7.31</span> &#125;; <span class="comment">// The type is deduced to std::array&lt;double, 2&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//You can also assign values to the array using an initializer list</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">int</span>, 5&gt; myArray;</span><br><span class="line">myArray = &#123; <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span> &#125;; <span class="comment">// okay</span></span><br><span class="line">myArray = &#123; <span class="number">9</span>, <span class="number">8</span>, <span class="number">7</span> &#125;; <span class="comment">// okay, elements 3 and 4 are set to zero!</span></span><br><span class="line">myArray = &#123; <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span> &#125;; <span class="comment">// not allowed, too many elements in initializer list!</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//Accessing std::array values using the subscript operator works just like you would expect:</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; myArray[<span class="number">1</span>] &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">myArray[<span class="number">2</span>] = <span class="number">6</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//std::array supports a second form of array element access (the at() function) that does bounds checking:</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span> myArray &#123; <span class="number">9</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">1</span> &#125;;</span><br><span class="line">myArray.at(<span class="number">1</span>) = <span class="number">6</span>; <span class="comment">// array element 1 valid, sets array element 1 to value 6</span></span><br><span class="line">myArray.at(<span class="number">9</span>) = <span class="number">10</span>; <span class="comment">// array element 9 is invalid, will throw an error</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">In the above example, the call to array.at(1) checks to ensure array element 1 is valid, and because it is, it returns a reference to array element 1. We then assign the value of 6 to this. However, the call to array.at(9) fails because array element 9 is out of bounds for the array. Instead of returning a reference, the at() function throws an error that terminates the program (note: It’s actually throwing an exception of type std::out_of_range -- we cover exceptions in chapter 15). Because it does bounds checking, at() is slower (but safer) than operator[].</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//std::array will clean up after itself when it goes out of scope, so there’s no need to do any kind of manual cleanup.</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span> myArray &#123; <span class="number">9.0</span>, <span class="number">7.2</span>, <span class="number">5.4</span>, <span class="number">3.6</span>, <span class="number">1.8</span> &#125;;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"length: "</span> &lt;&lt; myArray.size() &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// </span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> element : myArray)</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; element &lt;&lt; <span class="string">' '</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="use-as-parameter"><a href="#use-as-parameter" class="headerlink" title="use as parameter"></a>use as parameter</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// use as parameter</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;array&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printLength</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">double</span>, <span class="number">5</span>&gt; &amp;myArray)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"length: "</span> &lt;&lt; myArray.size() &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">array</span> myArray &#123; <span class="number">9.0</span>, <span class="number">7.2</span>, <span class="number">5.4</span>, <span class="number">3.6</span>, <span class="number">1.8</span> &#125;;</span><br><span class="line"> </span><br><span class="line">    printLength(myArray);</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="sort"><a href="#sort" class="headerlink" title="sort"></a>sort</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt; // for std::sort</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;array&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">array</span> myArray &#123; <span class="number">7</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">9</span>, <span class="number">5</span> &#125;;</span><br><span class="line">    <span class="built_in">std</span>::sort(myArray.begin(), myArray.end()); <span class="comment">// sort the array forwards</span></span><br><span class="line"><span class="comment">//  std::sort(myArray.rbegin(), myArray.rend()); // sort the array backwards</span></span><br><span class="line"> </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> element : myArray)</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; element &lt;&lt; <span class="string">' '</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Array-of-struct"><a href="#Array-of-struct" class="headerlink" title="Array of struct"></a>Array of struct</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;array&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">House</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> number&#123;&#125;;</span><br><span class="line">    <span class="keyword">int</span> stories&#123;&#125;;</span><br><span class="line">    <span class="keyword">int</span> roomsPerStory&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">array</span>&lt;House, 3&gt; houses&#123;&#125;;</span><br><span class="line"> </span><br><span class="line">    houses[<span class="number">0</span>] = &#123; <span class="number">13</span>, <span class="number">4</span>, <span class="number">30</span> &#125;;</span><br><span class="line">    houses[<span class="number">1</span>] = &#123; <span class="number">14</span>, <span class="number">3</span>, <span class="number">10</span> &#125;;</span><br><span class="line">    houses[<span class="number">2</span>] = &#123; <span class="number">15</span>, <span class="number">3</span>, <span class="number">40</span> &#125;;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; house : houses)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"House number "</span> &lt;&lt; house.number</span><br><span class="line">                  &lt;&lt; <span class="string">" has "</span> &lt;&lt; (house.stories * house.roomsPerStory)</span><br><span class="line">                  &lt;&lt; <span class="string">" rooms\n"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">House</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> number&#123;&#125;;</span><br><span class="line">    <span class="keyword">int</span> stories&#123;&#125;;</span><br><span class="line">    <span class="keyword">int</span> roomsPerStory&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Array</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    House value[<span class="number">3</span>]&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// With braces, this works.</span></span><br><span class="line">    Array houses&#123;</span><br><span class="line">        &#123; &#123; <span class="number">13</span>, <span class="number">4</span>, <span class="number">30</span> &#125;, &#123; <span class="number">14</span>, <span class="number">3</span>, <span class="number">10</span> &#125;, &#123; <span class="number">15</span>, <span class="number">3</span>, <span class="number">40</span> &#125; &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; house : houses.value)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"House number "</span> &lt;&lt; house.number</span><br><span class="line">                  &lt;&lt; <span class="string">" has "</span> &lt;&lt; (house.stories * house.roomsPerStory)</span><br><span class="line">                  &lt;&lt; <span class="string">" rooms\n"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;array&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// construction uses aggregate initialization</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">int</span>, 3&gt; a1&#123; &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125; &#125;; <span class="comment">// double-braces required in C++11 prior to the CWG 1270 revision</span></span><br><span class="line">                                        <span class="comment">// (not needed in C++11 after the revision and in C++14 and beyond)</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">int</span>, 3&gt; a2 = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;  <span class="comment">// never required after =</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>, 2&gt; a3 = &#123; <span class="built_in">std</span>::<span class="built_in">string</span>(<span class="string">"a"</span>), <span class="string">"b"</span> &#125;;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// container operations are supported</span></span><br><span class="line">    <span class="built_in">std</span>::sort(a1.begin(), a1.end());</span><br><span class="line">    <span class="built_in">std</span>::reverse_copy(a2.begin(), a2.end(), </span><br><span class="line">                      <span class="built_in">std</span>::ostream_iterator&lt;<span class="keyword">int</span>&gt;(<span class="built_in">std</span>::<span class="built_in">cout</span>, <span class="string">" "</span>));</span><br><span class="line"> </span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// ranged for loop is supported</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp; s: a3)</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="string">' '</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/05/10/读过的书/2019年的阅读账单/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/10/读过的书/2019年的阅读账单/" itemprop="url">2019年的月度账单</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-10T22:16:47+08:00">2020-05-10</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>时间过得好快，2019年过去啦，书读得不多，还要加油。</p>
+<p><img alt="20200510_221800.png" src="/2020/05/10/读过的书/2019年的阅读账单/20200510_221800.png" width="400" height=""><br><img alt="20200510_221812.png" src="/2020/05/10/读过的书/2019年的阅读账单/20200510_221812.png" width="400" height=""><br><img alt="20200510_221819.png" src="/2020/05/10/读过的书/2019年的阅读账单/20200510_221819.png" width="400" height=""></p>
 
           
         
@@ -491,7 +619,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/01/语言相关/Java/springboot系列/thymeleaf学习/thymeleaf-学习001/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/05/10/语言相关/javascript/bootstrap/bootstrap-上传文件/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -510,7 +638,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/03/01/语言相关/Java/springboot系列/thymeleaf学习/thymeleaf-学习001/" itemprop="url">thymeleaf-学习001</a></h1>
+                <a class="post-title-link" href="/2020/05/10/语言相关/javascript/bootstrap/bootstrap-上传文件/" itemprop="url">bootstrap-上传文件</a></h1>
         
 
         <div class="post-meta">
@@ -522,290 +650,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-01T20:31:11+08:00">2020-03-01</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/web开发/" itemprop="url" rel="index"><span itemprop="name">web开发</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="应用资源"><a href="#应用资源" class="headerlink" title="应用资源"></a>应用资源</h2><p>配置文件里面设置 server.context-path=/crud 时使用 th:href 会自动添加前缀</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">th:href</span>=<span class="string">"@&#123;/webjars/font-awesome/4.7.0/css/font-awesome.min.css&#125;"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">th:src</span>=<span class="string">"@&#123;/webjars/jquery/3.4.1/jquery.min.js&#125;"</span> <span class="attr">src</span>=<span class="string">"webjars/jquery/3.4.1/jquery.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/01/语言相关/Java/springboot系列/Idea-快捷键/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/01/语言相关/Java/springboot系列/Idea-快捷键/" itemprop="url">Idea-快捷键</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-01T19:53:39+08:00">2020-03-01</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具相关/" itemprop="url" rel="index"><span itemprop="name">工具相关</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="覆盖函数"><a href="#覆盖函数" class="headerlink" title="覆盖函数"></a>覆盖函数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctrl + o</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/01/Web开发/html/html-dialog/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/01/Web开发/html/html-dialog/" itemprop="url">html-dialog</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-01T17:46:54+08:00">2020-03-01</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-10T09:33:48+08:00">2020-05-10</time>
             
 
             
@@ -862,8 +707,15 @@
       
         
           
-            <h2 id="模态对话框"><a href="#模态对话框" class="headerlink" title="模态对话框"></a>模态对话框</h2><p>使用 bootstrap 实现</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">class</span>=<span class="string">"nav-link"</span> <span class="attr">id</span>=<span class="string">"_m_logout"</span> <span class="attr">data-toggle</span>=<span class="string">"modal"</span> <span class="attr">data-target</span>=<span class="string">"#sign-out"</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"fa fa-sign-out text-danger fa-lg"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- modal --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"modal"</span> <span class="attr">id</span>=<span class="string">"sign-out"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"modal-dialog"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"modal-content"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"modal-header"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">h4</span> <span class="attr">class</span>=<span class="string">"modal-title"</span>&gt;</span>Sign out<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">class</span>=<span class="string">"close"</span> <span class="attr">data-dismiss</span>=<span class="string">"modal"</span>&gt;</span></span><br><span class="line">                    &amp;times;</span><br><span class="line">                <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"modal-body"</span>&gt;</span></span><br><span class="line">                Press the button</span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"modal-footer"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">class</span>=<span class="string">"btn btn-success"</span> <span class="attr">data-dismiss</span>=<span class="string">"modal"</span>&gt;</span>Leave<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">class</span>=<span class="string">"btn btn-danger"</span> <span class="attr">data-dismiss</span>=<span class="string">"modal"</span>&gt;</span>Cancel<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- end of modal --&gt;</span></span><br></pre></td></tr></table></figure>
+            <p><a href="https://github.com/kartik-v/bootstrap-fileinput" target="_blank" rel="noopener">github</a></p>
+<p><a href="https://plugins.krajee.com/file-input#ajax-submission" target="_blank" rel="noopener">website</a></p>
+<h2 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h2><p>包含 css</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">"&#123;&#123; url_for('admin.static', filename='css/ext/fileinput.min.css') &#125;&#125;"</span> <span class="attr">media</span>=<span class="string">"all"</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">type</span>=<span class="string">"text/css"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"&#123;&#123;url_for('admin.static', filename='js/ext/fileInput/plugins/piexif.min.js')&#125;&#125;"</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- sortable.min.js is only needed if you wish to sort / rearrange files in initial preview.</span></span><br><span class="line"><span class="comment">    This must be loaded before fileinput.min.js --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"&#123;&#123;url_for('admin.static', filename='js/ext/fileInput/plugins/sortable.min.js')&#125;&#125;"</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- purify.min.js is only needed if you wish to purify HTML content in your preview for</span></span><br><span class="line"><span class="comment">    HTML files. This must be loaded before fileinput.min.js --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"&#123;&#123;url_for('admin.static', filename='js/ext/fileInput/plugins/purify.min.js')&#125;&#125;"</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- popper.min.js below is needed if you use bootstrap 4.x. You can also use the bootstrap js</span></span><br><span class="line"><span class="comment">   3.3.x versions without popper.min.js. --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"&#123;&#123;url_for('admin.static', filename='js/ext/popper.min.js')&#125;&#125;"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- the main fileinput plugin file --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"&#123;&#123;url_for('admin.static', filename='js/ext/fileInput/fileinput.min.js')&#125;&#125;"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- optionally if you need a theme like font awesome theme you can include it as mentioned below --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"&#123;&#123;url_for('admin.static', filename='js/ext/fileInput/themes/fa/theme.js')&#125;&#125;"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- optionally if you need translation for your language then include  locale file as mentioned below --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"&#123;&#123;url_for('admin.static', filename='js/ext/fileInput/locales/zh.js')&#125;&#125;"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="ajax-方式"><a href="#ajax-方式" class="headerlink" title="ajax 方式"></a>ajax 方式</h2><p>需要在 js 中初始化</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">name</span>=<span class="string">"file"</span> <span class="attr">id</span>=<span class="string">"upload_name"</span>  <span class="attr">class</span>=<span class="string">"file-loading"</span> <span class="attr">data-browse-on-zone-click</span>=<span class="string">"true"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// initialize with defaults</span></span><br><span class="line">$(<span class="string">"#upload_name"</span>).fileinput(&#123;</span><br><span class="line">    theme: <span class="string">"fa"</span>,</span><br><span class="line">    uploadUrl: <span class="string">"/admin/api/v1.0/upload"</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="form-方式"><a href="#form-方式" class="headerlink" title="form 方式"></a>form 方式</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">name</span>=<span class="string">"file"</span> <span class="attr">id</span>=<span class="string">"upload_name"</span>  <span class="attr">class</span>=<span class="string">"file"</span> <span class="attr">data-browse-on-zone-click</span>=<span class="string">"true"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="获取多个文件名"><a href="#获取多个文件名" class="headerlink" title="获取多个文件名"></a>获取多个文件名</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'#input-id'</span>).on(<span class="string">'filelock'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event, filestack, extraData</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> fstack = [];</span><br><span class="line">    $.each(filestack, <span class="function"><span class="keyword">function</span>(<span class="params">fileId, file</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (file) &#123;</span><br><span class="line">            fstack.push(file);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Files selected - '</span> + fstack.length);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
           
         
       
@@ -916,7 +768,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/02/28/语言相关/python/python-library/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/05/06/功能分类/数据库/sqlite/sqlite-encrypt/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -935,7 +787,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/02/28/语言相关/python/python-library/" itemprop="url">python-library</a></h1>
+                <a class="post-title-link" href="/2020/05/06/功能分类/数据库/sqlite/sqlite-encrypt/" itemprop="url">sqlite-encrypt</a></h1>
         
 
         <div class="post-meta">
@@ -947,7 +799,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-28T10:54:19+08:00">2020-02-28</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-06T12:52:16+08:00">2020-05-06</time>
             
 
             
@@ -968,7 +820,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
 
                 
                 
@@ -1004,8 +856,25 @@
       
         
           
-            <h2 id="反函数库"><a href="#反函数库" class="headerlink" title="反函数库"></a>反函数库</h2><p><a href="https://pypi.org/project/pynverse/" target="_blank" rel="noopener">website</a></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inv_fun_standard = inversefunc(fun_standard)</span><br></pre></td></tr></table></figure>
+            <p><a href="https://github.com/sqlcipher/sqlcipher" target="_blank" rel="noopener">sqlcipher</a></p>
+<p>一个 sqlite 加密扩展库</p>
+<h2 id="windows-编译"><a href="#windows-编译" class="headerlink" title="windows 编译"></a>windows 编译</h2><p><a href="https://blog.hamaluik.ca/posts/statically-linking-sqlcipher-on-windows/" target="_blank" rel="noopener">安装方法</a></p>
+<ol>
+<li>安装 vcpkg </li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/Microsoft/vcpkg.git</span><br><span class="line">cd vcpkg</span><br><span class="line"><span class="meta">PS&gt;</span><span class="bash"> .\bootstrap-vcpkg.bat</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">  Then, to hook up user-wide integration, run (note: requires admin on first use)</span></span><br><span class="line"><span class="meta">PS&gt;</span><span class="bash"> .\vcpkg integrate install</span></span><br><span class="line"></span><br><span class="line"><span class="meta">PS&gt;</span><span class="bash"> .\vcpkg install openssl:x64-windows-static</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> or x86</span></span><br><span class="line"><span class="meta">PS&gt;</span><span class="bash"> .\vcpkg install openssl:x86-windows-static</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> This will take a bit of time, but once <span class="keyword">done</span>, you can find the resulting include and lib files at Downloads\vcpkg\packages\openssl-windows_x64-windows-static (<span class="keyword">for</span> x64, Downloads\vcpkg\packages\openssl-windows_x86-windows-static <span class="keyword">for</span> 32-bit).</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> extra <span class="built_in">command</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">  To remove the integration <span class="keyword">for</span> your user, you can use .\vcpkg integrate remove.</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> CMake projects should use: <span class="string">"-DCMAKE_TOOLCHAIN_FILE=D:/vcpkg/scripts/buildsystems/vcpkg.cmake"</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Install any packages with</span></span><br><span class="line"><span class="meta">PS&gt;</span><span class="bash"> .\vcpkg install sdl2 curl</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>编辑 sqlcipher</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/sqlcipher/sqlcipher.git</span><br><span class="line">cd sqlcipher</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> copying the openssl-windows_x64-windows-static and openssl-windows_x86-windows-static folders into the SQLCipher folder</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Now open Makefile.msc <span class="keyword">in</span> a text editor and replace the lines:</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Flags controlling use of the <span class="keyword">in</span> memory btree implementation</span></span><br><span class="line"><span class="meta">#</span><span class="bash"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> SQLITE_TEMP_STORE is 0 to force temporary tables to be <span class="keyword">in</span> a file, 1 to</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> default to file, 2 to default to memory, and 3 to force temporary</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> tables to always be <span class="keyword">in</span> memory.</span></span><br><span class="line"><span class="meta">#</span><span class="bash"></span></span><br><span class="line">TCC = $(TCC) -DSQLITE_TEMP_STORE=1</span><br><span class="line">RCC = $(RCC) -DSQLITE_TEMP_STORE=1</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> into </span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Flags controlling use of the <span class="keyword">in</span> memory btree implementation</span></span><br><span class="line"><span class="meta">#</span><span class="bash"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> SQLITE_TEMP_STORE is 0 to force temporary tables to be <span class="keyword">in</span> a file, 1 to</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> default to file, 2 to default to memory, and 3 to force temporary</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> tables to always be <span class="keyword">in</span> memory.</span></span><br><span class="line"><span class="meta">#</span><span class="bash"></span></span><br><span class="line">TCC = $(TCC) -DSQLITE_TEMP_STORE=2</span><br><span class="line">RCC = $(RCC) -DSQLITE_TEMP_STORE=2</span><br><span class="line"></span><br><span class="line">TCC = $(TCC) -DSQLITE_HAS_CODEC</span><br><span class="line">RCC = $(RCC) -DSQLITE_HAS_CODEC</span><br><span class="line"></span><br><span class="line">!IF "$(PLATFORM)"=="x64"</span><br><span class="line">TCC = $(TCC) -I"openssl-windows_x64-windows-static\include"</span><br><span class="line">RCC = $(RCC) -I"openssl-windows_x64-windows-static\include"</span><br><span class="line">!ELSEIF "$(PLATFORM)"=="x86"</span><br><span class="line">TCC = $(TCC) -I"openssl-windows_x86-windows-static\include"</span><br><span class="line">RCC = $(RCC) -I"openssl-windows_x86-windows-static\include"</span><br><span class="line">!ENDIF</span><br><span class="line"></span><br><span class="line">!IF "$(PLATFORM)"=="x64"</span><br><span class="line">LTLIBPATHS = $(LTLIBPATHS) /LIBPATH:"openssl-windows_x64-windows-static\lib"</span><br><span class="line">LTLIBS = $(LTLIBS) libcrypto.lib libssl.lib</span><br><span class="line">!ELSEIF "$(PLATFORM)"=="x86"</span><br><span class="line">LTLIBPATHS = $(LTLIBPATHS) /LIBPATH:"openssl-windows_x86-windows-static\lib"</span><br><span class="line">LTLIBS = $(LTLIBS) libcrypto32.lib libssl32.lib</span><br><span class="line">!ENDIF</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="keyword">for</span> OpenSSL: https://github.com/openssl/openssl/blob/3d362f190306b62a17aa2fd475b2bc8b3faa8142/NOTES.WIN<span class="comment">#L112</span></span></span><br><span class="line">LTLIBS = $(LTLIBS) WS2_32.Lib Gdi32.Lib AdvAPI32.Lib Crypt32.Lib User32.Lib</span><br></pre></td></tr></table></figure>
+<p>Basically, what this replacement does is: it changes SQLITE_TEMP_STORE to default to store temporary files in memory rather than files (a requirement for SQLCipher); it tells SQLite that there is a codec (again, a requirement for SQLCipher); and then includes the OpenSSL static libraries we obtained earlier. The additional librares (WS2_32.Lib, etc) are included because OpenSSL requires them, see OpenSSL / Linking your application for more details.</p>
+<ol>
+<li>Compile SQLCipher</li>
+</ol>
+<p>With our additions to the makefile we can now compile SQLCipher. To do so, launch the Visual Studio Native Tools command prompt from your start menu: either VS2019 x64 Native Tools Command Prompt (for 64-bit) or VS2019 x86 Native Tools Command Prompt (for 32-bit), then navigate to the SQLCipher folder. Finally, make it:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmake /f Makefile.msc</span><br></pre></td></tr></table></figure>
+
           
         
       
@@ -1058,7 +927,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/02/22/开源库/skia-编译/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/05/04/语言相关/javascript/js-toast/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1077,7 +946,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/02/22/开源库/skia-编译/" itemprop="url">skia-编译</a></h1>
+                <a class="post-title-link" href="/2020/05/04/语言相关/javascript/js-toast/" itemprop="url">js-toast</a></h1>
         
 
         <div class="post-meta">
@@ -1089,7 +958,735 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-22T10:31:15+08:00">2020-02-22</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-04T11:38:32+08:00">2020-05-04</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://codeseven.github.io/toastr/" target="_blank" rel="noopener">website</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;link rel=<span class="string">"stylesheet"</span> href=<span class="string">"&#123;&#123; url_for('static', filename='css/ext/toastr.min.css') &#125;&#125;"</span>&gt;</span><br><span class="line">&lt;script src=<span class="string">"&#123;&#123; url_for('static', filename='js/ext/toastr.min.js') &#125;&#125;"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line">toastr[<span class="string">"error"</span>](data[<span class="string">'msg'</span>], <span class="string">"信息"</span>)</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/05/02/学习笔记/linux/ubuntu/ubuntu-20-04环境搭建/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/02/学习笔记/linux/ubuntu/ubuntu-20-04环境搭建/" itemprop="url">ubuntu-20.04环境搭建</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-02T11:29:16+08:00">2020-05-02</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>安装下面的顺序操作就可以了</p>
+<h2 id="更换源"><a href="#更换源" class="headerlink" title="更换源"></a>更换源</h2><p>备份 <code>/etc/apt/sources.list</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo cp /etc/apt/sources.list /etc/apt/sources.list_backup</span><br></pre></td></tr></table></figure>
+<p>输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit /etc/apt/sources.list</span><br></pre></td></tr></table></figure>
+<p>将下面的源复制到文件中，注销一下在执行，问题少些。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get upgrade</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/05/02/学习笔记/linux/ubuntu/ubuntu-20-04环境搭建/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/04/30/语言相关/CPP/平台定义宏/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/30/语言相关/CPP/平台定义宏/" itemprop="url">平台定义宏</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-30T11:09:36+08:00">2020-04-30</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _WIN32</span></span><br><span class="line"><span class="comment">//windows x86 or x68</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _WIN64 <span class="comment">//x64</span></span></span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">uint64_t</span> <span class="keyword">point_t</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span> <span class="comment">//x86</span></span></span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">uint32_t</span> UPoint;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">//_WIN64</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span> <span class="comment">//unix</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __x86_64__ <span class="comment">//x64</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">elif</span> __i386__ <span class="comment">//x86</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">//_WIN32</span></span></span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/04/26/语言相关/javascript/easyui-入门/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/26/语言相关/javascript/easyui-入门/" itemprop="url">easyui-入门</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-26T21:37:36+08:00">2020-04-26</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>现在的版本是 jquery-easyui-1.7.0</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--引入所有的图标--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"&#123;&#123; url_for('static', filename='css/ext/easyui/themes/icon.css') &#125;&#125;"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"&#123;&#123; url_for('static', filename='css/ext/easyui/themes/color.css') &#125;&#125;"</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--引入所有的样式--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"&#123;&#123; url_for('static', filename='css/ext/easyui/themes/bootstrap/easyui.css') &#125;&#125;"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"&#123;&#123; url_for('static', filename='js/ext/jquery.min.js') &#125;&#125;"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"&#123;&#123; url_for('static', filename='js/ext/jquery.easyui.min.js') &#125;&#125;"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"&#123;&#123; url_for('static', filename='js/ext/easyui-lang-zh_CN.js') &#125;&#125;"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/04/25/学习笔记/心理学/邓宁-克鲁格效应/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/25/学习笔记/心理学/邓宁-克鲁格效应/" itemprop="url">邓宁-克鲁格效应</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-25T11:44:10+08:00">2020-04-25</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/心理学/" itemprop="url" rel="index"><span itemprop="name">心理学</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>网上上看到的一篇文章。感觉挺好的，记录一下。<br><a href="https://www.toutiao.com/a6790215452162261518/?tt_from=weixin&amp;utm_campaign=client_share&amp;wxshare_count=1&amp;timestamp=1581074296&amp;app=news_article&amp;utm_source=weixin&amp;utm_medium=toutiao_ios&amp;req_id=2020020719181601002302815821163115&amp;group_id=6790215452162261518" target="_blank" rel="noopener">原文链接</a></p>
+<p>美团王慧文的一个朋友圈图片</p>
+<p><img alt="20200425_114513.png" src="/2020/04/25/学习笔记/心理学/邓宁-克鲁格效应/20200425_114513.png" width="400" height=""></p>
+<p>邓宁-克鲁格效应(The Dunning-Kruger Effect)，也称达克效应（D-K Effect）。</p>
+<p>大意是说：<br>自我认知水平越低的人，认知偏差就越大，越容易自我膨胀（站在愚昧之巅）；<br>反过来，自我认知水平越高的人，认知偏差就越小，越容易自我超越（走上开悟之坡）。</p>
+<p>邓宁更一针见血地说：<br>如果你没有能力，你就不会知道自己没有能力。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/25/学习笔记/心理学/邓宁-克鲁格效应/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/04/17/开源库/wxWidget/wxWidget-搭建开发环境/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/17/开源库/wxWidget/wxWidget-搭建开发环境/" itemprop="url">wxWidget-搭建开发环境</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-17T10:44:21+08:00">2020-04-17</time>
             
 
             
@@ -1146,639 +1743,29 @@
       
         
           
-            <h2 id="windows-build"><a href="#windows-build" class="headerlink" title="windows build"></a>windows build</h2><h3 id="环境需求"><a href="#环境需求" class="headerlink" title="环境需求"></a>环境需求</h3><ol>
-<li>python 2.x</li>
-<li>git</li>
-<li>vs2019</li>
+            <p>vs2019 wxWidget 3.1.3</p>
+<p>解压路径是 E:\wxWidgets-3.1.3</p>
+<p>设置系统环境变量：$(WXWIN) = E:\wxWidgets-3.1.3</p>
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><ol>
+<li>Open a “Visual Studio Command Prompt” window</li>
+<li>Change directory to %WXWIN%\build\msw and type <code>nmake /f makefile.vc</code> to build debug static version<br>or <code>nmake /f makefile.vc BUILD=release</code> to build release static version<br>or <code>nmake /f makefile.vc BUILD=release SHARED=1</code> release DLL version<br>or <code>TARGET_CPU=X64</code> for 64bit version</li>
+<li>to verify your build, change the directory to %WXWIN%\samples\minimal and<br>run the same nmake command (with the same parameters there), this<br>should create a working minimal wxWidgets sample.</li>
+<li>If you need to rebuild, use “clean” target first or “nmake /a”.<br><code>nmake /f makefile.vc clean</code></li>
 </ol>
-<h3 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h3><p>先下载相关代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git</span><br><span class="line">git clone https://skia.googlesource.com/skia.git</span><br><span class="line">进入 skia 的源码目录</span><br><span class="line">cd skia</span><br><span class="line">python tools/git-sync-deps</span><br></pre></td></tr></table></figure>
+<h2 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h2><ol>
+<li>vs2019 新建空白项目</li>
+<li>添加 include 和 lib 路径</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$(WXWIN)\include\</span><br><span class="line">$(WXWIN)\include\msvc\</span><br><span class="line"></span><br><span class="line">$(WXWIN)\lib\vc_lib\mswud</span><br><span class="line">$(WXWIN)\lib\vc_lib</span><br></pre></td></tr></table></figure>
 <ol>
-<li>工具添加到环境变量中</li>
+<li>Linker 里面子系统改成 windows</li>
+<li>property manager 里面添加 $(WXWIN)\wxwidgets.props</li>
+<li>添加代码</li>
 </ol>
-<p>set PATH=%PATH%;E:\project\cpp\skia_project\depot_tools\<br>set PATH=%PATH%;E:\project\cpp\skia_project\skia\bin\</p>
-<p>查看 ninja 是否存在。命令行输入 <code>ninja</code> 查看是否成功</p>
-<p>下面是失败的信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;ninja&quot; 不是内部或外部命令，也不是可运行的程序或批处理文件。</span><br></pre></td></tr></table></figure></p>
-<p>命令行输入 <code>gn</code> 查看是否成功</p>
-<p><code>&quot;gn&quot; 不是内部或外部命令，也不是可运行的程序或批处理文件。</code> 则是配置失败</p>
-<h3 id="配置-VC-目录"><a href="#配置-VC-目录" class="headerlink" title="配置 VC 目录"></a>配置 VC 目录</h3><p>打开 <code>skia/gn/BUILDCONFIG.gn</code> 文件</p>
-<p>将 <code>win_vc = “”</code> 的值设置为 Visual Studio 的安装目录下的VC目录<br>配置 SDK 目录 <code>win_sdk = &quot;D:/Windows Kits/10&quot;</code></p>
-<p>只有 VC 可以编译 32 位的<br>This toolchain is the only way we support 32-bit builds, by also setting <code>target_cpu=&quot;x86&quot;</code></p>
-<p>官方强烈推荐使用 <a href="https://releases.llvm.org/download.html" target="_blank" rel="noopener">clang-cl</a> 构建，高度优化</p>
-<p><code>clang_win = &quot;C:\Program Files\LLVM&quot;</code></p>
-<p>Run GN to generate your build files.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">## 直接构建VisualStudio的.sln文件</span><br><span class="line">gn gen out/sln --ide=vs</span><br><span class="line"></span><br><span class="line">静态 debug</span><br><span class="line">gn gen out/Clang --args=&quot;cxx=\&quot;clang++\&quot; cc=\&quot;clang\&quot; is_debug=true&quot;</span><br><span class="line"></span><br><span class="line">静态 release</span><br><span class="line">gn gen out/Clang_release --args=&quot;cxx=\&quot;clang++\&quot; cc=\&quot;clang\&quot; is_debug=false&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">bin/gn gen out/Shared --args=&apos;is_official_build=true is_component_build=true&apos;</span><br><span class="line">--ide=vs</span><br><span class="line">bin\gn gen out/Static_x86 --args=&quot;clang_win=\&quot;C:\Program Files\LLVM\&quot; target_cpu=\&quot;x86\&quot; is_debug=false is_official_build=true skia_use_system_expat=false skia_use_system_libjpeg_turbo=false skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_zlib=false&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">bin/gn gen out/Debug</span><br><span class="line">bin/gn gen out/Release  --args=&apos;is_debug=false&apos;</span><br><span class="line">bin/gn gen out/Clang    --args=&apos;cc=&quot;clang&quot; cxx=&quot;clang++&quot;&apos;</span><br><span class="line">bin/gn gen out/Cached   --args=&apos;cc_wrapper=&quot;ccache&quot;&apos;</span><br><span class="line">bin/gn gen out/RTTI     --args=&apos;extra_cflags_cc=[&quot;-frtti&quot;]&apos;</span><br></pre></td></tr></table></figure>
-<p>is_official_build=true 优化编译<br>is_official_build=false debug 编译</p>
-<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ninja -C out/Static</span><br><span class="line">ninja -C out/Shared</span><br><span class="line">ninja -C out/Debug</span><br><span class="line">ninja -C out/Release</span><br><span class="line">ninja -C out/Clang</span><br><span class="line">ninja -C out/Clang_release</span><br><span class="line">ninja -C out/Cached</span><br><span class="line">ninja -C out/RTTI</span><br></pre></td></tr></table></figure>
-<p>有更新时，重新 build</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git pull</span><br><span class="line">python tools/git-sync-deps</span><br><span class="line">ninja -C out/Static</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/02/21/语言相关/csharp/csharp-图片资源/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/21/语言相关/csharp/csharp-图片资源/" itemprop="url">csharp-图片资源</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-21T15:46:42+08:00">2020-02-21</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>协议：pack://<br>一种用于访问编译时已经知道的文件，用application:///<br>一种用于访问编译时不知道、运行时才知道的文件，用siteoforigin:///</p>
-<p>一般用逗号代替斜杠，也就是改写作application:,,,</p>
-<h2 id="用XAML引用资源"><a href="#用XAML引用资源" class="headerlink" title="用XAML引用资源"></a>用XAML引用资源</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;Grid.Background&gt;</span><br><span class="line">    &lt;ImageBrush ImageSource=&quot;pack://application:,,,/watermark.png&quot;  /&gt;</span><br><span class="line">&lt;/Grid.Background&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="用代码引用资源"><a href="#用代码引用资源" class="headerlink" title="用代码引用资源"></a>用代码引用资源</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Image img;</span><br><span class="line">img.Source=new BitmapImage(new Uri(&quot;pack://application:,,,/images/my.jpg&quot;),UriKind.Relative);</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/02/20/功能分类/windows/MFC/mfc-dialog/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/20/功能分类/windows/MFC/mfc-dialog/" itemprop="url">mfc_dialog</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-20T16:01:13+08:00">2020-02-20</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="防止回车，ESC退出"><a href="#防止回车，ESC退出" class="headerlink" title="防止回车，ESC退出"></a>防止回车，ESC退出</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">BOOL CMRLGaugerDrawerDlg::PreTranslateMessage(MSG* pMsg)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (pMsg-&gt;message == WM_KEYDOWN)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (pMsg-&gt;wParam == VK_RETURN || pMsg-&gt;wParam == VK_ESCAPE)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">// Do not process further</span></span><br><span class="line">			<span class="keyword">return</span> TRUE;                </span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> CDialogEx::PreTranslateMessage(pMsg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="设置标题文字"><a href="#设置标题文字" class="headerlink" title="设置标题文字"></a>设置标题文字</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> APP_VERSION (<span class="meta-string">"serial port tool version: 2020.02.19-1341"</span>)</span></span><br><span class="line"></span><br><span class="line">BOOL CcomToolsDlg::OnInitDialog()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">this</span>-&gt;SetWindowText(s2w(APP_VERSION).c_str());</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="问题对话框"><a href="#问题对话框" class="headerlink" title="问题对话框"></a>问题对话框</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (IDYES == AfxMessageBox(<span class="string">L"即将删除所有标记的测量点，请再次确认该操作。"</span>,MB_YESNO))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="添加菜单"><a href="#添加菜单" class="headerlink" title="添加菜单"></a>添加菜单</h2><p>添加资源，创建菜单<br>对话框属性里面找到 menu 然后选择已创建的菜单ID就可以了</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/02/19/语言相关/CPP/cpp-thread/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/19/语言相关/CPP/cpp-thread/" itemprop="url">cpp-thread</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-19T17:18:02+08:00">2020-02-19</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><p>c++11<br>lock_guard is no longer recommended.</p>
-<p>c++ 17<br>unique_lock and scoped_lock are recommended.</p>
-<p>unique_lock 和 lock_guard 类似，增加一些有用的函数。<br>unique_lock can unlock, not lock_guard</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 发送队列锁</span></span><br><span class="line"><span class="built_in">std</span>::mutex m_mutex_write;</span><br><span class="line"><span class="built_in">std</span>::<span class="function">unique_lock <span class="title">guard</span><span class="params">(m_mutex_write)</span></span>;</span><br><span class="line"><span class="comment">// 可以在 guard 生命周期结束前解锁</span></span><br><span class="line">guard.unlock();</span><br><span class="line"><span class="comment">// 解锁后还可以再次加锁</span></span><br><span class="line">guard.lock();</span><br></pre></td></tr></table></figure>
-<h2 id="指针参数"><a href="#指针参数" class="headerlink" title="指针参数"></a>指针参数</h2><p>可以使用智能指针保存参数，然后传给工作线程。<br>目前还没找到更好的办法，只能复制一份给工作线程使用。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> CserialPort::write(<span class="keyword">const</span> BYTE* data, <span class="keyword">const</span> DWORD&amp; length)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;BYTE[]&gt; spBuf(<span class="keyword">new</span> BYTE[length]);</span><br><span class="line">	<span class="built_in">memcpy</span>(spBuf.get(), data, length);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">std</span>::thread threadWork = <span class="built_in">std</span>::thread(threadWrite, <span class="keyword">this</span>, spBuf,length);</span><br><span class="line">	threadWork.detach();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="C-14"><a href="#C-14" class="headerlink" title="C++ 14"></a>C++ 14</h2><p>注意：可被 joinable 的 std::thread 对象必须在他们销毁之前被主线程 join 或者将其设置为 detached.</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="literal">false</span> == m_thread_recive.joinable())</span><br><span class="line">&#123;</span><br><span class="line">	m_thread_recive = <span class="built_in">std</span>::thread(threadReceive, <span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">threadReceive</span><span class="params">(<span class="keyword">const</span> <span class="keyword">void</span>* p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	CTcpClient* pwnd = (CTcpClient*)p;</span><br><span class="line">	<span class="keyword">while</span> (FLAG_EXIT_THREAD_RECEIVE != (pwnd-&gt;m_flag&amp;FLAG_EXIT_THREAD_RECEIVE))</span><br><span class="line">	&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">20</span>; ++i)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (FLAG_EXIT_THREAD_RECEIVE == (pwnd-&gt;m_flag&amp;FLAG_EXIT_THREAD_RECEIVE))</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">goto</span> skip_return;</span><br><span class="line">			&#125;</span><br><span class="line">			this_thread::sleep_for(chrono::milliseconds(<span class="number">100</span>));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">skip_return:</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Create a thread using member function</span></span><br><span class="line"><span class="built_in">std</span>::<span class="function">thread <span class="title">th</span><span class="params">(&amp;Task::execute, taskPtr, <span class="string">"Sample Task"</span>)</span></span>;</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::thread m_threadHttpServer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (FLAG_HTTP_SERVER_RUNNING != (g_iFlag&amp;FLAG_HTTP_SERVER_RUNNING))</span><br><span class="line">&#123;</span><br><span class="line">  m_threadHttpServer = <span class="built_in">std</span>::thread(threadHttpServer, (<span class="keyword">this</span>), <span class="number">2</span>,<span class="string">"other param"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">g_iFlag |= FLAG_EXIT_HTTP_SERVER;</span><br><span class="line"><span class="keyword">while</span> (FLAG_HTTP_SERVER_RUNNING == (g_iFlag&amp;FLAG_HTTP_SERVER_RUNNING))</span><br><span class="line">&#123;</span><br><span class="line">  Sleep(<span class="number">200</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (m_threadHttpServer.joinable())</span><br><span class="line">&#123;</span><br><span class="line">  m_threadHttpServer.join();</span><br><span class="line">&#125;</span><br><span class="line">g_iFlag &amp;= (~FLAG_EXIT_HTTP_SERVER);</span><br></pre></td></tr></table></figure>
-<p><a href="https://hackernoon.com/learn-c-multi-threading-in-5-minutes-8b881c92941f" target="_blank" rel="noopener">ref.</a></p>
-<p>A thread can be created in several ways:</p>
-<ol>
-<li>Using a function pointer</li>
-<li>Using a functor</li>
-<li>Using a lambda function</li>
-</ol>
-<p>对于判断线程是否执行完毕,可以通过自己设置 flag 来判断.</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// thread example</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;       // std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;         // std::thread</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		str.Format(<span class="string">L"foo %d\n"</span>, i);</span><br><span class="line">		OutputDebugString(str);</span><br><span class="line">		Sleep(<span class="number">1000</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bar</span><span class="params">(<span class="keyword">int</span>&amp; x, <span class="keyword">int</span>&amp; out)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> m = <span class="number">0</span>;</span><br><span class="line">	CString str;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		m += x;</span><br><span class="line">		str.Format(<span class="string">L"bar %d\n"</span>, i);</span><br><span class="line">		OutputDebugString(str);</span><br><span class="line">		Sleep(<span class="number">1000</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	out = m;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  CString str;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">std</span>::<span class="function">thread <span class="title">first</span><span class="params">(foo)</span></span>;     <span class="comment">// spawn new thread that calls foo()</span></span><br><span class="line">	<span class="keyword">int</span> out = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> in = <span class="number">10</span>;</span><br><span class="line">	std::thread second(bar, ref(in),ref(out));  // spawn new thread that calls bar(0)</span><br><span class="line"></span><br><span class="line">	OutputDebugString(<span class="string">L"main, foo and bar now execute concurrently...\n"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// synchronize threads:</span></span><br><span class="line">	first.join();                <span class="comment">// pauses until first finishes</span></span><br><span class="line">	second.join();               <span class="comment">// pauses until second finishes</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	str.Format(<span class="string">L"foo and bar completed. out:%d\n"</span>, out);</span><br><span class="line"></span><br><span class="line">	OutputDebugString(str);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>std::ref<br>主要是考虑函数式编程（如std::bind）在使用时，是对参数直接拷贝，而不是引用。</p>
-<p>warning: all parameters is passing default by value unless you wrap them in std::ref.</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/02/19/开源库/Qt/qt-QPlainTextEdit/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/19/开源库/Qt/qt-QPlainTextEdit/" itemprop="url">qt-QPlainTextEdit</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-19T09:52:56+08:00">2020-02-19</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://doc.qt.io/qt-5/qplaintextedit.html#details" target="_blank" rel="noopener">doc</a></p>
-<h2 id="追加文档"><a href="#追加文档" class="headerlink" title="追加文档"></a>追加文档</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ui.plainTextEdit_out-&gt;appendPlainText(strRead);</span><br></pre></td></tr></table></figure>
+<p>MainApp.h</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;wx/wx.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyProjectApp</span> :</span> <span class="keyword">public</span> wxApp</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	MyProjectApp();</span><br><span class="line">	<span class="keyword">virtual</span> ~MyProjectApp();</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">OnInit</span><span class="params">()</span> override</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>MainApp.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"MainApp.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;wx/wx.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">MyProjectApp::MyProjectApp()</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">MyProjectApp::~MyProjectApp()</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> MyProjectApp::OnInit()</span><br><span class="line">&#123;</span><br><span class="line">	wxFrame* mainFrame = <span class="keyword">new</span> wxFrame(<span class="literal">nullptr</span>, wxID_ANY, <span class="string">L"MyProject"</span>);</span><br><span class="line">	mainFrame-&gt;Show(<span class="literal">true</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">wxIMPLEMENT_APP(MyProjectApp);</span><br></pre></td></tr></table></figure>
           
         
       
@@ -1820,7 +1807,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/16/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><span class="space">&hellip;</span><a class="page-number" href="/page/113/">113</a><a class="extend next" rel="next" href="/page/18/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/16/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><span class="space">&hellip;</span><a class="page-number" href="/page/117/">117</a><a class="extend next" rel="next" href="/page/18/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1867,7 +1854,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">1124</span>
+                    <span class="site-state-item-count">1161</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2036,7 +2023,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">78</span>
+                      
+                    
+                    <span class="site-state-item-count">79</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -2467,7 +2456,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">209</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">211</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -2533,7 +2526,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

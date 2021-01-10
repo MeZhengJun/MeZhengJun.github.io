@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">78</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">79</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1124</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1161</span>
       </a>
 </li>
 
@@ -328,7 +328,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/07/17/功能分类/windows/Dll-lib/dll-静态库/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/09/16/Web开发/http-2相关学习/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -347,7 +347,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/07/17/功能分类/windows/Dll-lib/dll-静态库/" itemprop="url">dll-静态库</a></h1>
+                <a class="post-title-link" href="/2019/09/16/Web开发/http-2相关学习/" itemprop="url">http/2相关学习</a></h1>
         
 
         <div class="post-meta">
@@ -359,7 +359,143 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-17T12:26:26+08:00">2019-07-17</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-16T09:40:56+08:00">2019-09-16</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>摘录至 <a href="https://zhuanlan.zhihu.com/p/26559480" target="_blank" rel="noopener">一文读懂 HTTP/2 特性</a><br>参考 <a href="https://www.ibm.com/developerworks/cn/web/wa-http2-under-the-hood/index.html" target="_blank" rel="noopener">HTTP/2 幕后原理</a></p>
+<p>仅做个人学习记录用途。</p>
+<p>HTTP/2 是 HTTP 协议自 1999 年 HTTP 1.1 发布后的首个更新，主要基于 SPDY 协议。由互联网工程任务组（IETF）的 Hypertext Transfer Protocol Bis（httpbis）工作小组进行开发。该组织于2014年12月将HTTP/2标准提议递交至IESG进行讨论，于2015年2月17日被批准。HTTP/2标准于2015年5月以RFC 7540正式发表。</p>
+<h2 id="二进制分帧"><a href="#二进制分帧" class="headerlink" title="二进制分帧"></a>二进制分帧</h2><p>帧：HTTP/2 数据通信的最小单位消息：指 HTTP/2 中逻辑上的 HTTP 消息。例如请求和响应等，消息由一个或多个帧组成。</p>
+<p>流：存在于连接中的一个虚拟通道。流可以承载双向消息，每个流都有一个唯一的整数ID。</p>
+<p>HTTP/2 采用二进制格式传输数据，而非 HTTP 1.x 的文本格式，二进制协议解析起来更高效。 HTTP / 1 的请求和响应报文，都是由起始行，首部和实体正文（可选）组成，各部分之间以文本换行符分隔。HTTP/2 将请求和响应数据分割为更小的帧，并且它们采用二进制编码。</p>
+<p>HTTP/2 中，同域名下所有通信都在单个连接上完成，该连接可以承载任意数量的双向数据流。每个数据流都以消息的形式发送，而消息又由一个或多个帧组成。多个帧之间可以乱序发送，根据帧首部的流标识可以重新组装。</p>
+<h2 id="多路复用"><a href="#多路复用" class="headerlink" title="多路复用"></a>多路复用</h2><p>多路复用，代替原来的序列和阻塞机制。所有就是请求的都是通过一个 TCP连接并发完成。</p>
+<p>在 HTTP/2 中，有了二进制分帧之后，HTTP /2 不再依赖 TCP 链接去实现多流并行了，在 HTTP/2中：</p>
+<p>同域名下所有通信都在单个连接上完成。<br>单个连接可以承载任意数量的双向数据流。<br>数据流以消息的形式发送，而消息又由一个或多个帧组成，多个帧之间可以乱序发送，因为根据帧首部的流标识可以重新组装。<br>这一特性，使性能有了极大提升：</p>
+<p>同个域名只需要占用一个 TCP 连接，消除了因多个 TCP 连接而带来的延时和内存消耗。<br>单个连接上可以并行交错的请求和响应，之间互不干扰。<br>在HTTP/2中，每个请求都可以带一个31bit的优先值，0表示最高优先级， 数值越大优先级越低。有了这个优先值，客户端和服务器就可以在处理不同的流时采取不同的策略，以最优的方式发送流、消息和帧。</p>
+<h2 id="服务器推送"><a href="#服务器推送" class="headerlink" title="服务器推送"></a>服务器推送</h2><p>服务端可以在发送页面HTML时主动推送其它资源，而不用等到浏览器解析到相应位置，发起请求再响应。例如服务端可以主动把JS和CSS文件推送给客户端，而不需要客户端解析HTML时再发送这些请求。</p>
+<p>服务端可以主动推送，客户端也有权利选择是否接收。如果服务端推送的资源已经被浏览器缓存过，浏览器可以通过发送RST_STREAM帧来拒收。主动推送也遵守同源策略，服务器不会随便推送第三方资源给客户端。</p>
+<h2 id="头部压缩"><a href="#头部压缩" class="headerlink" title="头部压缩"></a>头部压缩</h2>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/09/14/开源库/SOUI/soui-SStringT/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/09/14/开源库/SOUI/soui-SStringT/" itemprop="url">soui-SStringT</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-14T11:08:12+08:00">2019-09-14</time>
             
 
             
@@ -380,14 +516,14 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
 
                 
                 
                   , 
                 
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/win32/" itemprop="url" rel="index"><span itemprop="name">win32</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/UI/" itemprop="url" rel="index"><span itemprop="name">UI</span></a></span>
 
                 
                 
@@ -423,7 +559,7 @@
       
         
           
-            <p>创建工程的时候选择 静态库 工程，就可以了。<br>不需要导出函数接口</p>
+            <h2 id="转-std-string"><a href="#转-std-string" class="headerlink" title="转 std::string"></a>转 std::string</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CUtils::UnicodeToAscii(wstring(strDeviceAddr)).c_str()</span><br></pre></td></tr></table></figure>
 
           
         
@@ -477,7 +613,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/07/17/功能分类/windows/Dll-lib/dll-hook/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/09/08/功能分类/数据库/MySQL/mysql-create-table/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -496,7 +632,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/07/17/功能分类/windows/Dll-lib/dll-hook/" itemprop="url">dll-hook</a></h1>
+                <a class="post-title-link" href="/2019/09/08/功能分类/数据库/MySQL/mysql-create-table/" itemprop="url">mysql-create table</a></h1>
         
 
         <div class="post-meta">
@@ -508,761 +644,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-17T11:28:17+08:00">2019-07-17</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/win32/" itemprop="url" rel="index"><span itemprop="name">win32</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://easyhook.github.io/" target="_blank" rel="noopener">https://easyhook.github.io/</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/07/17/功能分类/windows/MFC/MFC-链接方式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/17/功能分类/windows/MFC/MFC-链接方式/" itemprop="url">MFC-链接方式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-17T09:38:09+08:00">2019-07-17</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Statically-Linked-to-MFC"><a href="#Statically-Linked-to-MFC" class="headerlink" title="Statically Linked to MFC"></a>Statically Linked to MFC</h1><h2 id="Pros"><a href="#Pros" class="headerlink" title="Pros"></a>Pros</h2><p>1) It own private copy of MFC library code.<br>2) No need distribute the shared DLLs Mfcxx.dll and Msvcrxx.dll </p>
-<h2 id="Cons"><a href="#Cons" class="headerlink" title="Cons"></a>Cons</h2><p>1) Build static linked DLL takes more time. Becuase, it should link with MFC libraries.<br>2) It takes more disk space and memory usage</p>
-<h1 id="Dynamically-Linked-to-MFC"><a href="#Dynamically-Linked-to-MFC" class="headerlink" title="Dynamically Linked to MFC"></a>Dynamically Linked to MFC</h1><h2 id="Pros-1"><a href="#Pros-1" class="headerlink" title="Pros"></a>Pros</h2><p>1) Minimize memory usage<br>2) Load only once and increment the reference count for each call. The new process mapped the memory with already loaded DLL.<br>3) Save disk space </p>
-<h2 id="Cons-1"><a href="#Cons-1" class="headerlink" title="Cons"></a>Cons</h2><p>1) distribute the shared DLLs Mfcxx.dll and Msvcrxx.dll ( Should not distribute debug version )</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/07/16/语言相关/go/go-defer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/16/语言相关/go/go-defer/" itemprop="url">go-defer</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-16T17:24:43+08:00">2019-07-16</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>延时调用函数(Deferred Function Calls)<br>当一个函数调用前有关键字 defer 时, 那么这个函数的执行会推迟到包含这个 defer 语句的函数即将返回前才执行.<br>需要注意的是, defer 调用的函数参数的值 defer 被定义时就确定了.<br>有多个defer 调用, 则调用的顺序是和栈顺序一样的。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">defer</span> func_name(param-list)</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/07/16/开源库/zmq/nanomsg-Q-A/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/16/开源库/zmq/nanomsg-Q-A/" itemprop="url">nanomsg-Q&A</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-16T10:21:04+08:00">2019-07-16</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="nn-shutdown-vs-nn-close"><a href="#nn-shutdown-vs-nn-close" class="headerlink" title="nn_shutdown vs nn_close"></a>nn_shutdown vs nn_close</h1><p>nn_shutdown closes just one endpoint and prevents that endpoint from<br>forming new connections.</p>
-<p>nn_close closes the entire socket.</p>
-<p>A socket can have many endpoints.</p>
-<h1 id="多个服务端支持多个客户端-nn-device"><a href="#多个服务端支持多个客户端-nn-device" class="headerlink" title="多个服务端支持多个客户端 nn_device"></a>多个服务端支持多个客户端 nn_device</h1><p>a single socket can be connected to multiple endpoints at the same time. </p>
-<p> device framework</p>
- <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">s = nn_socket(AF_SP_RAW, NN_REQ);</span><br><span class="line">nn_bind(s, <span class="string">"tcp://server1:5556"</span>);</span><br><span class="line">nn_bind(s, <span class="string">"tcp://server2:5556"</span>);</span><br><span class="line">nn_bind(s, <span class="string">"tcp://server3:5556"</span>);</span><br><span class="line"></span><br><span class="line">This means you get three underlying TCP connections load balanced by a single outgoing REQ socket. You can use that with a device framework to get the DEALER logic you're trying to achieve.</span><br></pre></td></tr></table></figure>
-<p>You can even omit it to listen on all interfaces - e.g.<br>tcp://:5556 will cause the server to listen on every network interface on<br>TCP port 5556.</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/07/15/开源库/zmq/nanomsg-AF-SP-RAW-vs-AF-SP/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/15/开源库/zmq/nanomsg-AF-SP-RAW-vs-AF-SP/" itemprop="url">nanomsg-AF_SP_RAW vs AF_SP</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-15T13:39:58+08:00">2019-07-15</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>AF_SP_RAW vs AF_SP</p>
-<p><a href="https://www.freelists.org/post/nanomsg/AF-SP-RAW-vs-AF-SP,1" target="_blank" rel="noopener">原文</a></p>
-<p><a href="https://raw.githubusercontent.com/nanomsg/nanomsg/master/rfc/sp-request-reply-01.txt" target="_blank" rel="noopener">sp-request-reply-01.txt</a></p>
-<p>For understanding how it works, read the REQ/REP RFC:</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/07/15/开源库/zmq/nanomsg-AF-SP-RAW-vs-AF-SP/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/07/15/功能分类/数据库/通用/数据库设计/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/15/功能分类/数据库/通用/数据库设计/" itemprop="url">数据库设计</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-15T10:41:07+08:00">2019-07-15</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-08T17:53:58+08:00">2019-09-08</time>
             
 
             
@@ -1319,9 +701,7 @@
       
         
           
-            <h1 id="多对多关系"><a href="#多对多关系" class="headerlink" title="多对多关系"></a>多对多关系</h1><p>通常使用中间表，转化为两个1对多</p>
-<p><img alt="20190715_104404.png" src="/2019/07/15/功能分类/数据库/通用/数据库设计/20190715_104404.png" width="400" height=""></p>
-
+            <h2 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> iotbackend.tableName ()</span><br></pre></td></tr></table></figure>
           
         
       
@@ -1374,7 +754,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/07/12/语言相关/javascript/js-json/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/09/06/功能分类/数据库/sqlite/sqlite-表及表字段操作/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1393,7 +773,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/07/12/语言相关/javascript/js-json/" itemprop="url">js-json</a></h1>
+                <a class="post-title-link" href="/2019/09/06/功能分类/数据库/sqlite/sqlite-表及表字段操作/" itemprop="url">sqlite-表及表字段操作</a></h1>
         
 
         <div class="post-meta">
@@ -1405,7 +785,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-12T06:31:50+08:00">2019-07-12</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-06T09:49:43+08:00">2019-09-06</time>
             
 
             
@@ -1426,7 +806,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
 
                 
                 
@@ -1462,7 +842,15 @@
       
         
           
-            <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> datas=[];</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> data = &#123;&#125;;</span><br><span class="line">data[<span class="string">"id"</span>] = <span class="number">1</span>;</span><br><span class="line">data[<span class="string">"name"</span>] = <span class="string">"test"</span> + <span class="number">1</span>;</span><br><span class="line">data[<span class="string">"age"</span>] = <span class="number">1</span> * <span class="number">2</span>;</span><br><span class="line">datas.push(data);</span><br><span class="line"><span class="keyword">var</span> jsonString = <span class="built_in">JSON</span>.stringify(datas);  <span class="comment">//[&#123;"id":1,"name":"test1","age":2&#125;]</span></span><br><span class="line">alert(jsonString);</span><br></pre></td></tr></table></figure>
+            <h2 id="如果想查看这些表的结构"><a href="#如果想查看这些表的结构" class="headerlink" title="如果想查看这些表的结构"></a>如果想查看这些表的结构</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> sqlite_master <span class="keyword">where</span> <span class="keyword">type</span>=<span class="string">"table"</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="如果只想查看具体一张表的表结构，比如查看emperors表，命令为："><a href="#如果只想查看具体一张表的表结构，比如查看emperors表，命令为：" class="headerlink" title="如果只想查看具体一张表的表结构，比如查看emperors表，命令为："></a>如果只想查看具体一张表的表结构，比如查看emperors表，命令为：</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> sqlite_master <span class="keyword">where</span> <span class="keyword">type</span>=<span class="string">"table"</span> <span class="keyword">and</span> <span class="keyword">name</span>=<span class="string">"emperors"</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h2><p>默认时间字段</p>
+<p>注意，如果使用了 int64 的整形，需要明确指定长度。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> main.tableName (</span><br><span class="line">    f_id <span class="built_in">INTEGER</span> PRIMARY <span class="keyword">KEY</span> AUTOINCREMENT <span class="keyword">NOT</span> <span class="literal">NULL</span>, </span><br><span class="line">    f_datetime <span class="built_in">TEXT</span> <span class="keyword">DEFAULT</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>, </span><br><span class="line">    f_id_name <span class="built_in">INTEGER</span>(<span class="number">8</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">log</span>(</span><br><span class="line">    <span class="keyword">content</span> <span class="built_in">varchar</span>(<span class="number">256</span>),</span><br><span class="line">    logtime <span class="keyword">TIMESTAMP</span> <span class="keyword">default</span> (datetime(<span class="string">'now'</span>, <span class="string">'localtime'</span>))</span><br><span class="line">    )</span><br><span class="line">    datetime(<span class="keyword">CURRENT_TIMESTAMP</span>,<span class="string">'localtime'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> main.tableName (f_id <span class="built_in">INTEGER</span> PRIMARY <span class="keyword">KEY</span> AUTOINCREMENT <span class="keyword">NOT</span> <span class="literal">NULL</span>, f_datetime <span class="built_in">TEXT</span> <span class="keyword">DEFAULT</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>, f_id_name <span class="built_in">INTEGER</span>(<span class="number">8</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="添加字段"><a href="#添加字段" class="headerlink" title="添加字段"></a>添加字段</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE 表名 ADD COLUMN 列名 数据类型 </span><br><span class="line"></span><br><span class="line">eg: ALTER TABLE new_table ADD COLUMN sex Text;</span><br></pre></td></tr></table></figure>
+<h2 id="修改表名称"><a href="#修改表名称" class="headerlink" title="修改表名称"></a>修改表名称</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE 旧表名 RENAME TO 新表名 </span><br><span class="line"></span><br><span class="line">eg: ALTER TABLE or_sql_table RENAME TO new_table;</span><br></pre></td></tr></table></figure>
+<h2 id="查询表结构"><a href="#查询表结构" class="headerlink" title="查询表结构"></a>查询表结构</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PRAGMA TABLE_INFO (表名)</span><br><span class="line"></span><br><span class="line">eg: PRAGMA TABLE_INFO (new_table);</span><br></pre></td></tr></table></figure>
+<h2 id="删除表"><a href="#删除表" class="headerlink" title="删除表"></a>删除表</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DROP TABLE table_name;</span><br></pre></td></tr></table></figure>
           
         
       
@@ -1515,7 +903,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/07/11/语言相关/go/go-环境配置/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/09/02/开源库/RPC/gRPC-study/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1534,7 +922,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/07/11/语言相关/go/go-环境配置/" itemprop="url">go-环境配置</a></h1>
+                <a class="post-title-link" href="/2019/09/02/开源库/RPC/gRPC-study/" itemprop="url">gRPC study</a></h1>
         
 
         <div class="post-meta">
@@ -1546,149 +934,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-11T15:06:17+08:00">2019-07-11</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="GOPATH"><a href="#GOPATH" class="headerlink" title="GOPATH"></a>GOPATH</h2><p>这里面的 src 目录就是主要的工作目录，在这里面，一个项目创建一个目录。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/07/11/开源库/zmq/nanomsg-study/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/11/开源库/zmq/nanomsg-study/" itemprop="url">nanomsg-study</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-11T14:12:44+08:00">2019-07-11</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-02T14:21:16+08:00">2019-09-02</time>
             
 
             
@@ -1713,10 +959,166 @@
 
                 
                 
-                  , 
-                
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>gRPC主要有4种请求／响应模式，分别是：</p>
+<p>(1) 简单模式（Simple RPC）</p>
+<p>这种模式最为传统，即客户端发起一次请求，服务端响应一个数据，这和大家平时熟悉的RPC没有什么大的区别，所以不再详细介绍。</p>
+<p>(2) 服务端数据流模式（Server-side streaming RPC）</p>
+<p>这种模式是客户端发起一次请求，服务端返回一段连续的数据流。典型的例子是客户端向服务端发送一个股票代码，服务端就把该股票的实时数据源源不断的返回给客户端。</p>
+<p>(3) 客户端数据流模式（Client-side streaming RPC）</p>
+<p>与服务端数据流模式相反，这次是客户端源源不断的向服务端发送数据流，而在发送结束后，由服务端返回一个响应。典型的例子是物联网终端向服务器报送数据。</p>
+<p>(4) 双向数据流模式（Bidirectional streaming RPC）</p>
+<p>顾名思义，这是客户端和服务端都可以向对方发送数据流，这个时候双方的数据可以同时互相发送，也就是可以实现实时交互。典型的例子是聊天机器人。</p>
+<h1 id="use-c"><a href="#use-c" class="headerlink" title="use c++"></a>use c++</h1><h2 id="windows"><a href="#windows" class="headerlink" title="windows"></a>windows</h2><p>To prepare for cmake + Microsoft Visual C++ compiler build</p>
+<p>Install Visual Studio 2015 or 2017 (Visual C++ compiler will be used).<br>Install Git.<br>Install CMake.<br>Install Active State Perl (choco install activeperl) - required by boringssl<br>Install Go (choco install golang) - required by boringssl<br>Install yasm and add it to PATH (choco install yasm) - required by boringssl<br>(Optional) Install Ninja (choco install ninja)</p>
+<p>下载指定版本<br><a href="https://github.com/grpc/grpc/releases" target="_blank" rel="noopener">gRPC</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone --recursive -b v1.23.0 https://github.com/grpc/grpc</span><br><span class="line"></span><br><span class="line">// 如果有子模块失败，使用下面命令更新</span><br><span class="line">git submodule update --init --recursive</span><br></pre></td></tr></table></figure>
+<p>// 编译软件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">md .build</span><br><span class="line">cd .build</span><br><span class="line">cmake .. -G &quot;Visual Studio 14 2015&quot;</span><br><span class="line">cmake --build . --config Release</span><br></pre></td></tr></table></figure></p>
+<h2 id="生成代码"><a href="#生成代码" class="headerlink" title="生成代码"></a>生成代码</h2><p>route_guide.pb.h - 消息类的头文件<br>route_guide.pb.cc - 其中包含消息类的实现<br>route_guide.grpc.pb.h - 服务类的头文件<br>route_guide.grpc.pb.cc - 其中包含服务类的实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&quot;protoc.exe&quot; -I=&quot;D:\project\rpcDemo\rpcDemo&quot; --grpc_out=&quot;D:\project\rpcDemo\rpcDemo&quot; --plugin=protoc-gen-grpc=&quot;grpc_cpp_plugin.exe&quot; &quot;D:\project\rpcDemo\rpcDemo\\rpc_api.proto&quot;</span><br><span class="line"></span><br><span class="line">&quot;D:\\project\\grpc\\.build\\third_party\\protobuf\\Release\\protoc.exe&quot; -I=&quot;D:\project\rpcDemo\rpcDemo&quot; --cpp_out=&quot;D:\project\rpcDemo\rpcDemo&quot; &quot;D:\project\rpcDemo\rpcDemo\rpc_api.proto&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">protoc -I ../../protos --grpc_out=. --plugin=protoc-gen-grpc=`which grpc_cpp_plugin` ../../protos/route_guide.proto</span><br><span class="line"></span><br><span class="line">protoc –grpc_out=. –plugin=protoc-gen-grpc=grpc_cpp_plugin.exe ./rpc_api.proto</span><br><span class="line"></span><br><span class="line">protoc -I ../../protos --cpp_out=. ../../protos/route_guide.proto</span><br></pre></td></tr></table></figure>
+<h2 id="rpcClient"><a href="#rpcClient" class="headerlink" title="rpcClient"></a>rpcClient</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// for rpc client</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;grpcpp/grpcpp.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> grpc::Channel;</span><br><span class="line"><span class="keyword">using</span> grpc::ClientContext;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">rpcClient</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	rpcClient(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Channel&gt; channel)</span><br><span class="line">		: stub_(apiService::apiService::NewStub(channel)) &#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Assembles the client's payload, sends it and presents the response back</span></span><br><span class="line">	<span class="comment">// from the server.</span></span><br><span class="line">	<span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">SendMsg</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; msg)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// Data we are sending to the server.</span></span><br><span class="line">		apiService::Request request;</span><br><span class="line">		request.set_value(msg);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Container for the data we expect from the server.</span></span><br><span class="line">		apiService::Response reply;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Context for the client. It could be used to convey extra information to</span></span><br><span class="line">		<span class="comment">// the server and/or tweak certain RPC behaviors.</span></span><br><span class="line">		ClientContext context;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// The actual RPC.</span></span><br><span class="line">		Status status = stub_-&gt;apiTrans(&amp;context, request, &amp;reply);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Act upon its status.</span></span><br><span class="line">		<span class="keyword">if</span> (status.ok()) &#123;</span><br><span class="line">			<span class="keyword">return</span> reply.value();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; status.error_code() &lt;&lt; <span class="string">": "</span> &lt;&lt; status.error_message()</span><br><span class="line">				&lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">			<span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;apiService::apiService::Stub&gt; stub_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rpcClient</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	rpcClient greeter(grpc::CreateChannel("localhost:53061", grpc::InsecureChannelCredentials()));</span><br><span class="line">	<span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">user</span><span class="params">(<span class="string">"world"</span>)</span></span>;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">string</span> reply = greeter.SendMsg(user);</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Greeter received: "</span> &lt;&lt; reply &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>warning C4003: not enough actual parameters for macro ‘min’<br>包含rpc的头文件要在windows前面</p>
+<p>包含库文件</p>
+<p>libprotobufd.lib<br>gpr.lib<br>grpc.lib<br>grpc++.lib<br>Ws2_32.lib<br>zlibstaticd.lib<br>caresd.lib<br>address_sortingd.lib</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;grpc/grpc.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;grpc++/server.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;grpc++/server_builder.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;grpc++/server_context.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;grpc++/security/server_credentials.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">undef</span> max</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">undef</span> min</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"rpc_api.grpc.pb.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"rpc_api.pb.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> grpc::Server;</span><br><span class="line"><span class="keyword">using</span> grpc::ServerBuilder;</span><br><span class="line"><span class="keyword">using</span> grpc::ServerContext;</span><br><span class="line"><span class="keyword">using</span> grpc::Status;</span><br></pre></td></tr></table></figure>
+<h3 id="“Please-compile-grpc-with-WIN32-WINNT-of-at-least-0x600-aka-Windows-Vista-”"><a href="#“Please-compile-grpc-with-WIN32-WINNT-of-at-least-0x600-aka-Windows-Vista-”" class="headerlink" title="“Please compile grpc with _WIN32_WINNT of at least 0x600 (aka Windows Vista)”"></a>“Please compile grpc with _WIN32_WINNT of at least 0x600 (aka Windows Vista)”</h3><p>需要在项目设置里面定义 _WIN32_WINNT=0x600 宏</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/08/31/读过的书/苏黎世投资定律/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/31/读过的书/苏黎世投资定律/" itemprop="url">苏黎世投资定律</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-31T06:43:37+08:00">2019-08-31</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
 
                 
                 
@@ -1752,79 +1154,601 @@
       
         
           
-            <p>Release 0.1 alpha (20,08,2013)<br>MIT licensed</p>
-<h1 id="协议模式"><a href="#协议模式" class="headerlink" title="协议模式"></a>协议模式</h1><h2 id="目前可用的可扩展性协议有："><a href="#目前可用的可扩展性协议有：" class="headerlink" title="目前可用的可扩展性协议有："></a>目前可用的可扩展性协议有：</h2><ul>
-<li>PAIR - 简单的一对一沟通</li>
-<li>BUS - 简单的多对多通信</li>
-<li>REQREP - 允许构建无状态服务集群来处理用户请求</li>
-<li>PUBSUB - 将消息分发给订阅消息的用户</li>
-<li>PIPELINE - 汇总来自多个来源的消息，并在许多目的点之间进行负载平衡</li>
-<li>SURVEY - 允许一次查询多个应用程序的状态</li>
+            <p>讲了几大定律，需要有切身的体会才能更好的领悟。推荐阅读</p>
+<p><img alt="20190831_064644.png" src="/2019/08/31/读过的书/苏黎世投资定律/20190831_064644.png" width="400" height=""></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/08/29/功能分类/数据库/sqlite/sqlite-delete/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/29/功能分类/数据库/sqlite/sqlite-delete/" itemprop="url">sqlite-delete</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-29T16:06:33+08:00">2019-08-29</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">DELETE FROM table WHERE search_condition;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">DELETE FROM table</span><br><span class="line">WHERE search_condition</span><br><span class="line">ORDER BY criteria</span><br><span class="line">LIMIT row_count OFFSET offset;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/08/28/学习笔记/算法/hash算法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/28/学习笔记/算法/hash算法/" itemprop="url">hash算法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-28T17:14:17+08:00">2019-08-28</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/算法/" itemprop="url" rel="index"><span itemprop="name">算法</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>CityHash算法的开发是受到了 MurmurHash的启发<br>为了满足大数量的需求，减少碰撞，我们一般需要给出一个32位，64位或者128位的哈希，Google发布了一个叫做CityHash的方法，<br>能比较快的生成一个32位，64位或者128位的字符串签名，效率在64位cpu上得到了特殊优化，在工业级应用中可以使用该哈希算法，代码公布在google code上。</p>
+<p>总体而言，CityHash64 与 CityHash128 是解决经典问题的全新算法</p>
+<p><a href="https://github.com/google/cityhash" target="_blank" rel="noopener">https://github.com/google/cityhash</a></p>
+<p>murmurhash<br>属于非加密型hash算法</p>
+<p>MurmurHash算法：高运算性能，低碰撞率，由Austin Appleby创建于2008年，现已应用到Hadoop、libstdc++、nginx、libmemcached等开源系统。<br>2011年Appleby被Google雇佣，随后Google推出其变种的CityHash算法。</p>
+<p>Murmur is a family of good general purpose hashing functions, suitable for non-cryptographic usage. As stated by Austin Appleby, MurmurHash provides the following benefits:</p>
+<p>simple (in term of number of generated assembly instructions).<br>good distribution (passing chi-squared tests for practically all keysets &amp; bucket sizes.<br>good avalanche behavior (max bias of 0.5%).<br>good collision resistance (passes Bob Jenkin’s frog.c torture-test. No collisions possible for 4-byte keys, no small (1- to 7-bit) differentials).<br>great performance on Intel/AMD hardware, good tradeoff between hash quality and CPU consumption.</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/08/28/功能分类/数据库/postgreSQL-mysql/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/28/功能分类/数据库/postgreSQL-mysql/" itemprop="url">postgreSQL-mysql</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-28T09:46:44+08:00">2019-08-28</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>MySQL 的各种 text 字段有不同的限制, 要手动区分 small text, middle text, large text… Pg 没有这个限制, text 能支持各种大小.<br>不少人应该遇到过 MySQL 里需要 utf8mb4 才能显示 emoji 的坑, Pg 就没这个坑.</p>
+<p>PostgreSQL 的稳定性极强， Innodb 等引擎在崩溃、断电之类的灾难场景下抗打击能力有了长足进步，然而很多 MySQL 用户都遇到过Server级的数据库丢失的场景——mysql系统库是MyISAM的，相比之下，PG数据库这方面要好一些。</p>
+<p>PG 多年来在 GIS 领域处于优势地位，因为它有丰富的几何类型，实际上不止几何类型，PG有大量字典、数组、bitmap 等数据类型，相比之下mysql就差很多，instagram就是因为PG的空间数据库扩展POSTGIS远远强于MYSQL的my spatial而采用PGSQL的。</p>
+<p>它可以存储 array 和 json, 可以在 array 和 json 上建索引, 甚至还能用表达式索引. 为了实现文档数据库的功能, 设计了 jsonb 的存储结构. 有人会说为什么不用 Mongodb 的 BSON 呢? Pg 的开发团队曾经考虑过, 但是他们看到 BSON 把 [“a”, “b”, “c”] 存成 {0: “a”, 1: “b”, 2: “c”} 的时候就决定要重新做一个 jsonb 了… 现在 jsonb 的性能已经优于 BSON.</p>
+<p>它有地理信息处理扩展 (GIS 扩展不仅限于真实世界, 游戏里的地形什么的也可以), 可以用 Pg 搭寻路服务器和地图服务器:<br>PostGIS — Spatial and Geographic Objects for PostgreSQL<br><a href="http://postgis.net/" target="_blank" rel="noopener">http://postgis.net/</a></p>
+<p>它自带全文搜索功能 (不用费劲再装一个 elasticsearch 咯):Full text search in milliseconds with PostgreSQL 不过一些语言相关的支持还不太完善, 有个 bamboo 插件用调教过的 mecab 做中文分词, 如果要求比较高, 还是自己分了词再存到 tsvector 比较好.</p>
+<p>它支持 trigram 索引.trigram 索引可以帮助改进全文搜索的结果: PostgreSQL: Documentation: 9.3: pg_trgmtrigram 还可以实现高效的正则搜索 (原理参考 <a href="https://swtch.com/~rsc/regexp/regexp4.html" target="_blank" rel="noopener">https://swtch.com/~rsc/regexp/regexp4.html</a> )</p>
+<p>MySQL 处理树状回复的设计会很复杂, 而且需要写很多代码, 而 Pg 可以高效处理树结构:Scaling Threaded Comments on Django at Disqus<a href="http://www.slideshare.net/quipo/trees-in-the-database-advanced-data-structures" target="_blank" rel="noopener">http://www.slideshare.net/quipo/trees-in-the-database-advanced-data-structures</a></p>
+<p>它可以把 70 种外部数据源 (包括 Mysql, Oracle, CSV, hadoop …) 当成自己数据库中的表来查询:<br>Foreign data wrappers</p>
+<p><img alt="20190828_101925.png" src="/2019/08/28/功能分类/数据库/postgreSQL-mysql/20190828_101925.png" width="500" height=""></p>
+<p><img alt="20190828_101943.png" src="/2019/08/28/功能分类/数据库/postgreSQL-mysql/20190828_101943.png" width="500" height=""></p>
+<p><img alt="20190828_102009.png" src="/2019/08/28/功能分类/数据库/postgreSQL-mysql/20190828_102009.png" width="500" height=""></p>
+<p><img alt="20190828_102020.png" src="/2019/08/28/功能分类/数据库/postgreSQL-mysql/20190828_102020.png" width="500" height=""></p>
+<p><img alt="20190828_102038.png" src="/2019/08/28/功能分类/数据库/postgreSQL-mysql/20190828_102038.png" width="500" height=""></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/08/26/功能分类/数据库/sqlite/sqlite优化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/26/功能分类/数据库/sqlite/sqlite优化/" itemprop="url">sqlite优化</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-26T14:49:42+08:00">2019-08-26</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>多使用显式事务。</li>
+<li>选择合适的PageSize,详细请看SQLite 知识摘要 — 存储。</li>
+<li>操作频繁 ，大量小记录（不使用显式事务），建议使用JournalMode :WAL 搭配 Synchronous: OFF。</li>
+<li>操作少 ，数据量大，使用默认的方式就好。看数据是否重要，可搭配 ：JournalMode : TRUNCATE | PERSIST  和 Synchronous: OFF。</li>
+<li>数据量大，但是数据可以重建，建议使用JournalMode :Memory ，搭配 Synchronous: OFF。HttpURLCache 就属于这种。</li>
 </ul>
-<p>对于pull/push，客户端为push，其send数据后，server端会立即接收到</p>
-<p>对于rep/req，客户端为req，其send数据后，客户端并不会立即发送给client，客户端必须再执行recv调用后，才会真正send数据</p>
-<h2 id="可扩展性协议分层在传输层之上的网络堆栈中，目前nanomsg-library支持以下传输机制："><a href="#可扩展性协议分层在传输层之上的网络堆栈中，目前nanomsg-library支持以下传输机制：" class="headerlink" title="可扩展性协议分层在传输层之上的网络堆栈中，目前nanomsg library支持以下传输机制："></a>可扩展性协议分层在传输层之上的网络堆栈中，目前nanomsg library支持以下传输机制：</h2><ul>
-<li>INPROC - 进程内的传输（线程，模块等之间）</li>
-<li>IPC - 在单个机器上的进程间传输</li>
-<li>TCP - 通过TCP的网络传输</li>
-</ul>
-<h2 id="One-to-one-protocol"><a href="#One-to-one-protocol" class="headerlink" title="One-to-one protocol"></a>One-to-one protocol</h2><p>只能一对一通信，为通讯双向。 NN_PAIR</p>
-<h2 id="REQREP-（Request-reply）-protocol"><a href="#REQREP-（Request-reply）-protocol" class="headerlink" title="REQREP （Request/reply） protocol"></a>REQREP （Request/reply） protocol</h2><p>请求/回复协议，由请求端发起请求，然后等待回应端应答，一般是一个REP多个REQ；关键字：NN_REP,NN_REQ。<br>发送后必须等待接收，是阻塞的<br>允许构建集群的无状态服务来处理用户请求。每个req请求都需要rep响应，类似http协议(一应一答)。</p>
-<p>特点:</p>
-<ol>
-<li>和pair模式不同的是这种模式下客户端socket可以连接多个server</li>
-<li>客户端请求会被交替发送到server组的server</li>
-</ol>
-<p>要注意的2个地方：</p>
-<ol>
-<li>客户端的 socket zmq.REQ 发送后会被阻塞直到新消息到来</li>
-<li>服务端的 socket zmq.REP 会阻塞直到新请求到来 </li>
-</ol>
-<p>然后保证：Each Request/Reply is paired and has to be successful.</p>
-<p>一对一的场景：</p>
-<p><img alt="20190711_160614.png" src="/2019/07/11/开源库/zmq/nanomsg-study/20190711_160614.png" width="400" height=""></p>
-<p><img alt="20190712_173604.png" src="/2019/07/11/开源库/zmq/nanomsg-study/20190712_173604.png" width="400" height=""></p>
-<p>多对多的场景：<br>Broker<br>引入broker后，之前的问题解决了，当增加server端时，不需要修改所有的client端，只需要更新一下broker就好了。</p>
-<p><img alt="20190711_160702.png" src="/2019/07/11/开源库/zmq/nanomsg-study/20190711_160702.png" width="400" height=""></p>
-<h2 id="Publish-subscribe-protocol"><a href="#Publish-subscribe-protocol" class="headerlink" title="Publish/subscribe protocol"></a>Publish/subscribe protocol</h2><p>发布订阅协议，将消息广播到多个目的地，消息从NN_PUB发送，并且只会由订阅了匹配主题的NN_SUB接收；这种模式只会发布给在线的订阅端，如果发布端开始发布消息时，订阅端尚未连接，则这些消息会被直接丢弃；同时订阅端只负责接收不能反馈；关键字：NN_PUB，NN_SUB。</p>
-<p><img alt="20190712_173447.png" src="/2019/07/11/开源库/zmq/nanomsg-study/20190712_173447.png" width="400" height=""></p>
-<h2 id="Survey-protocol"><a href="#Survey-protocol" class="headerlink" title="Survey protocol"></a>Survey protocol</h2><p>allows to query state of multiple applications in a single go。</p>
-<p>调查协议，允许向多个地点广播调查并收集响应，关键字：NN_SURVEYOR，NN_RESPONDENT。</p>
-<p><img alt="20190712_173517.png" src="/2019/07/11/开源库/zmq/nanomsg-study/20190712_173517.png" width="400" height=""></p>
-<h2 id="Pipeline-protocol"><a href="#Pipeline-protocol" class="headerlink" title="Pipeline protocol"></a>Pipeline protocol</h2><p>通过一系列步骤传递任务的的协议，这个协议是可扩展的（官方原文：scalability protocol for passing tasks through a series of processing steps.）；它可以公平的对来自先前的处理步骤的消息进行排队，并在下一个处理步骤的实例中对它进行负载均衡；关键字，NN_PUSH，NN_PULL。</p>
-<h2 id="Message-bus-protocol"><a href="#Message-bus-protocol" class="headerlink" title="Message bus protocol"></a>Message bus protocol</h2><p>simple many-to-many communication。</p>
-<p>消息总线（message bus），将消息从任何节点广播到拓扑中的所有其他节点，自身不会收到自己发出去的消息；这种模式只能缩放到本地级别（单个机器或者单个局域网），如果尝试进一步扩展可能会导致单个节点消息过载；关键字：NN_BUS。</p>
-<p><img alt="20190712_173539.png" src="/2019/07/11/开源库/zmq/nanomsg-study/20190712_173539.png" width="400" height=""></p>
-<p>Polyamorous Pair (nng only)</p>
-<p>Star (mangos only)</p>
-<h1 id="Advantages"><a href="#Advantages" class="headerlink" title="Advantages"></a>Advantages</h1><ol>
-<li>Aims POSIX full-compliance</li>
-<li>Written in C</li>
-<li>API for integrating new protocols and transports</li>
-<li>command-line tools (nanocat)</li>
-</ol>
-<h2 id="Goodbye-context"><a href="#Goodbye-context" class="headerlink" title="Goodbye context !"></a>Goodbye context !</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* with zeromq */</span></span><br><span class="line"><span class="keyword">void</span> *ctx = zmq_ctx_new ();</span><br><span class="line"><span class="keyword">void</span> *s = zmq_socket (ctx, ZMQ_PUSH);</span><br><span class="line">zmq_connect (s, <span class="string">"tcp://192.168.0.111:5555"</span>);</span><br><span class="line">zmq_send (s, <span class="string">"ABC"</span>, <span class="number">3</span>, <span class="number">0</span>);</span><br><span class="line">zmq_close (s);</span><br><span class="line">zmq_ctx_destroy (ctx);</span><br><span class="line"><span class="comment">/* with nanomsg */</span></span><br><span class="line"><span class="keyword">int</span> s = nn_msg(AF_SP, NN_PUSH);</span><br><span class="line">nn_connect(s, <span class="string">"tcp://192.168.0.111:5555"</span>);</span><br><span class="line">nn_send(s, <span class="string">"ABC"</span>, <span class="number">3</span>, <span class="number">0</span>);</span><br><span class="line">nn_close(s);  <span class="comment">/* attention, appel désormais bloquant */</span></span><br></pre></td></tr></table></figure>
-<h2 id="Performances-and-safety"><a href="#Performances-and-safety" class="headerlink" title="Performances and safety ?"></a>Performances and safety ?</h2><ol>
-<li>In C</li>
-<li>Use intrusive containers instead of STL</li>
-<li>Use IOCP on Windows</li>
-<li>Level-triggered polling</li>
-<li>Objects are no more tied to a thread</li>
-<li>Interactions are now associated to state machines</li>
-<li>Asynchronous DNS calls</li>
-</ol>
-<h2 id="Really-zero-copy"><a href="#Really-zero-copy" class="headerlink" title="Really zero-copy"></a>Really zero-copy</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> *buf = nn_allocmsg(<span class="number">12</span>, <span class="number">0</span>);</span><br><span class="line"><span class="built_in">memcpy</span>(buf, <span class="string">"Hello world!"</span>, <span class="number">12</span>);</span><br><span class="line">nn_send(s, &amp;buf, NN_MSG, <span class="number">0</span>);</span><br><span class="line">nn_recv(s, &amp;buf, NN_MSG, <span class="number">0</span>);</span><br><span class="line">nn_freemsg(buf);</span><br></pre></td></tr></table></figure>
-<h2 id="nanocat"><a href="#nanocat" class="headerlink" title="nanocat"></a>nanocat</h2><ol>
-<li>command line tool for testing and debugging purpose</li>
-<li>provides many symlinks to simplify user interface</li>
-<li>supports msgpack</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># server-side</span></span><br><span class="line">nanocat --rep --bind tcp:<span class="comment">//127.0.0.1:8000 --format ascii --data pong</span></span><br><span class="line"><span class="meta"># client side</span></span><br><span class="line">nanocat --req --connect tcp:<span class="comment">//127.0.0.1:8000 --format ascii --data ping</span></span><br><span class="line"></span><br><span class="line">!bash nanocat --pub --connect tcp:<span class="comment">//darthsidious --data "My liege !" --interval 10</span></span><br></pre></td></tr></table></figure>
-<p>transport://address</p>
-<h2 id="调用流程"><a href="#调用流程" class="headerlink" title="调用流程"></a>调用流程</h2><p>服务端：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> buf[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">int</span> s = nn_socket(AF_SP, NN_REP);</span><br><span class="line">nn_bind(s, <span class="string">"tcp://*:5555"</span>);</span><br><span class="line">nn_recv(s, buf, <span class="number">10</span>, <span class="number">0</span>);</span><br><span class="line">nn_send(s, <span class="string">"World"</span>, <span class="number">5</span>, <span class="number">0</span>);</span><br><span class="line">nn_close(s);</span><br></pre></td></tr></table></figure>
-<p>客户端：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> buf[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">int</span> s = nn_socket(AF_SP, NN_REQ);</span><br><span class="line">nn_connect(s, <span class="string">"tcp://localhost:5555"</span>);</span><br><span class="line">nn_send(s, <span class="string">"Hello"</span>, <span class="number">5</span>, <span class="number">0</span>);</span><br><span class="line">nn_recv(s, buf, <span class="number">10</span>, <span class="number">0</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"Hello %sn"</span>, buf);</span><br><span class="line">nn_close(s);</span><br></pre></td></tr></table></figure>
+
           
         
       
@@ -1866,7 +1790,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/29/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/29/">29</a><span class="page-number current">30</span><a class="page-number" href="/page/31/">31</a><span class="space">&hellip;</span><a class="page-number" href="/page/113/">113</a><a class="extend next" rel="next" href="/page/31/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/29/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/29/">29</a><span class="page-number current">30</span><a class="page-number" href="/page/31/">31</a><span class="space">&hellip;</span><a class="page-number" href="/page/117/">117</a><a class="extend next" rel="next" href="/page/31/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1913,7 +1837,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">1124</span>
+                    <span class="site-state-item-count">1161</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2082,7 +2006,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">78</span>
+                      
+                    
+                    <span class="site-state-item-count">79</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -2513,7 +2439,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">209</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">211</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -2579,7 +2509,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

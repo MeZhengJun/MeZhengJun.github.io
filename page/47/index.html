@@ -235,7 +235,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">78</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">79</span>
       </a>
 </li>
 
@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1124</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1161</span>
       </a>
 </li>
 
@@ -328,7 +328,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/01/14/语言相关/Java/springboot系列/spring-boot-swagger2/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/03/12/功能分类/filesystem/读写文件/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -347,7 +347,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/14/语言相关/Java/springboot系列/spring-boot-swagger2/" itemprop="url">spring-boot swagger2</a></h1>
+                <a class="post-title-link" href="/2019/03/12/功能分类/filesystem/读写文件/" itemprop="url">读写文件</a></h1>
         
 
         <div class="post-meta">
@@ -359,138 +359,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-14T10:20:46+08:00">2019-01-14</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://github.com/springfox/springfox-demos" target="_blank" rel="noopener">springfox-demos</a><br><a href="https://github.com/OAI/OpenAPI-Specification" target="_blank" rel="noopener">OpenAPI-Specification</a></p>
-<p>注意，如果不指定请求的 Method 会把所有支持的 Method 都自动显示出来，GET，POST，HEAD，DELETE…等等</p>
-<h1 id="添加插件配置"><a href="#添加插件配置" class="headerlink" title="添加插件配置"></a>添加插件配置</h1><p>添加插件, 在这里获取 <a href="https://mvnrepository.com/" target="_blank" rel="noopener">https://mvnrepository.com/</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// https://mvnrepository.com/artifact/io.springfox/springfox-swagger2</span><br><span class="line">compile group: &apos;io.springfox&apos;, name: &apos;springfox-swagger2&apos;, version: &apos;2.9.2&apos;</span><br><span class="line">// https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui</span><br><span class="line">compile group: &apos;io.springfox&apos;, name: &apos;springfox-swagger-ui&apos;, version: &apos;2.9.2&apos;</span><br></pre></td></tr></table></figure></p>
-<h1 id="Swagger2-配置"><a href="#Swagger2-配置" class="headerlink" title="Swagger2 配置"></a>Swagger2 配置</h1><p>在主应用同级目录下创建 swagger2Config.java 内容如下，根据实际情况修改</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.google.common.base.Predicate;</span><br><span class="line"><span class="keyword">import</span> com.google.common.base.Predicates;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.builders.ApiInfoBuilder;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.builders.PathSelectors;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.builders.RequestHandlerSelectors;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.service.ApiInfo;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.spi.DocumentationType;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.spring.web.plugins.Docket;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.swagger2.annotations.EnableSwagger2;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableSwagger</span>2</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">swagger2Config</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Docket <span class="title">createRestApi</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2)</span><br><span class="line">                .groupName(<span class="string">"public-api"</span>)</span><br><span class="line">                .apiInfo(apiInfo())</span><br><span class="line">                .select()</span><br><span class="line">                .apis(RequestHandlerSelectors.basePackage(<span class="string">"com.example.demo"</span>))</span><br><span class="line">                .paths(paths())</span><br><span class="line">                .build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> ApiInfo <span class="title">apiInfo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ApiInfoBuilder()</span><br><span class="line">                .title(<span class="string">"REST API 文档演示"</span>)</span><br><span class="line">                .description(<span class="string">"Gradle 构建 Spring boot项目 集成 mybatis 使用 pagehelper 插件"</span>)</span><br><span class="line">                .termsOfServiceUrl(<span class="string">"http://zhengjunblog.top"</span>)</span><br><span class="line">                .version(<span class="string">"1.0"</span>)</span><br><span class="line">                .build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//Here is an example where we select any api that matches one of these paths</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Predicate&lt;String&gt; <span class="title">paths</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Predicates.or(</span><br><span class="line">                PathSelectors.regex(<span class="string">"/api/.*"</span>),</span><br><span class="line">                PathSelectors.regex(<span class="string">"/business/.*"</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>apis() 定义包含的类(controller and model classes)。这个是包括所有的 <code>RequestHandlerSelectors.any()</code>，可通过包名，类名来定制<br>paths() 通过路径映射来定制。</p>
-<h1 id="实体类的注释"><a href="#实体类的注释" class="headerlink" title="实体类的注释"></a>实体类的注释</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">package com.example.demo;</span><br><span class="line"></span><br><span class="line">import io.swagger.annotations.ApiModel;</span><br><span class="line">import io.swagger.annotations.ApiModelProperty;</span><br><span class="line"></span><br><span class="line">@ApiModel(value=&quot;Topic 对象&quot;,description=&quot;Topic 对象类的相关描述&quot;)</span><br><span class="line">public class Topic &#123;</span><br><span class="line"></span><br><span class="line">    @ApiModelProperty(value=&quot;Topic id&quot;,name=&quot;id&quot;,example=&quot;1&quot;,required=true)</span><br><span class="line">    private String id;</span><br><span class="line">    @ApiModelProperty(value=&quot;Topic string&quot;,name=&quot;topic&quot;,example=&quot;java&quot;,required=true)</span><br><span class="line">    private String topic;</span><br><span class="line">    @ApiModelProperty(value=&quot;Topic description&quot;,name=&quot;descript&quot;,example=&quot;a java description&quot;,required=true)</span><br><span class="line">    private String descript;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">@Configuration 注解 让Spring来加载该类配置</span><br><span class="line">@EnableSwagger2 注解 启用Swagger2。</span><br><span class="line"></span><br><span class="line">.apis(RequestHandlerSelectors.basePackage(&quot;com.example.demo.Controller&quot;))</span><br><span class="line">待扫描的接口包，Swagger会扫描该包下所有Controller定义的API ，并生成API文档（除了被@ApiIgnore指定的请求）。</span><br><span class="line"></span><br><span class="line">@ApiImplicitParams、@ApiImplicitParam 注解来给参数增加说明</span><br><span class="line">@Api：用在类上，说明该类的作用</span><br><span class="line">@ApiOperation(value = “接口说明”, httpMethod = “接口请求方式”, response = “接口返回参数类型”, notes = “接口发布说明”；其他参数可参考源码；</span><br><span class="line">@ApiImplicitParams：用在方法上包含一组参数说明</span><br><span class="line">@ApiImplicitParam：用在@ApiImplicitParams注解中，指定一个请求参数的各个方面</span><br><span class="line">  paramType：参数放在哪个地方</span><br><span class="line">    header--&gt;请求参数的获取：@RequestHeader</span><br><span class="line">    query--&gt;请求参数的获取：@RequestParam</span><br><span class="line">    path（用于restful接口）--&gt;请求参数的获取：@PathVariable</span><br><span class="line">    body（不常用）</span><br><span class="line">    form（不常用）</span><br><span class="line">  name：参数名</span><br><span class="line">  dataType：参数类型</span><br><span class="line">  required：参数是否必须传</span><br><span class="line">  value：参数的意思</span><br><span class="line">  defaultValue：参数的默认值</span><br><span class="line">@ApiResponses：用于表示一组响应</span><br><span class="line">@ApiResponse：用在@ApiResponses中，一般用于表达一个错误的响应信息</span><br><span class="line">code：数字，例如400</span><br><span class="line">message：信息，例如&quot;请求参数没填好&quot;</span><br><span class="line">response：抛出异常的类</span><br><span class="line">@ApiModel：描述一个Model的信息（这种一般用在post创建的时候，使用@RequestBody这样的场景，请求参数无法使用@ApiImplicitParam注解进行描述的时候）</span><br><span class="line">@ApiModelProperty()用于方法，字段； 表示对model属性的说明或者数据操作更改</span><br><span class="line">  value–字段说明</span><br><span class="line">  name–重写属性名字</span><br><span class="line">  dataType–重写属性类型</span><br><span class="line">  required–是否必填</span><br><span class="line">  example–举例说明</span><br><span class="line">  hidden–隐藏</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/01/11/学习笔记/linux/centos/centos-install-java/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/11/学习笔记/linux/centos/centos-install-java/" itemprop="url">centos-install java</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-11T17:34:02+08:00">2019-01-11</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-12T15:19:16+08:00">2019-03-12</time>
             
 
             
@@ -511,7 +380,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/系统/" itemprop="url" rel="index"><span itemprop="name">系统</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
 
                 
                 
@@ -547,9 +416,8 @@
       
         
           
-            <p>Install OpenJDK 8 JDK</p>
-<p><code>sudo yum install java-1.8.0-openjdk-devel</code></p>
-
+            <h1 id="C-的方式"><a href="#C-的方式" class="headerlink" title="C 的方式"></a>C 的方式</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//读取文件验证</span></span><br><span class="line">FILE * fp = <span class="literal">NULL</span>;</span><br><span class="line"><span class="keyword">errno_t</span> ret = fopen_s(&amp;fp,w2s(strAppPath).c_str(), <span class="string">"rb"</span>);</span><br><span class="line"><span class="keyword">if</span> (ret)</span><br><span class="line">&#123;</span><br><span class="line">    OutputDebugString(_T(<span class="string">"open active file failed."</span>));</span><br><span class="line">    m_flag = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> TRUE;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">uint32_t</span> length = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">size_t</span> ret = fread(&amp;length, <span class="number">1</span>, <span class="number">4</span>, fp);</span><br><span class="line">    <span class="keyword">if</span> (ret != <span class="number">4</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        OutputDebugString(_T(<span class="string">"read active file failed."</span>));</span><br><span class="line">        m_flag = <span class="number">1</span>;</span><br><span class="line">        fclose(fp);</span><br><span class="line">        <span class="keyword">return</span> TRUE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span>* pbuf = <span class="keyword">new</span> <span class="keyword">char</span>[length];</span><br><span class="line">    <span class="built_in">memset</span>(pbuf, <span class="number">0</span>, length);</span><br><span class="line">    ret = fread(pbuf, <span class="number">1</span>, length, fp);</span><br><span class="line">    fclose(fp);</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">delete</span>[] pbuf;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="写入文件"><a href="#写入文件" class="headerlink" title="写入文件"></a>写入文件</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">FILE * fp = <span class="literal">NULL</span>;</span><br><span class="line"><span class="keyword">errno_t</span> ret = fopen_s(&amp;fp, w2s(strAppPath).c_str(), <span class="string">"wb"</span>);</span><br><span class="line"><span class="keyword">if</span> (ret)</span><br><span class="line">&#123;</span><br><span class="line">    OutputDebugString(_T(<span class="string">"open active file for write failed."</span>));</span><br><span class="line">    AfxMessageBox(_T(<span class="string">"保存激活信息失败，请确认程序目录可写。"</span>));</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    strInfo = w2s(str.GetBuffer());</span><br><span class="line">    <span class="keyword">int</span> iRet = fwrite(strInfo.c_str(), <span class="keyword">sizeof</span>(<span class="keyword">char</span>), strInfo.size(), fp);</span><br><span class="line">    <span class="keyword">if</span> (iRet != strInfo.size())</span><br><span class="line">    &#123;</span><br><span class="line">        OutputDebugString(_T(<span class="string">"write register info failed."</span>));</span><br><span class="line">        AfxMessageBox(_T(<span class="string">"保存激活信息失败，请确认程序目录可写。。"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">fclose(fp);</span><br></pre></td></tr></table></figure>
           
         
       
@@ -602,7 +470,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/01/11/语言相关/Java/springboot系列/spring-boot-001-搭建环境/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/03/12/学习笔记/加解密/加解密库/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -621,7 +489,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/11/语言相关/Java/springboot系列/spring-boot-001-搭建环境/" itemprop="url">spring boot_001_搭建环境</a></h1>
+                <a class="post-title-link" href="/2019/03/12/学习笔记/加解密/加解密库/" itemprop="url">加解密库</a></h1>
         
 
         <div class="post-meta">
@@ -633,7 +501,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-11T14:01:15+08:00">2019-01-11</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-12T11:23:38+08:00">2019-03-12</time>
             
 
             
@@ -654,14 +522,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端/" itemprop="url" rel="index"><span itemprop="name">后端</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端/Spring-Boot/" itemprop="url" rel="index"><span itemprop="name">Spring Boot</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/加解密/" itemprop="url" rel="index"><span itemprop="name">加解密</span></a></span>
 
                 
                 
@@ -697,46 +558,8 @@
       
         
           
-            <p>Java 1.8，IDEA 2018.1<br>gradle</p>
-<p>Spring Boot 2.2 增加了对Java 13的支持 对于老版本的Java 11、Java 8依然支持良好。所以，对于还在使用Java 8的用户也可以安心的升级使用。</p>
-<p><a href="http://start.spring.io" target="_blank" rel="noopener">http://start.spring.io</a></p>
-<h1 id="配置-VPN-代理"><a href="#配置-VPN-代理" class="headerlink" title="配置 VPN 代理"></a>配置 VPN 代理</h1><ul>
-<li><p>配置 VPN<br>我这里使用的是 shadowsocks。socks5 配置为 127.0.0.1:1086</p>
-</li>
-<li><p>配置 IDEA<br><code>Appearance &amp; Behavior &gt; System Settings &gt; Http Proxy</code><br><img alt="2083268e.png" src="/2019/01/11/语言相关/Java/springboot系列/spring-boot-001-搭建环境/2083268e.png" width="" height=""><br>使用下面的 check connection 输入网址 <code>www.google.com</code> 可以正常访问就可以了。</p>
-</li>
-</ul>
-<h1 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h1><p><code>File-New-Project-Spring Initializr</code> 选择 Gradle 工程，JAR 包，JAVA 11<br>依赖选择 Web, thymeleaf，mongodb</p>
-<p>如果之前装了 java 8， 需要修改一下配置，settings/build,execution,deployment/Gradle/ 修改 JVM 版本</p>
-<p>创建基本目录结构:common,controller,model,repository,service<br><img alt="44a1b1fc.png" src="/2019/01/11/语言相关/Java/springboot系列/spring-boot-001-搭建环境/44a1b1fc.png" width="" height=""></p>
-<p>引入 bootstrap 4.3.1</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;link rel=<span class="string">"stylesheet"</span> href=<span class="string">"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"</span> integrity=<span class="string">"sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"</span> crossorigin=<span class="string">"anonymous"</span>&gt;</span><br><span class="line"></span><br><span class="line">&lt;script src=<span class="string">"https://code.jquery.com/jquery-3.4.1.slim.min.js"</span> integrity=<span class="string">"sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"</span> crossorigin=<span class="string">"anonymous"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line">&lt;script src=<span class="string">"https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"</span> integrity=<span class="string">"sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"</span> crossorigin=<span class="string">"anonymous"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line">&lt;script src=<span class="string">"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"</span> integrity=<span class="string">"sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"</span> crossorigin=<span class="string">"anonymous"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
-<h2 id="静态资源的引用"><a href="#静态资源的引用" class="headerlink" title="静态资源的引用"></a>静态资源的引用</h2><h3 id="using-webjars"><a href="#using-webjars" class="headerlink" title="using webjars"></a>using webjars</h3><p>在 resources/templates 下面创建 index.html</p>
-<p><a href="https://www.webjars.org/" target="_blank" rel="noopener">https://www.webjars.org/</a></p>
-<p>使用 webjars 引用公共静态资源</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8080/webjars/jquery/3.4.1/jquery.js</span><br></pre></td></tr></table></figure>
-<h3 id="using-resources"><a href="#using-resources" class="headerlink" title="using resources"></a>using resources</h3><p>默认的静态资源存放路径 resources/static</p>
-<h2 id="使用-thymeleaf"><a href="#使用-thymeleaf" class="headerlink" title="使用 thymeleaf"></a>使用 thymeleaf</h2><ol>
-<li>导入名称空间</li>
-</ol>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span> <span class="attr">xmlns:th</span>=<span class="string">"http://www.thymeleaf.org"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<ol>
-<li>使用 th:xxx 语法替换原生属性值</li>
-</ol>
-<h2 id="使用-font-awsome-5"><a href="#使用-font-awsome-5" class="headerlink" title="使用 font awsome 5"></a>使用 font awsome 5</h2><p>在 css 里面配置时，出现小方块，不显示图标问题，在 html 里面配置时，正常</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line"></span><br><span class="line">## 添加日志</span><br><span class="line"></span><br><span class="line">spring boot 默认是 info</span><br><span class="line">可以在 application.properties 里面添加</span><br><span class="line"></span><br><span class="line">```yaml</span><br><span class="line"># com.example.demo 是项目包，日志可以指定包设置</span><br><span class="line">logging.level.com.example.demo=trace</span><br><span class="line"># 当前项目路径下生成</span><br><span class="line">logging.file.name=demo.log</span><br><span class="line"># / 表示当前磁盘根路径</span><br><span class="line">#logging.file.path=/demo/log/demo.log</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line"></span><br><span class="line">logger.trace(<span class="string">"log trace"</span>);</span><br><span class="line">logger.debug(<span class="string">"log debug"</span>);</span><br><span class="line">logger.info(<span class="string">"log info"</span>);</span><br><span class="line">logger.warn(<span class="string">"log warn"</span>);</span><br><span class="line">logger.error(<span class="string">"log error"</span>);</span><br></pre></td></tr></table></figure>
-<h2 id="增加配置类，扩展-mvc-配置"><a href="#增加配置类，扩展-mvc-配置" class="headerlink" title="增加配置类，扩展 mvc 配置"></a>增加配置类，扩展 mvc 配置</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">extMvcConfig</span> <span class="keyword">implements</span> <span class="title">WebMvcConfigurer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addViewControllers</span><span class="params">(ViewControllerRegistry registry)</span> </span>&#123;</span><br><span class="line">        registry.addViewController(<span class="string">"/main"</span>).setViewName(<span class="string">"dashboard"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="使用拦截器检查登陆权限"><a href="#使用拦截器检查登陆权限" class="headerlink" title="使用拦截器检查登陆权限"></a>使用拦截器检查登陆权限</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">extLoginInterceptor</span> <span class="keyword">implements</span> <span class="title">HandlerInterceptor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Object user = request.getSession().getAttribute(<span class="string">"loginUser"</span>);</span><br><span class="line">        <span class="keyword">if</span> (user == <span class="keyword">null</span>)&#123;</span><br><span class="line">            request.setAttribute(<span class="string">"msg"</span>,<span class="string">"没有权限,请登录."</span>);</span><br><span class="line">            request.getRequestDispatcher(<span class="string">"/index.html"</span>).forward(request,response);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">extMvcConfig</span> <span class="keyword">implements</span> <span class="title">WebMvcConfigurer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addViewControllers</span><span class="params">(ViewControllerRegistry registry)</span> </span>&#123;</span><br><span class="line">        registry.addViewController(<span class="string">"/dashboard.html"</span>).setViewName(<span class="string">"dashboard"</span>);</span><br><span class="line">        registry.addViewController(<span class="string">"/"</span>).setViewName(<span class="string">"index"</span>);</span><br><span class="line">        registry.addViewController(<span class="string">"/index.html"</span>).setViewName(<span class="string">"index"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addInterceptors</span><span class="params">(InterceptorRegistry registry)</span> </span>&#123;</span><br><span class="line">        registry.addInterceptor(<span class="keyword">new</span> extLoginInterceptor()).addPathPatterns(<span class="string">"/**"</span>).excludePathPatterns(<span class="string">"/index.html"</span>,<span class="string">"/"</span>,<span class="string">"/index"</span>,<span class="string">"/static/**"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="设置多个环境配置"><a href="#设置多个环境配置" class="headerlink" title="设置多个环境配置"></a>设置多个环境配置</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 默认使用 application.properties</span><br><span class="line">可以创建 application-&#123;profile&#125;.properties</span><br><span class="line">例如：</span><br><span class="line">application-develop.properties</span><br><span class="line"></span><br><span class="line">然后在 application.properties 里面配置</span><br><span class="line">spring.profiles.active=develop</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用 yaml</span></span><br><span class="line">有个文档块模式可以分开写不同的配置</span><br><span class="line"></span><br><span class="line">使用 --- 区分配置块</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-<p>激活配置文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar xxx.jar --spring.profiles.active=develop</span><br></pre></td></tr></table></figure></p>
-<h1 id="集成-Swagger2"><a href="#集成-Swagger2" class="headerlink" title="集成 Swagger2"></a>集成 Swagger2</h1><p>添加插件, 在这里获取 <a href="https://mvnrepository.com/" target="_blank" rel="noopener">https://mvnrepository.com/</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// https://mvnrepository.com/artifact/io.springfox/springfox-swagger2</span><br><span class="line">compile group: &apos;io.springfox&apos;, name: &apos;springfox-swagger2&apos;, version: &apos;2.9.2&apos;</span><br><span class="line">// https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui</span><br><span class="line">compile group: &apos;io.springfox&apos;, name: &apos;springfox-swagger-ui&apos;, version: &apos;2.9.2&apos;</span><br></pre></td></tr></table></figure></p>
-<p>运行后访问如下地址<br><a href="http://localhost:8080/swagger-ui.html" target="_blank" rel="noopener">http://localhost:8080/swagger-ui.html</a></p>
-<h1 id="user-Model"><a href="#user-Model" class="headerlink" title="user Model"></a>user Model</h1><p>创建 java class modelUser<br>model-modelUser<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ApiModel</span>(value=<span class="string">"User 对象"</span>,description=<span class="string">"User 对象类的相关描述"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">modelUser</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"user name"</span>,name=<span class="string">"name"</span>,example=<span class="string">"小明"</span>,required=<span class="keyword">true</span>)</span><br><span class="line">    <span class="keyword">public</span> String name;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"user password"</span>,name=<span class="string">"password"</span>,example=<span class="string">"123456"</span>,required=<span class="keyword">true</span>)</span><br><span class="line">    <span class="keyword">public</span> String password;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"user email"</span>,name=<span class="string">"email"</span>,example=<span class="string">"xm@126.com"</span>)</span><br><span class="line">    <span class="keyword">public</span> String email;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"user cellphone"</span>,name=<span class="string">"phone"</span>,example=<span class="string">"13812811234"</span>)</span><br><span class="line">    <span class="keyword">public</span> String phone;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"user register date"</span>,name=<span class="string">"registerDate"</span>,example=<span class="string">"2018-01-02 08:08:08"</span>)</span><br><span class="line">    <span class="keyword">public</span> String registerDate;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"user last login date"</span>,name=<span class="string">"lastLoginDate"</span>,example=<span class="string">"2018-01-03 08:08:18"</span>)</span><br><span class="line">    <span class="keyword">public</span> String lastLoginDate;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"user flag, -1 delete,0 not use, 1 active, "</span>,name=<span class="string">"flag"</span>,example=<span class="string">"00"</span>,allowableValues = <span class="string">"-1,0,1"</span>)</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> flag;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
-<p>modelResult 作为返回对象<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ApiModel</span>(value = <span class="string">"Result 对象"</span>, description = <span class="string">"Result 对象类的相关描述"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">modelResult</span> </span>&#123;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value = <span class="string">"Result code"</span>, name = <span class="string">"code"</span>, example = <span class="string">"0"</span>, required = <span class="keyword">true</span>)</span><br><span class="line">    <span class="keyword">public</span> Integer code;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value = <span class="string">"Result message"</span>, name = <span class="string">"msg"</span>, example = <span class="string">"success"</span>, required = <span class="keyword">true</span>)</span><br><span class="line">    <span class="keyword">public</span> String msg;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value = <span class="string">"Result timestamp"</span>, name = <span class="string">"timestamp"</span>, example = <span class="string">"2018-01-01 12:21:12.111"</span>, required = <span class="keyword">true</span>)</span><br><span class="line">    <span class="keyword">public</span> String timestamp;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value = <span class="string">"Specific data Optional,should be json format"</span>, name = <span class="string">"data"</span>, example = <span class="string">"null"</span>)</span><br><span class="line">    <span class="keyword">public</span> Object datas;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
-<p>实现了简单的 CRUD 操作</p>
-<h1 id="发布项目"><a href="#发布项目" class="headerlink" title="发布项目"></a>发布项目</h1><p>IDEA 右边的 Gradle-build-bootJar 双击即可，然后部署上去 java -jar xx.jar 就可以启动了<br>如果右边没有发现 Gradle 选项，那么关闭 idea 再重新打开就应该有了。<br><img alt="c298783b.png" src="/2019/01/11/语言相关/Java/springboot系列/spring-boot-001-搭建环境/c298783b.png" width="" height=""></p>
+            <h1 id="ECC-椭圆加密算法"><a href="#ECC-椭圆加密算法" class="headerlink" title="ECC 椭圆加密算法"></a>ECC 椭圆加密算法</h1><p><a href="https://github.com/esxgx/easy-ecc" target="_blank" rel="noopener">easy-ecc</a></p>
+<p>bitcoin use Secp256k1</p>
 
           
         
@@ -790,7 +613,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/01/11/读过的书/2018年的阅读账单/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/03/11/开源库/log-spdlog日志库/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -809,7 +632,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/11/读过的书/2018年的阅读账单/" itemprop="url">2018年的阅读账单</a></h1>
+                <a class="post-title-link" href="/2019/03/11/开源库/log-spdlog日志库/" itemprop="url">log-spdlog日志库</a></h1>
         
 
         <div class="post-meta">
@@ -821,297 +644,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-11T13:16:40+08:00">2019-01-11</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>2018 年很忙。读书的速度提升了不少。</p>
-<p><img alt="3afc6680.png" src="/2019/01/11/读过的书/2018年的阅读账单/3afc6680.png" width="" height=""><br><img alt="7ef6414b.png" src="/2019/01/11/读过的书/2018年的阅读账单/7ef6414b.png" width="" height=""><br><img alt="c61b9d4d.png" src="/2019/01/11/读过的书/2018年的阅读账单/c61b9d4d.png" width="" height=""></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/01/10/读过的书/认知天性/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/10/读过的书/认知天性/" itemprop="url">认知天性</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-10T11:59:45+08:00">2019-01-10</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书/" itemprop="url" rel="index"><span itemprop="name">读书</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>推荐阅读。<br>整本书是从科学的角度来找出符合大脑的记忆方式。</p>
-<h1 id="有效的方式"><a href="#有效的方式" class="headerlink" title="有效的方式"></a>有效的方式</h1><p>方法就是-考试。自己通过间隔性的考试，来增加大脑主动检索知识，加强连接。<br>间隔性练习更有利于记忆，比如：看一会儿书，练习一会儿吉他<br>耗费心血的学习才是最有效的，最持久的</p>
-<h1 id="错误的方式"><a href="#错误的方式" class="headerlink" title="错误的方式"></a>错误的方式</h1><ol>
-<li>反复阅读课本</li>
-</ol>
-<p><img alt="75dcc54a.png" src="/2019/01/10/读过的书/认知天性/75dcc54a.png" width="" height=""></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/01/10/开源库/消息中间件比较ZeroMq-RabbitMQ-ActiveMQ/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/10/开源库/消息中间件比较ZeroMq-RabbitMQ-ActiveMQ/" itemprop="url">消息中间件比较ZeroMq-RabbitMQ-ActiveMQ</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-10T10:57:04+08:00">2019-01-10</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-11T18:21:34+08:00">2019-03-11</time>
             
 
             
@@ -1136,6 +669,13 @@
 
                 
                 
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+
+                
+                
               
             </span>
           
@@ -1168,11 +708,13 @@
       
         
           
-            <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>总体上分为 broker 和 brokerless  两种<br>broker 是需要安装中间服务的.</p>
-<p>zmq 是属于 brokerless<br>activemq 两种都有<br>rabbitmq 是属于 broker</p>
-<h1 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h1><p>is one of the leading implementation of the AMQP protocol (along with Apache Qpid). Therefore, it implements a broker architecture, meaning that messages are queued on a central node before being sent to clients. This approach makes RabbitMQ very easy to use and deploy, because advanced scenarios like routing, load balancing or persistent message queuing are supported in just a few lines of code. However, it also makes it less scalable and “slower” because the central node adds latency and message envelopes are quite big.</p>
-<h1 id="ZeroMq"><a href="#ZeroMq" class="headerlink" title="ZeroMq"></a>ZeroMq</h1><p>is a very lightweight messaging system specially designed for high throughput/low latency scenarios like the one you can find in the financial world. Zmq supports many advanced messaging scenarios but contrary to RabbitMQ, you’ll have to implement most of them yourself by combining various pieces of the framework (e.g : sockets and devices). Zmq is very flexible but you’ll have to study the 80 pages or so of the guide (which I recommend reading for anybody writing distributed system, even if you don’t use Zmq) before being able to do anything more complicated than sending messages between 2 peers.</p>
-<h1 id="ActiveMQ"><a href="#ActiveMQ" class="headerlink" title="ActiveMQ"></a>ActiveMQ</h1><p>is in the middle ground. Like Zmq, it can be deployed with both broker and P2P topologies. Like RabbitMQ, it’s easier to implement advanced scenarios but usually at the cost of raw performance. It’s the Swiss army knife of messaging :-).</p>
+            <h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">stdafx.h 里面包含</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;spdlog/spdlog.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;spdlog/sinks/rotating_file_sink.h&gt;</span></span></span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;spdlog::logger&gt; g_logger;</span><br><span class="line"></span><br><span class="line">stdafx.cpp 里面包含</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;spdlog::logger&gt; g_logger;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化</span></span><br><span class="line"><span class="comment">// 如果存在会返回实例，否则返回空</span></span><br><span class="line">g_logger = spdlog::get(<span class="string">"IoTBackend"</span>);</span><br><span class="line"><span class="keyword">if</span> (g_logger == <span class="literal">nullptr</span>)</span><br><span class="line">&#123;</span><br><span class="line">    g_logger = spdlog::rotating_logger_mt(<span class="string">"IoTBackend"</span>, m_curInfo.appPath + <span class="string">"IoTBackend.log"</span>, <span class="number">1048576</span> * <span class="number">100</span>, <span class="number">10</span>);</span><br><span class="line">    g_logger-&gt;set_level(spdlog::level::level_enum(logLevel));</span><br><span class="line">    g_logger-&gt;flush_on(spdlog::level::level_enum(logLevel));</span><br><span class="line">    g_logger-&gt;info(<span class="string">"logger is started."</span>);</span><br><span class="line">&#125;</span><br><span class="line">g_logger-&gt;info(APP_VERSION);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 关闭</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Release and close all loggers</span></span><br><span class="line">spdlog::drop_all();</span><br><span class="line"></span><br><span class="line">或者单独drop某个logger</span><br><span class="line">spd::drop(<span class="string">"console"</span>);</span><br><span class="line">spd::drop(<span class="string">"basic_logger"</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="格式化"><a href="#格式化" class="headerlink" title="格式化"></a>格式化</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">spdlog::info(<span class="string">"Hello, &#123;&#125;!"</span>, <span class="string">"World"</span>);</span><br><span class="line">logger-&gt;info(<span class="string">"Hello &#123;&#125; &#123;&#125; !!"</span>, <span class="string">"param1"</span>, <span class="number">123.4</span>);</span><br><span class="line"></span><br><span class="line">spdlog::warn(<span class="string">"Easy padding in numbers like &#123;:08d&#125;"</span>, <span class="number">12</span>);</span><br><span class="line">spdlog::critical(<span class="string">"Support for int: &#123;0:d&#125;;  hex: &#123;0:x&#125;;  oct: &#123;0:o&#125;; bin: &#123;0:b&#125;"</span>, <span class="number">42</span>);</span><br><span class="line">spdlog::info(<span class="string">"Support for floats &#123;:03.2f&#125;"</span>, <span class="number">1.23456</span>);</span><br><span class="line">spdlog::info(<span class="string">"Positional args are &#123;1&#125; &#123;0&#125;.."</span>, <span class="string">"too"</span>, <span class="string">"supported"</span>);</span><br><span class="line">spdlog::info(<span class="string">"&#123;:&lt;30&#125;"</span>, <span class="string">"left aligned"</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="条件输出"><a href="#条件输出" class="headerlink" title="条件输出"></a>条件输出</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// trace=0 debug=1 info=2 warn=3 error=4 critical=5 off=6</span></span><br><span class="line">g_logger-&gt;set_level(spdlog::level::trace);</span><br><span class="line"></span><br><span class="line">m_pConf = confHelper::getInstance();</span><br><span class="line">m_pConf-&gt;open(m_curInfo.appPath + <span class="string">"dev_noise_jnrs.json"</span>);</span><br><span class="line"><span class="keyword">int32_t</span> logLevel = m_pConf-&gt;readInt(<span class="string">"logLevel"</span>);</span><br><span class="line">g_logger-&gt;set_level(spdlog::level::level_enum(logLevel));</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;spdlog/spdlog.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;spdlog/sinks/rotating_file_sink.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">m_configPath = getAppPath() + _T(<span class="string">"logs"</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;spdlog::logger&gt; m_logger;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (FALSE == PathFileExists(m_configPath.c_str()))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// directory not exist</span></span><br><span class="line">    DWORD dwErrCode = GetLastError();</span><br><span class="line">    <span class="keyword">if</span> (FALSE == CreateDirectory(m_configPath.c_str(), <span class="literal">NULL</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        OutputDebugString(<span class="string">L"videoHelper: 创建日志目录失败"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">m_pConf = confHelper::getInstance();</span><br><span class="line">m_pConf-&gt;open(m_curInfo.appPath + <span class="string">"dev_noise_jnrs.json"</span>);</span><br><span class="line"><span class="keyword">int64_t</span> logLevel = m_pConf-&gt;readInt(<span class="string">"logLevel"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果存在会返回实例，否则返回空</span></span><br><span class="line">m_logger = spdlog::get(<span class="string">"videoHelper"</span>);</span><br><span class="line"><span class="keyword">if</span> (m_logger == <span class="literal">nullptr</span>)</span><br><span class="line">&#123;</span><br><span class="line">    m_logger = spdlog::rotating_logger_mt(<span class="string">"videoHelper"</span>, <span class="string">"c:/collectorShanghaiXiTongHa360ams.txt"</span>, <span class="number">1048576</span> * <span class="number">10</span>, <span class="number">3</span>);</span><br><span class="line">    g_logger-&gt;set_level(spdlog::level::level_enum(logLevel));</span><br><span class="line">    g_logger-&gt;flush_on(spdlog::level::level_enum(logLevel));</span><br><span class="line">    m_logger-&gt;info(<span class="string">"m_logger is started."</span>);</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Create a file rotating logger with 10mb size max and 3 rotated files. 1048576*10</span></span><br><span class="line">m_logger = spdlog::rotating_logger_mt(<span class="string">"videoHelper"</span>, w2s(m_configPath) + <span class="string">"/videoHelperLog.txt"</span>, <span class="number">1048576</span> * <span class="number">10</span>, <span class="number">3</span>);</span><br><span class="line"><span class="comment">// 	m_logger-&gt;info("Welcome to spdlog version &#123;&#125;.&#123;&#125;.&#123;&#125; !", SPDLOG_VER_MAJOR, SPDLOG_VER_MINOR, SPDLOG_VER_PATCH);</span></span><br><span class="line"><span class="comment">// 	m_logger-&gt;warn("Easy padding in numbers like &#123;:08d&#125;", 12);</span></span><br><span class="line"><span class="comment">// 	m_logger-&gt;critical("Support for int: &#123;0:d&#125;;  hex: &#123;0:x&#125;;  oct: &#123;0:o&#125;; bin: &#123;0:b&#125;", 42);</span></span><br><span class="line"><span class="comment">// 	m_logger-&gt;info("Support for floats &#123;:03.2f&#125;", 1.23456);</span></span><br><span class="line"><span class="comment">// 	m_logger-&gt;info("Positional args are &#123;1&#125; &#123;0&#125;..", "too", "supported");</span></span><br><span class="line"><span class="comment">// 	m_logger-&gt;info("&#123;:&gt;8&#125; aligned, &#123;:&lt;8&#125; aligned", "right", "left");</span></span><br><span class="line">	</span><br><span class="line">m_logger-&gt;info(<span class="string">"m_logger is started."</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="释放"><a href="#释放" class="headerlink" title="释放"></a>释放</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Release and close all loggers</span></span><br><span class="line">spdlog::drop_all();</span><br><span class="line"></span><br><span class="line">或者单独drop某个logger</span><br><span class="line">spd::drop(<span class="string">"console"</span>);</span><br><span class="line">spd::drop(<span class="string">"basic_logger"</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="异步log"><a href="#异步log" class="headerlink" title="异步log"></a>异步log</h2><p>目前暂时未对性能造成影响，如果有影响了，可以使用这个看看</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"spdlog/async.h"</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">async_example</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// default thread pool settings can be modified *before* creating the async logger:</span></span><br><span class="line">    <span class="comment">// spdlog::init_thread_pool(8192, 1); // queue with 8k items and 1 backing thread.</span></span><br><span class="line">    <span class="keyword">auto</span> async_file = spdlog::basic_logger_mt&lt;spdlog::async_factory&gt;(<span class="string">"async_file_logger"</span>, <span class="string">"logs/async_log.txt"</span>);</span><br><span class="line">    <span class="comment">// alternatively:</span></span><br><span class="line">    <span class="comment">// auto async_file = spdlog::create_async&lt;spdlog::sinks::basic_file_sink_mt&gt;("async_file_logger", "logs/async_log.txt");</span></span><br><span class="line">   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1226,7 +768,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/01/09/语言相关/CPP/cpp-面试题/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/03/11/功能分类/filesystem/win-filePath/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1245,7 +787,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/09/语言相关/CPP/cpp-面试题/" itemprop="url">cpp-面试题</a></h1>
+                <a class="post-title-link" href="/2019/03/11/功能分类/filesystem/win-filePath/" itemprop="url">win-filePath</a></h1>
         
 
         <div class="post-meta">
@@ -1257,7 +799,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-09T11:33:15+08:00">2019-01-09</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-11T10:29:14+08:00">2019-03-11</time>
             
 
             
@@ -1278,176 +820,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="C-11-relative"><a href="#C-11-relative" class="headerlink" title="C++ 11 relative"></a>C++ 11 relative</h1><h2 id="move-semantic"><a href="#move-semantic" class="headerlink" title="move semantic"></a>move semantic</h2><p>为了提高效率，避免复制构造函数的拷贝动作。</p>
-<h2 id="perfect-forwarding"><a href="#perfect-forwarding" class="headerlink" title="perfect forwarding"></a>perfect forwarding</h2><p>会保留参数的左右值类型<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">template &lt;typename T&gt;</span><br><span class="line">void func(T t) &#123;</span><br><span class="line">    cout &lt;&lt; &quot;in func &quot; &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template &lt;typename T&gt;</span><br><span class="line">void relay(T&amp;&amp; t) &#123;</span><br><span class="line">    cout &lt;&lt; &quot;in relay &quot; &lt;&lt; endl;</span><br><span class="line">    func(std::forward&lt;T&gt;(t));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="smart-pointer"><a href="#smart-pointer" class="headerlink" title="smart pointer"></a>smart pointer</h2><ul>
-<li>unique_ptr: 如果内存资源的所有权不需要共享，就应当使用这个（它没有拷贝构造函数），但是它可以转让给另一个unique_ptr（存在move构造函数）。</li>
-<li>shared_ptr:  如果内存资源需要共享，那么使用这个（所以叫这个名字）。</li>
-<li>weak_ptr: 持有被shared_ptr所管理对象的引用，但是不会改变引用计数值。它被用来打破依赖循环（想象在一个tree结构中，父节点通过一个共享所有权的引用(chared_ptr)引用子节点，同时子节点又必须持有父节点的引用。如果这第二个引用也共享所有权，就会导致一个循环，最终两个节点内存都无法释放）。</li>
-</ul>
-<p>显示地使用shared_ptr构造函数来构造则至少需要两次内存分配。除了会产生额外的开销，还可能会导致内存泄漏。<br>使用make_shared就不会有这个问题了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// 下面两个是等价的</span><br><span class="line">std::shared_ptr&lt;int&gt; p1(new int(42));</span><br><span class="line">auto p3 = std::make_shared&lt;int&gt;(42);</span><br></pre></td></tr></table></figure></p>
-<h2 id="Lambda"><a href="#Lambda" class="headerlink" title="Lambda"></a>Lambda</h2><h2 id="nullptr"><a href="#nullptr" class="headerlink" title="nullptr"></a>nullptr</h2><p>关键字 nullptr 是 <code>std::nullptr_t</code> 类型的值，用来指代空指针。nullptr 和任何指针类型以及类成员指针类型的空值之间可以发生隐式类型转换，同样也可以隐式转换为 bool 型（取值为 false）。但是不存在到整形的隐式类型转换。</p>
-<p>NULL 的定义是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ifdef __cplusplus</span><br><span class="line">#define NULL 0</span><br><span class="line">#else</span><br><span class="line">#define NULL ((void *)0)</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">比如f（char*）和f（int），参数传NULL的话到底该调用哪个？事实上，在VS下测试这样的函数重载会优先调用f（int），但是f（char *）也是正确的，因此C++引入nullptr来避免这个问题。</span><br></pre></td></tr></table></figure>
-<h2 id="range-for"><a href="#range-for" class="headerlink" title="range for"></a>range for</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int arr[] = &#123;1,2,3,4,5&#125;;</span><br><span class="line">for(int&amp; e : arr)</span><br><span class="line">&#123;</span><br><span class="line">  e = e*e;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><ul>
-<li>单例模式<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 懒汉式单例模式</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	Singleton() &#123; &#125;</span><br><span class="line">	<span class="keyword">static</span> Singleton * pInstance;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">static</span> Singleton * <span class="title">GetInstance</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (pInstance == <span class="literal">nullptr</span>)</span><br><span class="line">			pInstance = <span class="keyword">new</span> Singleton();</span><br><span class="line">		<span class="keyword">return</span> pInstance;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 线程安全的单例模式</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	Singleton() &#123; &#125;</span><br><span class="line">	~Singleton() &#123; &#125;</span><br><span class="line">	Singleton(<span class="keyword">const</span> Singleton &amp;);</span><br><span class="line">	Singleton &amp; <span class="keyword">operator</span> = (<span class="keyword">const</span> Singleton &amp;);</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">static</span> Singleton &amp; <span class="title">GetInstance</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">static</span> Singleton instance;</span><br><span class="line">		<span class="keyword">return</span> instance;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h1 id="const"><a href="#const" class="headerlink" title="const"></a>const</h1><p>作用：</p>
-<ul>
-<li>修饰变量，说明该变量不可以被改变；</li>
-<li>修饰指针，分为指向常量的指针和指针常量；<br>常量指针：只能读取内存数据，不能修改内存数据的指针。<br>指针常量：是指指针所指向的位置不能改变，即指针本身是一个常量，但是指针所指向的内容可以改变。</li>
-<li>常量引用，经常用于形参类型，即避免了拷贝，又避免了函数对值的修改；</li>
-<li>修饰成员函数，说明该成员函数内不能修改成员变量。</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义变量</span></span><br><span class="line"><span class="keyword">int</span> a=<span class="number">1</span>;</span><br><span class="line"><span class="comment">//定义常量</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> b=<span class="number">2</span>;</span><br><span class="line"><span class="comment">//定义常量指针</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *ptr1=&amp;a;</span><br><span class="line"><span class="comment">//定义指针常量，必须赋值</span></span><br><span class="line"><span class="keyword">int</span>* <span class="keyword">const</span> ptr2=&amp;a;</span><br><span class="line"></span><br><span class="line"><span class="comment">//错误，不能把常量的地址赋给指针变量</span></span><br><span class="line"><span class="keyword">int</span> *ptr3=&amp;b;</span><br><span class="line"><span class="comment">//正确，可以把常量的地址赋给常量指针</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span>* ptr4=&amp;b;</span><br><span class="line"><span class="comment">//错误，间接引用常量指针不可以修改内存中的数据</span></span><br><span class="line">*ptr1=<span class="number">3</span>;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/01/09/语言相关/CPP/cpp-面试题/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/01/08/学习笔记/区块链/Substrate/substrate-runtime-demo/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/08/学习笔记/区块链/Substrate/substrate-runtime-demo/" itemprop="url">substrate runtime demo</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-08T17:08:38+08:00">2019-01-08</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
 
                 
                 
@@ -1483,9 +856,10 @@
       
         
           
-            <p><a href="https://substrate.readme.io/docs/substrate-runtime-recipes" target="_blank" rel="noopener">official site</a></p>
-<h1 id="create-template"><a href="#create-template" class="headerlink" title="create template"></a>create template</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git clone --branch polkadot-ui https://github.com/paritytech/substrate-node-template.git substrate-example</span><br><span class="line"></span><br><span class="line">cd substrate-example</span><br><span class="line">./init.sh</span><br><span class="line">./build.sh</span><br><span class="line">cargo build --release</span><br><span class="line">./target/release/template-node --dev</span><br></pre></td></tr></table></figure>
-
+            <h1 id="分割路径"><a href="#分割路径" class="headerlink" title="分割路径"></a>分割路径</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">_splitpath_s</span><br><span class="line"></span><br><span class="line"><span class="function">BOOL <span class="title">SetCurrentPathToModulePath</span><span class="params">(HMODULE hModule)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	TCHAR szPath[MAX_PATH];</span><br><span class="line">	<span class="keyword">if</span>(::GetModuleFileName(hModule, szPath, MAX_PATH))</span><br><span class="line">	&#123;</span><br><span class="line">		TCHAR drive[MAX_PATH], dir[MAX_PATH], fname[MAX_PATH], ext[MAX_PATH];</span><br><span class="line">		_tsplitpath_s(szPath,drive, MAX_PATH,dir, MAX_PATH,fname, MAX_PATH,ext, MAX_PATH);</span><br><span class="line">		lstrcpy(szPath, drive);</span><br><span class="line">		lstrcat(szPath, dir);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> ::SetCurrentDirectory(szPath);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> FALSE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="路径是否存在"><a href="#路径是否存在" class="headerlink" title="路径是否存在"></a>路径是否存在</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (FALSE == PathFileExists( (m_configPath + _T(<span class="string">"logs"</span>)).c_str))</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// directory not exist</span></span><br><span class="line">	DWORD dwErrCode = GetLastError();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="crate-folder"><a href="#crate-folder" class="headerlink" title="crate folder"></a>crate folder</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//create a path with title name</span></span><br><span class="line"><span class="keyword">if</span> ( FALSE == CreateDirectory(tmpSrcPath,<span class="literal">NULL</span>) )</span><br><span class="line">&#123;</span><br><span class="line">	AfxMessageBox(TEXT(<span class="string">"Create directory failed"</span>));</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="文件相关处理-copy-move-delete"><a href="#文件相关处理-copy-move-delete" class="headerlink" title="文件相关处理,copy,move,delete"></a>文件相关处理,copy,move,delete</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line">CopyFile(),DeleteFile(),MoveFile()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> OP_RENAME		0</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> OP_COPY			1</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> OP_DELETE		2</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> OP_MOVE			3</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	rename file or directory</span></span><br><span class="line"><span class="comment">	@param iType [in] 0 rename, 1 copy,2 delete,3 move</span></span><br><span class="line"><span class="comment">	0 success</span></span><br><span class="line"><span class="comment">	not zero failed.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">filePathProc</span><span class="params">(<span class="keyword">const</span> <span class="keyword">wchar_t</span> *pFrom, <span class="keyword">const</span> <span class="keyword">wchar_t</span> *pTo, <span class="keyword">int</span> iType)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	SHFILEOPSTRUCT FileOp = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	<span class="keyword">wchar_t</span> src[MAX_PATH] = &#123; <span class="string">'\0'</span> &#125;;</span><br><span class="line">	<span class="keyword">wchar_t</span> dst[MAX_PATH] = &#123; <span class="string">'\0'</span> &#125;;</span><br><span class="line">	<span class="keyword">if</span> ( <span class="literal">NULL</span> == pTo )</span><br><span class="line">	&#123;</span><br><span class="line">		FileOp.pTo = <span class="literal">NULL</span>;</span><br><span class="line">	&#125; <span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		_tcscpy(dst, pTo);</span><br><span class="line">		FileOp.pTo = dst;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> ( <span class="literal">NULL</span> == pFrom )</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	_tcscpy(src, pFrom);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">switch</span> (iType)</span><br><span class="line">	&#123;</span><br><span class="line">	<span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">		FileOp.wFunc = FO_RENAME;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">		FileOp.wFunc = FO_COPY;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">		FileOp.wFunc = FO_DELETE;</span><br><span class="line">		FileOp.pTo = <span class="literal">NULL</span>;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">		FileOp.wFunc = FO_MOVE;</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	FileOp.fFlags = FOF_NOCONFIRMATION | FOF_ALLOWUNDO | FOF_NOCONFIRMMKDIR;   <span class="comment">//不出现确认对话框 </span></span><br><span class="line">	FileOp.pFrom = src;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> SHFileOperation(&amp;FileOp);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> bRet = filePathProc((utf16Path + TEXT(<span class="string">"123"</span>)).c_str(), (utf16Path + TEXT(<span class="string">"456"</span>)).c_str(), OP_RENAME);</span><br><span class="line">_ASSERT(<span class="literal">false</span> == bRet);</span><br><span class="line"></span><br><span class="line"><span class="built_in">string</span> strUtf8;</span><br><span class="line">UnicodeConverter::toUTF8(utf16Path + TEXT(<span class="string">"456"</span>), strUtf8);</span><br><span class="line"><span class="function">File <span class="title">f1</span><span class="params">( strUtf8 )</span></span>;</span><br><span class="line">_ASSERT(<span class="literal">true</span> == f1.exists());</span><br><span class="line"></span><br><span class="line">bRet = filePathProc((utf16Path + TEXT(<span class="string">"456"</span>)).c_str(), (utf16Path + TEXT(<span class="string">"123"</span>)).c_str(), OP_RENAME);</span><br><span class="line">_ASSERT(<span class="literal">false</span> == bRet);</span><br><span class="line">UnicodeConverter::toUTF8(utf16Path + TEXT(<span class="string">"123"</span>), strUtf8);</span><br><span class="line">f1 = (strUtf8);</span><br><span class="line">_ASSERT(<span class="literal">true</span> == f1.exists());</span><br><span class="line"></span><br><span class="line">bRet = filePathProc((utf16Path + TEXT(<span class="string">"123"</span>)).c_str(), (utf16Path + TEXT(<span class="string">"1233"</span>)).c_str(), OP_COPY);</span><br><span class="line">_ASSERT(<span class="literal">false</span> == bRet);</span><br><span class="line">UnicodeConverter::toUTF8(utf16Path + TEXT(<span class="string">"1233"</span>), strUtf8);</span><br><span class="line">f1 = (strUtf8);</span><br><span class="line">_ASSERT(<span class="literal">true</span> == f1.exists());</span><br><span class="line"></span><br><span class="line">bRet = filePathProc((utf16Path + TEXT(<span class="string">"123"</span>)).c_str(), (utf16Path + TEXT(<span class="string">"1234"</span>)).c_str(), OP_COPY);</span><br><span class="line">_ASSERT(<span class="literal">false</span> == bRet);</span><br><span class="line">UnicodeConverter::toUTF8(utf16Path + TEXT(<span class="string">"1234"</span>), strUtf8);</span><br><span class="line">f1 = (strUtf8);</span><br><span class="line">_ASSERT(<span class="literal">true</span> == f1.exists());</span><br><span class="line"></span><br><span class="line">bRet = filePathProc((utf16Path + TEXT(<span class="string">"1234"</span>)).c_str(), (utf16Path + TEXT(<span class="string">"1233"</span>)).c_str(), OP_MOVE);</span><br><span class="line">_ASSERT(<span class="literal">false</span> == bRet);</span><br><span class="line">UnicodeConverter::toUTF8(utf16Path + TEXT(<span class="string">"1233\\1234"</span>), strUtf8);</span><br><span class="line">f1 = (strUtf8);</span><br><span class="line">_ASSERT(<span class="literal">true</span> == f1.exists());</span><br><span class="line"></span><br><span class="line">bRet = filePathProc((utf16Path + TEXT(<span class="string">"1233"</span>)).c_str(), <span class="literal">NULL</span>, OP_DELETE);</span><br><span class="line">_ASSERT(<span class="literal">false</span> == bRet);</span><br><span class="line">UnicodeConverter::toUTF8(utf16Path + TEXT(<span class="string">"123"</span>), strUtf8);</span><br><span class="line">f1 = (strUtf8);</span><br><span class="line">_ASSERT(<span class="literal">true</span> == f1.exists());</span><br></pre></td></tr></table></figure>
           
         
       
@@ -1538,7 +912,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/01/08/学习笔记/算法/Ed25519算法/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/03/08/语言相关/go/go-调用Dll/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1557,7 +931,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/08/学习笔记/算法/Ed25519算法/" itemprop="url">Ed25519算法</a></h1>
+                <a class="post-title-link" href="/2019/03/08/语言相关/go/go-调用Dll/" itemprop="url">go_调用Dll</a></h1>
         
 
         <div class="post-meta">
@@ -1569,7 +943,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-08T14:18:02+08:00">2019-01-08</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-08T14:10:56+08:00">2019-03-08</time>
             
 
             
@@ -1590,7 +964,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/算法/" itemprop="url" rel="index"><span itemprop="name">算法</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
 
                 
                 
@@ -1626,12 +1000,300 @@
       
         
           
-            <p>公共钥只有32字节，私钥只有64字节</p>
-<p>Curve25519/Ed25519/X25519 是著名密码学家 Daniel J. Bernstein 在 2006 年独立设计的椭圆曲线加密 /签名 /密钥交换算法，和现有的任何椭圆曲线算法都完全独立</p>
-<p>Curve25519 是目前最高水平的 Diffie-Hellman函数，适用于广泛的场景，由Daniel J. Bernstein教授设计。由于NIST P-256的设计过程不透明，有来历不明的参数，被广泛怀疑有后门，所以设计了Curve25519，Curve25519的设计过程完全公开，没有任何来历不明的参数。</p>
-<p><a href="https://vincent.bernat.ch/en/blog/2011-ssl-perfect-forward-secrecy" target="_blank" rel="noopener">forward-secrecy</a></p>
-<p>完全开放设计，算法各个参数直接了当，明确，很大的概率通过缓存、时间、恶意输入摧毁安全性，而 25519 系列椭圆曲线经过特别设计，尽可能的将出错的概率降到了最低，25519 系列曲线是目前最快的椭圆曲线加密算法，NIST 采用的椭圆曲线中有一些诡异的参数，这些参数被广泛地认为是NSA植入的后门。</p>
-<h1 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h1><p>由于密钥空间是非线性的，无法兼容 BIP 的 Hierarchical Deterministic Key Derivation。<br><a href="https://cardanolaunch.com/assets/Ed25519_BIP.pdf" target="_blank" rel="noopener">https://cardanolaunch.com/assets/Ed25519_BIP.pdf</a></p>
+            <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">callHK</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	HCNetSDK, err := syscall.LoadLibrary(<span class="string">"HCNetSDK.dll"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		abort(<span class="string">"LoadLibrary"</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> syscall.FreeLibrary(HCNetSDK)</span><br><span class="line">	proc, err := syscall.GetProcAddress(HCNetSDK, <span class="string">"NET_DVR_Init"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		abort(<span class="string">"NET_DVR_Init"</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	r, _, _ := syscall.Syscall(<span class="keyword">uintptr</span>(proc), <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">	fmt.Print(<span class="keyword">uint32</span>(r))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/03/08/语言相关/go/go-windows界面库walk/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/08/语言相关/go/go-windows界面库walk/" itemprop="url">go_windows界面库walk</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-08T14:03:58+08:00">2019-03-08</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://github.com/lxn/walk" target="_blank" rel="noopener">github</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get github.com/lxn/walk</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/03/08/开源库/cpp-web库/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/08/开源库/cpp-web库/" itemprop="url">cpp_web库</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-08T13:38:36+08:00">2019-03-08</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>An elegant C++ REST framework.<br><a href="http://pistache.io/quickstart" target="_blank" rel="noopener">Pistache</a></p>
+<p>Fast and easy C++ RESTful WebServices framework<br><a href="https://github.com/loentar/ngrest" target="_blank" rel="noopener">https://github.com/loentar/ngrest</a></p>
+<p><a href="https://www.gnu.org/software/libmicrohttpd/" target="_blank" rel="noopener">https://www.gnu.org/software/libmicrohttpd/</a></p>
+<p>LibHTTP – Open Source HTTP Library in C<br><a href="https://www.libhttp.org/" target="_blank" rel="noopener">https://www.libhttp.org/</a></p>
 
           
         
@@ -1685,7 +1347,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/01/07/学习笔记/MacOS/mac-install-tomcat-9-0/">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/03/06/功能分类/process_thread/获取应用当前路径/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="郑  君">
@@ -1704,7 +1366,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/07/学习笔记/MacOS/mac-install-tomcat-9-0/" itemprop="url">mac install tomcat 9.0</a></h1>
+                <a class="post-title-link" href="/2019/03/06/功能分类/process_thread/获取应用当前路径/" itemprop="url">获取应用当前路径</a></h1>
         
 
         <div class="post-meta">
@@ -1716,7 +1378,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-07T16:07:50+08:00">2019-01-07</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-06T17:44:43+08:00">2019-03-06</time>
             
 
             
@@ -1737,7 +1399,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/操作系统/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
 
                 
                 
@@ -1773,24 +1435,297 @@
       
         
           
-            <h1 id="check-java-environment"><a href="#check-java-environment" class="headerlink" title="check java environment"></a>check java environment</h1><p>Tomcat 9.x requires Java 8 or later.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure>
-<h1 id="Installing-Tomcat"><a href="#Installing-Tomcat" class="headerlink" title="Installing Tomcat"></a>Installing Tomcat</h1><ol>
-<li>download binary distribution apache-tomcat-9.0.14 from <a href="https://tomcat.apache.org/download-90.cgi" target="_blank" rel="noopener">here</a></li>
-<li>extract to /usr/local/apache-tomcat-9.0.14</li>
-<li>remove old link and create new one</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo rm -f /Library/Tomcat</span><br><span class="line">sudo ln -s /usr/local/apache-tomcat-9.0.14 /Library/Tomcat</span><br></pre></td></tr></table></figure>
-<ol>
-<li>change ownership and permission</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo chown -R &lt;your_username&gt; /Library/Tomcat</span><br><span class="line">sudo chmod +x /Library/Tomcat/bin/*.sh</span><br></pre></td></tr></table></figure>
-<ol>
-<li>start and stop</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/Library/Tomcat/bin/startup.sh</span><br><span class="line">/Library/Tomcat/bin/shutdown.sh</span><br></pre></td></tr></table></figure>
-<p>browse <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a></p>
+            <h1 id="MFC"><a href="#MFC" class="headerlink" title="MFC"></a>MFC</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CString appPath;</span><br><span class="line">GetModuleFileName(<span class="literal">NULL</span>,appPath.GetBuffer(MAX_PATH),MAX_PATH);</span><br><span class="line">appPath.ReleaseBuffer();</span><br><span class="line">appPath = appPath.Left( appPath.ReverseFind(<span class="string">'\\'</span>) + <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<h1 id="win32"><a href="#win32" class="headerlink" title="win32"></a>win32</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">getAppPath</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    TCHAR path[MAX_PATH + <span class="number">2</span>] = &#123; <span class="string">'\0'</span> &#125;;</span><br><span class="line">    <span class="keyword">if</span> (<span class="number">0</span> == GetModuleFileName(<span class="literal">NULL</span>, path, MAX_PATH))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//failed</span></span><br><span class="line">        AfxMessageBox(TEXT(<span class="string">"Get File Path Failed"</span>));</span><br><span class="line">        ASSERT(FALSE);</span><br><span class="line">    &#125;</span><br><span class="line">    TCHAR* pf = _tcsrchr(path, <span class="string">'\\'</span>);<span class="comment">//strrchr</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="literal">NULL</span> == pf)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//not found</span></span><br><span class="line">        AfxMessageBox(TEXT(<span class="string">"Invalide File Path"</span>));</span><br><span class="line">        ASSERT(FALSE);</span><br><span class="line">    &#125;</span><br><span class="line">    *(pf + <span class="number">1</span>) = <span class="string">'\0'</span>;<span class="comment">//path is xx\\</span></span><br><span class="line">                    </span><br><span class="line">    <span class="built_in">string</span> str = &amp;path[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">return</span> str;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">int GetAppPath(std::string &amp;sPath)</span><br><span class="line">&#123;</span><br><span class="line">    char buf[4097] = &#123; 0 &#125;;</span><br><span class="line">    long size;</span><br><span class="line">    char *ptr;</span><br><span class="line">    size = pathconf(&quot;.&quot;, _PC_PATH_MAX);</span><br><span class="line">    if ((ptr = new char(size)) != NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        memset(ptr, 0, size);</span><br><span class="line">        sprintf(ptr, &quot;/proc/%d/exe&quot;, getpid());</span><br><span class="line">    &#125; else return -1;</span><br><span class="line">    readlink(ptr, buf, size);</span><br><span class="line">    delete[] ptr;</span><br><span class="line">    ptr = NULL;</span><br><span class="line">    sPath = buf;</span><br><span class="line">    int nPos = sPath.find_last_of(&quot;/&quot;);</span><br><span class="line">    sPath = sPath.substr(0, nPos + 1);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
 
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/03/06/功能分类/windows/获取应用当前路径/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/06/功能分类/windows/获取应用当前路径/" itemprop="url">获取应用当前路径</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-06T17:44:43+08:00">2019-03-06</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="MFC"><a href="#MFC" class="headerlink" title="MFC"></a>MFC</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CString appPath;</span><br><span class="line">GetModuleFileName(<span class="literal">NULL</span>,appPath.GetBuffer(MAX_PATH),MAX_PATH);</span><br><span class="line">appPath.ReleaseBuffer();</span><br><span class="line">appPath = appPath.Left( appPath.ReverseFind(<span class="string">'\\'</span>) + <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<h1 id="win32"><a href="#win32" class="headerlink" title="win32"></a>win32</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">getAppPath</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    TCHAR path[MAX_PATH + <span class="number">2</span>] = &#123; <span class="string">'\0'</span> &#125;;</span><br><span class="line">    <span class="keyword">if</span> (<span class="number">0</span> == GetModuleFileName(<span class="literal">NULL</span>, path, MAX_PATH))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//failed</span></span><br><span class="line">        AfxMessageBox(TEXT(<span class="string">"Get File Path Failed"</span>));</span><br><span class="line">        ASSERT(FALSE);</span><br><span class="line">    &#125;</span><br><span class="line">    TCHAR* pf = _tcsrchr(path, <span class="string">'\\'</span>);<span class="comment">//strrchr</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="literal">NULL</span> == pf)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//not found</span></span><br><span class="line">        AfxMessageBox(TEXT(<span class="string">"Invalide File Path"</span>));</span><br><span class="line">        ASSERT(FALSE);</span><br><span class="line">    &#125;</span><br><span class="line">    *(pf + <span class="number">1</span>) = <span class="string">'\0'</span>;<span class="comment">//path is xx\\</span></span><br><span class="line">                    </span><br><span class="line">    <span class="built_in">string</span> str = &amp;path[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">return</span> str;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">int GetAppPath(std::string &amp;sPath)</span><br><span class="line">&#123;</span><br><span class="line">    char buf[4097] = &#123; 0 &#125;;</span><br><span class="line">    long size;</span><br><span class="line">    char *ptr;</span><br><span class="line">    size = pathconf(&quot;.&quot;, _PC_PATH_MAX);</span><br><span class="line">    if ((ptr = new char(size)) != NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        memset(ptr, 0, size);</span><br><span class="line">        sprintf(ptr, &quot;/proc/%d/exe&quot;, getpid());</span><br><span class="line">    &#125; else return -1;</span><br><span class="line">    readlink(ptr, buf, size);</span><br><span class="line">    delete[] ptr;</span><br><span class="line">    ptr = NULL;</span><br><span class="line">    sPath = buf;</span><br><span class="line">    int nPos = sPath.find_last_of(&quot;/&quot;);</span><br><span class="line">    sPath = sPath.substr(0, nPos + 1);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/03/06/语言相关/python/windows安装anaconda/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/06/语言相关/python/windows安装anaconda/" itemprop="url">windows安装anaconda</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-06T16:57:57+08:00">2019-03-06</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="添加环境变量"><a href="#添加环境变量" class="headerlink" title="添加环境变量"></a>添加环境变量</h2><p>三个路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">F:\Anaconda3</span><br><span class="line">F:\Anaconda3\Scripts</span><br><span class="line">F:\Anaconda3\Library\bin</span><br></pre></td></tr></table></figure>
+<h2 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h2><p>找到 Uninstall-Anaconda.exe 运行即可</p>
+<h2 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h2><p>找到 .condarc 文件，添加下面代理<br>C:\Users\Tyler-Home.condarc</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ssl_verify: true</span><br><span class="line">channels:</span><br><span class="line">  - defaults</span><br><span class="line">proxy_servers:</span><br><span class="line">    http: http://127.0.0.1:1081</span><br><span class="line">    https: http://127.0.0.1:1081</span><br><span class="line">    ALL_PROXY: socks5://127.0.0.1:1080</span><br></pre></td></tr></table></figure>
           
         
       
@@ -1832,7 +1767,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/46/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><span class="page-number current">47</span><a class="page-number" href="/page/48/">48</a><span class="space">&hellip;</span><a class="page-number" href="/page/113/">113</a><a class="extend next" rel="next" href="/page/48/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/46/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><span class="page-number current">47</span><a class="page-number" href="/page/48/">48</a><span class="space">&hellip;</span><a class="page-number" href="/page/117/">117</a><a class="extend next" rel="next" href="/page/48/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1879,7 +1814,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">1124</span>
+                    <span class="site-state-item-count">1161</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2048,7 +1983,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">78</span>
+                      
+                    
+                    <span class="site-state-item-count">79</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -2479,7 +2416,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">209</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">211</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -2545,7 +2486,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

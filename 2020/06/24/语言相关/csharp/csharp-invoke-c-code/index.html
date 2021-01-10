@@ -107,7 +107,7 @@
 <meta property="og:site_name" content="郑君的学习笔记">
 <meta property="og:description" content="C++/CLI貌似这个方法不推荐 WARNINGOther methods to create a .NET binding to a C# library exist. A notorious one is based on the compilation of the C++ library with the C++/CLI compiler. To keep things compatibl">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-07-06T04:52:51.000Z">
+<meta property="og:updated_time" content="2021-01-05T12:26:48.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="csharp-invoke c++ code">
 <meta name="twitter:description" content="C++/CLI貌似这个方法不推荐 WARNINGOther methods to create a .NET binding to a C# library exist. A notorious one is based on the compilation of the C++ library with the C++/CLI compiler. To keep things compatibl">
@@ -236,7 +236,7 @@
           
   <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">78</span>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">79</span>
       </a>
 </li>
 
@@ -246,7 +246,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1124</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1161</span>
       </a>
 </li>
 
@@ -422,7 +422,7 @@
 <h2 id="参数类型"><a href="#参数类型" class="headerlink" title="参数类型"></a>参数类型</h2><h3 id="结构体指针"><a href="#结构体指针" class="headerlink" title="结构体指针"></a>结构体指针</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">nng_socket_s</span> &#123;</span></span><br><span class="line">	<span class="keyword">uint32_t</span> id;</span><br><span class="line">&#125; nng_socket;</span><br><span class="line"></span><br><span class="line"><span class="function">NNG_DECL <span class="keyword">int</span> <span class="title">nng_pair0_open</span><span class="params">(nng_socket *)</span></span>;</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[StructLayout(LayoutKind.Sequential)]</span><br><span class="line">public struct nng_socket</span><br><span class="line">&#123;</span><br><span class="line">    public UInt32 id;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[DllImport(Import.nngLib, SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]</span><br><span class="line">static extern int nng_pair0_open(ref nng_socket socket);</span><br></pre></td></tr></table></figure>
 <h3 id="const-char"><a href="#const-char" class="headerlink" title="const char *"></a>const char *</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">NNG_DECL <span class="keyword">int</span> <span class="title">nng_listen</span><span class="params">(nng_socket, <span class="keyword">const</span> <span class="keyword">char</span> *, nng_listener *, <span class="keyword">int</span>)</span></span>;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[DllImport(Import.nngLib, SetLastError = true, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]</span><br><span class="line">static extern int nng_listen(nng_socket socket, [MarshalAs(UnmanagedType.LPStr)] string url, nng_listener listener, int flag);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[DllImport(Import.nngLib, SetLastError = true, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]</span><br><span class="line">static extern int nng_listen(nng_socket socket, [MarshalAs(UnmanagedType.LPStr)] string url, nng_listener listener, int flag);</span><br><span class="line"></span><br><span class="line">// 中文需要使用 CharSet.Unicode </span><br><span class="line">[DllImport(Import.nngLib, SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]</span><br><span class="line">        static extern int nng_send(nng_socket s, IntPtr buf, int len, int flags);</span><br></pre></td></tr></table></figure>
 <h3 id="结构体-双重指针"><a href="#结构体-双重指针" class="headerlink" title="结构体 双重指针"></a>结构体 双重指针</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//c++:结构体 **变量名   ----    c#:out 变量名   //C#中提前申明一个结构体实例化后的变量名</span></span><br></pre></td></tr></table></figure>
 <h3 id="指针变量"><a href="#指针变量" class="headerlink" title="指针变量"></a>指针变量</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fnAdd</span><span class="params">(<span class="keyword">int</span> *p_n1,<span class="keyword">int</span> *p_n2)</span></span>;</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[DllImport(&quot;你的dll名称&quot;, EntryPoint = &quot;fnAdd&quot;, CallingConvention = CallingConvention.Cdecl)]</span><br><span class="line">public static extern int fnAdd(ref int num1,ref int num2);</span><br></pre></td></tr></table></figure>
@@ -431,6 +431,8 @@
 <h3 id="byte-to-IntPtr"><a href="#byte-to-IntPtr" class="headerlink" title="byte[] to IntPtr"></a>byte[] to IntPtr</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">IntPtr unmanagedPointer = Marshal.AllocHGlobal(bytes.Length);</span><br><span class="line">Marshal.Copy(bytes, 0, unmanagedPointer, bytes.Length);</span><br><span class="line">// Call unmanaged code</span><br><span class="line">Marshal.FreeHGlobal(unmanagedPointer);</span><br></pre></td></tr></table></figure>
 <h3 id="double"><a href="#double" class="headerlink" title="double*"></a>double*</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[DllImport(GageBoxMG4C2Lib, SetLastError = true, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]</span><br><span class="line">static extern int GetAllChannelCurrentValue(double[] AValues, int ALen);</span><br></pre></td></tr></table></figure>
 <h2 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h2><p><a href="http://ybeernet.blogspot.com/2011/03/techniques-of-calling-unmanaged-code.html" target="_blank" rel="noopener">http://ybeernet.blogspot.com/2011/03/techniques-of-calling-unmanaged-code.html</a></p>
+<h2 id="C-CLI-1"><a href="#C-CLI-1" class="headerlink" title="C++/CLI"></a>C++/CLI</h2><p>貌似这个方法不推荐</p>
+<p>WARNING<br>Other methods to create a .NET binding to a C# library exist. A notorious one is based on the compilation of the C++ library with the C++/CLI compiler. To keep things compatible with the Apple macOS, and because the IJW (it just works) technology sometimes does not, we suggest the use of PInvoke.</p>
 
       
     </div>
@@ -583,7 +585,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">1124</span>
+                    <span class="site-state-item-count">1161</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -752,7 +754,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">78</span>
+                      
+                    
+                    <span class="site-state-item-count">79</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -1183,7 +1187,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">209</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">211</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -1240,7 +1248,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#C-CLI"><span class="nav-number">1.</span> <span class="nav-text">C++/CLI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Platform-Invoke-PInvoke"><span class="nav-number">2.</span> <span class="nav-text">Platform Invoke (PInvoke)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数类型"><span class="nav-number">3.</span> <span class="nav-text">参数类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#结构体指针"><span class="nav-number">3.1.</span> <span class="nav-text">结构体指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#const-char"><span class="nav-number">3.2.</span> <span class="nav-text">const char *</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结构体-双重指针"><span class="nav-number">3.3.</span> <span class="nav-text">结构体 双重指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指针变量"><span class="nav-number">3.4.</span> <span class="nav-text">指针变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#void"><span class="nav-number">3.5.</span> <span class="nav-text">void*</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#byte-to-IntPtr"><span class="nav-number">3.6.</span> <span class="nav-text">byte[] to IntPtr</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#double"><span class="nav-number">3.7.</span> <span class="nav-text">double*</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ref"><span class="nav-number">4.</span> <span class="nav-text">ref</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#C-CLI"><span class="nav-number">1.</span> <span class="nav-text">C++/CLI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Platform-Invoke-PInvoke"><span class="nav-number">2.</span> <span class="nav-text">Platform Invoke (PInvoke)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数类型"><span class="nav-number">3.</span> <span class="nav-text">参数类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#结构体指针"><span class="nav-number">3.1.</span> <span class="nav-text">结构体指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#const-char"><span class="nav-number">3.2.</span> <span class="nav-text">const char *</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结构体-双重指针"><span class="nav-number">3.3.</span> <span class="nav-text">结构体 双重指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指针变量"><span class="nav-number">3.4.</span> <span class="nav-text">指针变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#void"><span class="nav-number">3.5.</span> <span class="nav-text">void*</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#byte-to-IntPtr"><span class="nav-number">3.6.</span> <span class="nav-text">byte[] to IntPtr</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#double"><span class="nav-number">3.7.</span> <span class="nav-text">double*</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ref"><span class="nav-number">4.</span> <span class="nav-text">ref</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-CLI-1"><span class="nav-number">5.</span> <span class="nav-text">C++/CLI</span></a></li></ol></div>
             
 
           </div>
@@ -1265,7 +1273,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
