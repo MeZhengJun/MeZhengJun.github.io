@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1161</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1162</span>
       </a>
 </li>
 
@@ -312,6 +312,169 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/04/17/开源库/wxWidget/wxWidget-搭建开发环境/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/17/开源库/wxWidget/wxWidget-搭建开发环境/" itemprop="url">wxWidget-搭建开发环境</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-17T10:44:21+08:00">2020-04-17</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>vs2019 wxWidget 3.1.3</p>
+<p>解压路径是 E:\wxWidgets-3.1.3</p>
+<p>设置系统环境变量：$(WXWIN) = E:\wxWidgets-3.1.3</p>
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><ol>
+<li>Open a “Visual Studio Command Prompt” window</li>
+<li>Change directory to %WXWIN%\build\msw and type <code>nmake /f makefile.vc</code> to build debug static version<br>or <code>nmake /f makefile.vc BUILD=release</code> to build release static version<br>or <code>nmake /f makefile.vc BUILD=release SHARED=1</code> release DLL version<br>or <code>TARGET_CPU=X64</code> for 64bit version</li>
+<li>to verify your build, change the directory to %WXWIN%\samples\minimal and<br>run the same nmake command (with the same parameters there), this<br>should create a working minimal wxWidgets sample.</li>
+<li>If you need to rebuild, use “clean” target first or “nmake /a”.<br><code>nmake /f makefile.vc clean</code></li>
+</ol>
+<h2 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h2><ol>
+<li>vs2019 新建空白项目</li>
+<li>添加 include 和 lib 路径</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$(WXWIN)\include\</span><br><span class="line">$(WXWIN)\include\msvc\</span><br><span class="line"></span><br><span class="line">$(WXWIN)\lib\vc_lib\mswud</span><br><span class="line">$(WXWIN)\lib\vc_lib</span><br></pre></td></tr></table></figure>
+<ol>
+<li>Linker 里面子系统改成 windows</li>
+<li>property manager 里面添加 $(WXWIN)\wxwidgets.props</li>
+<li>添加代码</li>
+</ol>
+<p>MainApp.h</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;wx/wx.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyProjectApp</span> :</span> <span class="keyword">public</span> wxApp</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	MyProjectApp();</span><br><span class="line">	<span class="keyword">virtual</span> ~MyProjectApp();</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">OnInit</span><span class="params">()</span> override</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>MainApp.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"MainApp.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;wx/wx.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">MyProjectApp::MyProjectApp()</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">MyProjectApp::~MyProjectApp()</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> MyProjectApp::OnInit()</span><br><span class="line">&#123;</span><br><span class="line">	wxFrame* mainFrame = <span class="keyword">new</span> wxFrame(<span class="literal">nullptr</span>, wxID_ANY, <span class="string">L"MyProject"</span>);</span><br><span class="line">	mainFrame-&gt;Show(<span class="literal">true</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">wxIMPLEMENT_APP(MyProjectApp);</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -1619,150 +1782,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/04/07/语言相关/python/python-thread/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/07/语言相关/python/python-thread/" itemprop="url">python-thread</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-07T13:30:14+08:00">2020-04-07</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="线程间通讯"><a href="#线程间通讯" class="headerlink" title="线程间通讯"></a>线程间通讯</h2><p>Queue 对象已经包含了必要的锁，所以你可以通过它在多个线程间多安全地共享数据。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> Queue</span><br><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"></span><br><span class="line"><span class="comment"># A thread that produces data</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">producer</span><span class="params">(out_q)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        <span class="comment"># Produce some data</span></span><br><span class="line">        ...</span><br><span class="line">        out_q.put(data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># A thread that consumes data</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">consumer</span><span class="params">(in_q)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line"><span class="comment"># Get some data</span></span><br><span class="line">        data = in_q.get()</span><br><span class="line">        <span class="comment"># Process the data</span></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create the shared queue and launch both threads</span></span><br><span class="line">q = Queue()</span><br><span class="line">t1 = Thread(target=consumer, args=(q,))</span><br><span class="line">t2 = Thread(target=producer, args=(q,))</span><br><span class="line">t1.start()</span><br><span class="line">t2.start()</span><br></pre></td></tr></table></figure>
-<h2 id="停止"><a href="#停止" class="headerlink" title="停止"></a>停止</h2><p>使用类来实现</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CountdownTask</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self._running = <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">terminate</span><span class="params">(self)</span>:</span></span><br><span class="line">        self._running = <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        <span class="keyword">while</span> self._running <span class="keyword">and</span> n &gt; <span class="number">0</span>:</span><br><span class="line">            print(<span class="string">'T-minus'</span>, n)</span><br><span class="line">            n -= <span class="number">1</span></span><br><span class="line">            time.sleep(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">c = CountdownTask()</span><br><span class="line">t = Thread(target=c.run, args=(<span class="number">10</span>,))</span><br><span class="line">t.start()</span><br><span class="line">c.terminate() <span class="comment"># Signal termination</span></span><br><span class="line">t.join()      <span class="comment"># Wait for actual termination (if needed)</span></span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1814,7 +1833,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">1161</span>
+                    <span class="site-state-item-count">1162</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
