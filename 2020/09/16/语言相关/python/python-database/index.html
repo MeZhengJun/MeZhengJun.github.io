@@ -108,7 +108,7 @@
 <meta property="og:description" content="sqlite apisqlite 1234567891011121314self.conn = sqlite3.connect(&apos;conf.db&apos;)self.cursor = self.conn.cursor()sql = &quot;&quot;&quot;create table if not exists t_measurements(f_id INTEGER PRIMARY KEY AUTOINCREMENT NOT">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://zhengjun.top/2020/09/16/语言相关/python/python-database/20200916_154524.png">
-<meta property="og:updated_time" content="2020-10-12T06:12:03.000Z">
+<meta property="og:updated_time" content="2020-10-26T05:41:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python-database">
 <meta name="twitter:description" content="sqlite apisqlite 1234567891011121314self.conn = sqlite3.connect(&apos;conf.db&apos;)self.cursor = self.conn.cursor()sql = &quot;&quot;&quot;create table if not exists t_measurements(f_id INTEGER PRIMARY KEY AUTOINCREMENT NOT">
@@ -248,7 +248,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1162</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1170</span>
       </a>
 </li>
 
@@ -441,7 +441,9 @@
 </ul>
 <h3 id="sqlite"><a href="#sqlite" class="headerlink" title="sqlite"></a>sqlite</h3><h4 id="connect"><a href="#connect" class="headerlink" title="connect"></a>connect</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.db = records.Database(<span class="string">'sqlite:///conf.db'</span>)</span><br></pre></td></tr></table></figure>
 <h4 id="create-table"><a href="#create-table" class="headerlink" title="create table"></a>create table</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sql = <span class="string">"""create table if not exists t_measurements(f_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,</span></span><br><span class="line"><span class="string">f_name CHAR(300) NOT NULL , f_measureType CHAR(100) NOT NULL , f_points CHAR(500) NOT NULL );</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">self.db.query(sql)</span><br></pre></td></tr></table></figure>
-<h4 id="select"><a href="#select" class="headerlink" title="select"></a>select</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="select"><a href="#select" class="headerlink" title="select"></a>select</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sql = <span class="string">'select * from t_solution;'</span></span><br><span class="line">        <span class="keyword">for</span> row <span class="keyword">in</span> self.cursor.execute(sql):</span><br><span class="line">            self.solution_dict[row[<span class="number">1</span>]] = &#123;<span class="string">'id'</span>: row[<span class="number">0</span>], <span class="string">'name'</span>: row[<span class="number">1</span>], <span class="string">'createDT'</span>: row[<span class="number">2</span>]&#125;</span><br><span class="line">            self.mlbSolution.insert(<span class="string">'end'</span>, *map(unicode, (row[<span class="number">1</span>], row[<span class="number">2</span>])))</span><br></pre></td></tr></table></figure>
+<h4 id="统计行数"><a href="#统计行数" class="headerlink" title="统计行数"></a>统计行数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sql = <span class="string">'select COUNT(*) from t_config;'</span></span><br><span class="line">self.cursor.execute(sql)</span><br><span class="line">cur_result = self.cursor.fetchone()</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> cur_result <span class="keyword">or</span> <span class="number">0</span> == cur_result[<span class="number">0</span>]:</span><br><span class="line">    sql = <span class="string">'insert into t_config(f_id,f_devIp,f_devPort) values (?,?,?)'</span></span><br><span class="line">    self.cursor.execute(sql, (<span class="keyword">None</span>, <span class="string">''</span>, <span class="string">''</span>))</span><br><span class="line">    self.conn.commit()</span><br></pre></td></tr></table></figure>
+<h4 id="insert"><a href="#insert" class="headerlink" title="insert"></a>insert</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sql = <span class="string">'insert into t_solution(f_id , f_name , f_createDT) values (?,?,?)'</span></span><br><span class="line">self.cursor.execute(sql, (<span class="keyword">None</span>, new_name, dt))</span><br><span class="line">self.conn.commit()</span><br></pre></td></tr></table></figure>
 <h4 id="导出"><a href="#导出" class="headerlink" title="导出"></a>导出</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(rows.export(<span class="string">'json'</span>))</span><br><span class="line">print(rows.export(<span class="string">'csv'</span>))</span><br></pre></td></tr></table></figure>
       
     </div>
@@ -594,7 +596,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">1162</span>
+                    <span class="site-state-item-count">1170</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1200,7 +1202,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">211</span>
+                      
+                    
+                    <span class="site-state-item-count">212</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -1257,7 +1261,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#sqlite-api"><span class="nav-number">1.</span> <span class="nav-text">sqlite api</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#delete"><span class="nav-number">1.1.</span> <span class="nav-text">delete</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入"><span class="nav-number">1.2.</span> <span class="nav-text">插入</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#records"><span class="nav-number">2.</span> <span class="nav-text">records</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sqlite"><span class="nav-number">2.1.</span> <span class="nav-text">sqlite</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#connect"><span class="nav-number">2.1.1.</span> <span class="nav-text">connect</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#create-table"><span class="nav-number">2.1.2.</span> <span class="nav-text">create table</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#select"><span class="nav-number">2.1.3.</span> <span class="nav-text">select</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#导出"><span class="nav-number">2.1.4.</span> <span class="nav-text">导出</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#sqlite-api"><span class="nav-number">1.</span> <span class="nav-text">sqlite api</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#delete"><span class="nav-number">1.1.</span> <span class="nav-text">delete</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入"><span class="nav-number">1.2.</span> <span class="nav-text">插入</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#records"><span class="nav-number">2.</span> <span class="nav-text">records</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sqlite"><span class="nav-number">2.1.</span> <span class="nav-text">sqlite</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#connect"><span class="nav-number">2.1.1.</span> <span class="nav-text">connect</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#create-table"><span class="nav-number">2.1.2.</span> <span class="nav-text">create table</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#select"><span class="nav-number">2.1.3.</span> <span class="nav-text">select</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#统计行数"><span class="nav-number">2.1.4.</span> <span class="nav-text">统计行数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#insert"><span class="nav-number">2.1.5.</span> <span class="nav-text">insert</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#导出"><span class="nav-number">2.1.6.</span> <span class="nav-text">导出</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

@@ -99,18 +99,18 @@
 
 
 
-  <meta name="description" content="线程间通讯Queue 对象已经包含了必要的锁，所以你可以通过它在多个线程间多安全地共享数据。 123456789101112131415161718192021222324from queue import Queuefrom threading import Thread# A thread that produces datadef producer(out_q):    while True">
+  <meta name="description" content="th.setDaemon(True)守护线程 python中得thread的一些机制和C/C++不同：在C/C++中，主线程结束后，其子线程会默认被主线程kill掉。而在python中，主线程结束后，会默认等待子线程结束后，主线程才退出。 那么尴尬的问题就出现了，有一种情况，比如说在linux系统中存在脱离于终端的线程，即父进程在创建子进程之后先于子进程退出，会造成这个子进程变为“孤儿进程” 如果">
 <meta name="keywords" content="Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="python-thread">
 <meta property="og:url" content="http://zhengjun.top/2020/04/07/语言相关/python/python-thread/index.html">
 <meta property="og:site_name" content="郑君的学习笔记">
-<meta property="og:description" content="线程间通讯Queue 对象已经包含了必要的锁，所以你可以通过它在多个线程间多安全地共享数据。 123456789101112131415161718192021222324from queue import Queuefrom threading import Thread# A thread that produces datadef producer(out_q):    while True">
+<meta property="og:description" content="th.setDaemon(True)守护线程 python中得thread的一些机制和C/C++不同：在C/C++中，主线程结束后，其子线程会默认被主线程kill掉。而在python中，主线程结束后，会默认等待子线程结束后，主线程才退出。 那么尴尬的问题就出现了，有一种情况，比如说在linux系统中存在脱离于终端的线程，即父进程在创建子进程之后先于子进程退出，会造成这个子进程变为“孤儿进程” 如果">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-04-07T07:51:16.000Z">
+<meta property="og:updated_time" content="2020-11-28T07:13:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python-thread">
-<meta name="twitter:description" content="线程间通讯Queue 对象已经包含了必要的锁，所以你可以通过它在多个线程间多安全地共享数据。 123456789101112131415161718192021222324from queue import Queuefrom threading import Thread# A thread that produces datadef producer(out_q):    while True">
+<meta name="twitter:description" content="th.setDaemon(True)守护线程 python中得thread的一些机制和C/C++不同：在C/C++中，主线程结束后，其子线程会默认被主线程kill掉。而在python中，主线程结束后，会默认等待子线程结束后，主线程才退出。 那么尴尬的问题就出现了，有一种情况，比如说在linux系统中存在脱离于终端的线程，即父进程在创建子进程之后先于子进程退出，会造成这个子进程变为“孤儿进程” 如果">
 
 
 
@@ -246,7 +246,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1162</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1170</span>
       </a>
 </li>
 
@@ -413,8 +413,15 @@
       
 
       
-        <h2 id="线程间通讯"><a href="#线程间通讯" class="headerlink" title="线程间通讯"></a>线程间通讯</h2><p>Queue 对象已经包含了必要的锁，所以你可以通过它在多个线程间多安全地共享数据。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> Queue</span><br><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"></span><br><span class="line"><span class="comment"># A thread that produces data</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">producer</span><span class="params">(out_q)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        <span class="comment"># Produce some data</span></span><br><span class="line">        ...</span><br><span class="line">        out_q.put(data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># A thread that consumes data</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">consumer</span><span class="params">(in_q)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line"><span class="comment"># Get some data</span></span><br><span class="line">        data = in_q.get()</span><br><span class="line">        <span class="comment"># Process the data</span></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create the shared queue and launch both threads</span></span><br><span class="line">q = Queue()</span><br><span class="line">t1 = Thread(target=consumer, args=(q,))</span><br><span class="line">t2 = Thread(target=producer, args=(q,))</span><br><span class="line">t1.start()</span><br><span class="line">t2.start()</span><br></pre></td></tr></table></figure>
+        <p>th.setDaemon(True)守护线程</p>
+<p>python中得thread的一些机制和C/C++不同：在C/C++中，主线程结束后，其子线程会默认被主线程kill掉。而在python中，主线程结束后，会默认等待子线程结束后，主线程才退出。</p>
+<p>那么尴尬的问题就出现了，有一种情况，比如说在linux系统中存在脱离于终端的线程，即父进程在创建子进程之后先于子进程退出，会造成这个子进程变为“孤儿进程”</p>
+<p>如果你忘记杀死子线程，那么好了，你杀主线程的时候其就会挂起等待直至子线程结束，所以为了避免这样的情况，python有两个函数管理线程：join和setDaemon</p>
+<p>join：如在一个线程B中调用threada.join()，则threada结束后，线程B才会接着threada.join()往后运行。<br>setDaemon：主线程A启动了子线程B，调用b.setDaemaon(True)，则主线程结束时，会把子线程B也杀死，与C/C++中得默认效果是一样的。</p>
+<h2 id="tkinter"><a href="#tkinter" class="headerlink" title="tkinter"></a>tkinter</h2><p>tkinter 可以传入 控件对象到线程中，用于更新界面</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">self.frameOutput.pack(side=tk.TOP, fill=tk.BOTH, expand=<span class="number">1</span>, pady=<span class="number">4</span>)</span><br><span class="line">self.frameReport.pack_forget()</span><br><span class="line">thrd = threading.Thread(target=dbService.check_data,args=(self.textOutput,))</span><br><span class="line">thrd.setDaemon(<span class="keyword">True</span>)  <span class="comment"># 守护线程</span></span><br><span class="line">thrd.start()</span><br></pre></td></tr></table></figure>
+<h2 id="线程间通讯"><a href="#线程间通讯" class="headerlink" title="线程间通讯"></a>线程间通讯</h2><p>Queue 对象已经包含了必要的锁，所以你可以通过它在多个线程间多安全地共享数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> Queue</span><br><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"></span><br><span class="line"><span class="comment"># A thread that produces data</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">producer</span><span class="params">(out_q)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        <span class="comment"># Produce some data</span></span><br><span class="line">        ...</span><br><span class="line">        out_q.put(data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># A thread that consumes data</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">consumer</span><span class="params">(in_q)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line"><span class="comment"># Get some data</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            it = in_q.get_nowait()</span><br><span class="line">        <span class="keyword">except</span> queue.Empty <span class="keyword">as</span> e1:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> it <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="comment"># Process the data</span></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create the shared queue and launch both threads</span></span><br><span class="line">q = Queue()</span><br><span class="line">t1 = Thread(target=consumer, args=(q,))</span><br><span class="line">t2 = Thread(target=producer, args=(q,))</span><br><span class="line">t1.setDaemon(<span class="keyword">True</span>)</span><br><span class="line">t1.start()</span><br><span class="line">t2.start()</span><br></pre></td></tr></table></figure>
 <h2 id="停止"><a href="#停止" class="headerlink" title="停止"></a>停止</h2><p>使用类来实现</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CountdownTask</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self._running = <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">terminate</span><span class="params">(self)</span>:</span></span><br><span class="line">        self._running = <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        <span class="keyword">while</span> self._running <span class="keyword">and</span> n &gt; <span class="number">0</span>:</span><br><span class="line">            print(<span class="string">'T-minus'</span>, n)</span><br><span class="line">            n -= <span class="number">1</span></span><br><span class="line">            time.sleep(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">c = CountdownTask()</span><br><span class="line">t = Thread(target=c.run, args=(<span class="number">10</span>,))</span><br><span class="line">t.start()</span><br><span class="line">c.terminate() <span class="comment"># Signal termination</span></span><br><span class="line">t.join()      <span class="comment"># Wait for actual termination (if needed)</span></span><br></pre></td></tr></table></figure>
       
@@ -568,7 +575,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">1162</span>
+                    <span class="site-state-item-count">1170</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1174,7 +1181,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">211</span>
+                      
+                    
+                    <span class="site-state-item-count">212</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -1231,7 +1240,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程间通讯"><span class="nav-number">1.</span> <span class="nav-text">线程间通讯</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#停止"><span class="nav-number">2.</span> <span class="nav-text">停止</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#tkinter"><span class="nav-number">1.</span> <span class="nav-text">tkinter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程间通讯"><span class="nav-number">2.</span> <span class="nav-text">线程间通讯</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#停止"><span class="nav-number">3.</span> <span class="nav-text">停止</span></a></li></ol></div>
             
 
           </div>

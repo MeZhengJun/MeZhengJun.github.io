@@ -245,7 +245,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1162</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1170</span>
       </a>
 </li>
 
@@ -312,6 +312,1224 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/19/语言相关/CPP/cpp-list/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/19/语言相关/CPP/cpp-list/" itemprop="url">cpp-list</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-19T16:37:47+08:00">2019-04-19</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>顺序容器<br>list是一个双向链表，因此它的内存空间是可以不连续的，通过指针来进行数据的访问，这使list的随机存储变得非常低效，因此list没有提供[]操作符的重载。但list可以很好地支持任意地方的插入和删除，只需移动相应的指针即可。</p>
+<p>1) 如果你需要高效的随即存取，而不在乎插入和删除的效率，使用vector<br>2) 如果你需要大量的插入和删除，而不关心随即存取，则应使用list<br>3) 如果你需要随即存取，而且关心两端数据的插入和删除，则应使用deque</p>
+<h1 id="forward-list"><a href="#forward-list" class="headerlink" title="forward_list"></a>forward_list</h1><p>相对于 list 来说, 因为是单向链表,所以节省空间,增加效率.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;forward_list&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h1 id="sort"><a href="#sort" class="headerlink" title="sort"></a>sort</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="random-access"><a href="#random-access" class="headerlink" title="random access"></a>random access</h1><p>use iterator</p>
+<p>std::next<br>std::advance</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v&#123; <span class="number">3</span>, <span class="number">1</span>, <span class="number">4</span> &#125;;</span><br><span class="line">    <span class="keyword">auto</span> it = v.begin();</span><br><span class="line">    <span class="keyword">auto</span> nx = <span class="built_in">std</span>::next(it, <span class="number">2</span>);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; *it &lt;&lt; <span class="string">' '</span> &lt;&lt; *nx &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/18/开源库/vcpkg/cpp-library-manage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/18/开源库/vcpkg/cpp-library-manage/" itemprop="url">cpp library manage</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-18T20:35:27+08:00">2019-04-18</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://github.com/Microsoft/vcpkg" target="_blank" rel="noopener">https://github.com/Microsoft/vcpkg</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/18/工具相关/vscode/vscode-markdown/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/18/工具相关/vscode/vscode-markdown/" itemprop="url">vscode-markdown</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-18T18:04:03+08:00">2019-04-18</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具相关/" itemprop="url" rel="index"><span itemprop="name">工具相关</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>终于有了个好用的图片插件，完全符合我的需求。终于可以把 atom 扔掉了。</p>
+<p>安装 node.js<br>安装 hexo<br>安装插件</p>
+<h1 id="图片插件"><a href="#图片插件" class="headerlink" title="图片插件"></a>图片插件</h1><p>Paste Image</p>
+<p>Paste Image: Base Path<br>${currentFileDir}/${currentFileNameWithoutExt}</p>
+<p>Paste Image: Default Name<br>YYYYMMDD_HHmmss</p>
+<p>Paste Image: Insert Pattern<br><img alt="${imageFileName}" src="/2019/04/18/工具相关/vscode/vscode-markdown/${imageFileName}" width="500" height=""></p>
+<p>Paste Image: Path<br>${currentFileDir}/${currentFileNameWithoutExt}</p>
+<h1 id="markdown-插件"><a href="#markdown-插件" class="headerlink" title="markdown 插件"></a>markdown 插件</h1><p>markdown all in one<br>markdown preview github styling</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/17/工具相关/git/git-搭建git私有仓库/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/17/工具相关/git/git-搭建git私有仓库/" itemprop="url">git-搭建git私有仓库</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-17T09:52:06+08:00">2019-04-17</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具相关/" itemprop="url" rel="index"><span itemprop="name">工具相关</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Gitea 快捷方便</p>
+<p>gogs vs gitea</p>
+<p>Gogs and Gitea are Open Source, single-binary Go implementations of a Github-like git repository hosting system<br>Gitea is a fork of Gogs</p>
+<p><a href="https://docs.gitea.io/en-us/comparison/" target="_blank" rel="noopener">https://docs.gitea.io/en-us/comparison/</a></p>
+<p>Gitea 评价略微好于 gogs<br>Easy to install and setup. Can run on a VPS with 1 core CPU and 256MB RAM.</p>
+<p>Gitblit<br>Pure Java Git solution for managing, viewing, and serving Git repositories.<br>Current Release 1.8.0 (2016-06-22)</p>
+<p>综上所述，选择gitea</p>
+<h2 id="注册为Windows服务"><a href="#注册为Windows服务" class="headerlink" title="注册为Windows服务"></a>注册为Windows服务</h2><p>以Administrator身份运行 cmd，然后执行以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sc create gitea start= auto binPath= "\"d:\gitea\gitea.exe\" web --config \"d:\gitea\custom\conf\app.ini\""</span><br></pre></td></tr></table></figure>
+<p>之后在控制面板打开 “Windows Services”，搜索 “gitea”，右键选择 “Run”。在浏览器打开 <a href="http://localhost:3000" target="_blank" rel="noopener">http://localhost:3000</a> 就可以访问了。（如果你修改了端口，请访问对应的端口，3000是默认端口）。</p>
+<h2 id="从Windows服务中删除"><a href="#从Windows服务中删除" class="headerlink" title="从Windows服务中删除"></a>从Windows服务中删除</h2><p>以Administrator身份运行 cmd，然后执行以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sc delete gitea</span><br></pre></td></tr></table></figure>
+<p>还真简单，就是个 exe 直接运行就可以了， localhost:3000 默认端口</p>
+<p>第一次运行，点击 sing in 会出现配置界面</p>
+<h2 id="安装-postgreSQL-或者-sqlite"><a href="#安装-postgreSQL-或者-sqlite" class="headerlink" title="安装 postgreSQL 或者 sqlite"></a>安装 postgreSQL 或者 sqlite</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 查看 postgreSQL 端口</span><br><span class="line">netstat -ano|findstr "5432"</span><br></pre></td></tr></table></figure>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>修改配置文件<br>D:\gitea\custom\conf\app.ini</p>
+<p>把 server 下面的 localhost 替换成服务的ip。</p>
+<p><img alt="20200214_154000.png" src="/2019/04/17/工具相关/git/git-搭建git私有仓库/20200214_154000.png" width="500" height=""></p>
+<p>增加启用内部SSH服务器<br>START_SSH_SERVER = true</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/17/功能分类/数据库/MySQL/mysql-sql语句样例/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/17/功能分类/数据库/MySQL/mysql-sql语句样例/" itemprop="url">mysql-sql语句样例</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-17T09:04:00+08:00">2019-04-17</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h1><p>SQL的模式匹配允许你使用“_”匹配任何单个字符，而“%”匹配任意数目字符（包括零个字符）。在 MySQL中，SQL的模式缺省是忽略大小写的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT 字段 FROM 表 WHERE 某字段 Like 条件</span><br><span class="line"></span><br><span class="line">使用 OR 和 AND 来增加条件</span><br><span class="line">SELECT * FROM `t_company` where f_name like &apos;t%&apos; OR f_company_id like &apos;6%&apos;</span><br></pre></td></tr></table></figure>
+<h2 id="正则模式"><a href="#正则模式" class="headerlink" title="正则模式"></a>正则模式</h2><p>用到的时候再添加,目前模糊匹配够用了</p>
+<h1 id="存在更新，不存在插入"><a href="#存在更新，不存在插入" class="headerlink" title="存在更新，不存在插入"></a>存在更新，不存在插入</h1><p>如果插入的数据会导致UNIQUE 索引或PRIMARY KEY发生冲突/重复，则执行UPDATE语句</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sql = str::cstr::format(<span class="string">"insert into %s (f_no,f_name,f_addr,f_update_datetime) values ('%s','%s','%s','%s') ON DUPLICATE KEY UPDATE \</span></span><br><span class="line"><span class="string">							f_name='%s',f_addr='%s',f_update_datetime='%s'"</span>,</span><br><span class="line">								it.tableName.c_str(), itJson[<span class="string">"villageCode"</span>].asString().c_str(),</span><br><span class="line">								f_name.c_str(),f_addr.c_str(),f_update_datetime.c_str(), </span><br><span class="line">								f_name.c_str(),f_addr.c_str(),f_update_datetime.c_str());</span><br></pre></td></tr></table></figure>
+<h1 id="存在替换-不存在插入"><a href="#存在替换-不存在插入" class="headerlink" title="存在替换,不存在插入"></a>存在替换,不存在插入</h1><p>如果插入的数据会导致UNIQUE 索引或PRIMARY KEY发生冲突/重复，则先删除旧数据再插入最新的数据，</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// mysql 已验证</span></span><br><span class="line">sql = str::cstr::format(<span class="string">"replace into %s (f_no,f_name) values (%I64d,'%s')"</span>,</span><br><span class="line">								it.tableName.c_str(), itJson[paramKey.c_str()].asInt64(),</span><br><span class="line">								itJson[<span class="string">"name"</span>].asString().c_str());</span><br></pre></td></tr></table></figure>
+<h1 id="避免重复插入"><a href="#避免重复插入" class="headerlink" title="避免重复插入"></a>避免重复插入</h1><p>关键字/句：insert ignore into，如果插入的数据会导致UNIQUE索引或PRIMARY KEY发生冲突/重复，则忽略此次操作/不插入数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSERT IGNORE INTO `student`(`name`, `age`) VALUES(&apos;Jack&apos;, 18);</span><br></pre></td></tr></table></figure>
+<h1 id="更新语句"><a href="#更新语句" class="headerlink" title="更新语句"></a>更新语句</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">UPDATE table_name</span><br><span class="line">SET column1 = value1, column2 = value2, ...</span><br><span class="line">WHERE condition;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/16/Web开发/gradle-usage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/16/Web开发/gradle-usage/" itemprop="url">gradle usage</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-16T22:45:02+08:00">2019-04-16</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/后端/" itemprop="url" rel="index"><span itemprop="name">后端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="手动安装"><a href="#手动安装" class="headerlink" title="手动安装"></a>手动安装</h2><p>下载压缩包之后解压到合适的目录下面<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$PATH:/Users/zhengjun/project/Library/gradle-5.4/bin</span><br></pre></td></tr></table></figure></p>
+<h2 id="关键字-compile-implementation-api"><a href="#关键字-compile-implementation-api" class="headerlink" title="关键字 compile implementation api"></a>关键字 compile implementation api</h2><p>compile 关键字已经过期了</p>
+<p>Using api is the equivalent of using the deprecated compile, so if you replace all compile with api everything will works as always.</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/16/功能分类/数据库/db-CDatabase/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/16/功能分类/数据库/db-CDatabase/" itemprop="url">db-CDatabase</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-16T18:07:58+08:00">2019-04-16</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>use ODBC access database</p>
+<h1 id="dsn-设置"><a href="#dsn-设置" class="headerlink" title="dsn 设置"></a>dsn 设置</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// access database use</span></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">getDsnDbPath</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; dsnName)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">string</span> strRet = <span class="string">""</span>;</span><br><span class="line">	HKEY hKey;</span><br><span class="line">	<span class="built_in">string</span> subKey = <span class="string">"Software\\ODBC\\ODBC.INI\\"</span> + dsnName;</span><br><span class="line">	LONG lResult = RegOpenKeyExA(HKEY_CURRENT_USER, (subKey).c_str(), <span class="number">0</span>, KEY_WOW64_64KEY | KEY_READ, &amp;hKey);</span><br><span class="line">	<span class="keyword">if</span> (ERROR_SUCCESS == lResult)</span><br><span class="line">	&#123;</span><br><span class="line">		DWORD dwType = REG_SZ;</span><br><span class="line">		CHAR szLocation[MAX_PATH] = &#123; <span class="string">'\0'</span> &#125;;</span><br><span class="line">		DWORD dwSize = MAX_PATH;</span><br><span class="line">		<span class="comment">// 获取缓存的长度dwSize及类型dwDataType</span></span><br><span class="line">		lResult = ::RegQueryValueEx(hKey, <span class="string">"DBQ"</span>, <span class="number">0</span>, &amp;dwType, (LPBYTE)&amp;szLocation, &amp;dwSize);</span><br><span class="line">		<span class="keyword">if</span> (ERROR_SUCCESS == lResult)</span><br><span class="line">		&#123;</span><br><span class="line">			strRet = &amp;szLocation[<span class="number">0</span>];</span><br><span class="line">		&#125;</span><br><span class="line">		RegCloseKey(hKey);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">// 不存在,或打开失败</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> strRet;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">BOOL <span class="title">isDsnPresent</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; dsnName)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	BOOL bRet = TRUE;</span><br><span class="line">	HKEY hKey;</span><br><span class="line">	<span class="built_in">string</span> subKey = <span class="string">"Software\\ODBC\\ODBC.INI\\"</span> + dsnName;</span><br><span class="line">	LONG lResult = RegOpenKeyExA(HKEY_CURRENT_USER, (subKey).c_str(), <span class="number">0</span>, KEY_WOW64_64KEY |KEY_READ, &amp;hKey);</span><br><span class="line">	<span class="keyword">if</span> (ERROR_SUCCESS == lResult)</span><br><span class="line">	&#123;</span><br><span class="line">		bRet = TRUE;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (lResult == ERROR_FILE_NOT_FOUND)</span><br><span class="line">		&#123;</span><br><span class="line">			bRet = FALSE;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			subKey = str::cstr::format(<span class="string">"open registry failed. %d"</span>,lResult);</span><br><span class="line">			OutputDebugString(subKey.c_str());</span><br><span class="line">		&#125;</span><br><span class="line">		bRet = FALSE;</span><br><span class="line">	&#125;</span><br><span class="line">	RegCloseKey(hKey);</span><br><span class="line">	<span class="keyword">return</span> bRet;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"> <span class="function">BOOL <span class="title">configAddDSN</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; driver, <span class="keyword">const</span> <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; attr)</span></span></span><br><span class="line"><span class="function"> </span>&#123;</span><br><span class="line"> 	<span class="keyword">char</span> buf[<span class="number">512</span>] = &#123;<span class="string">'\0'</span>&#125;; </span><br><span class="line"> 	<span class="keyword">char</span>* p = buf;</span><br><span class="line"> 	<span class="keyword">for</span> (<span class="keyword">auto</span>&amp;it:attr)</span><br><span class="line"> 	&#123;</span><br><span class="line"> 		<span class="built_in">strcpy</span>(p, it.c_str());	p += <span class="built_in">strlen</span>(p) + <span class="number">1</span>;</span><br><span class="line"> 	&#125;</span><br><span class="line"> 	<span class="keyword">return</span> SQLConfigDataSource(<span class="literal">NULL</span>, ODBC_ADD_DSN, driver.c_str(), buf);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="连接字符串"><a href="#连接字符串" class="headerlink" title="连接字符串"></a>连接字符串</h1><p>注意 Exclusive=0 避免独占打开</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">strDbPath = getDsnDbPath(&quot;dsnReal16Access&quot;);</span><br><span class="line">g_strDsn = &quot;ODBC;DSN=dsnReal16Access;DBQ=&quot; + strDbPath + &quot;;DriverId=25;FIL=&#123;MS Access&#125;;Exclusive=0;MaxBufferSize=2048;PageTimeout=5;UID=admin;&quot;;</span><br></pre></td></tr></table></figure>
+<h1 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">dbString = &quot;SELECT f_no, f_name FROM t_people_purpose_type;&quot;;</span><br><span class="line">CRecordset rs(&amp;db);</span><br><span class="line">if (FALSE == rs.Open(CRecordset::forwardOnly, dbString.c_str(), CRecordset::readOnly))</span><br><span class="line">&#123;</span><br><span class="line">	if (g_bWriteLog)</span><br><span class="line">	&#123;</span><br><span class="line">		string strLog = &quot;1biao6shi: get t_people_purpose_type error: &quot;;</span><br><span class="line">		OutputDebugString(strLog.c_str());</span><br><span class="line">		if (g_logger)</span><br><span class="line">		&#123;</span><br><span class="line">			g_logger-&gt;error(strLog);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;else</span><br><span class="line">&#123;</span><br><span class="line">	CDBVariant varValue;</span><br><span class="line">	int iNo = 0;</span><br><span class="line">	string strName;</span><br><span class="line">	while (!rs.IsEOF())</span><br><span class="line">	&#123;</span><br><span class="line">		rs.GetFieldValue(short(0), varValue);</span><br><span class="line">		iNo = atoi(*varValue.m_pstring);</span><br><span class="line">		rs.GetFieldValue(short(1), varValue);</span><br><span class="line">		if (string::npos != pwnd-&gt;m_strDsn.find(&quot;Access&quot;))</span><br><span class="line">		&#123;</span><br><span class="line">			strName = ((*varValue.m_pstring).GetBuffer());</span><br><span class="line">		&#125;</span><br><span class="line">		else</span><br><span class="line">		&#123;</span><br><span class="line">			strName = str::cstr::utf8ToAscii((*varValue.m_pstring).GetBuffer()).c_str();</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		if (strName.empty())</span><br><span class="line">		&#123;</span><br><span class="line">			ASSERT(FALSE);</span><br><span class="line">		&#125;</span><br><span class="line">		pwnd-&gt;m_mapPersonPurposeType.insert(pair&lt;int, string&gt;(iNo, strName));</span><br><span class="line">		rs.MoveNext();</span><br><span class="line">	&#125;</span><br><span class="line">	rs.Close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="非查询语句"><a href="#非查询语句" class="headerlink" title="非查询语句"></a>非查询语句</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db-&gt;executeNonQuery(&quot;set names utf8&quot;);</span><br></pre></td></tr></table></figure>
+<h1 id="insert"><a href="#insert" class="headerlink" title="insert"></a>insert</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">db.BeginTrans();</span><br><span class="line">db.ExecuteSQL(sql.c_str());</span><br><span class="line">db.CommitTrans();</span><br></pre></td></tr></table></figure>
+<h1 id="insert-by-CRecordset"><a href="#insert-by-CRecordset" class="headerlink" title="insert by CRecordset"></a>insert by CRecordset</h1><p>插入图片<br><a href="https://blog.csdn.net/weixin_40026797/article/details/83719070" target="_blank" rel="noopener">https://blog.csdn.net/weixin_40026797/article/details/83719070</a></p>
+<p>使用class wizard 添加 CRecordset 的继承类,使用 mfc odbc consumer 选择要处理的表.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">db.BeginTrans();</span><br><span class="line"><span class="function">Ct_personRecordset <span class="title">rs</span><span class="params">(&amp;db)</span></span>; <span class="comment">//绑定数据库</span></span><br><span class="line"></span><br><span class="line"><span class="number">1.</span> Call AddNew.</span><br><span class="line"><span class="number">2.</span> Set field appropriately.</span><br><span class="line"><span class="number">3.</span> Call Update</span><br><span class="line"></span><br><span class="line">db.CommitTrans();</span><br></pre></td></tr></table></figure>
+<p>下面代码一直报错,未成功. Conversion is not supported</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// has picture need to store</span><br><span class="line">rs.m_f_pic.m_dwDataLength = vOut.size();</span><br><span class="line">HGLOBAL hGlobal = GlobalAlloc(GPTR, rs.m_f_pic.m_dwDataLength);</span><br><span class="line">rs.m_f_pic.m_hData = GlobalLock(hGlobal);</span><br><span class="line">memcpy_s(rs.m_f_pic.m_hData, rs.m_f_pic.m_dwDataLength, &amp;vOut[0], vOut.size());</span><br><span class="line"></span><br><span class="line">rs.SetFieldDirty(&amp;rs.m_f_pic, true);</span><br><span class="line">rs.SetFieldNull(&amp;rs.m_f_pic, false);</span><br><span class="line"></span><br><span class="line">while (!rs.CanUpdate())</span><br><span class="line">    Sleep(200);</span><br><span class="line">GlobalUnlock(rs.m_f_pic.m_hData);</span><br></pre></td></tr></table></figure>
+<h1 id="modify-by-CRecordset"><a href="#modify-by-CRecordset" class="headerlink" title="modify by CRecordset"></a>modify by CRecordset</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rs.Edit();</span><br><span class="line">rs.m_field1 = ...;<span class="comment">//字段1</span></span><br><span class="line">rs.m_field2 = ...;<span class="comment">//字段2</span></span><br><span class="line">.....</span><br><span class="line">rs.Update();</span><br></pre></td></tr></table></figure>
+<h1 id="CRecordset-相关说明"><a href="#CRecordset-相关说明" class="headerlink" title="CRecordset 相关说明"></a>CRecordset 相关说明</h1><p>Snapshots and Dynasets</p>
+<p>Snapshots 是静态数据,反应获取时的那一点的数据<br>Dynasets 是动态数据,如果有其他人修改了,会动态反应出来,需要调用 requery </p>
+<p>class view 窗口右键项目-菜单选择 add class- mfc - mfc odbc consumer 然后选择数据源,生成类</p>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><h2 id="CRecordset-的坑"><a href="#CRecordset-的坑" class="headerlink" title="CRecordset 的坑"></a>CRecordset 的坑</h2><p>手动修改了生成类的字段似乎不生效,需要重新生成.</p>
+<p>RFX_TEXT  nMaxLength  默认 255 不够用,需要手动修改<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">RFX_Text(pFX, _T(<span class="string">"[f_gis]"</span>), m_f_gis, <span class="number">1024</span>);</span><br><span class="line">RFX_Text(pFX, _T(<span class="string">"[f_gisArea]"</span>), m_f_gisArea, <span class="number">1024</span>);</span><br></pre></td></tr></table></figure></p>
+<h3 id="blob-error-Conversion-is-not-supported"><a href="#blob-error-Conversion-is-not-supported" class="headerlink" title="blob error: Conversion is not supported"></a>blob error: Conversion is not supported</h3><p>insert image to blob field error.</p>
+<h2 id="Lock-wait-timeout-exceeded-try-restarting-transaction"><a href="#Lock-wait-timeout-exceeded-try-restarting-transaction" class="headerlink" title="Lock wait timeout exceeded; try restarting transaction"></a>Lock wait timeout exceeded; try restarting transaction</h2><p>Enter MySQL</p>
+<p><code>mysql -u your_user -p</code></p>
+<p>2) Let’s see the list of locked tables</p>
+<p><code>mysql&gt; show open tables where in_use&gt;0;</code></p>
+<p>3) Let’s see the list of the current processes, one of them is locking your table(s)</p>
+<p><code>mysql&gt; show processlist;</code></p>
+<p>4) Kill one of these processes</p>
+<p><code>mysql&gt; kill &lt;put_process_id_here&gt;;</code></p>
+<h1 id="Conversion-is-not-supported"><a href="#Conversion-is-not-supported" class="headerlink" title="Conversion is not supported"></a>Conversion is not supported</h1><p>State:07006,Native:0,Origin:[MySQL][ODBC 8.0(a) Driver][mysqld-5.5.62-log]</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/16/语言相关/CPP/cpp-function/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/16/语言相关/CPP/cpp-function/" itemprop="url">cpp-function</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-16T13:51:04+08:00">2019-04-16</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;functional&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>::placeholders;</span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;function&lt;<span class="keyword">const</span> tuple&lt;<span class="built_in">string</span>, <span class="built_in">string</span>&gt;()&gt;&gt; vFunc;</span><br><span class="line">vFunc.emplace_back(bind(&amp;CProtocol::getGisType, &amp;g_protocol));</span><br></pre></td></tr></table></figure>
+<h2 id="成员变量使用"><a href="#成员变量使用" class="headerlink" title="成员变量使用"></a>成员变量使用</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//头文件声明</span></span><br><span class="line"><span class="built_in">std</span>::function&lt;<span class="keyword">int</span>(MQTTClient*, <span class="keyword">const</span> <span class="keyword">char</span>*, <span class="keyword">const</span> <span class="keyword">char</span>*, <span class="keyword">int</span>, <span class="keyword">void</span>*)&gt; m_pMQTTClient_create;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 源文件赋值</span></span><br><span class="line">m_pMQTTClient_create = g_dllMqtt.getDllFunc&lt;<span class="keyword">int</span>(MQTTClient*, <span class="keyword">const</span> <span class="keyword">char</span>*, <span class="keyword">const</span> <span class="keyword">char</span>*, <span class="keyword">int</span>, <span class="keyword">void</span>*)&gt;(<span class="string">"MQTTClient_create"</span>);</span><br></pre></td></tr></table></figure>
+<p>类模版std::function是一种通用、多态的函数封装。std::function的实例可以对任何可以调用的目标实体进行存储、复制、和调用操作，这些目标实体包括普通函数、Lambda表达式、函数指针、以及其它函数对象等。std::function对象是对C++中现有的可调用实体的一种类型安全的包裹（我们知道像函数指针这类可调用实体，是类型不安全的）。</p>
+<p>通过std::function对C++中各种可调用实体（普通函数、Lambda表达式、函数指针、以及其它函数对象等）的封装，形成一个新的可调用的std::function对象；让我们不再纠结那么多的可调用实体。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/04/16/语言相关/CPP/cpp-function/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -640,1248 +1858,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/14/功能分类/数据库/ODBC-usage/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/14/功能分类/数据库/ODBC-usage/" itemprop="url">ODBC usage</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-14T20:47:05+08:00">2019-04-14</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="use-ODBC-by-MFC"><a href="#use-ODBC-by-MFC" class="headerlink" title="use ODBC by MFC"></a>use ODBC by MFC</h1><p><a href="https://docs.microsoft.com/en-us/cpp/data/odbc/data-source-odbc?view=vs-2019" target="_blank" rel="noopener">website</a></p>
-<p>work with class CDatabase,the data source must be one that you have configured through Open Database Connectivity (ODBC) Administrator.</p>
-<p>use ODBC connect MySql.<br><a href="https://dev.mysql.com/downloads/file/?id=484650" target="_blank" rel="noopener">MySql ODBC driver</a><br>for now mysql-connector-odbc-8.0.15-winx64.msi</p>
-<p>Configuring a Connector/ODBC DSN on Windows with the ODBC Data Source Administrator GUI</p>
-<p>Open the ODBC Data Source Administrator.<br><img alt="9240a845.png" src="/2019/04/14/功能分类/数据库/ODBC-usage/9240a845.png" width="" height=""></p>
-<p>To create a System DSN (which will be available to all users), select the System DSN tab. To create a User DSN, which will be available only to the current user, click the Add… button to open the “Create New Data Source” dialog.</p>
-<p>From the “Create New Data Source” dialog, select the MySQL ODBC 5.x ANSI or Unicode Driver, then click Finish to open its connection parameters dialog.</p>
-<p><img alt="9e83225a.png" src="/2019/04/14/功能分类/数据库/ODBC-usage/9e83225a.png" width="" height=""></p>
-<p>You now need to configure the specific fields for the DSN you are creating through the Connection Parameters dialog.</p>
-<p><img alt="4bc71c97.png" src="/2019/04/14/功能分类/数据库/ODBC-usage/4bc71c97.png" width="" height=""></p>
-<p>To verify the connection using the parameters you have entered, click the Test button. If the connection can be made successfully, you will be notified with a Connection Successful dialog; otherwise, you will be notified with a Connection Failed dialog.</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/12/工具相关/visual studio/vs2015-相关使用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/12/工具相关/visual studio/vs2015-相关使用/" itemprop="url">vs2015 相关使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-12T18:21:14+08:00">2019-04-12</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具相关/" itemprop="url" rel="index"><span itemprop="name">工具相关</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="post-event"><a href="#post-event" class="headerlink" title="post event"></a>post event</h1><p>复制 release 文件到bin目录<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">copy $(OutDir)$(TargetFileName) $(SolutionDir)bin</span><br><span class="line">copy $(OutDir)$(TargetName).pdb $(SolutionDir)bin</span><br></pre></td></tr></table></figure></p>
-<h1 id="查看-utf8-变量"><a href="#查看-utf8-变量" class="headerlink" title="查看 utf8 变量"></a>查看 utf8 变量</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">默认的, VC调试器只能正常显示ANSI字符串及UNICODE字符串, 而UTF<span class="number">-8</span>字符串及其他格式则无法显示</span><br><span class="line">这里无需编写插件及修改配置文件,只需要将要显示的字符串拉到Watch中,并在变量后面添加,s8即可显示</span><br><span class="line"></span><br><span class="line">同样类型的功能也应该很熟悉</span><br><span class="line"></span><br><span class="line">,数字  将变量拆分为数组显示, 数字是要显示多少位, 此法对<span class="keyword">const</span> <span class="keyword">char</span>*这类原始字符串非常有用</span><br><span class="line">,x <span class="number">16</span>进制查看</span><br><span class="line">,hr  查看Windows HRESULT解释</span><br><span class="line">,wm Windows消息,例如<span class="number">0x0010</span>, wm 显示 WM_CLOSE</span><br></pre></td></tr></table></figure>
-<h1 id="no-symbols-have-been-loaded"><a href="#no-symbols-have-been-loaded" class="headerlink" title="no symbols have been loaded"></a>no symbols have been loaded</h1><p>I hate this problem</p>
-<h1 id="MD-MT-的选择"><a href="#MD-MT-的选择" class="headerlink" title="MD MT 的选择"></a>MD MT 的选择</h1><p>/MD 多线程、Release、DLL版本的运行时库<br>/MT 多线程、Release 版本的运行时库</p>
-<ol>
-<li>为什么选择/MD，不选/MT？<ul>
-<li>程序就不需要静态链接运行时库，可以减小软件的大小；</li>
-<li>所有的模块都采用/MD，使用的是同一个堆，不存在A堆申请，B堆释放的问题；</li>
-<li>用户机器可能缺少我们编译时使用的动态运行时库。（补充：如果我们软件有多个DLL，采用/MT体积增加太多，则可以考虑/MD + 自带系统运行时库）</li>
-</ul>
-</li>
-<li>为什么选择/MT，不选择/MD？<ul>
-<li>有些系统可能没有程序所需要版本的运行时库，程序必须把运行时库静态链接上。</li>
-<li>减少模块对外界的依赖。</li>
-</ul>
-</li>
-<li>多个模块，必须选择相同的运行时库。</li>
-</ol>
-<h2 id="选择-MD需要注意多个模块使用不同版本运行时库的问题"><a href="#选择-MD需要注意多个模块使用不同版本运行时库的问题" class="headerlink" title="选择/MD需要注意多个模块使用不同版本运行时库的问题"></a>选择/MD需要注意多个模块使用不同版本运行时库的问题</h2><p>多个dll被一个exe LoadLibrary加载，如果这些dll使用的运行时库是不同的，那么可能出现加载失败，原因可能是旧版本的运行时库已经在了，而某个dll它需要的是新版本的运行时库，旧版本不符合要求。</p>
-<h2 id="QA"><a href="#QA" class="headerlink" title="QA"></a>QA</h2><h3 id="error-LNK2005-new-and-delete-already-defined-in-LIBCMTD-lib-new-obj"><a href="#error-LNK2005-new-and-delete-already-defined-in-LIBCMTD-lib-new-obj" class="headerlink" title="error LNK2005: new and delete already defined in LIBCMTD.lib(new.obj)"></a>error LNK2005: new and delete already defined in LIBCMTD.lib(new.obj)</h3><p>I solve the problem by the following ways, please locate Project -&gt; Properties -&gt; Configuration Properties -&gt; Linker -&gt; Input at first.</p>
-<p>In Debug mode:</p>
-<p>Add uafxcwd.lib;Libcmtd.lib in Additional Dependencies.<br>Add uafxcwd.lib;Libcmtd.lib in Ignore Specific Default Libraries.<br>In Release mode:</p>
-<p>Add uafxcw.lib;Libcmt.lib in Additional Dependencies.<br>Add uafxcw.lib;Libcmt.lib in Ignore Specific Default Libraries.<br>Notice:</p>
-<p>Don’t miss the ; between the two .lib files.<br>A suffix -d must be added in the files in Debug mode.</p>
-<h3 id="A-LIST-ENTRY-has-been-corrupted-i-e-double-remove"><a href="#A-LIST-ENTRY-has-been-corrupted-i-e-double-remove" class="headerlink" title="A LIST_ENTRY has been corrupted (i.e. double remove)"></a>A LIST_ENTRY has been corrupted (i.e. double remove)</h3><p>Linker/Advanced/Randomized Base Address: switch from YES to NO.</p>
-<p><a href="https://software.intel.com/en-us/forums/intel-c-compiler/topic/621669" target="_blank" rel="noopener">https://software.intel.com/en-us/forums/intel-c-compiler/topic/621669</a></p>
-<p>Hi,<br>The check-pointers-dangling option is a feature useful for debug configuration only. It tries to track the memory that is allocated and freed. Unfortunately, Windows address randomization tries to allocate memory from random addresses. This is not compatible with the dangling pointer checking, because repeated memory allocation calls may get very different addresses.  BTW, I’ve confirmed with the development team on this as well and I have requested that the option elaboration of what I stated be added to the documentation pertaining to the feature as well. Thanks for catching this issue and bringing this to our attention, appreciate much.<br>Kittur</p>
-<h3 id="error-“expected-a-string-literal-but-found-a-user-defined-string-literal-instead”-when-using-‘extern-“C”’"><a href="#error-“expected-a-string-literal-but-found-a-user-defined-string-literal-instead”-when-using-‘extern-“C”’" class="headerlink" title="error “expected a string literal, but found a user-defined string literal instead” when using ‘extern “C”’?"></a>error “expected a string literal, but found a user-defined string literal instead” when using ‘extern “C”’?</h3><p>When user-defined literals were introduced, it caused a small, breaking change to the language. String literals now need to be separated from a following identifier by whitespace, otherwise the the identifier is parsed as a user-defined literal operator:</p>
-<p><code>&quot;C&quot;__declspec</code></p>
-<p>One token, understood as a user-defined literal using the __declspec conversion.</p>
-<p><code>&quot;C&quot; __declspec</code></p>
-<p>Two tokens - the string literal “C” and the identifier __declspec.</p>
-<p>You need to add a space to separate your tokens.</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/12/功能分类/数据库/database-access/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/12/功能分类/数据库/database-access/" itemprop="url">database access</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-12T17:34:32+08:00">2019-04-12</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><img alt="26c9b1c8.png" src="/2019/04/12/功能分类/数据库/database-access/26c9b1c8.png" width="" height=""><br>2009年4月15日星期三 哈哈，10年前的技术，目前我还在使用<br>Access Database method with VC++，按时间顺序排列目前最后的技术是ADO<br>1.ODBC API；<br>2.MFC ODBC类；<br>3.MFC DAO类；(数据访问对象)  访问access数据库性能最好<br>4.MFC的OLE/DB<br>5.ActiveX数据对象(ADO)</p>
-<p>As of Visual C++ .NET, the Visual C++ environment and wizards no longer support DAO (although the DAO classes are included and you can still use them). Microsoft recommends that you use OLE DB Templates or ODBC for new projects. You should only use DAO in maintaining existing applications. </p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CString CApp1Set::GetDefaultConnect()</span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="string">"ODBC;DSN=afx;Trusted_Connection=Yes;"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="ODBC"><a href="#ODBC" class="headerlink" title="ODBC"></a>ODBC</h1><p>ODBC is an interface to access database management systems (DBMS). ODBC was developed by SQL Access Group in 1992 at a time, when there were no standard medium to communicate between a database and an application. It does not depend on a specific programming language or a database system or an operating system. Programmers can use ODBC interface to write applications that can query data from any database, regardless of the environment it is running on or the type of DBMS it uses.</p>
-<h1 id="ADO"><a href="#ADO" class="headerlink" title="ADO"></a>ADO</h1><p>ADO is a collection of COM (Component Object Mode) objects that act as an interface for accessing data in data sources. ADO was developed in 1996 by Microsoft as a part of the Microsoft Data Access Components (MDAC). ADO forms a middleware layer between applications written in some programming language and OLE DB (a data API developed by Microsoft and the successor to ODBC). Programmers can use ADO to access data without knowing the underlying implementation details of the database. Although you are not required to know any SQL to use ADO, you can certainly execute SQL statements using it.</p>
-<h1 id="OLEDB"><a href="#OLEDB" class="headerlink" title="OLEDB"></a>OLEDB</h1><h1 id="ODBC-vs-ADO"><a href="#ODBC-vs-ADO" class="headerlink" title="ODBC vs ADO"></a>ODBC vs ADO</h1><p>ODBC is an open interface, which can be used by any application to communicate with any database system, while ADO is a wrapper around OLE DB (which is the successor to ODBC). If the database does not support OLE (non-OLE environments) then ODBC is the best choice. If the environment is non-SQL, then you have to use ADO (because ODBC works only with SQL). If interoperable database components are required, then ADO needs to be used instead of ODBC. However, for 16-bit data accessing ODBC is the only option (ADO does not support 16-bit). Finally, ADO is the best choice for connecting to multiple databases at once (ODBC can connect to only one database at a time).</p>
-<h1 id="Library"><a href="#Library" class="headerlink" title="Library"></a>Library</h1><p><a href="https://github.com/SOCI/soci" target="_blank" rel="noopener">https://github.com/SOCI/soci</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/12/开源库/MQTT/build-mqtt-client/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/12/开源库/MQTT/build-mqtt-client/" itemprop="url">build mqtt client</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-12T13:59:42+08:00">2019-04-12</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="http://www.brixbot.com/coding/mqtt-04-build-paho-c-for-windows/" target="_blank" rel="noopener">原文链接</a></p>
-<p><a href="https://slproweb.com/products/Win32OpenSSL.html" target="_blank" rel="noopener">下载OPENSSL</a><br>CMake GUI (cmake.org)</p>
-<h1 id="安装OpenSSL"><a href="#安装OpenSSL" class="headerlink" title="安装OpenSSL"></a>安装OpenSSL</h1><p>下载32位版本：Win32 OpenSSL v1.1.1<br><a href="https://slproweb.com/products/Win32OpenSSL.html" target="_blank" rel="noopener">这里下载</a></p>
-<h1 id="编译Paho-C客户端"><a href="#编译Paho-C客户端" class="headerlink" title="编译Paho C客户端"></a>编译Paho C客户端</h1><p>2.1 在paho.mqtt.c-master目录下新建build目录<br>2.2 运行cmake-gui<br>2.3 source code目录选择paho.mqtt.c-master目录，build目录选择C:\brixbot\paho.mqtt.c-master/build目录。<br>2.4 点击Configure按钮，在弹出的对话框中选择你要生成工程文件的Visual Studio版本。在本文中选择的是Visual Studio 14 2015 Win64。</p>
-<p><img alt="20190418_185524.png" src="/2019/04/12/开源库/MQTT/build-mqtt-client/20190418_185524.png" width="400" height=""></p>
-<p>2.5 点击Finish按钮关闭上面的对话框。此时，cmake-gui会出现可设置的编译选项。按照下图进行设置。</p>
-<p><img alt="20190418_185622.png" src="/2019/04/12/开源库/MQTT/build-mqtt-client/20190418_185622.png" width="400" height=""></p>
-<p>2.6 点击Configure按钮，此时会 弹出“Error in configuration process, project files may be invalid”的出错对话框。这是因为我们在刚刚的设置中要求把SSL支持编译进去，但SSL相关编译选项还未设置的原因。点Ok按钮关闭错误对话框。此时在编译选项列表中会多出SSL相关项目。按照下图进行设置：</p>
-<p><img alt="20190418_185630.png" src="/2019/04/12/开源库/MQTT/build-mqtt-client/20190418_185630.png" width="400" height=""></p>
-<p>2.7 设置好后再次点击Configure按钮。这时输出框中应该再没有红色的错误信息。</p>
-<p><img alt="20190418_185651.png" src="/2019/04/12/开源库/MQTT/build-mqtt-client/20190418_185651.png" width="400" height=""></p>
-<p>2.8 点击Generate按钮去生成Visual Studio的工程文件。这时，Open Project按钮应该变为允许状态。<br>2.9 点击Open Project按钮去打开Visual Studio 2015的工程。打开的工程应该包含下图所示项目：</p>
-<p><img alt="20190418_185702.png" src="/2019/04/12/开源库/MQTT/build-mqtt-client/20190418_185702.png" width="400" height=""></p>
-<p>完全编译ALL_BUILD工程。如果没有错误，编译INSTALL工程。编译成功后会在 C:\Program Files (x86)\Eclipse Paho C\ 目录下面生成所有文件 </p>
-<p>mqtt3a结尾的为异步版本<br>mqtt3as结尾的为支持SSL的异步版本<br>mqtt3c结尾的为同步版本<br>mqtt3cs结尾的为支持SSL的同步版本</p>
-<h1 id="编译-c-客户端"><a href="#编译-c-客户端" class="headerlink" title="编译 c++ 客户端"></a>编译 c++ 客户端</h1><p><a href="https://github.com/eclipse/paho.mqtt.cpp" target="_blank" rel="noopener">github</a></p>
-<p>在paho.mqtt.cpp-master目录下新建build目录<br>运行cmake-gui<br>source code目录选择paho.mqtt.cpp-master目录，build目录选择C:\brixbot\paho.mqtt.cpp-master/build目录。<br>点击Configure按钮，在弹出的对话框中选择你要生成工程文件的Visual Studio版本。在本文中选择的是Visual Studio 14 2015 x86<br><img alt="20190418_190410.png" src="/2019/04/12/开源库/MQTT/build-mqtt-client/20190418_190410.png" width="400" height=""></p>
-<p>点击Finish按钮关闭上面的对话框此时，cmake-gui会弹出“Error in configuration process, project files may be invalid”的出错对话框。这是因为我们还未告诉CMake哪里去找Paho C的库文件。点击OK关闭对话框后cmake-gui会可设置的编译选项。按照下图进行设置。PAHO_MQTT_C_LIB选择上一讲编译出来的paho-mqtt3as.lib库文件已确保我们编译出来的Paho C++库也支持SSL。<br><img alt="20190418_190419.png" src="/2019/04/12/开源库/MQTT/build-mqtt-client/20190418_190419.png" width="400" height=""></p>
-<p> 点击Configure按钮后cmake-gui会更新编译选项列表并列出和SSL相关的选项。检查SSL相关选项的文件名和路径是否正确。<br><img alt="20190418_190444.png" src="/2019/04/12/开源库/MQTT/build-mqtt-client/20190418_190444.png" width="400" height=""><br>再次点击Configure按钮。这时输出框中应该没有红色的错误信息。</p>
-<p><img alt="20190418_190458.png" src="/2019/04/12/开源库/MQTT/build-mqtt-client/20190418_190458.png" width="400" height=""></p>
-<p>点击Generate按钮去生成Visual Studio的工程文件。这时，Open Project按钮应该变为允许状态。</p>
-<p>1.9 点击Open Project按钮去打开Visual Studio 2015的工程。打开的工程应该包含下图所示项目：</p>
-<p><img alt="20190418_190624.png" src="/2019/04/12/开源库/MQTT/build-mqtt-client/20190418_190624.png" width="400" height=""></p>
-<p>1.10 和上一讲介绍的一样，我们需要修改所有工程的字符集选项为Use Unicode Character Set</p>
-<h1 id="使用问题"><a href="#使用问题" class="headerlink" title="使用问题"></a>使用问题</h1><p>1&gt;d:\library\include\mqtt\thread_queue.h(79): warning C4003: not enough actual parameters for macro ‘max’<br>1&gt;d:\library\include\mqtt\thread_queue.h(79): error C2589: ‘(‘: illegal token on right side of ‘::’</p>
-<p>解决方法:<br>Your problem is caused by the &lt;Windows.h&gt; header file that includes macro definitions named max and  min</p>
-<p>添加个() 防止宏展开<br>size_t maxValue_ = (std::numeric_limits&lt;size_t&gt;::max)()<br>//             </p>
-<p>You need to link with both the Paho C (libpaho-mqtt3as.so) and the Paho C++ (libpaho-mqttpp3.so). It looks like maybe you remembered the C library but forgot the C++ one?<br>Try adding “-lpaho-mqttpp3” to the compile/link line.</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/12/开源库/build-mqtt-client/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/12/开源库/build-mqtt-client/" itemprop="url">build mqtt client</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-12T13:59:42+08:00">2019-04-12</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://slproweb.com/products/Win32OpenSSL.html" target="_blank" rel="noopener">下载OPENSSL</a><br>CMake GUI (cmake.org)</p>
-<h1 id="安装OpenSSL"><a href="#安装OpenSSL" class="headerlink" title="安装OpenSSL"></a>安装OpenSSL</h1><p><a href="https://slproweb.com/products/Win32OpenSSL.html" target="_blank" rel="noopener">这里下载</a></p>
-<h1 id="编译Paho-C客户端"><a href="#编译Paho-C客户端" class="headerlink" title="编译Paho C客户端"></a>编译Paho C客户端</h1>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/12/开源库/HPSocket/hpsocket-study/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/12/开源库/HPSocket/hpsocket-study/" itemprop="url">hpsocket study</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-12T11:00:44+08:00">2019-04-12</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开源库/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>release 版本需要去掉依赖库 jemalloc 否则会有问题，提示 testxx 函数未找到。</p>
-<h1 id="http-client-demo"><a href="#http-client-demo" class="headerlink" title="http client demo"></a>http client demo</h1><p>这个目前有问题，编译不过，稍后处理</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> HPSOCKET_STATIC_LIB</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;HPSocket\HPSocket.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;HPSocket\SocketInterface.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;HPSocket\HPTypeDef.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _DEBUG</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"HPSocket\\HPSocket_D.lib"</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"HPSocket\\HPSocket.lib"</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">IHttpClient* m_pHttpClient;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/11/功能分类/debug/debug-Detected-memory-leaks/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/11/功能分类/debug/debug-Detected-memory-leaks/" itemprop="url">debug-Detected memory leaks</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-11T11:15:44+08:00">2019-04-11</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>常见的程序退出时，IDE显示的错误</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Detected memory leaks!</span><br><span class="line">Dumping objects -&gt;</span><br><span class="line">&#123;98500&#125; normal block at 0x05785AD0, 152 bytes long.</span><br><span class="line">Data: &lt;&lt; N       N x 7 &gt; 3C AC 4E 10 00 00 00 00 BC A4 4E 10 78 B6 37 00</span><br><span class="line">Object dump complete.</span><br></pre></td></tr></table></figure>
-<p>在程序开始启动的地方(足够前的地方,只要在泄漏的内存分配的前面)使用代码:</p>
-<p>_CrtSetBreakAlloc(1953); //98500为上面内存泄漏的块号,然后在stack窗口从上到下可定位内存泄漏代码</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/10/功能分类/process_thread/multi-thread/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/10/功能分类/process_thread/multi-thread/" itemprop="url">multi-thread</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-10T15:59:53+08:00">2019-04-10</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="win32-方式"><a href="#win32-方式" class="headerlink" title="win32 方式"></a>win32 方式</h1><h1 id="c-方式"><a href="#c-方式" class="headerlink" title="c++ 方式"></a>c++ 方式</h1><p>CPP RunTime Library<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_beginthreadex, _endthreadex</span><br><span class="line">_endthreadex need calling the Win32 CloseHandle API</span><br></pre></td></tr></table></figure></p>
-<p>注意：在使用了MFC的程序中不能够使用该函数创建线程，而应该使用MFC提供的线程函数<br>MFC relies on some thread - local variables and state.AfxBeginThread<br>initializes those, then calls <code>_beginthreadex</code> for you.Just part of the<br>preconditions for using the library.If you don’t use <code>AfxBeginThread</code>  some<br>of your calls to MFC functions could encounter uninitialized pointers.</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/04/10/功能分类/process_thread/multi-thread/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1933,7 +1909,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">1162</span>
+                    <span class="site-state-item-count">1170</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2539,7 +2515,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">211</span>
+                      
+                    
+                    <span class="site-state-item-count">212</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

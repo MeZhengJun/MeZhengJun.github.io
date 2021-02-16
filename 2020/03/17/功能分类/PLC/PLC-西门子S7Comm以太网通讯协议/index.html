@@ -107,7 +107,7 @@
 <meta property="og:site_name" content="郑君的学习笔记">
 <meta property="og:description" content="ref.1 正常项目，一般都是网线tcp通讯的那种，官方叫 iso on tcp 这种方式西门子的做法和 现在的大众软件方法类似，开放一个默认端口，是102，可以同时连接多个客户端；tcp 客户端连上西门子的102端口后，必须做一个特定报文的交互，然后才能做正常的读取操作； 可能由于西门子的102端口是1对多的，所以它比较拽，一旦发现通讯数据格式或内容不正确，不但不回复，而且直接跟你把通讯通道断开">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-03-19T04:37:38.000Z">
+<meta property="og:updated_time" content="2021-01-21T01:28:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PLC-西门子S7Comm以太网通讯协议">
 <meta name="twitter:description" content="ref.1 正常项目，一般都是网线tcp通讯的那种，官方叫 iso on tcp 这种方式西门子的做法和 现在的大众软件方法类似，开放一个默认端口，是102，可以同时连接多个客户端；tcp 客户端连上西门子的102端口后，必须做一个特定报文的交互，然后才能做正常的读取操作； 可能由于西门子的102端口是1对多的，所以它比较拽，一旦发现通讯数据格式或内容不正确，不但不回复，而且直接跟你把通讯通道断开">
@@ -246,7 +246,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1162</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1170</span>
       </a>
 </li>
 
@@ -502,7 +502,7 @@
 <ol>
 <li>交换数据<br>数据读写就在这个过程内完成。我们可以组织报文来实现我们需要的功能。这个过程内的报文是S7Comm格式；<br>具体实现时，需要对S7Comm中的第5、6、7层进行编程。</li>
 </ol>
-
+<h2 id="西门子-s7-通信库，读写操作需要手动同步，同时发会导致连接失败"><a href="#西门子-s7-通信库，读写操作需要手动同步，同时发会导致连接失败" class="headerlink" title="西门子 s7 通信库，读写操作需要手动同步，同时发会导致连接失败"></a>西门子 s7 通信库，读写操作需要手动同步，同时发会导致连接失败</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">// true signaled; false  non-signaled</span><br><span class="line">ManualResetEvent manualResetEventPlcHeartbeat = new ManualResetEvent(true);</span><br><span class="line">// 可以发送 数据相关命令</span><br><span class="line">ManualResetEvent manualResetEventPlcOn = new ManualResetEvent(false);</span><br><span class="line"></span><br><span class="line">private void taskMelsecPLCHeartbeatProc()</span><br><span class="line">&#123;</span><br><span class="line">    Log.Information(&quot;taskPLCHeartbeatProc enter...&quot;);</span><br><span class="line">    int iRet = 0;</span><br><span class="line">    bool setStatus = false;</span><br><span class="line"></span><br><span class="line">    while (FLAG_TASK_EXIT != (flag &amp; FLAG_TASK_EXIT))</span><br><span class="line">    &#123;</span><br><span class="line">        manualResetEventPlcHeartbeat.WaitOne();</span><br><span class="line">        manualResetEventPlcOn.Reset();</span><br><span class="line">        Console.WriteLine(&quot;send heartbeat&quot;);</span><br><span class="line"></span><br><span class="line">        iRet = s7Helper.Open(App.db.m_config[0].PLCIP, 0, 0);</span><br><span class="line">        if (iRet != 0)</span><br><span class="line">        &#123;</span><br><span class="line">            setStatus = true;</span><br><span class="line">            Log.Error($&quot;open plc failed. err=&#123;iRet&#125;&quot;);</span><br><span class="line">            Dispatcher.Invoke(new Action(() =&gt; &#123; tb_status.Text = $&quot;连接PLC失败 code=&#123;iRet&#125;&quot;; WindowState = WindowState.Normal; &#125;));</span><br><span class="line">            System.Threading.Thread.Sleep(500);</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line">        Dispatcher.Invoke(new Action(() =&gt; &#123; tb_status.Text = &quot;状态：PLC 监控中&quot;; &#125;));</span><br><span class="line"></span><br><span class="line">        byte[] rData = new byte[10];</span><br><span class="line"></span><br><span class="line">        iRet = s7Helper.ReadMBlockByte(0, App.db.m_config[0].PLCData, 1, ref rData);</span><br><span class="line">        if (iRet != 0)</span><br><span class="line">        &#123;</span><br><span class="line">            Dispatcher.Invoke(new Action(() =&gt; &#123; tb_status.Text = $&quot;读取PLC数据失败 code=&#123;iRet&#125;&quot;; &#125;));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        s7Helper.SetBit(ref rData, 0, 0, true);</span><br><span class="line">        iRet = s7Helper.WriteMBlockByte(0, App.db.m_config[0].PLCData, 1, ref rData);</span><br><span class="line">        if (iRet != 0)</span><br><span class="line">        &#123;</span><br><span class="line">            Dispatcher.Invoke(new Action(() =&gt; &#123; tb_status.Text = $&quot;写入PLC数据失败 code=&#123;iRet&#125;&quot;; &#125;));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        manualResetEventPlcOn.Set();</span><br><span class="line">        for (var i = 0; i &lt; 10; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            if (FLAG_TASK_EXIT == (flag &amp; FLAG_TASK_EXIT))</span><br><span class="line">            &#123;</span><br><span class="line">                goto skip_return;</span><br><span class="line">            &#125;</span><br><span class="line">            System.Threading.Thread.Sleep(100);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    skip_return:</span><br><span class="line">    Log.Information(&quot;taskPLCHeartbeatProc exit...&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public void doBusi(string fileFullPath)</span><br><span class="line">&#123;</span><br><span class="line">    // 停止心跳</span><br><span class="line">    manualResetEventPlcOn.WaitOne();</span><br><span class="line">    manualResetEventPlcHeartbeat.Reset();</span><br><span class="line">    // PLC 读写操作</span><br><span class="line">    ...</span><br><span class="line">    // 开始心跳</span><br><span class="line">    manualResetEventPlcHeartbeat.Set();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -564,8 +564,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/03/17/学习笔记/PLC/PLC-西门子S7Comm以太网通讯协议/" rel="next" title="PLC-西门子S7Comm以太网通讯协议">
-                <i class="fa fa-chevron-left"></i> PLC-西门子S7Comm以太网通讯协议
+              <a href="/2020/03/17/功能分类/windows/MFC/MFC-自定义控件/" rel="next" title="MFC-自定义控件">
+                <i class="fa fa-chevron-left"></i> MFC-自定义控件
               </a>
             
           </div>
@@ -654,7 +654,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">1162</span>
+                    <span class="site-state-item-count">1170</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1260,7 +1260,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">211</span>
+                      
+                    
+                    <span class="site-state-item-count">212</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -1317,7 +1319,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#S7Comm以太网通讯过程"><span class="nav-number">1.</span> <span class="nav-text">S7Comm以太网通讯过程</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#S7Comm以太网通讯过程"><span class="nav-number">1.</span> <span class="nav-text">S7Comm以太网通讯过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#西门子-s7-通信库，读写操作需要手动同步，同时发会导致连接失败"><span class="nav-number">2.</span> <span class="nav-text">西门子 s7 通信库，读写操作需要手动同步，同时发会导致连接失败</span></a></li></ol></div>
             
 
           </div>

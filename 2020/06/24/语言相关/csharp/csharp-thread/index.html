@@ -108,7 +108,7 @@
 <meta property="og:description" content="Task and Thread Task的背后的实现也是使用了线程池线程，但它的性能优于ThreadPoll,因为它使用的不是线程池的全局队列，而是使用的本地队列，使线程之间的资源竞争减少。同时Task提供了丰富的API来管理线程、控制。但是相对前面的两种耗内存，Task依赖于CPU对于多核的CPU性能远超前两者，单核的CPU三者的性能没什么差别。 Task.Run 和 Task.Factory.">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://zhengjun.top/2020/06/24/语言相关/csharp/csharp-thread/20200629_161706.png">
-<meta property="og:updated_time" content="2020-12-07T05:22:32.000Z">
+<meta property="og:updated_time" content="2021-02-04T02:47:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="csharp-thread">
 <meta name="twitter:description" content="Task and Thread Task的背后的实现也是使用了线程池线程，但它的性能优于ThreadPoll,因为它使用的不是线程池的全局队列，而是使用的本地队列，使线程之间的资源竞争减少。同时Task提供了丰富的API来管理线程、控制。但是相对前面的两种耗内存，Task依赖于CPU对于多核的CPU性能远超前两者，单核的CPU三者的性能没什么差别。 Task.Run 和 Task.Factory.">
@@ -248,7 +248,7 @@
           
   <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1162</span>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">1170</span>
       </a>
 </li>
 
@@ -424,7 +424,7 @@
 <p>Task.Run 和 Task.Factory.StartNew</p>
 <h3 id="异步串联多个任务"><a href="#异步串联多个任务" class="headerlink" title="异步串联多个任务"></a>异步串联多个任务</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">class Program</span><br><span class="line">&#123;</span><br><span class="line">        /*  coder:释迦苦僧    */</span><br><span class="line">        static void Main(string[] args)</span><br><span class="line">        &#123;</span><br><span class="line">                /*创建任务t1*/</span><br><span class="line">                Task t1 = Task.Factory.StartNew(() =&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                Console.WriteLine(&quot;执行 t1 任务&quot;);</span><br><span class="line">                SpinWait.SpinUntil(() =&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                        return false;</span><br><span class="line">                &#125;, 2000);</span><br><span class="line"></span><br><span class="line">                &#125;);</span><br><span class="line">                /*创建任务t2   t2任务的执行 依赖与t1任务的执行完成*/</span><br><span class="line">                Task t2 = t1.ContinueWith((t) =&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                Console.WriteLine(&quot;执行 t2 任务&quot;); </span><br><span class="line">                SpinWait.SpinUntil(() =&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                        return false;</span><br><span class="line">                &#125;, 2000);</span><br><span class="line"></span><br><span class="line">                &#125;);    </span><br><span class="line">                /*创建任务t3   t3任务的执行 依赖与t2任务的执行完成*/</span><br><span class="line">                Task t3 = t2.ContinueWith((t) =&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                Console.WriteLine(&quot;执行 t3 任务&quot;);</span><br><span class="line">                &#125;);</span><br><span class="line">                Console.ReadLine();</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img alt="20200629_161706.png" src="/2020/06/24/语言相关/csharp/csharp-thread/20200629_161706.png" width="500" height=""></p>
-<h2 id="thread"><a href="#thread" class="headerlink" title="thread"></a>thread</h2><h2 id="等待延时"><a href="#等待延时" class="headerlink" title="等待延时"></a>等待延时</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Thread.Sleep(numberOfMilliseconds);</span><br></pre></td></tr></table></figure>
+<h2 id="thread"><a href="#thread" class="headerlink" title="thread"></a>thread</h2><h2 id="等待延时"><a href="#等待延时" class="headerlink" title="等待延时"></a>等待延时</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.Threading.Thread.Sleep(numberOfMilliseconds);</span><br></pre></td></tr></table></figure>
 <h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// true signaled; false  non-signaled</span><br><span class="line">AutoResetEvent autoResetEvent = new AutoResetEvent(false);</span><br><span class="line"></span><br><span class="line">// true signaled; false  non-signaled</span><br><span class="line">ManualResetEvent manualResetEventPlcHeartbeat = new ManualResetEvent(true);</span><br><span class="line"></span><br><span class="line">autoResetEvent.WaitOne();</span><br><span class="line"></span><br><span class="line">autoResetEvent.Set();</span><br><span class="line">autoResetEvent.Reset();</span><br></pre></td></tr></table></figure>
 <h2 id="kill"><a href="#kill" class="headerlink" title="kill"></a>kill</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// name without .exe</span><br><span class="line">foreach (var process in Process.GetProcessesByName(&quot;whatever&quot;))</span><br><span class="line">&#123;</span><br><span class="line">    process.Kill();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="获取指定进程路径"><a href="#获取指定进程路径" class="headerlink" title="获取指定进程路径"></a>获取指定进程路径</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// name without .exe</span><br><span class="line">foreach (var process in Process.GetProcessesByName(&quot;nisedit&quot;))</span><br><span class="line">&#123;</span><br><span class="line">        // 获取路径</span><br><span class="line">        spc_path = new FileInfo(process.MainModule.FileName).Directory.FullName;</span><br><span class="line">        // 完整路径包括文件名</span><br><span class="line">        var ss = process.MainModule.FileName;</span><br><span class="line">        // 获取路径，不包括文件名</span><br><span class="line">        ss = new FileInfo(spc_path).Directory.FullName;</span><br><span class="line">        process.Kill();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -584,7 +584,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">1162</span>
+                    <span class="site-state-item-count">1170</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1190,7 +1190,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">211</span>
+                      
+                    
+                    <span class="site-state-item-count">212</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
