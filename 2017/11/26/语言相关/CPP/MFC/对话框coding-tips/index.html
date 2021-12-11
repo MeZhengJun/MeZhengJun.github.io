@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="网上摘录的信息，留用备查。涉及MFC对话框的常用操作。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对话框coding-tips">
+<meta property="og:url" content="http://zhengjun.top/2017/11/26/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/MFC/%E5%AF%B9%E8%AF%9D%E6%A1%86coding-tips/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="网上摘录的信息，留用备查。涉及MFC对话框的常用操作。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-11-25T23:30:59.000Z">
+<meta property="article:modified_time" content="2020-06-09T09:46:44.000Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="对话框">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://zhengjun.top/2017/11/26/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/MFC/%E5%AF%B9%E8%AF%9D%E6%A1%86coding-tips/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2017/11/26/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/MFC/%E5%AF%B9%E8%AF%9D%E6%A1%86coding-tips/","path":"2017/11/26/语言相关/CPP/MFC/对话框coding-tips/","title":"对话框coding-tips"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>对话框coding-tips | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E8%AF%9D%E6%A1%86yes-no%E9%80%89%E6%8B%A9"><span class="nav-number">1.</span> <span class="nav-text">对话框yes&#x2F;no选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%AF%E5%90%A6%E6%9C%80%E5%B0%8F%E5%8C%96%EF%BC%8C%E6%9C%80%E5%A4%A7%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">是否最小化，最大化</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0"><span class="nav-number"></span> <span class="nav-text">获取命令行参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%97%B6%E9%9A%90%E8%97%8F%E7%AA%97%E5%8F%A3"><span class="nav-number"></span> <span class="nav-text">启动时隐藏窗口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E5%8C%96%E5%88%B0%E7%B3%BB%E7%BB%9F%E6%89%98%E7%9B%98"><span class="nav-number"></span> <span class="nav-text">最小化到系统托盘</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%A8%E4%BB%BB%E5%8A%A1%E6%A0%8F%E9%9A%90%E8%97%8F%E5%AF%B9%E8%AF%9D%E6%A1%86"><span class="nav-number"></span> <span class="nav-text">在任务栏隐藏对话框</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E5%AF%B9%E8%AF%9D%E6%A1%86%E4%B8%BA%E9%A1%B6%E5%B1%82%E7%AA%97%E5%8F%A3"><span class="nav-number"></span> <span class="nav-text">使对话框为顶层窗口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%A8%E8%BF%90%E8%A1%8C%E6%97%B6%E6%B7%BB%E5%8A%A0%E6%9C%80%E5%A4%A7%E5%8C%96%EF%BC%8C%E6%9C%80%E5%B0%8F%E5%8C%96%E6%8C%89%E9%92%AE"><span class="nav-number"></span> <span class="nav-text">在运行时添加最大化，最小化按钮</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BD%93%E5%AF%B9%E8%AF%9D%E6%A1%86%E4%B8%80%E9%83%A8%E5%88%86%E5%9C%A8%E5%B1%8F%E5%B9%95%E5%A4%96%E6%97%B6%EF%BC%8C%E6%98%BE%E7%A4%BA%E5%85%A8%E9%83%A8%E5%AF%B9%E8%AF%9D%E6%A1%86"><span class="nav-number"></span> <span class="nav-text">当对话框一部分在屏幕外时，显示全部对话框</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%94%B9%E5%8F%98%E5%AF%B9%E8%AF%9D%E6%A1%86%E8%83%8C%E6%99%AF%E8%89%B2%E5%92%8C%E6%96%87%E6%9C%AC%E9%A2%9C%E8%89%B2"><span class="nav-number"></span> <span class="nav-text">改变对话框背景色和文本颜色</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%94%B9%E5%8F%98%E5%AF%B9%E8%AF%9D%E6%A1%86caption%E4%B8%8A%E7%9A%84%E5%9B%BE%E6%A0%87"><span class="nav-number"></span> <span class="nav-text">改变对话框caption上的图标</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%A8%E4%B8%BB%E5%AF%B9%E8%AF%9D%E6%A1%86%E6%98%BE%E7%A4%BA%E5%89%8D%EF%BC%8C%E6%98%BE%E7%A4%BA%E4%B8%80%E4%B8%AAlogin%E5%AF%B9%E8%AF%9D%E6%A1%86"><span class="nav-number"></span> <span class="nav-text">在主对话框显示前，显示一个login对话框</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%A8%E5%AF%B9%E8%AF%9D%E6%A1%86%E4%B8%AD%E6%B7%BB%E5%8A%A0%E5%B7%A5%E5%85%B7%E6%A0%8F"><span class="nav-number"></span> <span class="nav-text">在对话框中添加工具栏</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%B9%E5%8F%98%E5%A4%A7%E5%B0%8F"><span class="nav-number">1.</span> <span class="nav-text">改变大小</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E7%AA%97%E5%8F%A3%E6%9C%80%E5%B0%8F%E5%8C%96%EF%BC%8C%E6%9C%80%E5%A4%A7%E5%8C%96%EF%BC%8C%E5%85%B3%E9%97%AD"><span class="nav-number"></span> <span class="nav-text">代码实现窗口最小化，最大化，关闭</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%89%E4%B8%8BESC%E5%92%8CENTER%E9%94%AE%E6%97%B6%E7%A6%81%E6%AD%A2%E5%85%B3%E9%97%AD%E5%AF%B9%E8%AF%9D%E6%A1%86"><span class="nav-number">1.</span> <span class="nav-text">按下ESC和ENTER键时禁止关闭对话框</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%B3%E4%B8%8A%E8%A7%92%E5%8F%89%E4%BA%8B%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">右上角叉事件</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2017/11/26/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/MFC/%E5%AF%B9%E8%AF%9D%E6%A1%86coding-tips/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          对话框coding-tips
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-11-26 07:30:59" itemprop="dateCreated datePublished" datetime="2017-11-26T07:30:59+08:00">2017-11-26</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-06-09 17:46:44" itemprop="dateModified" datetime="2020-06-09T17:46:44+08:00">2020-06-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>18k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>17 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>网上摘录的信息，留用备查。<br>涉及MFC对话框的常用操作。  </p>
+<span id="more"></span>
+<p>注：以下代码以一个名为CTest6Dlg的对话框类为例</p>
+<h2 id="对话框yes-no选择"><a href="#对话框yes-no选择" class="headerlink" title="对话框yes/no选择"></a>对话框yes/no选择</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> iRet = <span class="built_in">AfxMessageBox</span>(<span class="string">L&quot;注意：删除项目会写入配置文件，注意备份文件。&quot;</span>, MB_YESNO);</span><br><span class="line"><span class="keyword">if</span> (iRet == IDNO)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="是否最小化，最大化"><a href="#是否最小化，最大化" class="headerlink" title="是否最小化，最大化"></a>是否最小化，最大化</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">IsIconic</span>()==<span class="literal">true</span>;  是最小化</span><br><span class="line"><span class="built_in">IsZoomed</span>()==<span class="literal">true</span>;  是最大化</span><br></pre></td></tr></table></figure>
+
+<h1 id="获取命令行参数"><a href="#获取命令行参数" class="headerlink" title="获取命令行参数"></a>获取命令行参数</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">CString sCmdline = ::<span class="built_in">GetCommandLine</span>();</span><br><span class="line"><span class="built_in">AfxMessageBox</span>(sCmdline);</span><br><span class="line"></span><br><span class="line">将获取到 <span class="string">&quot;C:\test\app.exe  -1 -2 &quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; __argc; i++)</span><br><span class="line">&#123;</span><br><span class="line">	__argv[i];</span><br><span class="line">	<span class="built_in">AfxMessageBox</span>(__argv[i]);</span><br><span class="line">&#125;</span><br><span class="line">将依次得到<span class="string">&quot;C:\test\app.exe&quot;</span>，<span class="string">&quot;-1&quot;</span>， <span class="string">&quot;-2&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="启动时隐藏窗口"><a href="#启动时隐藏窗口" class="headerlink" title="启动时隐藏窗口"></a>启动时隐藏窗口</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ShowWindow</span>(SW_HIDE);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CIoTBackendDlg::OnWindowPosChanging</span><span class="params">(WINDOWPOS* lpwndpos)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	CDialogEx::<span class="built_in">OnWindowPosChanging</span>(lpwndpos);</span><br><span class="line"></span><br><span class="line">	lpwndpos-&gt;flags &amp;= ~SWP_SHOWWINDOW;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="最小化到系统托盘"><a href="#最小化到系统托盘" class="headerlink" title="最小化到系统托盘"></a>最小化到系统托盘</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">在OnInitDialog添加</span><br><span class="line"><span class="built_in">ShowWindow</span>(SW_MINIMIZE)；<span class="comment">//注意此处是最小化，不是SW_HIDE</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">在****Dlg.cpp文件里面去找OnSysCommand函数  </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CLongtimeNoseeDlg::OnSysCommand</span><span class="params">(UINT nID, LPARAM lParam)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="keyword">if</span> ((nID &amp; <span class="number">0xFFF0</span>) == IDM_ABOUTBOX)</span><br><span class="line"> &#123;</span><br><span class="line">  CAboutDlg dlgAbout;</span><br><span class="line">  dlgAbout.<span class="built_in">DoModal</span>();</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">if</span>(nID==SC_MINIMIZE)</span><br><span class="line"> &#123;</span><br><span class="line">  <span class="built_in">ToTray</span>();</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">else</span></span><br><span class="line"> &#123;</span><br><span class="line">  CDialog::<span class="built_in">OnSysCommand</span>(nID, lParam);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="在任务栏隐藏对话框"><a href="#在任务栏隐藏对话框" class="headerlink" title="在任务栏隐藏对话框"></a>在任务栏隐藏对话框</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ModifyStyleEx</span>(WS_EX_APPWINDOW, WS_EX_TOOLWINDOW);</span><br></pre></td></tr></table></figure>
+
+<h1 id="使对话框为顶层窗口"><a href="#使对话框为顶层窗口" class="headerlink" title="使对话框为顶层窗口"></a>使对话框为顶层窗口</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">SetWindowPos</span>(&amp;CWnd::wndNoTopMost, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, SWP_NOMOVE|SWP_NOSIZE);</span><br></pre></td></tr></table></figure>
+
+<h1 id="在运行时添加最大化，最小化按钮"><a href="#在运行时添加最大化，最小化按钮" class="headerlink" title="在运行时添加最大化，最小化按钮"></a>在运行时添加最大化，最小化按钮</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">SetWindowLong</span>(<span class="keyword">this</span>-&gt;m_hWnd, GWL_STYLE,</span><br><span class="line">            <span class="built_in">GetWindowLong</span>(<span class="keyword">this</span>-&gt;m_hWnd, GWL_STYLE) |</span><br><span class="line">            WS_MINIMIZEBOX | WS_MAXIMIZEBOX);</span><br><span class="line"><span class="built_in">UpdateWindow</span>();</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>使能对话框右上角关闭按钮</li>
+</ol>
+<pre><code>在OnInitDialog中
+
+方法一：
+   CMenu* menu = GetSystemMenu(FALSE);
+   menu-&gt;ModifyMenu(SC_CLOSE, MF_BYCOMMAND | MF_GRAYED );
+
+方法二：
+   CMenu* menu = GetSystemMenu(FALSE);
+   menu-&gt;EnableMenuItem(SC_CLOSE, MF_BYCOMMAND | MF_GRAYED);
+</code></pre>
+<h1 id="当对话框一部分在屏幕外时，显示全部对话框"><a href="#当对话框一部分在屏幕外时，显示全部对话框" class="headerlink" title="当对话框一部分在屏幕外时，显示全部对话框"></a>当对话框一部分在屏幕外时，显示全部对话框</h1><p><code>SendMessage(DM_REPOSITION);</code></p>
+<ol start="6">
+<li>改变鼠标外形</li>
+</ol>
+<pre><code>添加 WM_SETCURSOR 消息映射函数
+
+BOOL CTest6Dlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
+&#123;
+     SetCursor(AfxGetApp()-&gt;LoadStandardCursor(IDC_HELP));
+
+     return 0;  
+&#125;
+</code></pre>
+<h1 id="改变对话框背景色和文本颜色"><a href="#改变对话框背景色和文本颜色" class="headerlink" title="改变对话框背景色和文本颜色"></a>改变对话框背景色和文本颜色</h1><p>在 InitInstance 中添加</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">OnPaint</span><br><span class="line"></span><br><span class="line">CRect   rect;</span><br><span class="line"><span class="built_in">GetClientRect</span>(rect);</span><br><span class="line">dc.<span class="built_in">FillSolidRect</span>(rect, <span class="built_in">RGB</span>(<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>));     <span class="comment">//设置为绿色背景</span></span><br></pre></td></tr></table></figure>
+<h1 id="改变对话框caption上的图标"><a href="#改变对话框caption上的图标" class="headerlink" title="改变对话框caption上的图标"></a>改变对话框caption上的图标</h1><pre><code>导入自己的图标资源到工程中，把原来ID为 IDR_MAINFRAME 的资源删除，把新的图标的ID命名为IDR_MAINFRAME
+</code></pre>
+<h1 id="在主对话框显示前，显示一个login对话框"><a href="#在主对话框显示前，显示一个login对话框" class="headerlink" title="在主对话框显示前，显示一个login对话框"></a>在主对话框显示前，显示一个login对话框</h1><pre><code> BOOL CTest6App::InitInstance()
+ &#123;
+      //...
+      int nResponse;
+      CLoginDlg loginDlg;
+
+      nResponse = loginDlg.DoModal();
+      if (nResponse == IDOK)
+      &#123;
+      &#125;
+      if (nResponse == IDCANCEL)
+      &#123;
+           return FALSE;
+      &#125;
+
+      CTest6Dlg dlg;
+      m_pMainWnd = &amp;dlg;
+      int nResponse = dlg.DoModal();
+      if (nResponse == IDOK )
+      &#123;
+      &#125;
+      else if (nResponse == IDCANCEL)
+      &#123;
+      &#125;
+      return FALSE;
+ &#125;
+</code></pre>
+<p>然后重载CLoginDlg对话框的哦OnOK()，在其中判断条件</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CLoginDlg::OnOK</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">     <span class="keyword">if</span> (条件满足)</span><br><span class="line">        CDialog::<span class="built_in">OnOK</span>();</span><br><span class="line">     <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">AfxMessageBox</span>(_T(<span class="string">&quot;invalid password!&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="在对话框中添加工具栏"><a href="#在对话框中添加工具栏" class="headerlink" title="在对话框中添加工具栏"></a>在对话框中添加工具栏</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">方法一：添加以下代码到 OnInitDialog 中</span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> ( !m_wndToolBar.<span class="built_in">Create</span>(<span class="keyword">this</span>) || !m_wndToolBar.<span class="built_in">LoadToolBar</span>(IDR_TOOLBAR1) )</span><br><span class="line"> &#123;</span><br><span class="line">      <span class="built_in">TRACE0</span>(<span class="string">&quot;Failed to Create Dialog Toolbar/n&quot;</span>);</span><br><span class="line">      <span class="built_in">EndDialog</span>(IDCANCEL);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> CRect rcClientOld; <span class="comment">// 久客户区RECT</span></span><br><span class="line"> CRect rcClientNew; <span class="comment">// 加入TOOLBAR后的CLIENT RECT</span></span><br><span class="line"> <span class="built_in">GetClientRect</span>(rcClientOld); <span class="comment">//</span></span><br><span class="line"> <span class="comment">// Called to reposition and resize control bars in the client area of a window</span></span><br><span class="line"> <span class="comment">// The reposQuery FLAG does not really traw the Toolbar.  It only does the calculations.</span></span><br><span class="line"> <span class="comment">// And puts the new ClientRect values in rcClientNew so we can do the rest of the Math.</span></span><br><span class="line"> <span class="comment">//重新计算RECT大小</span></span><br><span class="line"> <span class="built_in">RepositionBars</span>(AFX_IDW_CONTROLBAR_FIRST,</span><br><span class="line">                   AFX_IDW_CONTROLBAR_LAST,</span><br><span class="line">                   <span class="number">0</span>,</span><br><span class="line">                   reposQuery,</span><br><span class="line">                   rcClientNew);</span><br><span class="line"></span><br><span class="line"><span class="comment">// All of the Child Windows (Controls) now need to be moved so the Tollbar does not cover them up.</span></span><br><span class="line"> <span class="comment">//所有的子窗口将被移动，以免被TOOLBAR覆盖</span></span><br><span class="line"> <span class="comment">// Offest to move all child controls after adding Tollbar</span></span><br><span class="line"> <span class="comment">//计算移动的距离</span></span><br><span class="line"> <span class="function">CPoint <span class="title">ptOffset</span><span class="params">(rcClientNew.left-rcClientOld.left,</span></span></span><br><span class="line"><span class="params"><span class="function">   rcClientNew.top-rcClientOld.top)</span></span>;</span><br><span class="line"></span><br><span class="line"> CRect rcChild;</span><br><span class="line"> CWnd* pwndChild = <span class="built_in">GetWindow</span>(GW_CHILD);  <span class="comment">//得到子窗口</span></span><br><span class="line"> <span class="keyword">while</span>(pwndChild) <span class="comment">// 处理所有子窗口</span></span><br><span class="line"> &#123;</span><br><span class="line">      <span class="comment">//移动所有子窗口</span></span><br><span class="line">     pwndChild-&gt;<span class="built_in">GetWindowRect</span>(rcChild);</span><br><span class="line">      <span class="built_in">ScreenToClient</span>(rcChild);</span><br><span class="line">      rcChild.<span class="built_in">OffsetRect</span>(ptOffset);</span><br><span class="line">      pwndChild-&gt;<span class="built_in">MoveWindow</span>(rcChild,FALSE);</span><br><span class="line">      pwndChild = pwndChild-&gt;<span class="built_in">GetNextWindow</span>();</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> CRect rcWindow;</span><br><span class="line"> <span class="built_in">GetWindowRect</span>(rcWindow); <span class="comment">// 得到对话框RECT</span></span><br><span class="line"> rcWindow.right += rcClientOld.<span class="built_in">Width</span>() - rcClientNew.<span class="built_in">Width</span>(); <span class="comment">// 修改对话框尺寸</span></span><br><span class="line"> rcWindow.bottom += rcClientOld.<span class="built_in">Height</span>() - rcClientNew.<span class="built_in">Height</span>();</span><br><span class="line"> <span class="built_in">MoveWindow</span>(rcWindow,FALSE); <span class="comment">// Redraw Window</span></span><br><span class="line"></span><br><span class="line"> <span class="built_in">RepositionBars</span>(AFX_IDW_CONTROLBAR_FIRST,AFX_IDW_CONTROLBAR_LAST,<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<p>方法二：<br>     <a target="_blank" rel="noopener" href="http://www.codeproject.com/dialog/dlgtoolstatusbar.asp">http://www.codeproject.com/dialog/dlgtoolstatusbar.asp</a></p>
+<ol start="11">
+<li>响应对话框的最大化、最小化、关闭、恢复事件</li>
+</ol>
+<ul>
+<li><p>添加 WM_SYSCOMMAND 消息映射函数</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CTest6Dlg::OnSysCommand</span><span class="params">(UINT nID, LPARAM lParam)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">     <span class="keyword">if</span> ( (nID &amp; <span class="number">0xFFF0</span>) == IDM_ABOUTBOX )</span><br><span class="line">     &#123;</span><br><span class="line">          CAboutDlg dlgAbout;</span><br><span class="line">          dlgAbout.<span class="built_in">DoModal</span>();</span><br><span class="line"> &#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">     <span class="keyword">if</span> ( nID == SC_MAXIMIZE )</span><br><span class="line">     &#123;</span><br><span class="line">          <span class="built_in">AfxMessageBox</span>(_T(<span class="string">&quot;最大化&quot;</span>));</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">else</span> <span class="keyword">if</span> ( nID == SC_MINIMIZE )  </span><br><span class="line">     &#123;</span><br><span class="line">          <span class="built_in">AfxMessageBox</span>(_T(<span class="string">&quot;最小化&quot;</span>));</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">else</span> <span class="keyword">if</span> ( nID == SC_CLOSE )</span><br><span class="line">     &#123;</span><br><span class="line">          <span class="built_in">AfxMessageBox</span>(_T(<span class="string">&quot;关闭&quot;</span>));</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     CDialog::<span class="built_in">OnSysCommand</span>(nID, lParam);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>添加 WM_SIZE 消息映射函数</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CTest6Dlg::OnSize</span><span class="params">(UINT nType, <span class="keyword">int</span> cx, <span class="keyword">int</span> cy)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">     CDialog::<span class="built_in">OnSize</span>(nType, cx, cy);</span><br><span class="line"></span><br><span class="line">     <span class="keyword">if</span> ( nType == SIZE_MAXIMIZED )</span><br><span class="line">     &#123;</span><br><span class="line">          <span class="built_in">AfxMessageBox</span>(_T(<span class="string">&quot;最大化&quot;</span>));</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">else</span> <span class="keyword">if</span> ( nType == SIZE_MINIMIZED )</span><br><span class="line">     &#123;</span><br><span class="line">          <span class="built_in">AfxMessageBox</span>(_T(<span class="string">&quot;最小化&quot;</span>));</span><br><span class="line">     &#125;  </span><br><span class="line">     <span class="keyword">else</span> <span class="keyword">if</span> ( nType == SIZE_RESTORED )</span><br><span class="line">     &#123;</span><br><span class="line">          <span class="built_in">AfxMessageBox</span>(_T(<span class="string">&quot;恢复&quot;</span>));</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="改变大小"><a href="#改变大小" class="headerlink" title="改变大小"></a>改变大小</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">this</span>-&gt;<span class="built_in">SetWindowPos</span>(<span class="literal">NULL</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1200</span>, <span class="number">800</span>, SWP_NOMOVE | SWP_NOZORDER);</span><br></pre></td></tr></table></figure>
+
+<h1 id="代码实现窗口最小化，最大化，关闭"><a href="#代码实现窗口最小化，最大化，关闭" class="headerlink" title="代码实现窗口最小化，最大化，关闭"></a>代码实现窗口最小化，最大化，关闭</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">PostMessage</span>(WM_SYSCOMMAND,  SC_MINIMIZE);</span><br><span class="line"><span class="built_in">PostMessage</span>(WM_SYSCOMMAND,  SC_MAXIMIZE);</span><br><span class="line"><span class="built_in">PostMessage</span>(WM_SYSCOMMAND,  SC_CLOSE);</span><br></pre></td></tr></table></figure>
+<h2 id="按下ESC和ENTER键时禁止关闭对话框"><a href="#按下ESC和ENTER键时禁止关闭对话框" class="headerlink" title="按下ESC和ENTER键时禁止关闭对话框"></a>按下ESC和ENTER键时禁止关闭对话框</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">BOOL <span class="title">CMRLGaugerDrawerDlg::PreTranslateMessage</span><span class="params">(MSG* pMsg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (pMsg-&gt;message == WM_KEYDOWN)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (pMsg-&gt;wParam == VK_RETURN || pMsg-&gt;wParam == VK_ESCAPE)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">// Do not process further</span></span><br><span class="line">			<span class="keyword">return</span> TRUE;                </span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> CDialogEx::<span class="built_in">PreTranslateMessage</span>(pMsg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="右上角叉事件"><a href="#右上角叉事件" class="headerlink" title="右上角叉事件"></a>右上角叉事件</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CmeasurejunmaiDlg::OnSysCommand</span><span class="params">(UINT nID, LPARAM lParam)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> ((nID &amp; <span class="number">0xFFF0</span>) == IDM_ABOUTBOX)</span><br><span class="line">	&#123;</span><br><span class="line">		CAboutDlg dlgAbout;</span><br><span class="line">		dlgAbout.<span class="built_in">DoModal</span>();</span><br><span class="line">	&#125;<span class="keyword">else</span> <span class="keyword">if</span> ((nID&amp;<span class="number">0xFFF0</span>) == SC_CLOSE)</span><br><span class="line">	&#123;</span><br><span class="line">		m_flag |= FLAG_QUIT;</span><br><span class="line">	&#125;</span><br><span class="line">	CDialogEx::<span class="built_in">OnSysCommand</span>(nID, lParam);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>方法一：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">(<span class="number">1</span>) 重载OnCancel和OnOk，屏蔽其中的CDialog::<span class="built_in">OnCancel</span>()和CDialog::<span class="built_in">OnOk</span>();</span><br><span class="line">(<span class="number">2</span>) 添加以下代码</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CTest6Dlg::OnSysCommand</span><span class="params">(UINT nID, LPARAM lParam)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ((nID &amp; <span class="number">0xFFF0</span>) == IDM_ABOUTBOX)</span><br><span class="line">     &#123;</span><br><span class="line">        CAboutDlg dlgAbout;   <span class="comment">//if you have an about dialog</span></span><br><span class="line">         dlgAbout.<span class="built_in">DoModal</span>();</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">else</span> <span class="keyword">if</span> ((nID &amp; <span class="number">0xFFF0</span>) == SC_CLOSE)</span><br><span class="line">     &#123;</span><br><span class="line">         <span class="comment">//用户点击右上角&quot;X&quot;</span></span><br><span class="line">         <span class="built_in">EndDialog</span>(IDOK);  </span><br><span class="line"></span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">else</span></span><br><span class="line">     &#123;</span><br><span class="line">         CDialog::<span class="built_in">OnSysCommand</span>(nID, lParam);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>方法二：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">BOOL <span class="title">CTest6Dlg::PreTranslateMessage</span><span class="params">(MSG* pMsg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">     <span class="keyword">if</span> ( pMsg-&gt;message == WM_KEYDOWN )</span><br><span class="line">     &#123;</span><br><span class="line">          <span class="built_in"><span class="keyword">switch</span></span>(pMsg-&gt;wParam)</span><br><span class="line">          &#123;</span><br><span class="line">          <span class="keyword">case</span> VK_ESCAPE:</span><br><span class="line">           <span class="keyword">return</span> TRUE; <span class="comment">//直接返回TRUE</span></span><br><span class="line">           <span class="keyword">break</span>;</span><br><span class="line">          <span class="keyword">case</span> VK_RETURN:</span><br><span class="line">           <span class="keyword">return</span> TRUE;</span><br><span class="line">           <span class="keyword">break</span>;</span><br><span class="line">          &#125;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> CDialog::<span class="built_in">PreTranslateMessage</span>(pMsg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>方法三：<br>   Q122489：<br>   How to Disable Default Pushbutton Handling for MFC Dialog<br>   <a target="_blank" rel="noopener" href="http://support.microsoft.com/kb/122489/en-us">http://support.microsoft.com/kb/122489/en-us</a></p>
+<p>14.在对话框中处理键盘鼠标消息</p>
+<p>处理PreTranslateMessage消息</p>
+<p>以下代码示例只演示了键盘WM_KEYDOWN消息，你也可以处理鼠标消息，比如WM_LBUTTONDOWN,WM_LBUTTONUP,WM_RBUTTONDOWN等。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">BOOL <span class="title">CTest6Dlg::PreTranslateMessage</span><span class="params">(MSG* pMsg)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/**********************************************************/</span></span><br><span class="line">    <span class="comment">/*    当焦点在combobox(drop down风格)的edit上,响应回车            */</span></span><br><span class="line">    <span class="comment">/***********************************************************/</span></span><br><span class="line">    <span class="keyword">if</span> ( pMsg-&gt;message == WM_KEYDOWN )</span><br><span class="line">    &#123;         </span><br><span class="line">        <span class="built_in"><span class="keyword">switch</span></span>( pMsg-&gt;wParam )</span><br><span class="line">        &#123;</span><br><span class="line">        <span class="keyword">case</span> VK_RETURN:</span><br><span class="line">            CEdit *pEdit = (CEdit*)m_combo1.<span class="built_in">GetWindow</span>(GW_CHILD);</span><br><span class="line">            <span class="keyword">if</span>(pMsg-&gt;hwnd == pEdit-&gt;m_hWnd )</span><br><span class="line">            &#123;  </span><br><span class="line">                 <span class="built_in">AfxMessageBox</span>(<span class="string">&quot;在combobox的edit中按下了Enter!&quot;</span>);</span><br><span class="line">            &#125;             </span><br><span class="line">            <span class="keyword">return</span> TRUE;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/****************************************/</span></span><br><span class="line">    <span class="comment">/*   ALT为WM_SYSKEYDOWN                  */</span></span><br><span class="line">    <span class="comment">/****************************************/</span></span><br><span class="line">    <span class="keyword">if</span>( pMsg-&gt;message == WM_SYSKEYDOWN )</span><br><span class="line">    &#123;    </span><br><span class="line">        <span class="built_in"><span class="keyword">switch</span></span>( pMsg-&gt;wParam )</span><br><span class="line">        &#123;</span><br><span class="line">        <span class="keyword">case</span> VK_F1:     </span><br><span class="line">            <span class="keyword">if</span>(::<span class="built_in">GetKeyState</span>(VK_MENU) &lt; <span class="number">0</span>)<span class="comment">//ALT+F1</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">AfxMessageBox</span>(<span class="string">&quot;按下了ALT+F1&quot;</span>);</span><br><span class="line">                <span class="keyword">return</span> TRUE;</span><br><span class="line">            &#125;             </span><br><span class="line">        &#125;         </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/****************************************/</span></span><br><span class="line">    <span class="comment">/*     在clistctrl中按ctrl+A选中所有项  */</span></span><br><span class="line">    <span class="comment">/****************************************/</span></span><br><span class="line">    <span class="keyword">if</span>( pMsg-&gt;message == WM_KEYDOWN )</span><br><span class="line">    &#123;    </span><br><span class="line">        <span class="keyword">if</span>(pMsg-&gt;hwnd == <span class="built_in">GetDlgItem</span>(IDC_LIST1)-&gt;m_hWnd)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in"><span class="keyword">switch</span></span>( pMsg-&gt;wParam )</span><br><span class="line">            &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">65</span>:<span class="comment">//A     </span></span><br><span class="line">              <span class="keyword">if</span>(::<span class="built_in">GetKeyState</span>(VK_CONTROL) &lt; <span class="number">0</span>)<span class="comment">//Shift+enter</span></span><br><span class="line">              &#123;</span><br><span class="line">                    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;m_list.<span class="built_in">GetItemCount</span>(); i++)</span><br><span class="line">                    &#123;</span><br><span class="line">                        m_list.<span class="built_in">SetItemState</span>(i, LVIS_SELECTED|LVIS_FOCUSED,</span><br><span class="line">                                            LVIS_SELECTED|LVIS_FOCUSED);</span><br><span class="line">                    &#125;</span><br><span class="line">              &#125;</span><br><span class="line">              <span class="keyword">return</span> TRUE;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;  </span><br><span class="line"></span><br><span class="line">    <span class="comment">/****************************************/</span></span><br><span class="line">    <span class="comment">/*    当焦点在combobox,弹出自定义菜单   */</span></span><br><span class="line">    <span class="comment">/****************************************/</span>      </span><br><span class="line">    <span class="keyword">if</span>(pMsg-&gt;message == WM_RBUTTONDOWN)</span><br><span class="line">    &#123;</span><br><span class="line">        CEdit *pEdit = (CEdit*)m_combo1.<span class="built_in">GetWindow</span>(GW_CHILD);</span><br><span class="line">        <span class="keyword">if</span>(pMsg-&gt;hwnd == pEdit-&gt;m_hWnd)</span><br><span class="line">        &#123;</span><br><span class="line">            DWORD dwPos = <span class="built_in">GetMessagePos</span>();</span><br><span class="line">            <span class="function">CPoint <span class="title">point</span><span class="params">( LOWORD(dwPos), HIWORD(dwPos) )</span></span>;</span><br><span class="line">            <span class="built_in">ScreenToClient</span>(&amp;point);</span><br><span class="line">            <span class="built_in">ClientToScreen</span>(&amp;point);</span><br><span class="line"></span><br><span class="line">            CMenu menu;</span><br><span class="line">            <span class="built_in">VERIFY</span>( menu.<span class="built_in">LoadMenu</span>( IDR_MENU1 ) );</span><br><span class="line">            CMenu* popup = menu.<span class="built_in">GetSubMenu</span>(<span class="number">0</span>);</span><br><span class="line">            <span class="built_in">ASSERT</span>( popup != <span class="literal">NULL</span> );</span><br><span class="line">            popup-&gt;<span class="built_in">TrackPopupMenu</span>(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, <span class="keyword">this</span> );</span><br><span class="line">        &#125;         </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> CDialog::<span class="built_in">PreTranslateMessage</span>(pMsg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<ol start="15">
+<li>对话框启动即隐藏</li>
+</ol>
+<pre><code>添加 WM_SHOWWINDOW 的消息映射
+
+ void CTest6Dlg::OnShowWindow(BOOL bShow, UINT nStatus)
+ &#123;
+      if ( GetStyle() &amp; WS_VISIBLE )
+      &#123;
+           CDialog::OnShowWindow(bShow, nStatus);
+      &#125;
+      else
+      &#123;
+           long Style = ::GetWindowLong(*this, GWL_STYLE);
+           ::SetWindowLong(*this, GWL_STYLE, Style | WS_VISIBLE);
+           CDialog::OnShowWindow(SW_HIDE, nStatus);
+      &#125;
+ &#125;
+</code></pre>
+<p>16.对话框自动停靠在屏幕边</p>
+<pre><code>const int DETASTEP = 50;
+ BOOL AdjustPos(CWnd *pWnd, CRect* lpRect)
+ &#123;
+    //自动靠边
+    int iSX = GetSystemMetrics(SM_CXFULLSCREEN);
+    int iSY = GetSystemMetrics(SM_CYFULLSCREEN);
+    RECT rWorkArea;
+    BOOL bResult = SystemParametersInfo(SPI_GETWORKAREA, sizeof(RECT), &amp;rWorkArea, 0);
+
+    CRect rcWA;
+    if ( !bResult )
+    &#123;
+        //如果调用不成功就利用GetSystemMetrics获取屏幕面积
+        rcWA = CRect(0,0,iSX,iSY);
+    &#125;
+    else
+        rcWA = rWorkArea;
+
+    int iX = lpRect-&gt;left;
+    int iY = lpRect-&gt;top;
+    if ( iX &lt; rcWA.left + DETASTEP &amp;&amp; iX!=rcWA.left )
+    &#123;
+        //调整左
+        pWnd-&gt;SetWindowPos(NULL,rcWA.left,iY,0,0,SWP_NOSIZE);
+        lpRect-&gt;OffsetRect(rcWA.left-iX,0);
+        AdjustPos(lpRect);
+        return TRUE;
+    &#125;
+    if ( iY &lt; rcWA.top + DETASTEP &amp;&amp; iY!=rcWA.top )
+    &#123;
+        //调整上
+        pWnd-&gt;SetWindowPos(NULL ,iX,rcWA.top,0,0,SWP_NOSIZE);
+        lpRect-&gt;OffsetRect(0,rcWA.top-iY);
+        AdjustPos(lpRect);
+        return TRUE;
+    &#125;
+    if ( iX + lpRect-&gt;Width() &gt; rcWA.right - DETASTEP &amp;&amp; iX !=rcWA.right-lpRect-&gt;Width() )
+    &#123;
+        //调整右
+        pWnd-&gt;SetWindowPos(NULL ,rcWA.right-rcW.Width(),iY,0,0,SWP_NOSIZE);
+        lpRect-&gt;OffsetRect(rcWA.right-lpRect-&gt;right,0);
+        AdjustPos(lpRect);
+        return TRUE;
+    &#125;
+    if ( iY + lpRect-&gt;Height() &gt; rcWA.bottom - DETASTEP &amp;&amp; iY !=rcWA.bottom-lpRect-&gt;Height() )
+    &#123;
+        //调整下
+        pWnd-&gt;SetWindowPos(NULL ,iX,rcWA.bottom-rcW.Height(),0,0,SWP_NOSIZE);
+        lpRect-&gt;OffsetRect(0,rcWA.bottom-lpRect-&gt;bottom);
+        return TRUE;
+    &#125;
+    return FALSE;
+&#125;
+
+//然后在ONMOVEING事件中使用如下过程调用
+CRect r=*pRect;
+AdjustPos(this, &amp;r);
+*pRect=(RECT)r;
+</code></pre>
+<p>17.单击窗口任意位置都可拖动窗口</p>
+<pre><code>方法一：
+ 添加 WM_LBUTTONDOWN 的消息映射
+ void CTest6Dlg::OnLButtonDown(UINT nFlags, CPoint point)
+ &#123;
+      PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, 0);
+
+      CDialog::OnLButtonDown(nFlags, point);
+ &#125;
+
+方法二：
+添加 WM_NCHITTEST 的消息映射
+注意：在classwizard-&gt;message中找不到WM_NCHITTEST的，需要在选项卡class info-&gt;message filter中选择window后该消息才会出现在message中。
+  void CTest6Dlg::OnNCHitTest(CPoint point)
+ &#123;
+        return HTCAPTION;
+  //    return CDialog::OnNCHitTest(point);
+ &#125;
+
+ 或者参考
+    http://msdn.microsoft.com/msdnmag/issues/02/12/CQA/default.aspx
+</code></pre>
+<p>18.用Enter键替换Tab键实现焦点切换</p>
+<pre><code> BOOL CTest6Dlg::PreTranslateMessage(MSG* pMsg)
+ &#123;
+    if ( pMsg-&gt;message == WM_KEYDOWN )
+      &#123;
+          if ( pMsg-&gt;wParam == VK_RETURN )
+               pMsg-&gt;wParam = VK_TAB;
+      &#125;
+      return CDialog::PreTranslateMessage(pMsg);
+ &#125;
+</code></pre>
+<p>19.在对话框添加快捷键</p>
+<pre><code> (1) 在CXXXApp中类中添加声明
+    HACCEL m_haccel;
+ (2) 在resource view中右键点击树的根目录，选择insert，添加一个新的Accelerator，默认ID为IDR_ACCELERATOR1。
+     在其中添加相应菜单的快捷键。
+ (3) 在BOOL CXXXApp::InitInstance()中添加代码
+    m_haccel = LoadAccelerators(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_ACCELERATOR1));
+ (4) 添加CXXXApp类的 ProcessMessageFilter 消息映射函数
+     BOOL CTest6App::ProcessMessageFilter(int code, LPMSG lpMsg)
+     &#123;
+          if ( m_haccel )
+          &#123;
+              if ( ::TranslateAccelerator(m_pMainWnd-&gt;m_hWnd, m_haccel, lpMsg) )
+                   return TRUE;
+          &#125;
+          return CWinApp::ProcessMessageFilter(code, lpMsg);
+     &#125;
+</code></pre>
+<p>或者参考<br>Q100770：<br>How to use accelerator keys and a main menu on the dialog box in Visual C++<br><a target="_blank" rel="noopener" href="http://support.microsoft.com/kb/100770/en-us">http://support.microsoft.com/kb/100770/en-us</a></p>
+<p>Adding Hot Keys to your Application<br><a target="_blank" rel="noopener" href="http://msdn.microsoft.com/msdnmag/issues/1200/c/default.aspx">http://msdn.microsoft.com/msdnmag/issues/1200/c/default.aspx</a></p>
+<p>20.对话框全屏</p>
+<pre><code>int cx, cy;
+HDC dc = ::GetDC(NULL);
+cx = GetDeviceCaps(dc,HORZRES) + GetSystemMetrics(SM_CXBORDER);
+cy = GetDeviceCaps(dc,VERTRES) + GetSystemMetrics(SM_CYBORDER);
+::ReleaseDC(0,dc);
+
+// Remove caption and border
+SetWindowLong(m_hWnd, GWL_STYLE,
+                GetWindowLong(m_hWnd, GWL_STYLE) &amp; (~(WS_CAPTION | WS_BORDER)));
+
+// Put window on top and expand it to fill screen
+::SetWindowPos(m_hWnd, HWND_TOPMOST,
+      -(GetSystemMetrics(SM_CXBORDER)+1),
+      -(GetSystemMetrics(SM_CYBORDER)+1),
+      cx+1,cy+1, SWP_NOZORDER);
+或参考
+    http://www.codeguru.com/cpp/w-d/dislog/dialog-basedapplications/article.php/c1837/
+</code></pre>
+<p>21.控制对话框最大最小尺寸</p>
+<pre><code>(1) 对话框的属性的必须是resizing的
+(2) 打开classwizard-&gt;class info标签页-&gt;message filter中选择window
+(3) 添加 WM_GETMINMAXINFO 消息映射
+    void CTest6Dlg::OnGetMinMaxInfo(MINMAXINFO *lpMMI)
+    &#123;
+         lpMMI-&gt;ptMinTrackSize = CPoint(200, 200);
+    &#125;
+</code></pre>
+<ol start="22">
+<li>创建无模式对话框</li>
+</ol>
+<p>Q103788：<br>Creating a Modeless Dialog Box with MFC Libraries<br><a target="_blank" rel="noopener" href="http://support.microsoft.com/kb/103788/EN-US/">http://support.microsoft.com/kb/103788/EN-US/</a></p>
+<p>Visual C++ MFC Samples<br>MODELESS Sample: Uses a CDialog Object as a Modeless Dialog Box<br><a target="_blank" rel="noopener" href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcsample/html/_sample_mfc_MODELESS.asp">http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcsample/html/_sample_mfc_MODELESS.asp</a></p>
+<p>23.在对话框中改变菜单项状态(enable/disable, check/uncheck, change text)</p>
+<p>Q242577：<br>You cannot change the state of a menu item from its command user-interface handler if the menu is attached to a dialog box in Visual C++<br><a target="_blank" rel="noopener" href="http://support.microsoft.com/kb/242577/en-us">http://support.microsoft.com/kb/242577/en-us</a></p>
+<ol start="24">
+<li>按下F1出现帮助</li>
+</ol>
+<p>Q141724：<br>Context-Sensitive Help in a CDialog Object<br><a target="_blank" rel="noopener" href="http://support.microsoft.com/kb/141724/en-us">http://support.microsoft.com/kb/141724/en-us</a></p>
+<p>msdn中的介绍<br><a target="_blank" rel="noopener" href="http://msdn2.microsoft.com/en-us/library/dyd1yfww.aspx">http://msdn2.microsoft.com/en-us/library/dyd1yfww.aspx</a></p>
+<p>或者如果你要屏蔽按下F1后出现的“找不到*.hlp文件”的提示对话框<br>添加 WM_HELPINFO 消息映射<br>BOOL CTest6Dlg::OnHelpInfo(HELPINFO* pHelpInfo)<br>{<br>     return TRUE;<br>    //return CDialog::OnHelpInfo(pHelpInfo);//屏蔽该句<br>}</p>
+<ol start="25">
+<li>对话框初始化设置输入焦点的问题</li>
+</ol>
+<p>默认情况下，对话框初始化显示的焦点按照在对话框编辑期间设置的tab order的第一个控件来设置的。（设置tab order可在对话框的resource view中用Ctrl+D显示出来，点鼠标进行顺序设置）。如果想人为的改变初始化时的输入焦点，可在对话框的OnInitDialog中把return  TRUE; 改为 return  FALSE;</p>
+<p>MSDN上的解释如下：<br>Return Value</p>
+<p>Specifies whether the application has set the input focus to one of the controls in the dialog box. If OnInitDialog returns nonzero, Windows sets the input focus to the first control in the dialog box. The application can return 0 only if it has explicitly set the input focus to one of the controls in the dialog box.</p>
+<ol start="26">
+<li>在对话框间传递数据</li>
+</ol>
+<p>CDlg1::OnButton1()<br>{<br>      CDlg2 dlg2;<br>      dlg2.m_str = _T(“你好”; )<br>      dlg2.m_bJudge = TRUE;<br>      dlg2.DoModal();<br>}</p>
+<p>//Dlg2.h<br>public:<br>     CString m_str;<br>     BOOL m_bJudge;</p>
+<p>//Dlg2.cpp<br>CDlg2::OnInitDialog()<br>{<br>    if (m_bJudge)<br>        GetDlgItem(IDC_EDIT1)-&gt;SetWindowText(m_str);<br>}</p>
+<ol start="27">
+<li>在 dlg1 中打开 dlg2 时，dlg2 能修改 dlg1 中的成员变量</li>
+</ol>
+<p>//dlg1.cpp<br>    #include “dlg2.h”<br>    CDlg1::OnButton1()<br>    {<br>          CDlg2 dlg2;<br>          dlg2.m_pDlg1 = this;<br>          dlg2.DoModal();<br>    }</p>
+<p>//dlg2.h<br>class CDlg1;//添加dlg1类的声明<br>class CDlg2 : public CDialog<br>{<br>…<br>public:<br>    CDlg1 *m_pDlg1;<br>}</p>
+<p>//dlg2.cpp<br>#include “dlg1.h”</p>
+<p>至此，你可以在dlg2.cpp中通过m_pDlg1操作CDlg1类中的成员变量了。</p>
+<ol start="28">
+<li>改变对话框字体，对话框大小改变的问题</li>
+</ol>
+<p>Q145994：<br>How to calculate dialog box units based on the current font in Visual C++<br><a target="_blank" rel="noopener" href="http://support.microsoft.com/kb/q145994/">http://support.microsoft.com/kb/q145994/</a></p>
+<p>Q125681：<br>How To Calculate Dialog Base Units with Non-System-Based Font<br><a target="_blank" rel="noopener" href="http://support.microsoft.com/kb/125681/en-us">http://support.microsoft.com/kb/125681/en-us</a></p>
+<ol start="29">
+<li>进行大数据量计算的时候，导致界面挂起无响应的问题</li>
+</ol>
+<pre><code>当在程序中需要进行大数据量计算的时候(比如搜索磁盘，大数据量传输等)，由于这些计算过程是在界面线程(UI Process)中，由此引发了界面线程的消息阻塞，所以需要重新开一个工作线程(work process)来处理计算过程。
+</code></pre>
+<p>下面是一个简单的开一个工作线程的实现:<br>//xxxdlg.h<br>static UINT MyThread(LPVOID pParam);<br>CWinThread* pMyThread;</p>
+<p>//xxxdlg.cpp<br>CXXXDlg::OnButton1()<br>{<br>     pMyThread = AfxBeginThread(MyThread, this);<br>     pMyThread = NULL;<br>}</p>
+<p>UINT CXXXDlg::MyThread(LPVOID pParam)<br>{<br>     CXXXDlg *pDlg = (CXXXDlg *)pParam;</p>
+<pre><code> //这里添加计算过程
+
+ return 0;
+</code></pre>
+<p>}</p>
+<ol start="30">
+<li>在网上可以找到很多有用的代码,我只是把一些常用的功能列出链接，方便查看</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="http://support.microsoft.com/">http://support.microsoft.com</a><br><a target="_blank" rel="noopener" href="http://www.codeproject.com/dialog/">http://www.codeproject.com/dialog/</a><br><a target="_blank" rel="noopener" href="http://www.codeguru.com/Cpp/W-D/dislog/">http://www.codeguru.com/Cpp/W-D/dislog/</a></p>
+<p>改变对话框大小时同时改变控件大小</p>
+<p><a target="_blank" rel="noopener" href="http://www.codeproject.com/dialog/easysize.asp">http://www.codeproject.com/dialog/easysize.asp</a><br><a target="_blank" rel="noopener" href="http://www.codeproject.com/dialog/resizabledialog.asp">http://www.codeproject.com/dialog/resizabledialog.asp</a><br><a target="_blank" rel="noopener" href="http://www.vchelp.net/vchelp/archive.asp?type_id=5&amp;class_id=1&amp;cata_id=1&amp;article_id=548&amp;search_term=">http://www.vchelp.net/vchelp/archive.asp?type_id=5&amp;class_id=1&amp;cata_id=1&amp;article_id=548&amp;search_term=</a><br><a target="_blank" rel="noopener" href="http://www.vchelp.net/vchelp/archive.asp?type_id=5&amp;class_id=1&amp;cata_id=1&amp;article_id=538&amp;search_term=">http://www.vchelp.net/vchelp/archive.asp?type_id=5&amp;class_id=1&amp;cata_id=1&amp;article_id=538&amp;search_term=</a></p>
+<p>如何在可变大小（resizing）的对话框中实现滚动窗口</p>
+<p>Q262954：<br>How to create a resizeable dialog box with scroll bars in Visual C++<br><a target="_blank" rel="noopener" href="http://support.microsoft.com/default.aspx?scid=kb;en-us;262954">http://support.microsoft.com/default.aspx?scid=kb;en-us;262954</a><br><a target="_blank" rel="noopener" href="http://www.codeproject.com/dialog/scrollablechilddialog.asp">http://www.codeproject.com/dialog/scrollablechilddialog.asp</a></p>
+<p>从某一点或某一边逐渐变大显示对话框</p>
+<p><a target="_blank" rel="noopener" href="http://www.codeproject.com/dialog/canidialog.asp">http://www.codeproject.com/dialog/canidialog.asp</a></p>
+<p>一个重载的MessageBox类</p>
+<p><a target="_blank" rel="noopener" href="http://www.codeproject.com/dialog/xmessagebox.asp">http://www.codeproject.com/dialog/xmessagebox.asp</a></p>
+<p>option设置对话框(左边是树，右边是子对话框)</p>
+<p>实现原理：create多个child类型的对话框，然后全部hide，点击左边树的item时，显示相应子对话框。</p>
+<p>Q103375：<br>MultiDlg.exe Demonstrates Dynamic Child Dialog Boxes<br><a target="_blank" rel="noopener" href="http://support.microsoft.com/kb/103375/en-us">http://support.microsoft.com/kb/103375/en-us</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.codeproject.com/dialog/ezoptionsdlg.asp">http://www.codeproject.com/dialog/ezoptionsdlg.asp</a><br><a target="_blank" rel="noopener" href="http://www.codeproject.com/dialog/csettingsdlg.asp">http://www.codeproject.com/dialog/csettingsdlg.asp</a><br><a target="_blank" rel="noopener" href="http://www.codeguru.com/cpp/w-d/dislog/optionsdialogs/article.php/c1953/">http://www.codeguru.com/cpp/w-d/dislog/optionsdialogs/article.php/c1953/</a><br><a target="_blank" rel="noopener" href="http://www.codeguru.com/cpp/w-d/dislog/optionsdialogs/article.php/c2015/">http://www.codeguru.com/cpp/w-d/dislog/optionsdialogs/article.php/c2015/</a></p>
+<p>实现MSN的右下角的消息弹出提示窗口</p>
+<p><a target="_blank" rel="noopener" href="http://www.codeproject.com/dialog/statusbarmsgwnd.asp">http://www.codeproject.com/dialog/statusbarmsgwnd.asp</a></p>
+<p>Tip of the day(每日一贴)功能的实现</p>
+<p><a target="_blank" rel="noopener" href="http://www.codeproject.com/dialog/XHTMLTipOfTheDay.asp">http://www.codeproject.com/dialog/XHTMLTipOfTheDay.asp</a><br><a target="_blank" rel="noopener" href="http://www.codeguru.com/cpp/w-d/dislog/tipoftheday/article.php/c4993/">http://www.codeguru.com/cpp/w-d/dislog/tipoftheday/article.php/c4993/</a></p>
+<p>不规则对话框</p>
+<p><a target="_blank" rel="noopener" href="http://www.codeproject.com/dialog/SimpleIrregular.asp">http://www.codeproject.com/dialog/SimpleIrregular.asp</a></p>
+<p>扩展和收缩对话框</p>
+<p><a target="_blank" rel="noopener" href="http://www.codeproject.com/dialog/dlgexpand.asp">http://www.codeproject.com/dialog/dlgexpand.asp</a></p>
+<p>对话框渐变色</p>
+<p><a target="_blank" rel="noopener" href="http://www.codeproject.com/dialog/WinMakeInactive.asp">http://www.codeproject.com/dialog/WinMakeInactive.asp</a></p>
+<p>屏幕捕捉</p>
+<p><a target="_blank" rel="noopener" href="http://www.codeproject.com/dialog/screencap.asp">http://www.codeproject.com/dialog/screencap.asp</a></p>
+<p>对话框菜单添加“最近使用文件列表”功能</p>
+<p><a target="_blank" rel="noopener" href="http://www.codeproject.com/dialog/rfldlg.asp">http://www.codeproject.com/dialog/rfldlg.asp</a></p>
+<p>关闭对话框时，逐渐消失</p>
+<p><a target="_blank" rel="noopener" href="http://www.codeguru.com/cpp/w-d/dislog/animation/article.php/c5063/">http://www.codeguru.com/cpp/w-d/dislog/animation/article.php/c5063/</a></p>
+<p>对话框背景bitmap</p>
+<p><a target="_blank" rel="noopener" href="http://www.codeguru.com/cpp/w-d/dislog/bitmapsimages/article.php/c1877/">http://www.codeguru.com/cpp/w-d/dislog/bitmapsimages/article.php/c1877/</a></p>
+<p>透明对话框</p>
+<p><a target="_blank" rel="noopener" href="http://www.codeguru.com/cpp/w-d/dislog/miscellaneous/article.php/c5065/">http://www.codeguru.com/cpp/w-d/dislog/miscellaneous/article.php/c5065/</a><br><a target="_blank" rel="noopener" href="http://www.codeguru.com/cpp/w-d/dislog/miscellaneous/article.php/c5019/">http://www.codeguru.com/cpp/w-d/dislog/miscellaneous/article.php/c5019/</a></p>
+<p>在对话框中创建view</p>
+<p><a target="_blank" rel="noopener" href="http://www.codeguru.com/cpp/w-d/dislog/article.php/c5009/">http://www.codeguru.com/cpp/w-d/dislog/article.php/c5009/</a></p>
+<p>Splash Screen</p>
+<p>Q817372：<br>How to insert a splash screen in a dialog-based application by using Visual C++ .NET or Visual C++ 2005<br><a target="_blank" rel="noopener" href="http://support.microsoft.com/kb/817372/en-us">http://support.microsoft.com/kb/817372/en-us</a>  </p>
+<p>Q815376：<br>How to create and insert a splash screen in an SDI application or in an MDI application by using Visual C++ .NET or Visual C++ 2005<br><a target="_blank" rel="noopener" href="http://support.microsoft.com/kb/815376/en-us">http://support.microsoft.com/kb/815376/en-us</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.codeguru.com/cpp/w-d/dislog/splashscreens/article.php/c2011/">http://www.codeguru.com/cpp/w-d/dislog/splashscreens/article.php/c2011/</a><br><a target="_blank" rel="noopener" href="http://www.codeguru.com/cpp/w-d/dislog/miscellaneous/article.php/c5019/">http://www.codeguru.com/cpp/w-d/dislog/miscellaneous/article.php/c5019/</a><br><a target="_blank" rel="noopener" href="http://www.codeguru.com/cpp/w-d/dislog/splashscreens/article.php/c5029/">http://www.codeguru.com/cpp/w-d/dislog/splashscreens/article.php/c5029/</a></p>
+<p>分割对话框</p>
+<p><a target="_blank" rel="noopener" href="http://www.codeguru.com/cpp/w-d/dislog/splitterwindowswithingdialogs/article.php/c4973/">http://www.codeguru.com/cpp/w-d/dislog/splitterwindowswithingdialogs/article.php/c4973/</a><br><a target="_blank" rel="noopener" href="http://www.codeguru.com/cpp/w-d/dislog/splitterwindowswithingdialogs/article.php/c2031/">http://www.codeguru.com/cpp/w-d/dislog/splitterwindowswithingdialogs/article.php/c2031/</a><br><a target="_blank" rel="noopener" href="http://www.codeguru.com/cpp/w-d/dislog/splitterwindowswithingdialogs/article.php/c1979/">http://www.codeguru.com/cpp/w-d/dislog/splitterwindowswithingdialogs/article.php/c1979/</a></p>
+<p>标题栏Title Bar</p>
+<p><a target="_blank" rel="noopener" href="http://www.codeguru.com/cpp/w-d/dislog/titlebar/article.php/c1897/">http://www.codeguru.com/cpp/w-d/dislog/titlebar/article.php/c1897/</a></p>
+<p>添加状态栏statusbar和工具栏toolbar</p>
+<p>Q123158：<br>Adding Control Bars to Foundation Classes Dialogs<br><a target="_blank" rel="noopener" href="http://support.microsoft.com/kb/123158/en-us">http://support.microsoft.com/kb/123158/en-us</a></p>
+<p>Visual C++ MFC Samples<br>DLGCBR32 Sample: Demonstrates Adding a Status Bar and Toolbar to Dialog Boxes<br><a target="_blank" rel="noopener" href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcsample/html/_sample_mfc_DLGCBR32.asp">http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcsample/html/_sample_mfc_DLGCBR32.asp</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.codeguru.com/cpp/w-d/dislog/toolbarsandstatusbars/article.php/c1955/">http://www.codeguru.com/cpp/w-d/dislog/toolbarsandstatusbars/article.php/c1955/</a><br><a target="_blank" rel="noopener" href="http://www.codeguru.com/cpp/w-d/dislog/toolbarsandstatusbars/article.php/c1939/">http://www.codeguru.com/cpp/w-d/dislog/toolbarsandstatusbars/article.php/c1939/</a><br><a target="_blank" rel="noopener" href="http://www.codeguru.com/cpp/w-d/dislog/toolbarsandstatusbars/article.php/c1949/">http://www.codeguru.com/cpp/w-d/dislog/toolbarsandstatusbars/article.php/c1949/</a></p>
+<p>Tooltip</p>
+<p>Q141758：<br>How to add tooltips for controls to an MFC modal dialog box<br><a target="_blank" rel="noopener" href="http://support.microsoft.com/kb/141758/en-us">http://support.microsoft.com/kb/141758/en-us</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.codeguru.com/cpp/w-d/dislog/tooltipsfordialogcontrols/article.php/c2017/">http://www.codeguru.com/cpp/w-d/dislog/tooltipsfordialogcontrols/article.php/c2017/</a><br><a target="_blank" rel="noopener" href="http://www.codeguru.com/cpp/w-d/dislog/tooltipsfordialogcontrols/article.php/c1843/">http://www.codeguru.com/cpp/w-d/dislog/tooltipsfordialogcontrols/article.php/c1843/</a><br><a target="_blank" rel="noopener" href="http://www.codeguru.com/cpp/w-d/dislog/tooltipsfordialogcontrols/article.php/c1839/">http://www.codeguru.com/cpp/w-d/dislog/tooltipsfordialogcontrols/article.php/c1839/</a><br><a target="_blank" rel="noopener" href="http://www.codeproject.com/miscctrl/pptooltip.asp">http://www.codeproject.com/miscctrl/pptooltip.asp</a></p>
+<p>从对话框边缘平滑弹出对话框</p>
+<p><a target="_blank" rel="noopener" href="http://www.codeguru.com/cpp/w-d/dislog/miscellaneous/article.php/c5061/">http://www.codeguru.com/cpp/w-d/dislog/miscellaneous/article.php/c5061/</a></p>
+<p>Trackback: <a target="_blank" rel="noopener" href="http://tb.blog.csdn.net/TrackBack.aspx?PostId=658248">http://tb.blog.csdn.net/TrackBack.aspx?PostId=658248</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%AF%B9%E8%AF%9D%E6%A1%86/" rel="tag"># 对话框</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/11/26/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/windows/MFC/%E8%B0%88%E9%9D%9E%E6%A8%A1%E6%80%81%E5%AF%B9%E8%AF%9D%E6%A1%86%E7%9A%84%E9%94%80%E6%AF%81/" rel="prev" title="谈非模态对话框的销毁">
+                  <i class="fa fa-chevron-left"></i> 谈非模态对话框的销毁
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/11/26/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/windows/MFC/%E5%AF%B9%E8%AF%9D%E6%A1%86coding-tips/" rel="next" title="对话框coding-tips">
+                  对话框coding-tips <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

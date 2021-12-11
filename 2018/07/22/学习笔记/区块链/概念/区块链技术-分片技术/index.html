@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="“分片”（Sharding）是以太坊为了解决扩容问题而设计的一种技术方案。 “分片”的大致设计思路是：将区块链网络中的每个区块变为一个子区块链，子区块链中可以容纳若干（目前为100个）打包了交易数据的Collation（大概可以称为“校验块”，为了在分片的情景中将其与区块的概念区分开），这些Collation最终组成一个在主链上区块；因为这些Collation是整体作为区块存在的，所以其数据必定是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="区块链技术-分片技术">
+<meta property="og:url" content="http://zhengjun.top/2018/07/22/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E6%A6%82%E5%BF%B5/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%8A%80%E6%9C%AF-%E5%88%86%E7%89%87%E6%8A%80%E6%9C%AF/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="“分片”（Sharding）是以太坊为了解决扩容问题而设计的一种技术方案。 “分片”的大致设计思路是：将区块链网络中的每个区块变为一个子区块链，子区块链中可以容纳若干（目前为100个）打包了交易数据的Collation（大概可以称为“校验块”，为了在分片的情景中将其与区块的概念区分开），这些Collation最终组成一个在主链上区块；因为这些Collation是整体作为区块存在的，所以其数据必定是">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-07-22T05:51:52.000Z">
+<meta property="article:modified_time" content="2018-07-23T03:45:14.000Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="区块链">
+<meta property="article:tag" content="blockchain">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://zhengjun.top/2018/07/22/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E6%A6%82%E5%BF%B5/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%8A%80%E6%9C%AF-%E5%88%86%E7%89%87%E6%8A%80%E6%9C%AF/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2018/07/22/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E6%A6%82%E5%BF%B5/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%8A%80%E6%9C%AF-%E5%88%86%E7%89%87%E6%8A%80%E6%9C%AF/","path":"2018/07/22/学习笔记/区块链/概念/区块链技术-分片技术/","title":"区块链技术-分片技术"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>区块链技术-分片技术 | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E7%89%87%E7%AD%96%E7%95%A5"><span class="nav-number">1.</span> <span class="nav-text">分片策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%88%86%E7%89%87"><span class="nav-number">1.1.</span> <span class="nav-text">网络分片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%A4%E6%98%93%E5%88%86%E7%89%87"><span class="nav-number">1.2.</span> <span class="nav-text">交易分片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E5%88%86%E7%89%87"><span class="nav-number">1.3.</span> <span class="nav-text">状态分片</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/07/22/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E6%A6%82%E5%BF%B5/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%8A%80%E6%9C%AF-%E5%88%86%E7%89%87%E6%8A%80%E6%9C%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          区块链技术-分片技术
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-07-22 13:51:52" itemprop="dateCreated datePublished" datetime="2018-07-22T13:51:52+08:00">2018-07-22</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2018-07-23 11:45:14" itemprop="dateModified" datetime="2018-07-23T11:45:14+08:00">2018-07-23</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>“分片”（Sharding）是以太坊为了解决扩容问题而设计的一种技术方案。</p>
+<p>“分片”的大致设计思路是：将区块链网络中的每个区块变为一个子区块链，子区块链中可以容纳若干（目前为100个）打包了交易数据的Collation（大概可以称为“校验块”，为了在分片的情景中将其与区块的概念区分开），这些Collation最终组成一个在主链上区块；因为这些Collation是整体作为区块存在的，所以其数据必定是全部由某个特定的矿工所打包生成，本质上和现有协议中的区块没有区别，所以不再需要增加额外的网络确认。这样，每个区块的交易容量就大概扩大了100倍；而且这种设计还有利于未来的继续扩展，整个扩展计划目前也被大致分为4个阶段；</p>
+<p>分片技术承诺通过改变网络验证的方式来增加吞吐量。分片技术独特于其他解决扩容的链上技术的关键特性，就是它可以进行水平扩容，也就是说，网络的吞吐量随着挖矿网络的扩展而增加。这种特殊的特性可能使它成为推动区块链技术被快速采用的理想技术。</p>
+<p>分片技术是一种基于数据库分片传统概念的扩容技术，它将数据库分割成多个碎片并将这些碎片放置在不同的服务器上。在公共区块链的情境中，网络上的交易将被分成不同的碎片，其由网络上的不同节点组成。因此，每个节点只需处理一小部分传入的交易，并且通过与网络上的其他节点并行处理就能完成大量的验证工作。将网络分割为碎片会使得更多的交易同时被处理和验证。因此，随着网络的增长，区块链处理越来越多的交易将成为可能。这种属性也称为水平扩容。</p>
+<p>公共区块链平台今天面临的最大问题之一就是可扩展性。所有主流的平台都在努力提高每秒的交易量。事实上，当今的公共以太坊网络和比特币网络平均每秒可以处理7-10笔交易。这一数字远低于像Visa这样的集中支付处理器，后者平均每秒能处理约8000笔交易。</p>
+<span id="more"></span>
+
+<p>从技术角度来看，所有区块链的共识协议都有一个具有挑战性的限制：网络中的每一个完全参与的节点都必须要验证每一笔交易，并且这些节点必须和它的其他节点保持一致，这是区块链技术的组成部分，它通过创建分布式的账本来保证区块链的安全。</p>
+<h2 id="分片策略"><a href="#分片策略" class="headerlink" title="分片策略"></a>分片策略</h2><p>分片技术是一种基于数据库分片传统概念的扩容技术，它将数据库分割成多个碎片并将这些碎片放置在不同的服务器上。在公共区块链的情境中，网络上的交易将被分成不同的碎片，其由网络上的不同节点组成。因此，每个节点只需处理一小部分传入的交易，并且通过与网络上的其他节点并行处理就能完成大量的验证工作。将网络分割为碎片会使得更多的交易同时被处理和验证。因此，随着网络的增长，区块链处理越来越多的交易将成为可能。这种属性也称为水平扩容。</p>
+<h3 id="网络分片"><a href="#网络分片" class="headerlink" title="网络分片"></a>网络分片</h3><p>分片的第一个也是最重要的挑战是创建碎片。开发者需要开发一种机制来确定哪些节点可以按照安全的方式保留在哪些碎片中，这样就能避免那些控制大量特定碎片的人所发起的攻击 。</p>
+<p>打败攻击者的最佳方法(至少在大多数情况下)就是建立随机性。通过利用随机性，网络可以随机抽取节点形成碎片。这样一种随机抽样的方式可以防止恶意节点过度填充单个碎片。</p>
+<p>但是，我们如何建立随机性呢？最容易获得公共随机性的来源是区块，例如，交易的Merkle tree root。在区块中所提供的随机性是可被公开验证的，并且可以通过随机提取器中提取统一的随机比特。</p>
+<p>然而，简单地使用随机机制将节点分配给碎片仍是不够的。我们还必须要确保网络的一个碎片中不同成员意见的一致性。这可以通过像工作量证明这样的共识协议来实现。</p>
+<h3 id="交易分片"><a href="#交易分片" class="headerlink" title="交易分片"></a>交易分片</h3><h3 id="状态分片"><a href="#状态分片" class="headerlink" title="状态分片"></a>状态分片</h3>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" rel="tag"># 区块链</a>
+              <a href="/tags/blockchain/" rel="tag"># blockchain</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/07/22/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%94%9F%E6%B4%BB%E5%B0%8F%E7%9F%A5%E8%AF%86/LUNA%E6%B4%81%E9%9D%A2%E4%BB%AA%E9%80%89%E8%B4%AD/" rel="prev" title="LUNA洁面仪选购">
+                  <i class="fa fa-chevron-left"></i> LUNA洁面仪选购
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/07/23/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%94%9F%E6%B4%BB%E5%B0%8F%E7%9F%A5%E8%AF%86/%E4%BB%A3%E8%8C%B6%E9%A5%AE-%E8%8F%8A%E8%8A%B1%E8%8C%B6/" rel="next" title="代茶饮-菊花茶">
+                  代茶饮-菊花茶 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="学习Java springMVC的系列文章，在这里使用MyBatis,easyUI实现CRUD操作样例-R操作。 视频发布在youtube上面了https:&#x2F;&#x2F;youtu.be&#x2F;F44LqKdADwE优酷上面的链接http:&#x2F;&#x2F;v.youku.com&#x2F;v_show&#x2F;id_XMjgwMTQwMzE1Mg&#x3D;&#x3D;.html?f&#x3D;49760672">
+<meta property="og:type" content="article">
+<meta property="og:title" content="007 使用MyBatis, easyUI实现CRUD操作样例-R操作(重构)">
+<meta property="og:url" content="http://zhengjun.top/2017/05/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/007-%E4%BD%BF%E7%94%A8MyBatis-easyUI%E5%AE%9E%E7%8E%B0CRUD%E6%93%8D%E4%BD%9C%E6%A0%B7%E4%BE%8B-R%E6%93%8D%E4%BD%9C-%E9%87%8D%E6%9E%84/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="学习Java springMVC的系列文章，在这里使用MyBatis,easyUI实现CRUD操作样例-R操作。 视频发布在youtube上面了https:&#x2F;&#x2F;youtu.be&#x2F;F44LqKdADwE优酷上面的链接http:&#x2F;&#x2F;v.youku.com&#x2F;v_show&#x2F;id_XMjgwMTQwMzE1Mg&#x3D;&#x3D;.html?f&#x3D;49760672">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-05-24T14:11:39.000Z">
+<meta property="article:modified_time" content="2017-11-24T05:18:18.000Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="springMVC">
+<meta property="article:tag" content="MyBatis">
+<meta property="article:tag" content="easyUI">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://zhengjun.top/2017/05/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/007-%E4%BD%BF%E7%94%A8MyBatis-easyUI%E5%AE%9E%E7%8E%B0CRUD%E6%93%8D%E4%BD%9C%E6%A0%B7%E4%BE%8B-R%E6%93%8D%E4%BD%9C-%E9%87%8D%E6%9E%84/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2017/05/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/007-%E4%BD%BF%E7%94%A8MyBatis-easyUI%E5%AE%9E%E7%8E%B0CRUD%E6%93%8D%E4%BD%9C%E6%A0%B7%E4%BE%8B-R%E6%93%8D%E4%BD%9C-%E9%87%8D%E6%9E%84/","path":"2017/05/24/语言相关/Java/springMVC系列/007-使用MyBatis-easyUI实现CRUD操作样例-R操作-重构/","title":"007 使用MyBatis, easyUI实现CRUD操作样例-R操作(重构)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>007 使用MyBatis, easyUI实现CRUD操作样例-R操作(重构) | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#007-%E4%BD%BF%E7%94%A8MyBatis-easyUI%E5%AE%9E%E7%8E%B0CRUD%E6%93%8D%E4%BD%9C%E6%A0%B7%E4%BE%8B-R%E6%93%8D%E4%BD%9C-%E9%87%8D%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">007 使用MyBatis,easyUI实现CRUD操作样例-R操作(重构)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E6%89%80%E6%9C%89%E4%BF%A1%E6%81%AF"><span class="nav-number">1.1.</span> <span class="nav-text">查询所有信息</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2017/05/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/007-%E4%BD%BF%E7%94%A8MyBatis-easyUI%E5%AE%9E%E7%8E%B0CRUD%E6%93%8D%E4%BD%9C%E6%A0%B7%E4%BE%8B-R%E6%93%8D%E4%BD%9C-%E9%87%8D%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          007 使用MyBatis, easyUI实现CRUD操作样例-R操作(重构)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-05-24 22:11:39" itemprop="dateCreated datePublished" datetime="2017-05-24T22:11:39+08:00">2017-05-24</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2017-11-24 13:18:18" itemprop="dateModified" datetime="2017-11-24T13:18:18+08:00">2017-11-24</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">后端</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF/springMVC%E5%AE%9E%E8%B7%B5%E7%B3%BB%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">springMVC实践系列</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>11k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>学习Java springMVC的系列文章，在这里使用MyBatis,easyUI实现CRUD操作样例-R操作。</p>
+<p>视频发布在youtube上面了<br><a target="_blank" rel="noopener" href="https://youtu.be/F44LqKdADwE">https://youtu.be/F44LqKdADwE</a><br>优酷上面的链接<br><a target="_blank" rel="noopener" href="http://v.youku.com/v_show/id_XMjgwMTQwMzE1Mg==.html?f=49760672">http://v.youku.com/v_show/id_XMjgwMTQwMzE1Mg==.html?f=49760672</a></p>
+<span id="more"></span>
+<h2 id="007-使用MyBatis-easyUI实现CRUD操作样例-R操作-重构"><a href="#007-使用MyBatis-easyUI实现CRUD操作样例-R操作-重构" class="headerlink" title="007 使用MyBatis,easyUI实现CRUD操作样例-R操作(重构)"></a>007 使用MyBatis,easyUI实现CRUD操作样例-R操作(重构)</h2><p>接着006的项目操作。做完007之后，更新了一下模板，当前版本0.0.2</p>
+<p>本次先记录获取用户列表部分。这次更新时间间隔比较久，因为接触了新东西，easyUI，jquery，java script，花了些时间。<br>还有对mybatis的了解更进了一步，学到了更复杂的SQL语句的映射方法。</p>
+<p>提供SQL脚本，使用存储过程生成数据</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">delete from user</span><br><span class="line"></span><br><span class="line">DROP PROCEDURE dowhile;</span><br><span class="line"></span><br><span class="line">DELIMITER //  </span><br><span class="line">DROP PROCEDURE IF EXISTS dowhile //</span><br><span class="line">CREATE PROCEDURE dowhile()    </span><br><span class="line"> BEGIN   </span><br><span class="line">  DECLARE age INT DEFAULT 25;</span><br><span class="line">  DECLARE i INT DEFAULT 1;  </span><br><span class="line">  DECLARE teacherId INT DEFAULT 1;</span><br><span class="line">   DECLARE gender CHAR(1) charset &#x27;utf8&#x27;;</span><br><span class="line">   WHILE i&lt;=500000 DO</span><br><span class="line">    SET age = FLOOR(20+RAND()*15);</span><br><span class="line">    SET teacherId = ROUND(RAND()) + 1;</span><br><span class="line">    SET gender = SUBSTRING(&quot;男女&quot;,FLOOR(1+2*RAND()),1);</span><br><span class="line">     INSERT INTO USER(id,name,age,email,gender,createTime,loginTime,teacherId) VALUES (i,CONCAT(&#x27;user&#x27;,i),age,&#x27;user@126.com&#x27;,gender,current_timestamp(),current_timestamp(),teacherId);   </span><br><span class="line">    SET i=i+1;   </span><br><span class="line">   END WHILE;  </span><br><span class="line"> END;</span><br><span class="line"> //  </span><br><span class="line"></span><br><span class="line">call dowhile();</span><br></pre></td></tr></table></figure>
+<p>修改完数据库之后，要修改一下测试类里面的断言判断，改成user1</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">assertTrue(user.getName().equals(&quot;student1&quot;));</span><br></pre></td></tr></table></figure>
+<p>HTTP GET 请求/users 返回users列表<br>HTTP GET 请求/users/1 返回id=1的user信息<br>HTTP POST 请求/users 带着一个user对象JSON格式创建一个新的user<br>HTTP PUT 请求/users/1 带着一个user对象JSON格式更新id=1的user信息<br>HTTP DELETE 请求/users/1 删除id=1的user</p>
+<p>这里使用fastjson来处理json相关信息，在springmvc.xml里面添加</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- 对于mvc没有映射过的请求，交给容器默认handler来处理，例如：js,css等静态资源 --&gt;</span><br><span class="line">&lt;mvc:default-servlet-handler /&gt;</span><br><span class="line">&lt;mvc:annotation-driven&gt;</span><br><span class="line">  &lt;mvc:message-converters register-defaults=&quot;true&quot;&gt;</span><br><span class="line">    &lt;bean class=&quot;com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter&quot;&gt;  </span><br><span class="line">      &lt;property name=&quot;supportedMediaTypes&quot; value=&quot;application/json&quot;/&gt;</span><br><span class="line">      &lt;!--设置fastjson特性--&gt;</span><br><span class="line">      &lt;property name=&quot;features&quot;&gt;</span><br><span class="line">        &lt;array&gt;</span><br><span class="line">          &lt;!--设置null值也要输出，fastjson默认是关闭的--&gt;</span><br><span class="line">          &lt;value&gt;WriteMapNullValue&lt;/value&gt;</span><br><span class="line">          &lt;!--设置使用文本方式输出日期，fastjson默认是long--&gt;</span><br><span class="line">          &lt;value&gt;WriteDateUseDateFormat&lt;/value&gt;</span><br><span class="line">        &lt;/array&gt;</span><br><span class="line">      &lt;/property&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">  &lt;/mvc:message-converters&gt;  </span><br><span class="line">&lt;/mvc:annotation-driven&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="查询所有信息"><a href="#查询所有信息" class="headerlink" title="查询所有信息"></a>查询所有信息</h3><p>涉及到mybatis 1对1联表查询，多对多的复杂查询后面在做练习。<br>user表中定义的是一个teacherID的外键。<br>修改user实体类，增加教师对象</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/**</span><br><span class="line">* 实现1对1的查询支持</span><br><span class="line">*/</span><br><span class="line">private Teacher teacher;</span><br></pre></td></tr></table></figure>
+<p>修改UserMapper和TeacherMapper增加分页查询接口，获取记录个数的接口</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/**</span><br><span class="line"> * return seleted users by paginition</span><br><span class="line"> *</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line">List&lt;User&gt; selectUsersPaginition(HashMap&lt;String, Integer&gt; offsetLimit);</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * return records count</span><br><span class="line"> *</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line">long getCount();</span><br></pre></td></tr></table></figure>
+
+<p>修改对应的mapping里面的UserMapper.xml增加selectUsers等操作，这里的id就是mapper里面新增接口的名字，这里使用了最简单的方式。在学习的过程中了解到还有通用的支持多个数据库的分页插件的方式。暂时先不研究那个了。后期有需要再看。下面是链接<br><a target="_blank" rel="noopener" href="https://github.com/pagehelper/Mybatis-PageHelper/blob/master/wikis/zh/HowToUse.md">https://github.com/pagehelper/Mybatis-PageHelper/blob/master/wikis/zh/HowToUse.md</a><br>这里要说明一下，因为数据库表里面user只有teacherId这个外键，所以要在这里特殊处理一下才能获取到类成员对象的属性值。<br>还遇到一个问题，就是user和teacher表的字段名是相同的，造成映射的时候区分不出来。最好的方法就是建表的时候避免相同的字段名，那么对于已有表可以修改映射文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;resultMap id=&quot;BaseResultMapRename&quot; type=&quot;com.study.model.User&quot;&gt;</span><br><span class="line">	&lt;id column=&quot;uId&quot; jdbcType=&quot;BIGINT&quot; property=&quot;id&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;uName&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;name&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;uAge&quot; jdbcType=&quot;INTEGER&quot; property=&quot;age&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;uEmail&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;email&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;uCreateTime&quot; jdbcType=&quot;TIMESTAMP&quot; property=&quot;createTime&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;uLoginTime&quot; jdbcType=&quot;TIMESTAMP&quot; property=&quot;loginTime&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;uTeacherId&quot; jdbcType=&quot;BIGINT&quot; property=&quot;teacherId&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;uGender&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;gender&quot; /&gt;</span><br><span class="line">&lt;/resultMap&gt;</span><br><span class="line">&lt;sql id=&quot;Base_Column_ListRename&quot;&gt;</span><br><span class="line">	u.id as uId, u.name as uName, u.age as uAge, u.email as uEmail,</span><br><span class="line">	u.createTime as uCreateTime, u.loginTime as uLoginTime, u.teacherId as</span><br><span class="line">	uTeacherId, u.gender as uGender</span><br><span class="line">&lt;/sql&gt;</span><br><span class="line"></span><br><span class="line">&lt;select id=&quot;selectUsers&quot; resultMap=&quot;UnionResultMap&quot;&gt;</span><br><span class="line">	select</span><br><span class="line">	&lt;include refid=&quot;Base_Column_ListRename&quot; /&gt;</span><br><span class="line">	,</span><br><span class="line">	&lt;include refid=&quot;com.study.dao.TeacherMapper.Base_Column_ListRename&quot; /&gt;</span><br><span class="line">	from user u, teacher t</span><br><span class="line">	where u.teacherId = t.id order by u.id</span><br><span class="line">&lt;/select&gt;</span><br><span class="line">&lt;resultMap id=&quot;UnionResultMap&quot; type=&quot;com.study.model.User&quot;</span><br><span class="line">	extends=&quot;BaseResultMapRename&quot;&gt;</span><br><span class="line">	&lt;association property=&quot;teacher&quot; column=&quot;teacherId&quot;</span><br><span class="line">		javaType=&quot;com.study.model.Teacher&quot; resultMap=&quot;com.study.dao.TeacherMapper.BaseResultMapRename&quot;&gt;</span><br><span class="line">	&lt;/association&gt;</span><br><span class="line">&lt;/resultMap&gt;</span><br><span class="line">&lt;select id=&quot;selectUsersPaginition&quot; parameterType=&quot;HashMap&quot;</span><br><span class="line">	resultMap=&quot;UnionResultMap&quot;&gt;</span><br><span class="line">	select</span><br><span class="line">	&lt;include refid=&quot;Base_Column_ListRename&quot; /&gt;</span><br><span class="line">	,</span><br><span class="line">	&lt;include refid=&quot;com.study.dao.TeacherMapper.Base_Column_ListRename&quot; /&gt;</span><br><span class="line">	from user u, teacher t</span><br><span class="line">	where u.teacherId = t.id order by u.id limit #&#123;offset&#125;,#&#123;pagesize&#125;</span><br><span class="line">&lt;/select&gt;</span><br><span class="line">&lt;select id=&quot;getCount&quot; resultType=&quot;long&quot;&gt;</span><br><span class="line">	select count(*) from user</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure>
+<p>teacherMapper.xml里面添加</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;resultMap id=&quot;BaseResultMapRename&quot; type=&quot;com.study.model.Teacher&quot;&gt;</span><br><span class="line">	&lt;id column=&quot;tId&quot; jdbcType=&quot;BIGINT&quot; property=&quot;id&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;tName&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;name&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;tAge&quot; jdbcType=&quot;INTEGER&quot; property=&quot;age&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;tGender&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;gender&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;tCreateTime&quot; jdbcType=&quot;TIMESTAMP&quot; property=&quot;createTime&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;tLoginTime&quot; jdbcType=&quot;TIMESTAMP&quot; property=&quot;loginTime&quot; /&gt;</span><br><span class="line">	&lt;result column=&quot;tEmail&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;email&quot; /&gt;</span><br><span class="line">&lt;/resultMap&gt;</span><br><span class="line">&lt;sql id=&quot;Base_Column_ListRename&quot;&gt;</span><br><span class="line">	t.id as tId, t.name as tName, t.age as tAge, t.gender as tGender, t.createTime as tCreateTime, t.loginTime as tLoginTime, t.email as tEmail</span><br><span class="line">&lt;/sql&gt;</span><br></pre></td></tr></table></figure>
+
+
+<p>修改IUserService和IUserServiceImpl增加该接口和实现，Teacher也是一样的操作<br>这里要注意引入的List的包是util里面的<br><code>import java.util.List;</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public List&lt;User&gt; getUsersPagenition(int page, int rows);</span><br><span class="line"></span><br><span class="line">public long getCount();</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@Override</span><br><span class="line">public List&lt;User&gt; getUsersPagenition(int page, int rows)</span><br><span class="line">&#123;</span><br><span class="line">	HashMap&lt;String, Integer&gt; offsetLimit = new HashMap&lt;String, Integer&gt;();</span><br><span class="line">	//page mysql start from 0, param page start from 1</span><br><span class="line">    offsetLimit.put(&quot;offset&quot;, (page - 1) * rows);</span><br><span class="line">    offsetLimit.put(&quot;pagesize&quot;, rows);</span><br><span class="line">	return userMapper.selectUsersPaginition(offsetLimit);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public long getCount()</span><br><span class="line">&#123;</span><br><span class="line">	return userMapper.getCount();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在测试类里面添加代码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@Test</span><br><span class="line">public void TestGetCount()</span><br><span class="line">&#123;</span><br><span class="line">   long recordCount = userService.getCount();</span><br><span class="line">   logger.info(&quot;TestGetCount: &quot; + recordCount);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Test</span><br><span class="line">public void TestGetUsersPaginition()</span><br><span class="line">&#123;</span><br><span class="line">   List&lt;User&gt; users = userService.getUsersPagenition(1, 13);</span><br><span class="line">   logger.info(&quot;TestGetUsersPaginition: &quot; + JSON.toJSONStringWithDateFormat(users,&quot;yyyy-MM-dd HH:mm:ss&quot;));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行后应该可以看到返回的用户信息列表</p>
+<p>在index.html里面增加一个超链接，获取所有用户信息的Get请求users</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;a href=&quot;users&quot;&gt;Get Users&lt;/a&gt;</span><br><span class="line">&lt;br /&gt;</span><br><span class="line">&lt;br /&gt;</span><br></pre></td></tr></table></figure>
+<p>在Controller类里面，因为要访问数据库，所以需要添加service，同时也把日志类加上,创建Controller，返回users，对应view目录下面的users.jsp</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private static final Logger logger = LogManager.getLogger(UserController.class.getName());</span><br><span class="line"></span><br><span class="line">@Autowired</span><br><span class="line">IUserService userService;</span><br><span class="line"></span><br><span class="line">@RequestMapping(value = &quot;/users&quot;, method = RequestMethod.GET)</span><br><span class="line">public String getUsersProc()</span><br><span class="line">&#123;</span><br><span class="line">	logger.info(&quot;getUsersProc&quot;);</span><br><span class="line">	return &quot;users&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建一个返回json数据的服务接口getUsers，给easyui调用，这里使用分页查询<br>jQuery EasyUI向后台请求datagrid(数据表格)时会传递两个参数：<br>可以根据这两个参数对数据库进行分页查询。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// datagrid请求数据参数：</span><br><span class="line">page：&quot;1&quot;,  //当前页</span><br><span class="line">rows：&quot;10&quot; //数据条数</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@ResponseBody</span><br><span class="line">@RequestMapping(value = &quot;/getUsers&quot;, method = RequestMethod.GET)</span><br><span class="line">public JSONObject users(HttpServletRequest request, HttpServletResponse response)</span><br><span class="line">&#123;</span><br><span class="line">	int page = ServletRequestUtils.getIntParameter(request, &quot;page&quot;, 1);// 默认值为1</span><br><span class="line">	int rows = ServletRequestUtils.getIntParameter(request, &quot;rows&quot;, 0);</span><br><span class="line"></span><br><span class="line">	long rowCount = userService.getCount();</span><br><span class="line">	List&lt;User&gt; users = userService.getUsersPagenition(page, rows);</span><br><span class="line">	JSONObject jsonObject = new JSONObject();</span><br><span class="line">	jsonObject.put(&quot;rows&quot;, users);</span><br><span class="line">	jsonObject.put(&quot;total&quot;, rowCount);</span><br><span class="line"></span><br><span class="line">	logger.info(&quot;getUsers api: page:&quot; + page + &quot; rows:&quot; + rows + &quot;jsonObj:&quot; + jsonObject.toJSONString());</span><br><span class="line">	return jsonObject;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编辑users.jsp，使用easyui显示数据<br>在/src/main/webapp目录下面建立/commons/jsExt目录用来放js外部引用的包<br>把easyui整个目录拷贝过来，然后清理一下不用的目录demo*,src目录，这里使用的是jquery-easyui-1.5.2版本<br>在users.jsp里面添加引用</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">&lt;!-- 下面两个必须引用 --&gt;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot;</span><br><span class="line">	src=&quot;commons/jsExt/jquery-easyui-1.5.2/jquery.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot;</span><br><span class="line">	src=&quot;commons/jsExt/jquery-easyui-1.5.2/jquery.easyui.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;!-- 国际化文件 --&gt;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot;</span><br><span class="line">	src=&quot;commons/jsExt/jquery-easyui-1.5.2/locale/easyui-lang-zh_CN.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;!-- 默认样式 --&gt;</span><br><span class="line">&lt;link rel=&quot;stylesheet&quot;</span><br><span class="line">	href=&quot;commons/jsExt/jquery-easyui-1.5.2/themes/default/easyui.css&quot;&gt;</span><br><span class="line">&lt;!-- 图标 --&gt;</span><br><span class="line">&lt;link rel=&quot;stylesheet&quot;</span><br><span class="line">	href=&quot;commons/jsExt/jquery-easyui-1.5.2/themes/icon.css&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;/head&gt;</span><br></pre></td></tr></table></figure>
+<p>body里面添加数据表格控件，这里高度使用100%的时候只有表头显示出来了，不知道为什么，所以使用绝对值定义。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">	&lt;div class=&quot;easyui-layout&quot; style=&quot;margin: 20px 20px 20px 20px;&quot;&gt;</span><br><span class="line">		&lt;table id=&quot;dg&quot; class=&quot;easyui-datagrid&quot; title=&quot;用户列表&quot;</span><br><span class="line">			style=&quot;width: 100%; height: 400px;&quot;</span><br><span class="line">			data-options=&quot;rownumbers:true,striped:true,fitColumns:true,singleSelect:true,autoRowHeight:true,pagination:true,</span><br><span class="line">				pageSize:10,url:&#x27;$&#123;pageContext.request.contextPath&#125;/getUsers&#x27;,method:&#x27;get&#x27;,toolbar:&#x27;#toolbar&#x27;&quot;&gt;</span><br><span class="line">			&lt;thead&gt;</span><br><span class="line">				&lt;tr&gt;</span><br><span class="line">					&lt;th data-options=&quot;field:&#x27;id&#x27;,width:100&quot;&gt;ID&lt;/th&gt;</span><br><span class="line">					&lt;th data-options=&quot;field:&#x27;name&#x27;,width:100&quot;&gt;name&lt;/th&gt;</span><br><span class="line">					&lt;th data-options=&quot;field:&#x27;age&#x27;,width:100&quot;&gt;Age&lt;/th&gt;</span><br><span class="line">					&lt;th data-options=&quot;field:&#x27;gender&#x27;,width:60&quot;&gt;Gender&lt;/th&gt;</span><br><span class="line">					&lt;th data-options=&quot;field:&#x27;email&#x27;,width:150&quot;&gt;Email&lt;/th&gt;</span><br><span class="line">					&lt;th data-options=&quot;field:&#x27;createTime&#x27;,width:150&quot;&gt;Create Time&lt;/th&gt;</span><br><span class="line">					&lt;th data-options=&quot;field:&#x27;loginTime&#x27;,width:150&quot;&gt;Login Time&lt;/th&gt;</span><br><span class="line">					&lt;th data-options=&quot;field:&#x27;teacher&#x27;,width:100&quot; formatter=&quot;teacherFormatter&quot;&gt;Teacher Name&lt;/th&gt;</span><br><span class="line">				&lt;/tr&gt;</span><br><span class="line">			&lt;/thead&gt;</span><br><span class="line">		&lt;/table&gt;</span><br><span class="line">		&lt;div id=&quot;toolbar&quot;&gt;</span><br><span class="line">			&lt;a href=&quot;#&quot; class=&quot;easyui-linkbutton&quot;</span><br><span class="line">				data-options=&quot;iconCls:&#x27;icon-add&#x27;&quot; onclick=&quot;insert()&quot;&gt;添加&lt;/a&gt; &lt;a</span><br><span class="line">				href=&quot;#&quot; class=&quot;easyui-linkbutton&quot;</span><br><span class="line">				data-options=&quot;iconCls:&#x27;icon-edit&#x27;&quot; onclick=&quot;edit()&quot;&gt;编辑&lt;/a&gt; &lt;a</span><br><span class="line">				href=&quot;#&quot; class=&quot;easyui-linkbutton&quot;</span><br><span class="line">				data-options=&quot;iconCls:&#x27;icon-remove&#x27;&quot; onclick=&quot;del()&quot;&gt;删除&lt;/a&gt;</span><br><span class="line">		&lt;/div&gt;</span><br><span class="line">	&lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br></pre></td></tr></table></figure>
+<p>这里有个需要注意的地方，就是teacher是一个类对象，使用了formatter来格式化输出teacher的名字。在commons目录下面建立一个js目录，建立teacherFormatter.js文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function teacherFormatter(val,row)</span><br><span class="line">&#123;</span><br><span class="line">	return row.teacher.name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后别忘了要添加刚刚创立的js文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">&lt;!-- 自定义js --&gt;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;commons/js/teacherFormatter.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;/head&gt;</span><br></pre></td></tr></table></figure>
+<p>添加到tomcat之后，打开chrome访问<a target="_blank" rel="noopener" href="http://localhost:8190/template/">http://localhost:8190/template/</a><br>command+alt+i打开开发者工具<br>点击Get Users就会打开用户列表页面。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">如果有需要交流的，或者有更好的实现方法的同学，欢迎通过电子邮件来互通有无，共同进步。</span><br><span class="line">ascomtohom@126.com</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/springMVC/" rel="tag"># springMVC</a>
+              <a href="/tags/MyBatis/" rel="tag"># MyBatis</a>
+              <a href="/tags/easyUI/" rel="tag"># easyUI</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/05/20/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/002-%E5%88%B6%E4%BD%9Carchetype%E6%A8%A1%E6%9D%BF%EF%BC%88%E9%87%8D%E6%9E%84%EF%BC%89-2017-05-31Update/" rel="prev" title="002 制作archetype模板（重构）(2017.05.31Update)">
+                  <i class="fa fa-chevron-left"></i> 002 制作archetype模板（重构）(2017.05.31Update)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/05/27/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/009-spring-mvc-controller-unit-test/" rel="next" title="009 spring mvc controller unit test">
+                  009 spring mvc controller unit test <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

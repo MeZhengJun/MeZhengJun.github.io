@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="学习Java springMVC的系列文章，在这里实现springMVC的单元测试部分。 视频发布在youtube上面了https:&#x2F;&#x2F;youtu.be&#x2F;d-u95Q5JJjs优酷上面的链接http:&#x2F;&#x2F;v.youku.com&#x2F;v_show&#x2F;id_XMjgxNDY1Nzc4MA&#x3D;&#x3D;.html?f&#x3D;49760672">
+<meta property="og:type" content="article">
+<meta property="og:title" content="009 spring mvc controller unit test">
+<meta property="og:url" content="http://zhengjun.top/2017/05/27/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/009-spring-mvc-controller-unit-test/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="学习Java springMVC的系列文章，在这里实现springMVC的单元测试部分。 视频发布在youtube上面了https:&#x2F;&#x2F;youtu.be&#x2F;d-u95Q5JJjs优酷上面的链接http:&#x2F;&#x2F;v.youku.com&#x2F;v_show&#x2F;id_XMjgxNDY1Nzc4MA&#x3D;&#x3D;.html?f&#x3D;49760672">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-05-27T14:44:30.000Z">
+<meta property="article:modified_time" content="2017-11-24T05:19:18.000Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="springMVC">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://zhengjun.top/2017/05/27/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/009-spring-mvc-controller-unit-test/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2017/05/27/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/009-spring-mvc-controller-unit-test/","path":"2017/05/27/语言相关/Java/springMVC系列/009-spring-mvc-controller-unit-test/","title":"009 spring mvc controller unit test"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>009 spring mvc controller unit test | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#009-spring-mvc-controller-unit-test"><span class="nav-number">1.</span> <span class="nav-text">009 spring mvc controller unit test</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mock-Service%E6%B5%8B%E8%AF%95"><span class="nav-number">1.0.1.</span> <span class="nav-text">Mock Service测试</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2017/05/27/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/009-spring-mvc-controller-unit-test/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          009 spring mvc controller unit test
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-05-27 22:44:30" itemprop="dateCreated datePublished" datetime="2017-05-27T22:44:30+08:00">2017-05-27</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2017-11-24 13:19:18" itemprop="dateModified" datetime="2017-11-24T13:19:18+08:00">2017-11-24</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">后端</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF/springMVC%E5%AE%9E%E8%B7%B5%E7%B3%BB%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">springMVC实践系列</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>12k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>11 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>学习Java springMVC的系列文章，在这里实现springMVC的单元测试部分。</p>
+<p>视频发布在youtube上面了<br><a target="_blank" rel="noopener" href="https://youtu.be/d-u95Q5JJjs">https://youtu.be/d-u95Q5JJjs</a><br>优酷上面的链接<br><a target="_blank" rel="noopener" href="http://v.youku.com/v_show/id_XMjgxNDY1Nzc4MA==.html?f=49760672">http://v.youku.com/v_show/id_XMjgxNDY1Nzc4MA==.html?f=49760672</a></p>
+<span id="more"></span>
+<h1 id="009-spring-mvc-controller-unit-test"><a href="#009-spring-mvc-controller-unit-test" class="headerlink" title="009 spring mvc controller unit test"></a>009 spring mvc controller unit test</h1><p>接着008的项目操作。</p>
+<p>首先处理一下008中分页显示的时候，500000条记录，页号显示不全的问题。<br>我这里使用的是themes-default风格。在这里找到easyui.css，里面找到<br>pagination-num，修改width属性即可。原来是2，我改成了10，顺便了解了一下CSS Units。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">em	Relative to the font-size of the element (2em means 2 times the size of the current font)</span><br></pre></td></tr></table></figure>
+<p>这里有详细介绍<br><a target="_blank" rel="noopener" href="https://www.w3schools.com/cssref/css_units.asp">https://www.w3schools.com/cssref/css_units.asp</a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.pagination .pagination-num &#123;</span><br><span class="line">  border-width: 1px;</span><br><span class="line">  border-style: solid;</span><br><span class="line">  margin: 0 2px;</span><br><span class="line">  padding: 2px;</span><br><span class="line">  width: 10em;</span><br><span class="line">  height: auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>刷新一下就可以看到变化了。注意如果没有变化清空一下浏览器缓存，在浏览器端检查一下，easyui.css源码是否是修改过后的。</p>
+<p>自定义PageList数，非常的方便，设置对应的属性就可以了。<br>pageSize:12,pageList:[12,100,200,300]</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;table id=&quot;dg&quot; class=&quot;easyui-datagrid&quot; title=&quot;用户列表&quot;</span><br><span class="line">	style=&quot;width: 100%; height: 400px;pagination-num&#123;width:200px&#125;&quot;</span><br><span class="line">	data-options=&quot;rownumbers:true,striped:true,fitColumns:true,singleSelect:true,autoRowHeight:true,pagination:true,</span><br><span class="line">      pageSize:12,pageList:[12,100,200,300],url:&#x27;$&#123;pageContext.request.contextPath&#125;/getUsers&#x27;,method:&#x27;get&#x27;,toolbar:&#x27;#toolbar&#x27;&quot;&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>TestGetUser增加一个断言判断user是否为空</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">assertTrue(user != null);</span><br><span class="line">assertTrue(user.getName().equals(&quot;user1&quot;));</span><br></pre></td></tr></table></figure>
+
+<p>增加测试依赖包</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- controller test --&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;com.jayway.jsonpath&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;json-path-assert&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;2.2.0&lt;/version&gt;</span><br><span class="line">	&lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.mockito&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;mockito-all&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;1.10.19&lt;/version&gt;</span><br><span class="line">	&lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<p>JsonPath 用来写JSON数据的断言判断的。下面是网址<br><a target="_blank" rel="noopener" href="https://github.com/json-path/JsonPath">https://github.com/json-path/JsonPath</a></p>
+<p>新建测试类TestUserController，这里使用实际的service来操作数据库获取数据。<br>这个用来控制测试函数的执行顺序，添加，更新，删除，执行完毕后，对数据没有影响。<br><code>@FixMethodOrder(MethodSorters.NAME_ASCENDING)</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@RunWith(SpringJUnit4ClassRunner.class)</span><br><span class="line">@ContextConfiguration(locations = &quot;classpath:springmvc.xml&quot;)</span><br><span class="line">@WebAppConfiguration</span><br><span class="line">@FixMethodOrder(MethodSorters.NAME_ASCENDING)</span><br><span class="line">public class TestUserController</span><br><span class="line">&#123;</span><br><span class="line">	public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(),</span><br><span class="line">			MediaType.APPLICATION_JSON.getSubtype(), Charset.forName(&quot;utf8&quot;));</span><br><span class="line"></span><br><span class="line">	@Autowired</span><br><span class="line">	private WebApplicationContext wac;</span><br><span class="line"></span><br><span class="line">	private MockMvc mockMvc;</span><br><span class="line"></span><br><span class="line">	private static String lastNewId;</span><br><span class="line"></span><br><span class="line">	@Before</span><br><span class="line">	public void init()</span><br><span class="line">	&#123;</span><br><span class="line">		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Test</span><br><span class="line">	public void testReturnPage() throws Exception</span><br><span class="line">	&#123;</span><br><span class="line">		mockMvc.perform(get(&quot;/users&quot;)).andExpect(status().isOk()).andExpect(view().name(&quot;users&quot;)).andDo(print());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Test</span><br><span class="line">	public void testRealApiGetUsers() throws Exception</span><br><span class="line">	&#123;</span><br><span class="line">		// .accept方法是设置客户端可识别的内容类型</span><br><span class="line">		// .contentType,设置请求头中的Content-Type字段,表示请求体的内容类型</span><br><span class="line">		mockMvc.perform(get(&quot;/getUsers&quot;).accept(MediaType.APPLICATION_JSON_UTF8)</span><br><span class="line">				.contentType(MediaType.APPLICATION_JSON_UTF8).param(&quot;page&quot;, &quot;1&quot;).param(&quot;rows&quot;, &quot;10&quot;)).andDo(print())</span><br><span class="line">				.andExpect(status().isOk()).andExpect(content().contentType(&quot;application/json;charset=UTF-8&quot;))</span><br><span class="line">				.andExpect(jsonPath(&quot;$.total&quot;).exists()).andExpect(jsonPath(&quot;$.rows&quot;).isArray())</span><br><span class="line">				.andExpect(jsonPath(&quot;$.rows&quot;, hasSize(10)));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Test</span><br><span class="line">	public void test001RealApiAddUser() throws Exception</span><br><span class="line">	&#123;</span><br><span class="line">		MvcResult ret = mockMvc</span><br><span class="line">				.perform(post(&quot;/users&quot;).accept(MediaType.APPLICATION_JSON_UTF8)</span><br><span class="line">						.contentType(MediaType.APPLICATION_JSON_UTF8).param(&quot;name&quot;, &quot;user1&quot;).param(&quot;age&quot;, &quot;23&quot;)</span><br><span class="line">						.param(&quot;gender&quot;, &quot;女&quot;).param(&quot;email&quot;, &quot;user1@126.com&quot;).param(&quot;teacherId&quot;, &quot;1&quot;)</span><br><span class="line">						.param(&quot;createTime&quot;, &quot;2017-06-08 13:59:12&quot;).param(&quot;loginTime&quot;, &quot;2017-06-08 13:59:12&quot;))</span><br><span class="line">				.andDo(print()).andExpect(status().isOk())</span><br><span class="line">				.andExpect(content().contentType(&quot;application/json;charset=UTF-8&quot;))</span><br><span class="line">				.andExpect(jsonPath(&quot;$.retCode&quot;).value(0)).andExpect(jsonPath(&quot;$.newId&quot;).exists()).andReturn();</span><br><span class="line">		MockHttpServletResponse resp = ret.getResponse();</span><br><span class="line">		String strContent = resp.getContentAsString();</span><br><span class="line">		JSONObject jsonObject = JSONObject.parseObject(strContent);</span><br><span class="line">		lastNewId = jsonObject.get(&quot;newId&quot;).toString();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Test</span><br><span class="line">	public void test002RealApiUpdateUser() throws Exception</span><br><span class="line">	&#123;</span><br><span class="line">		mockMvc.perform(put(&quot;/users/&quot; + lastNewId).accept(MediaType.APPLICATION_JSON_UTF8)</span><br><span class="line">						.contentType(MediaType.APPLICATION_JSON_UTF8).param(&quot;name&quot;, &quot;user1&quot;).param(&quot;age&quot;, &quot;33&quot;)</span><br><span class="line">						.param(&quot;gender&quot;, &quot;男&quot;).param(&quot;email&quot;, &quot;user1@126.com&quot;).param(&quot;teacherId&quot;, &quot;2&quot;)</span><br><span class="line">						.param(&quot;createTime&quot;, &quot;2017-06-08 13:59:12&quot;).param(&quot;loginTime&quot;, &quot;2017-06-08 13:59:12&quot;))</span><br><span class="line">				.andDo(print()).andExpect(status().isOk())</span><br><span class="line">				.andExpect(content().contentType(&quot;application/json;charset=UTF-8&quot;))</span><br><span class="line">				.andExpect(jsonPath(&quot;$.retCode&quot;).value(0)).andExpect(jsonPath(&quot;$.status&quot;).value(&quot;更新成功&quot;));</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Test</span><br><span class="line">	public void test003RealApiDeleteUser() throws Exception</span><br><span class="line">	&#123;</span><br><span class="line">		mockMvc.perform(delete(&quot;/users/&quot; + lastNewId).accept(MediaType.APPLICATION_JSON_UTF8)</span><br><span class="line">				.contentType(MediaType.APPLICATION_JSON_UTF8)).andDo(print()).andExpect(status().isOk())</span><br><span class="line">				.andExpect(content().contentType(&quot;application/json;charset=UTF-8&quot;))</span><br><span class="line">				.andExpect(jsonPath(&quot;$.retCode&quot;).value(0)).andExpect(jsonPath(&quot;$.status&quot;).value(&quot;删除成功&quot;));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在UserController里面做了点修改，添加用户的时候返回了该条记录的主键。顺便把返回类型改成了JSONObject</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@RequestMapping(value = &quot;/users&quot;, method = RequestMethod.POST)</span><br><span class="line">@ResponseBody</span><br><span class="line">public JSONObject addUserProc(User user)</span><br><span class="line">&#123;</span><br><span class="line">    // 处理新id生成</span><br><span class="line">    // 处理teacher类对象</span><br><span class="line">    user.setTeacher(teacherService.getTeacherById(user.getTeacherId()));</span><br><span class="line">    int iRet = userService.insertUser(user);</span><br><span class="line">    long newId = user.getId();</span><br><span class="line">    JSONObject jsonObject = new JSONObject();</span><br><span class="line">    if (iRet == 0)</span><br><span class="line">    &#123;</span><br><span class="line">        logger.info(&quot;addUsersProc: &quot; + JSON.toJSON(&quot;新建失败：&quot; + JSON.toJSONStringWithDateFormat(user, &quot;yyyy-MM-dd HH:mm:ss&quot;)));</span><br><span class="line">        jsonObject.put(&quot;status&quot;, &quot;新建失败&quot;);</span><br><span class="line">        jsonObject.put(&quot;retCode&quot;, -1);</span><br><span class="line">    &#125; else</span><br><span class="line">    &#123;</span><br><span class="line">        logger.info(&quot;addUsersProc: &quot; + JSON.toJSON(&quot;新建用户：&quot; + JSON.toJSONStringWithDateFormat(user, &quot;yyyy-MM-dd HH:mm:ss&quot;)));</span><br><span class="line">        jsonObject.put(&quot;status&quot;, &quot;新建成功&quot;);</span><br><span class="line">        jsonObject.put(&quot;retCode&quot;, 0);</span><br><span class="line">        jsonObject.put(&quot;newId&quot;, newId);</span><br><span class="line">    &#125;</span><br><span class="line">    return jsonObject;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要手动引入两个包，不知道为什么不能自动引入。<br>MethodSorters的作用，这里需求是希望测试函数按照顺序执行，先添加一条记录，获取ID，然后再使用ID删除刚刚添加的记录。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import static org.hamcrest.Matchers.hasSize;</span><br><span class="line">import org.junit.runners.MethodSorters;</span><br></pre></td></tr></table></figure>
+<p>现在可以右键-Run As选择JUnit Test</p>
+<h3 id="Mock-Service测试"><a href="#Mock-Service测试" class="headerlink" title="Mock Service测试"></a>Mock Service测试</h3><p>新建一个TestUserControllerMockService测试类</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@RunWith(SpringJUnit4ClassRunner.class)</span><br><span class="line">@ContextConfiguration(locations = &quot;classpath:springmvc.xml&quot;)</span><br><span class="line">@WebAppConfiguration</span><br><span class="line">@FixMethodOrder(MethodSorters.NAME_ASCENDING)</span><br><span class="line">public class TestUserControllerMockService</span><br><span class="line">&#123;</span><br><span class="line">	@Autowired</span><br><span class="line">	private WebApplicationContext wac;</span><br><span class="line"></span><br><span class="line">	private MockMvc mockMvc;</span><br><span class="line"></span><br><span class="line">	@InjectMocks</span><br><span class="line">	private UserController userController;</span><br><span class="line"></span><br><span class="line">	@Mock</span><br><span class="line">	private IUserService userService;</span><br><span class="line"></span><br><span class="line">	@Before</span><br><span class="line">	public void init()</span><br><span class="line">	&#123;</span><br><span class="line">		//support @Mock annotation</span><br><span class="line">		MockitoAnnotations.initMocks(this);</span><br><span class="line"></span><br><span class="line">        //解决Controller返回字符串和Mapping字符串相同时提示错误的问题</span><br><span class="line">		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();</span><br><span class="line">		viewResolver.setPrefix(&quot;/WEB-INF/views/&quot;);</span><br><span class="line">		viewResolver.setSuffix(&quot;.jsp&quot;);</span><br><span class="line"></span><br><span class="line">		FastJsonHttpMessageConverter fastjsonMsgConv = this.wac.getBean(com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter.class);</span><br><span class="line">        StringHttpMessageConverter stringMsgConv = this.wac.getBean(StringHttpMessageConverter.class);</span><br><span class="line">        mockMvc = MockMvcBuilders.standaloneSetup(userController)</span><br><span class="line">                .setViewResolvers(viewResolver)</span><br><span class="line">                .setMessageConverters(fastjsonMsgConv,stringMsgConv)</span><br><span class="line">                .build();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Test</span><br><span class="line">	public void testApiGetUsers() throws Exception</span><br><span class="line">	&#123;</span><br><span class="line">		DateFormat df = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);</span><br><span class="line">		Date date = null;</span><br><span class="line">		try</span><br><span class="line">		&#123;</span><br><span class="line">		    date = df.parse(&quot;2017-06-08 13:59:12&quot;);</span><br><span class="line">		&#125; catch (ParseException e)</span><br><span class="line">		&#123;</span><br><span class="line">		    e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">		List&lt;User&gt; users = new ArrayList&lt;User&gt;();</span><br><span class="line"></span><br><span class="line">		for (int i = 0; i &lt; 3; ++i)</span><br><span class="line">		&#123;</span><br><span class="line">			User user = new User();</span><br><span class="line">			user.setId(1L + i);</span><br><span class="line">			user.setName(&quot;user&quot; + Integer.toString(i + 1));</span><br><span class="line">			user.setAge(23 + i);</span><br><span class="line">			user.setGender(&quot;女&quot;);</span><br><span class="line">			user.setEmail(&quot;user1@126.com&quot;);</span><br><span class="line">			user.setTeacherId(1L);</span><br><span class="line">			user.setCreateTime(date);</span><br><span class="line">			user.setLoginTime(date);</span><br><span class="line"></span><br><span class="line">			users.add(user);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		when(userService.getCount()).thenReturn(3L);</span><br><span class="line">		when(userService.getUsersPagenition(1, 3)).thenReturn(users);</span><br><span class="line"></span><br><span class="line">		mockMvc.perform(get(&quot;/getUsers&quot;).accept(MediaType.APPLICATION_JSON_UTF8)</span><br><span class="line">                .contentType(MediaType.APPLICATION_JSON_UTF8).param(&quot;page&quot;, &quot;1&quot;).param(&quot;rows&quot;, &quot;3&quot;)).andDo(print())</span><br><span class="line">                .andExpect(status().isOk()).andExpect(content().contentType(&quot;application/json;charset=UTF-8&quot;))</span><br><span class="line">                .andExpect(jsonPath(&quot;$.total&quot;).exists()).andExpect(jsonPath(&quot;$.rows&quot;).isArray())</span><br><span class="line">                .andExpect(jsonPath(&quot;$.rows&quot;, hasSize(3)))</span><br><span class="line">                .andExpect(jsonPath(&quot;$.rows[0].name&quot;).value(&quot;user1&quot;))</span><br><span class="line">                .andExpect(jsonPath(&quot;$.rows[0].gender&quot;).value(&quot;女&quot;))</span><br><span class="line">                .andExpect(jsonPath(&quot;$.rows[0].age&quot;).value(23))</span><br><span class="line">                .andExpect(jsonPath(&quot;$.rows[1].name&quot;).value(&quot;user2&quot;))</span><br><span class="line">                .andExpect(jsonPath(&quot;$.rows[1].age&quot;).value(24));		</span><br><span class="line">		//verify Interactions with any mock</span><br><span class="line">		verify(userService, times(1)).getCount();</span><br><span class="line">        verify(userService, times(1)).getUsersPagenition(1, 3);</span><br><span class="line">        verifyNoMoreInteractions(userService);</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>@Mock: 需要被Mock的对象<br>@InjectMocks: 需要将Mock对象注入的对象, 此处就是Controller<br>下面这个是<br><code>MockitoAnnotations.initMocks(this);</code><br>@Before<br>初始化Mock对象， 通过MockMvcBuilders.standaloneSetup模拟一个Mvc测试环境，注入controller, 通过build得到一个MockMvc， 后面就用MockMvc的一些API做测试。<br>这里面因为使用了fastJson发现之前的springmvc配置需要修改一下，才能通过。暂时先保证学习进度，后面有机会再深入了解一下fastJson的相关配置。<br>相关错误提示</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">No qualifying bean of type &#x27;com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter&#x27; available</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- 对于mvc没有映射过的请求，交给容器默认handler来处理，例如：js,css等静态资源 --&gt;</span><br><span class="line">&lt;mvc:default-servlet-handler /&gt;</span><br><span class="line">&lt;!-- FastJson 转换注册 --&gt;</span><br><span class="line">&lt;bean id=&quot;stringHttpMessageConverter&quot;</span><br><span class="line">	class=&quot;org.springframework.http.converter.StringHttpMessageConverter&quot;&gt;</span><br><span class="line">	&lt;constructor-arg value=&quot;UTF-8&quot; index=&quot;0&quot;&gt;&lt;/constructor-arg&gt;</span><br><span class="line">	&lt;property name=&quot;supportedMediaTypes&quot;&gt;</span><br><span class="line">		&lt;list&gt;</span><br><span class="line">			&lt;value&gt;text/plain;charset=UTF-8&lt;/value&gt;</span><br><span class="line">		&lt;/list&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line">&lt;bean id=&quot;fastJsonHttpMessageConverter&quot;</span><br><span class="line">	class=&quot;com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter&quot;&gt;</span><br><span class="line">	&lt;property name=&quot;supportedMediaTypes&quot;&gt;</span><br><span class="line">		&lt;list&gt;</span><br><span class="line">			&lt;value&gt;text/html;charset=UTF-8&lt;/value&gt;</span><br><span class="line">			&lt;value&gt;application/json;charset=UTF-8&lt;/value&gt;</span><br><span class="line">		&lt;/list&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;!--设置fastjson特性 --&gt;</span><br><span class="line">	&lt;property name=&quot;features&quot;&gt;</span><br><span class="line">		&lt;array&gt;</span><br><span class="line">			&lt;!--设置null值也要输出，fastjson默认是关闭的 --&gt;</span><br><span class="line">			&lt;value&gt;WriteMapNullValue&lt;/value&gt;</span><br><span class="line">			&lt;!--设置使用文本方式输出日期，fastjson默认是long --&gt;</span><br><span class="line">			&lt;value&gt;WriteDateUseDateFormat&lt;/value&gt;</span><br><span class="line">		&lt;/array&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;property name=&quot;fastJsonConfig&quot;&gt;</span><br><span class="line">		&lt;bean class=&quot;com.alibaba.fastjson.support.config.FastJsonConfig&quot;&gt;</span><br><span class="line">			&lt;property name=&quot;features&quot;&gt;</span><br><span class="line">				&lt;list&gt;</span><br><span class="line">					&lt;value&gt;AllowArbitraryCommas&lt;/value&gt;</span><br><span class="line">					&lt;value&gt;AllowUnQuotedFieldNames&lt;/value&gt;</span><br><span class="line">					&lt;value&gt;DisableCircularReferenceDetect&lt;/value&gt;</span><br><span class="line">				&lt;/list&gt;</span><br><span class="line">			&lt;/property&gt;</span><br><span class="line">			&lt;property name=&quot;dateFormat&quot; value=&quot;yyyy-MM-dd HH:mm:ss&quot;&gt;&lt;/property&gt;</span><br><span class="line">		&lt;/bean&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line">&lt;mvc:annotation-driven conversion-service=&quot;conversionService&quot;&gt;</span><br><span class="line">	&lt;mvc:message-converters register-defaults=&quot;true&quot;&gt;</span><br><span class="line">		&lt;ref bean=&quot;stringHttpMessageConverter&quot; /&gt;</span><br><span class="line">		&lt;ref bean=&quot;fastJsonHttpMessageConverter&quot; /&gt;</span><br><span class="line">	&lt;/mvc:message-converters&gt;</span><br><span class="line">&lt;/mvc:annotation-driven&gt;</span><br></pre></td></tr></table></figure>
+<p>现在应该可以直接run这个测试了</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/springMVC/" rel="tag"># springMVC</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/05/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/007-%E4%BD%BF%E7%94%A8MyBatis-easyUI%E5%AE%9E%E7%8E%B0CRUD%E6%93%8D%E4%BD%9C%E6%A0%B7%E4%BE%8B-R%E6%93%8D%E4%BD%9C-%E9%87%8D%E6%9E%84/" rel="prev" title="007 使用MyBatis, easyUI实现CRUD操作样例-R操作(重构)">
+                  <i class="fa fa-chevron-left"></i> 007 使用MyBatis, easyUI实现CRUD操作样例-R操作(重构)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/05/30/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/006-%E4%BF%AE%E6%AD%A3maven-install%E5%A4%B1%E8%B4%A5%E7%9A%84%E9%97%AE%E9%A2%98/" rel="next" title="006 修正maven install失败的问题">
+                  006 修正maven install失败的问题 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

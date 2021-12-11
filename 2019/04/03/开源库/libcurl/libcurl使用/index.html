@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="static build need define macro CURL_STATICLIB in use project libcurl.lib ws2_32.lib winmm.lib wldap32.lib struct MemoryStruct &amp;#123;	char *memory;	size_t size;&amp;#125;;static size_t WriteMemoryCallback(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="libcurl使用">
+<meta property="og:url" content="http://zhengjun.top/2019/04/03/%E5%BC%80%E6%BA%90%E5%BA%93/libcurl/libcurl%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="static build need define macro CURL_STATICLIB in use project libcurl.lib ws2_32.lib winmm.lib wldap32.lib struct MemoryStruct &amp;#123;	char *memory;	size_t size;&amp;#125;;static size_t WriteMemoryCallback(">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-04-03T08:06:11.000Z">
+<meta property="article:modified_time" content="2019-04-03T09:31:20.000Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="libcurl">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://zhengjun.top/2019/04/03/%E5%BC%80%E6%BA%90%E5%BA%93/libcurl/libcurl%E4%BD%BF%E7%94%A8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2019/04/03/%E5%BC%80%E6%BA%90%E5%BA%93/libcurl/libcurl%E4%BD%BF%E7%94%A8/","path":"2019/04/03/开源库/libcurl/libcurl使用/","title":"libcurl使用"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>libcurl使用 | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/03/%E5%BC%80%E6%BA%90%E5%BA%93/libcurl/libcurl%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          libcurl使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2019-04-03 16:06:11 / 修改时间：17:31:20" itemprop="dateCreated datePublished" datetime="2019-04-03T16:06:11+08:00">2019-04-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>static build need define macro CURL_STATICLIB in use project</p>
+<p>libcurl.lib ws2_32.lib winmm.lib wldap32.lib</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MemoryStruct</span> &#123;</span></span><br><span class="line">	<span class="keyword">char</span> *memory;</span><br><span class="line">	<span class="keyword">size_t</span> size;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">size_t</span> <span class="title">WriteMemoryCallback</span><span class="params">(<span class="keyword">void</span> *contents, <span class="keyword">size_t</span> size, <span class="keyword">size_t</span> nmemb, <span class="keyword">void</span> *userp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">size_t</span> realsize = size * nmemb;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">MemoryStruct</span> *<span class="title">mem</span> =</span> (struct MemoryStruct *)userp;</span><br><span class="line"></span><br><span class="line">	mem-&gt;memory = (<span class="keyword">char</span>*)<span class="built_in">realloc</span>(mem-&gt;memory, mem-&gt;size + realsize + <span class="number">1</span>);</span><br><span class="line">	<span class="keyword">if</span>(mem-&gt;memory == <span class="literal">NULL</span>) &#123;</span><br><span class="line">		<span class="comment">/* out of memory! */</span> </span><br><span class="line">		<span class="built_in">OutputDebugString</span>(_T(<span class="string">&quot;yGPC:not enough memory (realloc returned NULL)\n&quot;</span>));</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">memcpy</span>(&amp;(mem-&gt;memory[mem-&gt;size]), contents, realsize);</span><br><span class="line">	mem-&gt;size += realsize;</span><br><span class="line">	mem-&gt;memory[mem-&gt;size] = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> realsize;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">HTTP/1.1 200 OK</span></span><br><span class="line"><span class="comment">Server: Apache-Coyote/1.1</span></span><br><span class="line"><span class="comment">Content-Type: application/json;charset=UTF-8</span></span><br><span class="line"><span class="comment">Transfer-Encoding: chunked</span></span><br><span class="line"><span class="comment">Date: Fri, 30 Sep 2016 07:34:51 GMT</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">&#123;&quot;head&quot;:&#123;&quot;errorCode&quot;:&quot;000000&quot;,&quot;errorMsg&quot;:&quot;success&quot;&#125;,&quot;body&quot;:&#123;&quot;commands&quot;:null&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">CMainDlg::httpPost</span><span class="params">(<span class="keyword">const</span> std::string &amp; strUrl, <span class="keyword">const</span> std::string &amp; strPostField, std::string &amp; strRet)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">	std::wstring str = _T(<span class="string">&quot;yGPC: CMainDlg::httpPost strUrl:&quot;</span>);</span><br><span class="line">	str += m_ut.<span class="built_in">s2w</span>(strUrl) + _T(<span class="string">&quot; postField: &quot;</span>);</span><br><span class="line">	str += m_ut.<span class="built_in">s2w</span>(strPostField);</span><br><span class="line">	m_ut.<span class="built_in">strRemoveByParam</span>(str, _T(<span class="string">&quot;\r\n&quot;</span>));</span><br><span class="line">	<span class="built_in">OutputDebugString</span>(str.<span class="built_in">c_str</span>());</span><br><span class="line"></span><br><span class="line">	CURL *curl; </span><br><span class="line">	CURLcode res; </span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">curl_slist</span> *<span class="title">http_header</span> =</span> <span class="literal">NULL</span>; </span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">MemoryStruct</span> <span class="title">chunk</span>;</span></span><br><span class="line">	chunk.memory = (<span class="keyword">char</span>*)<span class="built_in">malloc</span>(<span class="number">1</span>);  <span class="comment">/* will be grown as needed by realloc above */</span> </span><br><span class="line">	chunk.size = <span class="number">0</span>;    <span class="comment">/* no data at this point */</span> </span><br><span class="line"></span><br><span class="line">	<span class="built_in">curl_global_init</span>(CURL_GLOBAL_ALL);</span><br><span class="line">	curl = <span class="built_in">curl_easy_init</span>(); </span><br><span class="line">	<span class="keyword">if</span> (!curl) </span><br><span class="line">	&#123; </span><br><span class="line">		<span class="built_in">OutputDebugString</span>(_T(<span class="string">&quot;yGPC:curl init failed\n&quot;</span>));</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>; </span><br><span class="line">	&#125; </span><br><span class="line"></span><br><span class="line">std::string  strUrlEncode = boost::locale::conv::to_utf&lt;<span class="keyword">char</span>&gt;(strUrl,<span class="string">&quot;GBK&quot;</span>);</span><br><span class="line">	<span class="built_in">curl_easy_setopt</span>(curl,CURLOPT_URL,strUrlEncode.<span class="built_in">c_str</span>()); <span class="comment">//url地址</span></span><br><span class="line">	<span class="built_in">curl_easy_setopt</span>(curl,CURLOPT_POSTFIELDS,strPostField.<span class="built_in">c_str</span>()); <span class="comment">//post参数</span></span><br><span class="line">	<span class="built_in">curl_easy_setopt</span>(curl,CURLOPT_WRITEFUNCTION,WriteMemoryCallback); <span class="comment">//对返回的数据进行操作的函数地址</span></span><br><span class="line">	<span class="built_in">curl_easy_setopt</span>(curl,CURLOPT_WRITEDATA,(<span class="keyword">void</span> *)&amp;chunk); <span class="comment">//这是write_data的第四个参数值</span></span><br><span class="line">	<span class="built_in">curl_easy_setopt</span>(curl,CURLOPT_POST,<span class="number">1</span>); <span class="comment">//设置问非表示本次操作为post </span></span><br><span class="line">	<span class="built_in">curl_easy_setopt</span>(curl,CURLOPT_VERBOSE,<span class="number">1</span>); <span class="comment">//打印调试信息</span></span><br><span class="line"><span class="comment">//	curl_easy_setopt(curl,CURLOPT_HEADER,1); //将响应头信息和相应体一起传给write_data </span></span><br><span class="line">	<span class="built_in">curl_easy_setopt</span>(curl,CURLOPT_FOLLOWLOCATION,<span class="number">1</span>); <span class="comment">//设置为非,响应头信息location </span></span><br><span class="line">	<span class="built_in">curl_easy_setopt</span>(curl,CURLOPT_COOKIEFILE,<span class="string">&quot;/curlposttest.cookie&quot;</span>); </span><br><span class="line">	<span class="built_in">curl_easy_setopt</span>(curl,CURLOPT_TIMEOUT,<span class="number">10</span>); </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	res = <span class="built_in">curl_easy_perform</span>(curl); </span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (res != CURLE_OK) </span><br><span class="line">	&#123; </span><br><span class="line">		<span class="built_in"><span class="keyword">switch</span></span>(res) </span><br><span class="line">		&#123; </span><br><span class="line">		<span class="keyword">case</span> CURLE_UNSUPPORTED_PROTOCOL: </span><br><span class="line">			<span class="built_in">OutputDebugString</span>(_T(<span class="string">&quot;yGPC:CURLE_UNSUPPORTED_PROTOCOL\n&quot;</span>));</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> CURLE_COULDNT_CONNECT: </span><br><span class="line">			<span class="built_in">OutputDebugString</span>(_T(<span class="string">&quot;yGPC:CURLE_COULDNT_CONNECT\n&quot;</span>));</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> CURLE_HTTP_RETURNED_ERROR: </span><br><span class="line">			<span class="built_in">OutputDebugString</span>(_T(<span class="string">&quot;yGPC:CURLE_HTTP_RETURNED_ERROR\n&quot;</span>));</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> CURLE_READ_ERROR: </span><br><span class="line">			<span class="built_in">OutputDebugString</span>(_T(<span class="string">&quot;yGPC:CURLE_READ_ERROR\n&quot;</span>));</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">default</span>: </span><br><span class="line">			&#123;</span><br><span class="line">				std::string str = (<span class="string">&quot;yGPC:&quot;</span>);</span><br><span class="line">				str += (<span class="string">&quot;return code:&quot;</span>);</span><br><span class="line">				str += m_ut.<span class="built_in">w2s</span>(m_ut.<span class="built_in">number2str</span>(res,_T(<span class="string">&quot;%x&quot;</span>)));</span><br><span class="line">				<span class="built_in">OutputDebugString</span>(_T(<span class="string">&quot;yGPC:CURLE_READ_ERROR\n&quot;</span>));</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125; </span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>; </span><br><span class="line">	&#125; <span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		strRet = chunk.memory;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">curl_easy_cleanup</span>(curl); </span><br><span class="line">	<span class="built_in">free</span>(chunk.memory);</span><br><span class="line">	<span class="comment">/* we&#x27;re done with libcurl, so clean it up */</span> </span><br><span class="line">	<span class="built_in">curl_global_cleanup</span>();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">jo[<span class="string">&quot;signature&quot;</span>] = <span class="built_in">genSignature</span>(strTimestamp,strRandom).<span class="built_in">c_str</span>();</span><br><span class="line">		jo[<span class="string">&quot;timestamp&quot;</span>] = strTimestamp.<span class="built_in">c_str</span>();</span><br><span class="line">		jo[<span class="string">&quot;requestTime&quot;</span>] = strTimestamp.<span class="built_in">c_str</span>();</span><br><span class="line">		jo[<span class="string">&quot;nonce&quot;</span>] = strRandom.<span class="built_in">c_str</span>();</span><br><span class="line">		jsonRoot[<span class="string">&quot;head&quot;</span>] = jo;</span><br><span class="line"></span><br><span class="line">		std::string param = <span class="string">&quot;msg=&quot;</span>;</span><br><span class="line">		param += jsonRoot.<span class="built_in">toStyledString</span>();</span><br><span class="line">		std::string  strUrlEncode = boost::locale::conv::to_utf&lt;<span class="keyword">char</span>&gt;(param,<span class="string">&quot;GBK&quot;</span>);</span><br><span class="line">		std::string strRet;</span><br><span class="line">		pwnd-&gt;<span class="built_in">httpPost</span>(url,strUrlEncode,strRet);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/libcurl/" rel="tag"># libcurl</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/04/02/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/windows/Win32/win32-dialog/" rel="prev" title="win32-dialog">
+                  <i class="fa fa-chevron-left"></i> win32-dialog
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/04/05/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Rust/rust-library/" rel="next" title="rust-library">
+                  rust-library <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

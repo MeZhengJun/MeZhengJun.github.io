@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="ref.1 正常项目，一般都是网线tcp通讯的那种，官方叫 iso on tcp 这种方式西门子的做法和 现在的大众软件方法类似，开放一个默认端口，是102，可以同时连接多个客户端；tcp 客户端连上西门子的102端口后，必须做一个特定报文的交互，然后才能做正常的读取操作； 可能由于西门子的102端口是1对多的，所以它比较拽，一旦发现通讯数据格式或内容不正确，不但不回复，而且直接跟你把通讯通道断开">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PLC-西门子S7Comm以太网通讯协议">
+<meta property="og:url" content="http://zhengjun.top/2020/03/17/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/PLC/PLC-%E8%A5%BF%E9%97%A8%E5%AD%90S7Comm%E4%BB%A5%E5%A4%AA%E7%BD%91%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="ref.1 正常项目，一般都是网线tcp通讯的那种，官方叫 iso on tcp 这种方式西门子的做法和 现在的大众软件方法类似，开放一个默认端口，是102，可以同时连接多个客户端；tcp 客户端连上西门子的102端口后，必须做一个特定报文的交互，然后才能做正常的读取操作； 可能由于西门子的102端口是1对多的，所以它比较拽，一旦发现通讯数据格式或内容不正确，不但不回复，而且直接跟你把通讯通道断开">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-17T09:44:27.000Z">
+<meta property="article:modified_time" content="2021-12-07T13:36:02.209Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="PLC">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://zhengjun.top/2020/03/17/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/PLC/PLC-%E8%A5%BF%E9%97%A8%E5%AD%90S7Comm%E4%BB%A5%E5%A4%AA%E7%BD%91%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2020/03/17/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/PLC/PLC-%E8%A5%BF%E9%97%A8%E5%AD%90S7Comm%E4%BB%A5%E5%A4%AA%E7%BD%91%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/","path":"2020/03/17/功能分类/PLC/PLC-西门子S7Comm以太网通讯协议/","title":"PLC-西门子S7Comm以太网通讯协议"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>PLC-西门子S7Comm以太网通讯协议 | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#S7Comm%E4%BB%A5%E5%A4%AA%E7%BD%91%E9%80%9A%E8%AE%AF%E8%BF%87%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">S7Comm以太网通讯过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A5%BF%E9%97%A8%E5%AD%90-s7-%E9%80%9A%E4%BF%A1%E5%BA%93%EF%BC%8C%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C%E9%9C%80%E8%A6%81%E6%89%8B%E5%8A%A8%E5%90%8C%E6%AD%A5%EF%BC%8C%E5%90%8C%E6%97%B6%E5%8F%91%E4%BC%9A%E5%AF%BC%E8%87%B4%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5"><span class="nav-number">3.</span> <span class="nav-text">西门子 s7 通信库，读写操作需要手动同步，同时发会导致连接失败</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%99%E5%85%A5-4-%E5%AD%97%E8%8A%82%E7%9A%84%E6%B5%AE%E7%82%B9%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">写入 4 字节的浮点数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96PLC"><span class="nav-number">5.</span> <span class="nav-text">读取PLC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE-plc-%E4%BD%8D"><span class="nav-number">6.</span> <span class="nav-text">设置 plc 位</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/17/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/PLC/PLC-%E8%A5%BF%E9%97%A8%E5%AD%90S7Comm%E4%BB%A5%E5%A4%AA%E7%BD%91%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PLC-西门子S7Comm以太网通讯协议
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-03-17 17:44:27" itemprop="dateCreated datePublished" datetime="2020-03-17T17:44:27+08:00">2020-03-17</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-12-07 21:36:02" itemprop="dateModified" datetime="2021-12-07T21:36:02+08:00">2021-12-07</time>
+      </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/powersun1981/article/details/54289776">ref.1</a></p>
+<p>正常项目，一般都是网线tcp通讯的那种，官方叫 iso on tcp 这种方式<br>西门子的做法和 现在的大众软件方法类似，开放一个默认端口，是102，可以同时连接多个客户端；<br>tcp 客户端连上西门子的102端口后，必须做一个特定报文的交互，然后才能做正常的读取操作；</p>
+<p>可能由于西门子的102端口是1对多的，所以它比较拽，一旦发现通讯数据格式或内容不正确，不但不回复，而且直接跟你把通讯通道断开，<br>    不理你了； 三菱遇到异常报文时，通讯不会断的，只是回复你异常数据，并且有异常代码；</p>
+<p>解析的是以 0x32 开始的报文结构</p>
+<p>借助WireShark抓包，可以看到，S7Comm 以太网协议基于OSI模型：</p>
+<span id="more"></span>
+<table>
+<thead>
+<tr>
+<th>OSI layer</th>
+<th>Protocol</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>7 Application Layer</td>
+<td>S7 communication</td>
+</tr>
+<tr>
+<td>6 Presentation Layer</td>
+<td>S7 communication(COTP)</td>
+</tr>
+<tr>
+<td>5 Session Layer</td>
+<td>S7 communication(TPKT)</td>
+</tr>
+<tr>
+<td>4 Transport Layer</td>
+<td>ISO-on-TCP (RFC 1006)</td>
+</tr>
+<tr>
+<td>3 Network Layer</td>
+<td>IP</td>
+</tr>
+<tr>
+<td>2 Data Link Layer</td>
+<td>Ethernet</td>
+</tr>
+<tr>
+<td>1 Physical Layer</td>
+<td>Ethernet</td>
+</tr>
+</tbody></table>
+<p>其中，第1~4层会由计算机自己完成（底层驱动程序）；<br>第5层TPKT，应用程数据传输协议，介于TCP和COTP协议之间；这是一个传输服务协议，主要用来在COTP和TCP之间建立桥梁；</p>
+<p>“TPKT is an”encapsulation” protocol. It carries the OSI packet in its ownpacket’s data payload and then passes the resulting structure to TCP, from thenon, the packet is processed as a TCP/IP packet. The OSI programs passing datato TPKT are unaware that their data will be carried over TCP/IP because TPKTemulates the OSI protocol Transport Service Access Point (TSAP).”</p>
+<p>第6层COTP，按照维基百科的解释，COTP 是 OSI 7层协议定义的位于TCP之上的协议。COTP 以“Packet”为基本单位来传输数据，这样接收方会得到与发送方具有相同边界的数据；</p>
+<p>第7层，S7 communication，这一层和用户数据相关，对PLC数据的读取报文在这里完成；</p>
+<p>刚看到TPKT和COPT也许会很迷惑，其实在具体的报文中，TPKT的作用是包含用户协议（5~7层）的数据长度（字节数）；COTP的作用是定义了数据传输的基本单位（在S7Comm中 PDU TYPE：DT data）；</p>
+<p>S7Comm与标准TCP/IP比较：S7Comm是一个7层协议；TCP/IP是四层协议，用户数据在第四层TCP层完成；</p>
+<p>计算机与PLC进行通讯，可以连接102端口，这是西门子开放的一个通讯端口；</p>
+<p>第七层 S7 communication协议</p>
+<p>S7 communication包含三部分：1-Header；2-Parameter；3 - Data。</p>
+<p>根据实现的功能不同，S7 communication协议的结构会有所不同；例如，请求数据报文只包含前两部分；</p>
+<p>     &lt;1&gt;Header     </p>
+<p>       *01(1 byte): protocol Id: 0x32;</p>
+<p>       *02a(1 byte): ROSCTR: Job (01);</p>
+<p>       *02b(2 byte): redundancy identification (reserved): 0x0000;</p>
+<p>       *2c(2 byte): protocol data unit reference; it’s increased by request event;</p>
+<p>       *2d(2 byte): parameter length - the total length (bytes) of parameter part;</p>
+<p>       *2e(2 byte): data length; 读取PLC内部数据，此处为00 00；对于其他功能，例如：读取CPU的型号，此处为Data部分的数据长度；</p>
+<p>    &lt;2&gt;Parameter（读取数据）</p>
+<p>      *3(1 byte): function code: Read Var (0x04)；writeVar (0x05);</p>
+<p>        *4(1 byte): item count;</p>
+<p>        *5(1 byte): variable specification: 0x12;</p>
+<p>        *6(1 byte): length of following address specification – is 7~12length in byte;</p>
+<p>        *7(1 byte): syntax Id: S7ANY (0x10);</p>
+<p>        *8(1 byte):transport size: BYTE(2);</p>
+<p>        *9(2 byte): requested data length;</p>
+<p>        *10(2 byte): DB number; 如果访问的不是DB区域，此处为00 00；</p>
+<p>        *11(1 byte): Area: 0x84= data block(DB); 0X82= outputs(Q); 0x81=inputs(I); 0x83= Flags(M); 0x1d= S7 timers(T); 0x1c= S7counters(C);</p>
+<p>        *12(3 byte):address- start address from zero bit</p>
+<p>        *5~*12构成了一个基本的数据请求单元[Item],对多个不同地址区域的数据请求，就是有多个[Item]构成的。</p>
+<p>         Parameter部分的数据结构可以总结为：</p>
+<p>                     [Function code ]+ [Item count] + Item[1] + Item[2]  . . . Item[n]  </p>
+<p>        &lt;3&gt;Data</p>
+<p>          这一部分与功能有关，例如：读取CPU型号、向CPU存储区写数据；在请求数据报文中此部分不包含任何数据。</p>
+<h2 id="S7Comm以太网通讯过程"><a href="#S7Comm以太网通讯过程" class="headerlink" title="S7Comm以太网通讯过程"></a>S7Comm以太网通讯过程</h2><ol>
+<li>需要”通讯请求”过程。这个过程包含两次报文交换</li>
+</ol>
+<p>1&gt; PC 发送COTP报文给PLC；在COTP报文中包含“连接请求”和“destination TSAP” - 明确CPU的机架号和槽号；<br>PLC反馈COTP报文，包含“连接确认”；<br> 这样PLC就清楚了需要和那个CPU来进行数据通讯；</p>
+<p>握手1<br>03 00 00 16 11 e0 00 00 00 04 00 c1 02 01 00 c2 02 01 02 c0 01 0a<br>握手2<br>03 00 00 19 02 f0 80 32 01 00 00 02 00 00 08 00 00 f0 00 00 01 00 01 01 e0</p>
+<p>2&gt; PC 发送S7Comm报文给PLC；在S7 communicaton报文中包含“通讯请求”；<br>PLC反馈S7Comm报文。</p>
+<ol start="2">
+<li>交换数据<br>数据读写就在这个过程内完成。我们可以组织报文来实现我们需要的功能。这个过程内的报文是S7Comm格式；<br>具体实现时，需要对S7Comm中的第5、6、7层进行编程。</li>
+</ol>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>wchar 和 wstring 的定义：<br>1、数据类型为 wchar（宽字符）的变量长度为 16 位，占用2个 byte 的内存。 wchar 数据类型将扩展字符集中的单个字符保存为 UFT-16 编码形式。<br>2、数据类型为 wstring （宽字符串）的操作数用于在一个字符串中存储多个数据类型为 wchar 的 Unicode 字符。如果未指定长度，则字符串的长度为预置的 254 个字。</p>
+<h2 id="西门子-s7-通信库，读写操作需要手动同步，同时发会导致连接失败"><a href="#西门子-s7-通信库，读写操作需要手动同步，同时发会导致连接失败" class="headerlink" title="西门子 s7 通信库，读写操作需要手动同步，同时发会导致连接失败"></a>西门子 s7 通信库，读写操作需要手动同步，同时发会导致连接失败</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// true signaled; false  non-signaled</span><br><span class="line">ManualResetEvent manualResetEventPlcHeartbeat = new ManualResetEvent(true);</span><br><span class="line">// 可以发送 数据相关命令</span><br><span class="line">ManualResetEvent manualResetEventPlcOn = new ManualResetEvent(false);</span><br><span class="line"></span><br><span class="line">private void taskMelsecPLCHeartbeatProc()</span><br><span class="line">&#123;</span><br><span class="line">    Log.Information(&quot;taskPLCHeartbeatProc enter...&quot;);</span><br><span class="line">    int iRet = 0;</span><br><span class="line">    bool setStatus = false;</span><br><span class="line"></span><br><span class="line">    while (FLAG_TASK_EXIT != (flag &amp; FLAG_TASK_EXIT))</span><br><span class="line">    &#123;</span><br><span class="line">        manualResetEventPlcHeartbeat.WaitOne();</span><br><span class="line">        manualResetEventPlcOn.Reset();</span><br><span class="line">        Console.WriteLine(&quot;send heartbeat&quot;);</span><br><span class="line"></span><br><span class="line">        iRet = s7Helper.Open(App.db.m_config[0].PLCIP, 0, 0);</span><br><span class="line">        if (iRet != 0)</span><br><span class="line">        &#123;</span><br><span class="line">            setStatus = true;</span><br><span class="line">            Log.Error($&quot;open plc failed. err=&#123;iRet&#125;&quot;);</span><br><span class="line">            Dispatcher.Invoke(new Action(() =&gt; &#123; tb_status.Text = $&quot;连接PLC失败 code=&#123;iRet&#125;&quot;; WindowState = WindowState.Normal; &#125;));</span><br><span class="line">            System.Threading.Thread.Sleep(500);</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line">        Dispatcher.Invoke(new Action(() =&gt; &#123; tb_status.Text = &quot;状态：PLC 监控中&quot;; &#125;));</span><br><span class="line"></span><br><span class="line">        byte[] rData = new byte[10];</span><br><span class="line"></span><br><span class="line">        iRet = s7Helper.ReadMBlockByte(0, App.db.m_config[0].PLCData, 1, ref rData);</span><br><span class="line">        if (iRet != 0)</span><br><span class="line">        &#123;</span><br><span class="line">            Dispatcher.Invoke(new Action(() =&gt; &#123; tb_status.Text = $&quot;读取PLC数据失败 code=&#123;iRet&#125;&quot;; &#125;));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        s7Helper.SetBit(ref rData, 0, 0, true);</span><br><span class="line">        iRet = s7Helper.WriteMBlockByte(0, App.db.m_config[0].PLCData, 1, ref rData);</span><br><span class="line">        if (iRet != 0)</span><br><span class="line">        &#123;</span><br><span class="line">            Dispatcher.Invoke(new Action(() =&gt; &#123; tb_status.Text = $&quot;写入PLC数据失败 code=&#123;iRet&#125;&quot;; &#125;));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        manualResetEventPlcOn.Set();</span><br><span class="line">        for (var i = 0; i &lt; 10; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            if (FLAG_TASK_EXIT == (flag &amp; FLAG_TASK_EXIT))</span><br><span class="line">            &#123;</span><br><span class="line">                goto skip_return;</span><br><span class="line">            &#125;</span><br><span class="line">            System.Threading.Thread.Sleep(100);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    skip_return:</span><br><span class="line">    Log.Information(&quot;taskPLCHeartbeatProc exit...&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public void doBusi(string fileFullPath)</span><br><span class="line">&#123;</span><br><span class="line">    // 停止心跳</span><br><span class="line">    manualResetEventPlcOn.WaitOne();</span><br><span class="line">    manualResetEventPlcHeartbeat.Reset();</span><br><span class="line">    // PLC 读写操作</span><br><span class="line">    ...</span><br><span class="line">    // 开始心跳</span><br><span class="line">    manualResetEventPlcHeartbeat.Set();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="写入-4-字节的浮点数"><a href="#写入-4-字节的浮点数" class="headerlink" title="写入 4 字节的浮点数"></a>写入 4 字节的浮点数</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    float t1 = (float)44.7;</span><br><span class="line">    int it1 = 0;</span><br><span class="line">    unsafe</span><br><span class="line">    &#123;</span><br><span class="line">        it1 = *(int*)&amp;t1;</span><br><span class="line">    &#125;</span><br><span class="line">    float fVal = (float)0.0;</span><br><span class="line">    unsafe</span><br><span class="line">    &#123;</span><br><span class="line">        fVal = *((float*)&amp;it1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 西门子是大端模式，电脑是小端模式，所以需要转换一下</span><br><span class="line">if (BitConverter.IsLittleEndian)</span><br><span class="line">&#123;</span><br><span class="line">    Array.Reverse(rData);</span><br><span class="line">&#125;</span><br><span class="line">int iVal = BitConverter.ToInt32(rData, 0);</span><br><span class="line">float fVal = (float)0.0;</span><br><span class="line">unsafe</span><br><span class="line">&#123;</span><br><span class="line">    fVal = *((float*)&amp;iVal);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="读取PLC"><a href="#读取PLC" class="headerlink" title="读取PLC"></a>读取PLC</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">var param = tb_test_param.Text.Trim();</span><br><span class="line">if (param.Length &gt; 0)</span><br><span class="line">&#123;</span><br><span class="line">    string[] lines = param.Split(</span><br><span class="line">            new[] &#123; &quot;,&quot; &#125;,</span><br><span class="line">            StringSplitOptions.None</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">    int iRet = 0;</span><br><span class="line">    int addr = int.Parse(lines[1]);</span><br><span class="line">    int startPos = int.Parse(lines[2]);</span><br><span class="line">    int count = int.Parse(lines[3]);</span><br><span class="line">    </span><br><span class="line">    // 分区类型:[DB,M]，地址，起始位置，字符数量</span><br><span class="line">    byte[] rData = new byte[count];</span><br><span class="line">    if (lines[0] == &quot;DB&quot;)</span><br><span class="line">    &#123;</span><br><span class="line">        iRet = s7Helper.ReadBlockByte(addr, startPos, count, ref rData);</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">        iRet = s7Helper.ReadMBlockByte(addr, startPos, count, ref rData);</span><br><span class="line">    &#125;</span><br><span class="line">    if (iRet != 0)</span><br><span class="line">    &#123;</span><br><span class="line">        Log.Error($&quot;read plc failed. err=&#123;iRet&#125;&quot;);</span><br><span class="line">        Dispatcher.Invoke(new Action(() =&gt; &#123; tb_status.Text = $&quot;读取PLC失败1 code=&#123;iRet&#125;&quot;; &#125;));</span><br><span class="line">    &#125;else</span><br><span class="line">    &#123;</span><br><span class="line">        var ss = BitConverter.ToString(rData).Replace(&quot;-&quot;, &quot;&quot;);</span><br><span class="line">        tb_test.Text = ss;</span><br><span class="line">        Log.Information($&quot;test_read:&#123;ss&#125;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="设置-plc-位"><a href="#设置-plc-位" class="headerlink" title="设置 plc 位"></a>设置 plc 位</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/*</span><br><span class="line">*  设置指定 dbxx 的指定字节的指定位</span><br><span class="line">*/</span><br><span class="line">private void SetPLCBit(int dbNumber,int bytePos,int bitPos, bool bitValue)</span><br><span class="line">&#123;</span><br><span class="line">    manualResetEventPlcOn.WaitOne();</span><br><span class="line">    manualResetEventPlcHeartbeat.Reset();</span><br><span class="line">    int retryCnt = 0;</span><br><span class="line"></span><br><span class="line">    Log.Information($&quot;ClearPLCFlag enter... dbNumber=&#123;dbNumber&#125;,bytePos=&#123;bytePos&#125;,bitPos=&#123;bitPos&#125;,bitValue=&#123;bitValue&#125;&quot;);</span><br><span class="line"></span><br><span class="line">    byte[] rData = new byte[30];</span><br><span class="line">    skip_retry_read:</span><br><span class="line">    // 通知 PLC 保存工位参数</span><br><span class="line">    int iRet = s7Helper.ReadBlockByte(dbNumber, bytePos, 1, ref rData);</span><br><span class="line">    if (iRet != 0)</span><br><span class="line">    &#123;</span><br><span class="line">        Log.Error($&quot;ClearPLCFlag plc flag failed. code=&#123;iRet&#125;,retryCnt=&#123;retryCnt&#125;&quot;);</span><br><span class="line">        if (retryCnt &lt; 3)</span><br><span class="line">        &#123;</span><br><span class="line">            retryCnt += 1;</span><br><span class="line">            goto skip_retry_read;</span><br><span class="line">        &#125;</span><br><span class="line">        Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,</span><br><span class="line">        new Action(() =&gt; &#123; MessageBox.Show(Application.Current.MainWindow, &quot;清除PLC标志位失败&quot;, &quot;错误&quot;); &#125;));</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">        s7Helper.SetBit(ref rData, 0, bitPos, bitValue);</span><br><span class="line">        retryCnt = 0;</span><br><span class="line">        skip_retry:</span><br><span class="line">        iRet = s7Helper.WriteBlockByte(dbNumber, bytePos, 1, ref rData);</span><br><span class="line">        if (iRet != 0)</span><br><span class="line">        &#123;</span><br><span class="line">            Log.Error($&quot;write plc flag failed. code=&#123;iRet&#125;,retryCnt=&#123;retryCnt&#125;&quot;);</span><br><span class="line">            if (retryCnt &lt; 3)</span><br><span class="line">            &#123;</span><br><span class="line">                retryCnt += 1;</span><br><span class="line">                goto skip_retry;</span><br><span class="line">            &#125;</span><br><span class="line">            Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,</span><br><span class="line">            new Action(() =&gt; &#123; MessageBox.Show(Application.Current.MainWindow, &quot;设置PLC标志位失败&quot;, &quot;错误&quot;); &#125;));</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            Log.Information($&quot;write standby flag ok. data=&#123;rData[0]&#125;&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    manualResetEventPlcHeartbeat.Set();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/PLC/" rel="tag"># PLC</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/03/17/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/windows/MFC/MFC-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A7%E4%BB%B6/" rel="prev" title="MFC-自定义控件">
+                  <i class="fa fa-chevron-left"></i> MFC-自定义控件
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/03/20/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/cpp-%E5%A4%A7%E5%B0%8F%E7%AB%AF%E8%BD%AC%E6%8D%A2/" rel="next" title="cpp-大小端转换">
+                  cpp-大小端转换 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

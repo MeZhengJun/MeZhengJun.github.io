@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="定义Go 语言中数组可以存储同一类型的数据，但在结构体中我们可以为不同项定义不同的数据类型。结构体是由一系列具有相同类型或不同类型的数据构成的数据集合。 结构体定义需要使用 type 和 struct 语句。struct 语句定义一个新的数据类型，结构体有中一个或多个成员。type 语句设定了结构体的名称。结构体的格式如下：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go_struct">
+<meta property="og:url" content="http://zhengjun.top/2017/11/15/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/go/go-struct/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="定义Go 语言中数组可以存储同一类型的数据，但在结构体中我们可以为不同项定义不同的数据类型。结构体是由一系列具有相同类型或不同类型的数据构成的数据集合。 结构体定义需要使用 type 和 struct 语句。struct 语句定义一个新的数据类型，结构体有中一个或多个成员。type 语句设定了结构体的名称。结构体的格式如下：">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-11-14T23:26:11.000Z">
+<meta property="article:modified_time" content="2019-12-18T15:03:10.000Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="go">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://zhengjun.top/2017/11/15/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/go/go-struct/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2017/11/15/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/go/go-struct/","path":"2017/11/15/语言相关/go/go-struct/","title":"go_struct"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>go_struct | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E"><span class="nav-number">2.</span> <span class="nav-text">声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80"><span class="nav-number">3.</span> <span class="nav-text">结构体的内存布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93%E6%8B%B7%E8%B4%9D"><span class="nav-number">4.</span> <span class="nav-text">结构体拷贝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%92%E5%BD%92%E7%BB%93%E6%9E%84%E4%BD%93"><span class="nav-number">5.</span> <span class="nav-text">递归结构体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%BF%E5%90%8D%E5%AD%97%E6%AE%B5"><span class="nav-number">6.</span> <span class="nav-text">匿名字段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95"><span class="nav-number">7.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93%E6%89%93%E5%8D%B0%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">8.</span> <span class="nav-text">结构体打印字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%B5%8C"><span class="nav-number">9.</span> <span class="nav-text">内嵌</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-NEW-%E4%BB%A3%E6%9B%BF%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">10.</span> <span class="nav-text">使用 NEW 代替构造函数</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2017/11/15/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/go/go-struct/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          go_struct
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-11-15 07:26:11" itemprop="dateCreated datePublished" datetime="2017-11-15T07:26:11+08:00">2017-11-15</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2019-12-18 23:03:10" itemprop="dateModified" datetime="2019-12-18T23:03:10+08:00">2019-12-18</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>Go 语言中数组可以存储同一类型的数据，但在结构体中我们可以为不同项定义不同的数据类型。<br>结构体是由一系列具有相同类型或不同类型的数据构成的数据集合。</p>
+<p>结构体定义需要使用 type 和 struct 语句。struct 语句定义一个新的数据类型，结构体有中一个或多个成员。<br>type 语句设定了结构体的名称。结构体的格式如下：</p>
+<span id="more"></span>
+
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> identifier <span class="keyword">struct</span> &#123;</span><br><span class="line">    field1 type1</span><br><span class="line">    field2 type2</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line">如果字段在代码中从来也不会被用到，那么可以命名它为 _</span><br><span class="line">variable_name := identifier &#123;value1, value2...valuen&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结构体的字段可以是任何类型,结构体,函数或者接口</p>
+<p>访问结构体成员<br>如果要访问结构体成员，需要使用点号 (.) 操作符，格式为：”结构体.成员名”。<br>在 Go 语言中这叫 选择器（selector）。无论变量是一个结构体类型还是一个结构体类型指针，<br>都使用同样的 选择器符（selector-notation） 来引用结构体的字段</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> myStruct <span class="keyword">struct</span> &#123; i <span class="keyword">int</span> &#125;</span><br><span class="line"><span class="keyword">var</span> v myStruct    <span class="comment">// v是结构体类型变量</span></span><br><span class="line"><span class="keyword">var</span> p *myStruct   <span class="comment">// p是指向一个结构体类型变量的指针</span></span><br><span class="line">v.i</span><br><span class="line">p.i</span><br><span class="line"></span><br><span class="line">结构体作为函数参数</span><br><span class="line">结构体指针</span><br><span class="line"></span><br><span class="line"><span class="number">1.</span>按照顺序提供初始化值</span><br><span class="line">P := person&#123;<span class="string">&quot;Tom&quot;</span>, <span class="number">25</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="number">2.</span>通过field:value的方式初始化，这样可以任意顺序</span><br><span class="line">P := person&#123;age:<span class="number">24</span>, name:<span class="string">&quot;Tom&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="number">3.</span>当然也可以通过<span class="built_in">new</span>函数分配一个指针，此处P的类型为*person</span><br><span class="line">P := <span class="built_in">new</span>(person)</span><br></pre></td></tr></table></figure>
+
+<h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> person <span class="keyword">struct</span> &#123;</span><br><span class="line">	name <span class="keyword">string</span></span><br><span class="line">	age <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> P person  <span class="comment">// P现在就是person类型的变量了</span></span><br><span class="line">P.name = <span class="string">&quot;Astaxie&quot;</span>  <span class="comment">// 赋值&quot;Astaxie&quot;给P的name属性.</span></span><br><span class="line">P.age = <span class="number">25</span>  <span class="comment">// 赋值&quot;25&quot;给变量P的age属性</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;The person&#x27;s name is %s&quot;</span>, P.name)  <span class="comment">// 访问P的name属性.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//按照顺序提供初始化值</span></span><br><span class="line">P := person&#123;<span class="string">&quot;Tom&quot;</span>, <span class="number">25</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//通过field:value的方式初始化，这样可以任意顺序</span></span><br><span class="line">P := person&#123;age:<span class="number">24</span>, name:<span class="string">&quot;Tom&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//当然也可以通过new函数分配一个指针，此处P的类型为*person</span></span><br><span class="line">P := <span class="built_in">new</span>(person)</span><br></pre></td></tr></table></figure>
+
+<p>一个完整的例子：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 声明一个新的类型</span></span><br><span class="line"><span class="keyword">type</span> person <span class="keyword">struct</span> &#123;</span><br><span class="line">	name <span class="keyword">string</span></span><br><span class="line">	age <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 比较两个人的年龄，返回年龄大的那个人，并且返回年龄差</span></span><br><span class="line"><span class="comment">// struct也是传值的</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Older</span><span class="params">(p1, p2 person)</span> <span class="params">(person, <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> p1.age&gt;p2.age &#123;  <span class="comment">// 比较p1和p2这两个人的年龄</span></span><br><span class="line">		<span class="keyword">return</span> p1, p1.age-p2.age</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> p2, p2.age-p1.age</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> tom person</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 赋值初始化</span></span><br><span class="line">	tom.name, tom.age = <span class="string">&quot;Tom&quot;</span>, <span class="number">18</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 两个字段都写清楚的初始化</span></span><br><span class="line">	bob := person&#123;age:<span class="number">25</span>, name:<span class="string">&quot;Bob&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 按照struct定义顺序初始化值</span></span><br><span class="line">	paul := person&#123;<span class="string">&quot;Paul&quot;</span>, <span class="number">43</span>&#125;</span><br><span class="line"></span><br><span class="line">	tb_Older, tb_diff := Older(tom, bob)</span><br><span class="line">	tp_Older, tp_diff := Older(tom, paul)</span><br><span class="line">	bp_Older, bp_diff := Older(bob, paul)</span><br><span class="line"></span><br><span class="line">	fmt.Printf(<span class="string">&quot;Of %s and %s, %s is older by %d years\n&quot;</span>,</span><br><span class="line">		tom.name, bob.name, tb_Older.name, tb_diff)</span><br><span class="line"></span><br><span class="line">	fmt.Printf(<span class="string">&quot;Of %s and %s, %s is older by %d years\n&quot;</span>,</span><br><span class="line">		tom.name, paul.name, tp_Older.name, tp_diff)</span><br><span class="line"></span><br><span class="line">	fmt.Printf(<span class="string">&quot;Of %s and %s, %s is older by %d years\n&quot;</span>,</span><br><span class="line">		bob.name, paul.name, bp_Older.name, bp_diff)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="结构体的内存布局"><a href="#结构体的内存布局" class="headerlink" title="结构体的内存布局"></a>结构体的内存布局</h2><p>Go 语言中，结构体和它所包含的数据在内存中是以连续块的形式存在的，即使结构体中嵌套有其他的结构体，这在性能上带来了很大的优势。不像 Java 中的引用类型，一个对象和它里面包含的对象可能会在不同的内存空间中，这点和 Go 语言中的指针很像。</p>
+<h2 id="结构体拷贝"><a href="#结构体拷贝" class="headerlink" title="结构体拷贝"></a>结构体拷贝</h2><p><a target="_blank" rel="noopener" href="https://github.com/jinzhu/copier">copy lib</a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">    a := &amp;A&#123;1, 1, &quot;a&quot;, &quot;b&quot;&#125;</span><br><span class="line">    aj, _ := json.Marshal(a)</span><br><span class="line">    b := new(B)</span><br><span class="line">    _ = json.Unmarshal(aj, b)</span><br><span class="line"></span><br><span class="line">    fmt.Printf(&quot;%+v&quot;, b)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="递归结构体"><a href="#递归结构体" class="headerlink" title="递归结构体"></a>递归结构体</h2><p>结构体类型可以通过引用自身来定义。这在定义链表或二叉树的元素（通常叫节点）时特别有用，此时节点包含指向临近节点的链接（地址）<br>链表：<br>这块的 data 字段用于存放有效数据（比如 float64），su 指针指向后继节点。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">type Node struct &#123;</span><br><span class="line">    data    float64</span><br><span class="line">    su      *Node</span><br><span class="line">&#125;</span><br><span class="line">双向链表，它有一个前趋节点 pr 和一个后继节点 su</span><br><span class="line">type Node struct &#123;</span><br><span class="line">    pr      *Node</span><br><span class="line">    data    float64</span><br><span class="line">    su      *Node</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="匿名字段"><a href="#匿名字段" class="headerlink" title="匿名字段"></a>匿名字段</h2><p>我们上面介绍了如何定义一个 struct，定义的时候是字段名与其类型一一对应，实际上 Go 支持只提供类型，而不写字段名的方式，也就是匿名字段，也称为嵌入字段。<br>当匿名字段是一个 struct 的时候，那么这个 struct 所拥有的全部字段都被隐式地引入了当前定义的这个 struct。</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Human <span class="keyword">struct</span> &#123;</span><br><span class="line">	name <span class="keyword">string</span></span><br><span class="line">	age <span class="keyword">int</span></span><br><span class="line">	weight <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Student <span class="keyword">struct</span> &#123;</span><br><span class="line">	Human  <span class="comment">// 匿名字段，那么默认Student就包含了Human的所有字段</span></span><br><span class="line">	speciality <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 我们初始化一个学生</span></span><br><span class="line">	mark := Student&#123;Human&#123;<span class="string">&quot;Mark&quot;</span>, <span class="number">25</span>, <span class="number">120</span>&#125;, <span class="string">&quot;Computer Science&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 我们访问相应的字段</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;His name is &quot;</span>, mark.name)</span><br><span class="line">	fmt.Println(<span class="string">&quot;His age is &quot;</span>, mark.age)</span><br><span class="line">	fmt.Println(<span class="string">&quot;His weight is &quot;</span>, mark.weight)</span><br><span class="line">	fmt.Println(<span class="string">&quot;His speciality is &quot;</span>, mark.speciality)</span><br><span class="line">	<span class="comment">// 修改对应的备注信息</span></span><br><span class="line">	mark.speciality = <span class="string">&quot;AI&quot;</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;Mark changed his speciality&quot;</span>)</span><br><span class="line">	fmt.Println(<span class="string">&quot;His speciality is &quot;</span>, mark.speciality)</span><br><span class="line">	<span class="comment">// 修改他的年龄信息</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;Mark become old&quot;</span>)</span><br><span class="line">	mark.age = <span class="number">46</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;His age is&quot;</span>, mark.age)</span><br><span class="line">	<span class="comment">// 修改他的体重信息</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;Mark is not an athlet anymore&quot;</span>)</span><br><span class="line">	mark.weight += <span class="number">60</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;His weight is&quot;</span>, mark.weight)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>Go 语言中同时有函数和方法。一个方法就是一个包含了接受者的函数，接受者可以是命名类型或者结构体类型的一个值或者是一个指针。所有给定类型的方法属于该类型的方法集。语法格式如下：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(variable_name variable_data_type)</span> <span class="title">function_name</span><span class="params">()</span> [<span class="title">return_type</span>]</span>&#123;</span><br><span class="line">   <span class="comment">/* 函数体*/</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 定义函数 */</span></span><br><span class="line"><span class="keyword">type</span> Circle <span class="keyword">struct</span> &#123;</span><br><span class="line">  radius <span class="keyword">float64</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">var</span> c1 Circle</span><br><span class="line">  c1.radius = <span class="number">10.00</span></span><br><span class="line">  fmt.Println(<span class="string">&quot;Area of Circle(c1) = &quot;</span>, c1.getArea())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//该 method 属于 Circle 类型对象中的方法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c Circle)</span> <span class="title">getArea</span><span class="params">()</span> <span class="title">float64</span></span> &#123;</span><br><span class="line">  <span class="comment">//c.radius 即为 Circle 类型对象中的属性</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">3.14</span> * c.radius * c.radius</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>默认结构体是值传递，所以在方法中需要使用指针类型来给成员变量赋值</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(m *Member)</span><span class="title">setName</span><span class="params">(name <span class="keyword">string</span>)</span></span>&#123;/将Member改为*Member</span><br><span class="line">    m.Name = name</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">m := Member&#123;&#125;</span><br><span class="line">m.setName(<span class="string">&quot;小明&quot;</span>)</span><br><span class="line">fmt.Println(m.Name)<span class="comment">//小明</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="结构体打印字符串"><a href="#结构体打印字符串" class="headerlink" title="结构体打印字符串"></a>结构体打印字符串</h2><figure class="highlight go"><table><tr><td class="code"><pre><span class="line">fmt.Println( fmt.Sprintf(<span class="string">&quot;%v&quot;</span>, head))</span><br><span class="line"></span><br><span class="line">%+v     打印结构体时，会添加字段名</span><br><span class="line">  Printf(<span class="string">&quot;%+v&quot;</span>, people)  &#123;Name:zhangsan&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="内嵌"><a href="#内嵌" class="headerlink" title="内嵌"></a>内嵌</h2><p>如果包含另一个结构体的时候不指定变量，可以直接访问。</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Phone <span class="keyword">struct</span> &#123;</span><br><span class="line">	price <span class="keyword">int</span></span><br><span class="line">	color <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> IPhone <span class="keyword">struct</span> &#123;</span><br><span class="line">	Phone</span><br><span class="line">	model <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> p IPhone</span><br><span class="line">	p.price = <span class="number">5000</span></span><br><span class="line">	p.color = <span class="string">&quot;Black&quot;</span></span><br><span class="line">	p.model = <span class="string">&quot;iPhone 5&quot;</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;I have a iPhone:&quot;</span>)</span><br><span class="line">	fmt.Println(<span class="string">&quot;Price:&quot;</span>, p.price)</span><br><span class="line">	fmt.Println(<span class="string">&quot;Color:&quot;</span>, p.color)</span><br><span class="line">	fmt.Println(<span class="string">&quot;Model:&quot;</span>, p.model)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果指定了变量，则需要通过变量访问</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> IPhone <span class="keyword">struct</span> &#123;</span><br><span class="line">	phone Phone</span><br><span class="line">	model <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> p IPhone</span><br><span class="line">	p.phone.price = <span class="number">5000</span></span><br><span class="line">	p.phone.color = <span class="string">&quot;Black&quot;</span></span><br><span class="line">	p.model = <span class="string">&quot;iPhone 5&quot;</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;I have a iPhone:&quot;</span>)</span><br><span class="line">	fmt.Println(<span class="string">&quot;Price:&quot;</span>, p.phone.price)</span><br><span class="line">	fmt.Println(<span class="string">&quot;Color:&quot;</span>, p.phone.color)</span><br><span class="line">	fmt.Println(<span class="string">&quot;Model:&quot;</span>, p.model)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用-NEW-代替构造函数"><a href="#使用-NEW-代替构造函数" class="headerlink" title="使用 NEW 代替构造函数"></a>使用 NEW 代替构造函数</h2><p>项目目录结构<br>workspacepath -&gt; oop -&gt; employee -&gt; employee.go</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> employee</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Employee <span class="keyword">struct</span> &#123;</span><br><span class="line">    FirstName   <span class="keyword">string</span></span><br><span class="line">    LastName    <span class="keyword">string</span></span><br><span class="line">    TotalLeaves <span class="keyword">int</span></span><br><span class="line">    LeavesTaken <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(e Employee)</span> <span class="title">LeavesRemaining</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Printf(<span class="string">&quot;%s %s has %d leaves remaining&quot;</span>, e.FirstName, e.LastName, (e.TotalLeaves - e.LeavesTaken))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>新建一个文件使用 employee<br>workspacepath -&gt; oop -&gt; employee -&gt; employee.go<br>workspacepath -&gt; oop -&gt; main.go</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;oop/employee&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    e := employee.Employee &#123;</span><br><span class="line">        FirstName: <span class="string">&quot;Sam&quot;</span>,</span><br><span class="line">        LastName: <span class="string">&quot;Adolf&quot;</span>,</span><br><span class="line">        TotalLeaves: <span class="number">30</span>,</span><br><span class="line">        LeavesTaken: <span class="number">20</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    e.LeavesRemaining()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这里没有输入参数，没有实际意义。需要通过类似构造函数的机制来限制创建无参数对象</span></span><br><span class="line">    <span class="keyword">var</span> e employee.Employee</span><br><span class="line">    e.LeavesRemaining()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改上面的 employee 定义</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> employee</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> employee <span class="keyword">struct</span> &#123;</span><br><span class="line">    firstName   <span class="keyword">string</span></span><br><span class="line">    lastName    <span class="keyword">string</span></span><br><span class="line">    totalLeaves <span class="keyword">int</span></span><br><span class="line">    leavesTaken <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">New</span><span class="params">(firstName <span class="keyword">string</span>, lastName <span class="keyword">string</span>, totalLeave <span class="keyword">int</span>, leavesTaken <span class="keyword">int</span>)</span> <span class="title">employee</span></span> &#123;</span><br><span class="line">    e := employee &#123;firstName, lastName, totalLeave, leavesTaken&#125;</span><br><span class="line">    <span class="keyword">return</span> e</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(e employee)</span> <span class="title">LeavesRemaining</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Printf(<span class="string">&quot;%s %s has %d leaves remaining&quot;</span>, e.firstName, e.lastName, (e.totalLeaves - e.leavesTaken))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先 employee 首字母改为小写，不导出给其他包使用。然后新建一个 New 导出函数用来创建对象</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;oop/employee&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    e := employee.New(<span class="string">&quot;Sam&quot;</span>, <span class="string">&quot;Adolf&quot;</span>, <span class="number">30</span>, <span class="number">20</span>)</span><br><span class="line">    e.LeavesRemaining()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/go/" rel="tag"># go</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/11/14/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/go/go%E7%BC%96%E8%AF%91%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/" rel="prev" title="go编译可执行文件">
+                  <i class="fa fa-chevron-left"></i> go编译可执行文件
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/11/16/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/python-Q-A/" rel="next" title="python_Q&A">
+                  python_Q&A <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

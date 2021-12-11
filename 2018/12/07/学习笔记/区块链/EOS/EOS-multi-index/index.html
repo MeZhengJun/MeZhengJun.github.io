@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="official site Multi Index Tables are a way to cache state and&#x2F;or data in RAM for fast access. Multi index tables support create, read, update and delete (CRUD) operations, each smart contract using a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EOS-multi_index">
+<meta property="og:url" content="http://zhengjun.top/2018/12/07/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/EOS/EOS-multi-index/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="official site Multi Index Tables are a way to cache state and&#x2F;or data in RAM for fast access. Multi index tables support create, read, update and delete (CRUD) operations, each smart contract using a">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhengjun.top/2018/12/07/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/EOS/EOS-multi-index/cd658330.png">
+<meta property="og:image" content="http://zhengjun.top/2018/12/07/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/EOS/EOS-multi-index/4b21775b.png">
+<meta property="article:published_time" content="2018-12-07T10:36:14.000Z">
+<meta property="article:modified_time" content="2018-12-28T07:54:34.000Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="blockchain">
+<meta property="article:tag" content="EOS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhengjun.top/2018/12/07/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/EOS/EOS-multi-index/cd658330.png">
+
+
+<link rel="canonical" href="http://zhengjun.top/2018/12/07/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/EOS/EOS-multi-index/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2018/12/07/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/EOS/EOS-multi-index/","path":"2018/12/07/学习笔记/区块链/EOS/EOS-multi-index/","title":"EOS-multi_index"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>EOS-multi_index | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#multi-index%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">multi_index相关操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B4%A2%E5%BC%95"><span class="nav-number">2.</span> <span class="nav-text">自定义索引</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#add-data"><span class="nav-number">3.</span> <span class="nav-text">add data</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%B9%E6%8D%AE%E4%B8%BB%E9%94%AE%E8%8E%B7%E5%8F%96%E7%9B%B8%E5%85%B3%E4%BF%A1%E6%81%AF"><span class="nav-number">4.</span> <span class="nav-text">根据主键获取相关信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%B9%E6%8D%AE%E4%B8%BB%E9%94%AE%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF"><span class="nav-number">5.</span> <span class="nav-text">根据主键更新信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%B9%E6%8D%AE%E4%B8%BB%E9%94%AE%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE"><span class="nav-number">6.</span> <span class="nav-text">根据主键删除数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B4%A2%E5%BC%95%E5%AE%9E%E7%8E%B0%E6%9F%A5%E8%AF%A2"><span class="nav-number">7.</span> <span class="nav-text">通过自定义的自定义索引实现查询</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/12/07/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/EOS/EOS-multi-index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          EOS-multi_index
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-12-07 18:36:14" itemprop="dateCreated datePublished" datetime="2018-12-07T18:36:14+08:00">2018-12-07</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2018-12-28 15:54:34" itemprop="dateModified" datetime="2018-12-28T15:54:34+08:00">2018-12-28</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><a target="_blank" rel="noopener" href="https://developers.eos.io/eosio-cpp/docs/using-multi-index-tables#section-introduction">official site</a></p>
+<p>Multi Index Tables are a way to cache state and/or data in RAM for fast access. Multi index tables support create, read, update and delete (CRUD) operations,</p>
+<p>each smart contract using a multi index table reserves a partition of the RAM cache; access to each partition is controlled using tablename, code and scope.</p>
+<p>Multi Index Tables provide a fast to access data store and are a practical way to store data for use in your smart contract. The blockchain records the transactions, but you should use Multi Index Tables to store application data.</p>
+<span id="more"></span>
+
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">uint64_t</span> TableName, <span class="keyword">typename</span> T, <span class="keyword">typename</span>... Indices&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">multi_index</span>&#123;</span></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第一个参数是表名，第二个参数是表对象的类型，其余为可变参数Indices（二级索引），二级索引的数量不能超过16个。</p>
+<p>EOS的multi_index类似boost的multi_index，即多索引容器。有了多级索引，智能合约就具备了操作类似数据库模块的功能。</p>
+<img alt="cd658330.png" src="/2018/12/07/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/EOS/EOS-multi-index/cd658330.png" width height>
+
+<p>每一个 multi_index 容器都可以理解成一个对象列表，通常这个对象是struct或者是class类型的，有多个成员变量</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// @abi table proposal i64</span><br><span class="line">struct Proposal &#123;</span><br><span class="line">  uint64_t id;</span><br><span class="line">  account_name owner = 0;</span><br><span class="line">  string description;</span><br><span class="line">  std::vector&lt;account_name, uint32_t&gt; votes;</span><br><span class="line"></span><br><span class="line">  uint64_t primary_key() const &#123; return id; &#125;</span><br><span class="line"></span><br><span class="line">  EOSLIB_SERIALIZE( Proposal, (id)(owner)(description)(votes))</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">typedef eosio::multi_index&lt;N(Proposal), Proposal&gt; proposals;</span><br></pre></td></tr></table></figure>
+
+<p>在部署合约之前，我们都会用eosiocpp来生成ABI，EOS智能合约编译器可以读取struct结构体和public方法之前的注。在注释中我们可以传入两种类型：action和table，ABI就会根据我们的声明，自动在生成的ABI中添加相应的方法或者表定义。</p>
+<p>第二个proposal就是表名，而第三个i64就是表的主键的类型。在这里主键就是id。</p>
+<h1 id="multi-index相关操作"><a href="#multi-index相关操作" class="headerlink" title="multi_index相关操作"></a>multi_index相关操作</h1><p>创建：使用.emplace<br>查询：使用.find<br>修改已存在的入口：使用.modify</p>
+<h1 id="自定义索引"><a href="#自定义索引" class="headerlink" title="自定义索引"></a>自定义索引</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct service_struct &#123;</span><br><span class="line">     uint64_t pkey;</span><br><span class="line">     account_name customer;</span><br><span class="line">     Date date;</span><br><span class="line">     uint32_t odometer;</span><br><span class="line"></span><br><span class="line">    auto primary_key() const &#123;return pkey;&#125;</span><br><span class="line">    account_name get_customer() const &#123;return customer;&#125;</span><br><span class="line"></span><br><span class="line">    EOSLIB_SERIALIZE(service_struct,( pkey )( customer )( date )( odometer ))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">typedef eosio::multi_index&lt;service, service_struct,</span><br><span class="line">    index_by&lt;N(bycustomer), const_mem_fun&lt;service_struct,account_name, &amp;service_struct::get_customer&gt;</span><br><span class="line">    &gt;</span><br><span class="line">&gt; customer_index;</span><br></pre></td></tr></table></figure>
+<p>解释一下，使用上面的方式来定义索引，eosio::multi_index&lt;…&gt;的参数解释如下：</p>
+<p>service : multi_index容器的表名（如上图）<br>service_struct : 智能合约重定义的struct结构体名称，也可以理解成表中的一行记录；<br>indexed_by&lt;…&gt; ：</p>
+<p>N(bycustomer) : 给索引起个名字 - bycustomer<br>const_mem_fun&lt;…&gt; :</p>
+<p>account_name : 索引的类型<br>&amp;service_struct::get_customer：通过service_struct结构体中的get_customer函数获得（索引）<br>通过上述表达，就可以再生成一张按customer为索引的表bycustomer（见本文第一张图）。左边是按照主键索引的原表service，右边的表就是我们按照customer的索引生成的新表（按customer从小到大进行排列），可以看到新表内的行内容和之前是一行的(见虚线指向原表)，只不过按照customer字段进行了重新排列。</p>
+<p>这里定义了customer_index类型，这样以后就可以直接用这个类型去初始化真正的multi_index表。</p>
+<img alt="4b21775b.png" src="/2018/12/07/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/EOS/EOS-multi-index/4b21775b.png" width height>
+
+<p>下面内容<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000016423742">参考至</a></p>
+<h1 id="add-data"><a href="#add-data" class="headerlink" title="add data"></a>add data</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void app::create(const account_name account,</span><br><span class="line">                     const string&amp;      username,</span><br><span class="line">                     uint32_t           age,</span><br><span class="line">                     const string&amp;      bio) &#123;</span><br><span class="line">    require_auth(account);</span><br><span class="line">    profile_table profiles(_self, _self);</span><br><span class="line">    auto itr = profiles.find(account);</span><br><span class="line">    eosio_assert(itr == profiles.end(), &quot;Account already exists&quot;);</span><br><span class="line"></span><br><span class="line">    profiles.emplace(account, [&amp;](auto&amp; p) &#123;</span><br><span class="line">        p.account  = account;</span><br><span class="line">        p.username = username;</span><br><span class="line">        p.age      = age;</span><br><span class="line">        p.bio      = bio;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>profile_table是一种类型，可以理解成表示multi_index表，后面的<code>profiles(_self, _self)</code>才是真正构建一个multi_index表的实例。profiles里的两个参数依次就是我们前面提到过的code和scope，分别表示表的拥有账户以及代码层次结构的范围标识符</p>
+<h1 id="根据主键获取相关信息"><a href="#根据主键获取相关信息" class="headerlink" title="根据主键获取相关信息"></a>根据主键获取相关信息</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void app::get(const account_name account) &#123;</span><br><span class="line">    profile_table profiles(_self, _self);</span><br><span class="line">    auto itr = profiles.find(account);</span><br><span class="line">    eosio_assert(itr != profiles.end(), &quot;Account does not exist&quot;);</span><br><span class="line"></span><br><span class="line">    print(&quot;Account: &quot;, name&#123;itr-&gt;account&#125;, &quot; , &quot;);</span><br><span class="line">    print(&quot;Username: &quot;, itr-&gt;username.c_str(), &quot; , &quot;);</span><br><span class="line">    print(&quot;Age: &quot;, itr-&gt;age , &quot; , &quot;);</span><br><span class="line">    print(&quot;Bio: &quot;, itr-&gt;bio.c_str());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>先把multi_index表实例化，之后要求查询的结果不能为空 (即itr != profiles.end())，如果不为空的话，就返回主键对应的其他字段的信息。</p>
+<h1 id="根据主键更新信息"><a href="#根据主键更新信息" class="headerlink" title="根据主键更新信息"></a>根据主键更新信息</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void app::update(const account_name account,</span><br><span class="line">                     const string&amp;      username,</span><br><span class="line">                     uint32_t           age,</span><br><span class="line">                     const string&amp;      bio) &#123;</span><br><span class="line">    require_auth(account);</span><br><span class="line">    profile_table profiles(_self, _self);</span><br><span class="line">    auto itr = profiles.find(account);</span><br><span class="line">    eosio_assert(itr != profiles.end(), &quot;Account does not exist&quot;);</span><br><span class="line">    profiles.modify(itr, account, [&amp;](auto&amp; p) &#123;</span><br><span class="line">        p.username = username;</span><br><span class="line">        p.age      = age;</span><br><span class="line">        p.bio      = bio;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>确保主键不为空的情况下，更新该主键对应的其他字段的信息。</p>
+<h1 id="根据主键删除数据"><a href="#根据主键删除数据" class="headerlink" title="根据主键删除数据"></a>根据主键删除数据</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void app::remove(const account_name account) &#123;</span><br><span class="line">    require_auth(account);</span><br><span class="line"></span><br><span class="line">    profile_table profiles(_self, _self);</span><br><span class="line"></span><br><span class="line">    auto itr = profiles.find(account);</span><br><span class="line"></span><br><span class="line">    eosio_assert(itr != profiles.end(), &quot;Account does not exist&quot;);</span><br><span class="line"></span><br><span class="line">    profiles.erase(itr);</span><br><span class="line">    print(name&#123;account&#125; , &quot; deleted!&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="通过自定义的自定义索引实现查询"><a href="#通过自定义的自定义索引实现查询" class="headerlink" title="通过自定义的自定义索引实现查询"></a>通过自定义的自定义索引实现查询</h1><p>自定义索引by_age()，即以年龄为条件进行筛选</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void app::byage(uint32_t age) &#123;</span><br><span class="line">    print(&quot;Checking age: &quot;, age, &quot;\n&quot;);</span><br><span class="line">    profile_table profiles(_self, _self);</span><br><span class="line"></span><br><span class="line">    // get an interface to the &#x27;profiles&#x27; containter</span><br><span class="line">    // that looks up a profile by its age</span><br><span class="line">    auto age_index = profiles.get_index&lt;N(age)&gt;();</span><br><span class="line"></span><br><span class="line">    auto itr = age_index.lower_bound(age);</span><br><span class="line"></span><br><span class="line">    for(; itr != age_index.end() &amp;&amp; itr-&gt;age == age; ++itr) &#123;</span><br><span class="line">        print(itr-&gt;username.c_str(), &quot; is &quot;, itr-&gt;age, &quot; years old\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里我们使用了在头文件里定义过的名为age的index，重新得到了一张以age排序的multi_index。</p>
+<p>这里的lower_bound是EOS封装的API，返回age_index中，当前索引≥age的迭代器；之后遍历该迭代器，就可以获得所有age≥某个特定值的所有数据。</p>
+<p>和lower_bound相对应的，就是upper_bound方法，用法和lower_bound类似。如下就实现了同时指定age上下限的查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void app::agerange(uint32_t young, uint32_t old) &#123;</span><br><span class="line">    profile_table profiles(_self, _self);</span><br><span class="line"></span><br><span class="line">    auto age_index = profiles.get_index&lt;N(age)&gt;();</span><br><span class="line"></span><br><span class="line">    auto begin = age_index.lower_bound(young);</span><br><span class="line">    auto end   = age_index.upper_bound(old);</span><br><span class="line"></span><br><span class="line">    for_each(begin, end, [&amp;](auto&amp; p) &#123;</span><br><span class="line">        print(p.username.c_str(), &quot; is &quot;, p.age, &quot; years old\n&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/blockchain/" rel="tag"># blockchain</a>
+              <a href="/tags/EOS/" rel="tag"># EOS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/12/07/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/EOS/EOS-ricardian-contracts/" rel="prev" title="EOS-ricardian-contracts">
+                  <i class="fa fa-chevron-left"></i> EOS-ricardian-contracts
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/12/08/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/EOS/EOS-EOSFactory/" rel="next" title="EOS-EOSFactory">
+                  EOS-EOSFactory <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

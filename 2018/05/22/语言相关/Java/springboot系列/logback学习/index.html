@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="日志系统是每个程序必然需要的基础设施，在学习 spring boot 的过程中，涉及到了 logback 库的使用，这里记录一下。目前只是本地存储，后面应该需要搭建一个日志服务做集中管理。 SLF4J (Simple Logging Facade For Java)，它是一个针对于各类Java日志框架的统一Facade抽象。SLF4J定义了统一的日志抽象接口，而真正的日志实现则是在运行时决定。 日">
+<meta property="og:type" content="article">
+<meta property="og:title" content="logback学习">
+<meta property="og:url" content="http://zhengjun.top/2018/05/22/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/logback%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="日志系统是每个程序必然需要的基础设施，在学习 spring boot 的过程中，涉及到了 logback 库的使用，这里记录一下。目前只是本地存储，后面应该需要搭建一个日志服务做集中管理。 SLF4J (Simple Logging Facade For Java)，它是一个针对于各类Java日志框架的统一Facade抽象。SLF4J定义了统一的日志抽象接口，而真正的日志实现则是在运行时决定。 日">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhengjun.top/2018/05/22/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/logback%E5%AD%A6%E4%B9%A0/bff73681.png">
+<meta property="og:image" content="http://zhengjun.top/2018/05/22/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/logback%E5%AD%A6%E4%B9%A0/812698e6.png">
+<meta property="article:published_time" content="2018-05-22T01:29:31.000Z">
+<meta property="article:modified_time" content="2018-05-22T08:36:56.000Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="日志">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhengjun.top/2018/05/22/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/logback%E5%AD%A6%E4%B9%A0/bff73681.png">
+
+
+<link rel="canonical" href="http://zhengjun.top/2018/05/22/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/logback%E5%AD%A6%E4%B9%A0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2018/05/22/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/logback%E5%AD%A6%E4%B9%A0/","path":"2018/05/22/语言相关/Java/springboot系列/logback学习/","title":"logback学习"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>logback学习 | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B-logback-%E7%9A%84%E5%86%85%E9%83%A8%E7%8A%B6%E6%80%81"><span class="nav-number">1.</span> <span class="nav-text">查看 logback 的内部状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#filter"><span class="nav-number">3.</span> <span class="nav-text">filter</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ThresholdFilter"><span class="nav-number">3.1.</span> <span class="nav-text">ThresholdFilter</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F"><span class="nav-number">4.</span> <span class="nav-text">使用注意</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/05/22/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/logback%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          logback学习
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2018-05-22 09:29:31 / 修改时间：16:36:56" itemprop="dateCreated datePublished" datetime="2018-05-22T09:29:31+08:00">2018-05-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">后端</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>日志系统是每个程序必然需要的基础设施，在学习 spring boot 的过程中，涉及到了 logback 库的使用，这里记录一下。<br>目前只是本地存储，后面应该需要搭建一个日志服务做集中管理。</p>
+<p>SLF4J (Simple Logging Facade For Java)，它是一个针对于各类Java日志框架的统一Facade抽象。<br>SLF4J定义了统一的日志抽象接口，而真正的日志实现则是在运行时决定。</p>
+<p>日志级别有 TRACE &lt; DEBUG &lt; INFO &lt; WARN &lt; ERROR &lt; OFF (output no logs)<br>Logback 配置文件 logback-spring.xml</p>
+<p>Logback 是 log4j 框架的作者开发的新一代日志框架，它效率更高、能够适应诸多的运行环境，同时原生支持 SLF4J。<br><a target="_blank" rel="noopener" href="https://logback.qos.ch/manual/index.html">官网手册</a></p>
+<span id="more"></span>
+
+<p>默认情况下，Spring Boot会用 Logback 来记录日志，并用INFO级别输出到控制台。<br>在运行应用程序和其他例子时，你应该已经看到很多INFO级别的日志了。<br><img alt="bff73681.png" src="/2018/05/22/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/logback%E5%AD%A6%E4%B9%A0/bff73681.png" width="400" height><br>日志输出内容元素具体如下：<br>时间日期：精确到毫秒<br>日志级别：ERROR, WARN, INFO, DEBUG or TRACE<br>进程ID<br>分隔符：— 标识实际日志的开始<br>线程名：方括号括起来（可能会截断控制台输出）<br>Logger名：通常使用源代码的类名<br>日志内容</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> chapters.introduction;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld1</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    Logger logger = LoggerFactory.getLogger(<span class="string">&quot;chapters.introduction.HelloWorld1&quot;</span>);</span><br><span class="line">    logger.debug(<span class="string">&quot;Hello world.&quot;</span>);</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="number">20</span>:<span class="number">49</span>:<span class="number">07.962</span> [main] DEBUG chapters.introduction.HelloWorld1 - Hello world.</span><br></pre></td></tr></table></figure>
+<p>没有配置的时候，会自动配置 ConsoleAppender 到日志的 root 节点，root 节点必须指定一个日志级别</p>
+<h2 id="查看-logback-的内部状态"><a href="#查看-logback-的内部状态" class="headerlink" title="查看 logback 的内部状态"></a>查看 logback 的内部状态</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</span><br><span class="line"><span class="keyword">import</span> ch.qos.logback.classic.LoggerContext;</span><br><span class="line"><span class="keyword">import</span> ch.qos.logback.core.util.StatusPrinter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld2</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    Logger logger = LoggerFactory.getLogger(<span class="string">&quot;chapters.introduction.HelloWorld2&quot;</span>);</span><br><span class="line">    logger.debug(<span class="string">&quot;Hello world.&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// print internal state</span></span><br><span class="line">    LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();</span><br><span class="line">    StatusPrinter.print(lc);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="number">12</span>:<span class="number">49</span>:<span class="number">22.203</span> [main] DEBUG chapters.introduction.HelloWorld2 - Hello world.</span><br><span class="line"><span class="number">12</span>:<span class="number">49</span>:<span class="number">22</span>,<span class="number">076</span> |-INFO in ch.qos.logback.classic.LoggerContext[<span class="keyword">default</span>] - Could NOT find resource [logback.groovy]</span><br><span class="line"><span class="number">12</span>:<span class="number">49</span>:<span class="number">22</span>,078 |-INFO in ch.qos.logback.classic.LoggerContext[<span class="keyword">default</span>] - Could NOT find resource [logback-test.xml]</span><br><span class="line"><span class="number">12</span>:<span class="number">49</span>:<span class="number">22</span>,093 |-INFO in ch.qos.logback.classic.LoggerContext[<span class="keyword">default</span>] - Could NOT find resource [logback.xml]</span><br><span class="line"><span class="number">12</span>:<span class="number">49</span>:<span class="number">22</span>,093 |-INFO in ch.qos.logback.classic.LoggerContext[<span class="keyword">default</span>] - Setting up <span class="keyword">default</span> configuration.</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;configuration scan=&quot;true&quot; scanPeriod=&quot;60 seconds&quot; debug=&quot;false&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;APP_NAME&quot; value=&quot;studySpringBoot&quot;/&gt;</span><br><span class="line">    &lt;contextName&gt;$&#123;APP_NAME&#125;&lt;/contextName&gt;</span><br><span class="line">    &lt;include resource=&quot;org/springframework/boot/logging/logback/base.xml&quot;/&gt;</span><br><span class="line">    &lt;jmxConfigurator/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--&lt;logger name=&quot;org.springframework.web&quot; level=&quot;DEBUG&quot;/&gt;--&gt;</span><br><span class="line">    &lt;!--&lt;logger name=&quot;com.springboot.in.action&quot; level=&quot;TRACE&quot;/&gt;--&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--&lt;logger name=&quot;org.apache.velocity.runtime.log&quot; level=&quot;INFO&quot;/&gt;--&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- logback为java中的包 --&gt;</span><br><span class="line">    &lt;logger name=&quot;com.tyler.study.controller&quot; level=&quot;DEBUG&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;appender name=&quot;dailyRollingFileAppender&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;</span><br><span class="line">        &lt;File&gt;$&#123;user.home&#125;/logs/$&#123;APP_NAME&#125;&lt;/File&gt;</span><br><span class="line">        &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;</span><br><span class="line">            &lt;!-- daily rolling over --&gt;</span><br><span class="line">            &lt;FileNamePattern&gt;$&#123;APP_NAME&#125;.%d&#123;yyyy-MM-dd&#125;.log&lt;/FileNamePattern&gt;</span><br><span class="line">            &lt;!-- keep 30 days&#x27; log history --&gt;</span><br><span class="line">            &lt;maxHistory&gt;30&lt;/maxHistory&gt;</span><br><span class="line">            &lt;totalSizeCap&gt;5GB&lt;/totalSizeCap&gt;</span><br><span class="line">        &lt;/rollingPolicy&gt;</span><br><span class="line">        &lt;filter class=&quot;ch.qos.logback.classic.filter.ThresholdFilter&quot;&gt;</span><br><span class="line">            &lt;level&gt;ERROR&lt;/level&gt;</span><br><span class="line">        &lt;/filter&gt;</span><br><span class="line">        &lt;encoder&gt;</span><br><span class="line">            &lt;Pattern&gt;%d&#123;HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;35&#125; - %msg %n&lt;/Pattern&gt;</span><br><span class="line">        &lt;/encoder&gt;</span><br><span class="line">    &lt;/appender&gt;</span><br><span class="line">    &lt;!--TRACE, DEBUG, INFO, WARN, ERROR--&gt;</span><br><span class="line">    &lt;root level=&quot;INFO&quot;&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;CONSOLE&quot;/&gt;</span><br><span class="line">        &lt;!--&lt;appender-ref ref=&quot;FILE&quot;/&gt;--&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;dailyRollingFileAppender&quot;/&gt;</span><br><span class="line">    &lt;/root&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<p>根节点<configuration>包含的属性<br>scan：当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true.<br>scanPeriod：设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒。当scan为true时，此属性生效。默认的时间间隔为1分钟.<br>debug：当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。</configuration></p>
+<img alt="812698e6.png" src="/2018/05/22/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/logback%E5%AD%A6%E4%B9%A0/812698e6.png" width height>
+设置变量 <property>
+用来定义变量值的标签，<property> 有两个属性，name和value；其中name的值是变量的名称，value的值时变量定义的值。通过<property>定义的值会被插入到logger上下文中。定义变量后，可以使“${}”来使用变量。
+
+<p>设置上下文名称<contextName><br>每个logger都关联到logger上下文，默认上下文名称为“default”。但可以使用<contextName>设置成其他名字，用于区分不同应用程序的记录。一旦设置，不能修改。</contextName></contextName></p>
+<logger>
+用来设置某一个包或者具体的某一个类的日志打印级别、以及指定<appender>。<logger>仅有一个name属性，一个可选的level和一个可选的additivity属性。
+
+<p>name：用来指定受此logger约束的某一个包或者具体的某一个类。<br>level：用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF，还有一个特殊值INHERITED或者同义词NULL，代表强制执行上级的级别。<br>如果未设置此属性，那么当前logger将会继承上级的级别。<br>additivity：是否向上级logger传递打印信息。默认是true。<br><logger>可以包含零个或多个<appender-ref>元素，标识这个appender将会添加到这个logger。</appender-ref></logger></p>
+<root>
+也是<logger>元素，但是它是根logger。只有一个level属性，应为已经被命名为”root”.
+
+<p>level：用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF，不能设置为INHERITED或者同义词NULL。默认是DEBUG。<br><root>可以包含零个或多个<appender-ref>元素，标识这个appender将会添加到这个logger。</appender-ref></root></p>
+<h2 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h2><h3 id="ThresholdFilter"><a href="#ThresholdFilter" class="headerlink" title="ThresholdFilter"></a>ThresholdFilter</h3><p>大于等于的会允许，小于的会拒绝</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">  &lt;appender name=<span class="string">&quot;CONSOLE&quot;</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span></span>=<span class="string">&quot;ch.qos.logback.core.ConsoleAppender&quot;</span>&gt;</span><br><span class="line">    &lt;!-- deny all events with a level below INFO, that is TRACE and DEBUG --&gt;</span><br><span class="line">    &lt;filter <span class="class"><span class="keyword">class</span></span>=<span class="string">&quot;ch.qos.logback.classic.filter.ThresholdFilter&quot;</span>&gt;</span><br><span class="line">      &lt;level&gt;INFO&lt;/level&gt;</span><br><span class="line">    &lt;/filter&gt;</span><br><span class="line">    &lt;encoder&gt;</span><br><span class="line">      &lt;pattern&gt;</span><br><span class="line">        %-4relative [%thread] %-5level %logger&#123;<span class="number">30</span>&#125; - %msg%n</span><br><span class="line">      &lt;/pattern&gt;</span><br><span class="line">    &lt;/encoder&gt;</span><br><span class="line">  &lt;/appender&gt;</span><br><span class="line">  &lt;root level=<span class="string">&quot;DEBUG&quot;</span>&gt;</span><br><span class="line">    &lt;appender-ref ref=<span class="string">&quot;CONSOLE&quot;</span> /&gt;</span><br><span class="line">  &lt;/root&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用注意"><a href="#使用注意" class="headerlink" title="使用注意"></a>使用注意</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">logger.debug(<span class="string">&quot;Processing trade with id:[&#123;&#125;] and symbol : [&#123;&#125;] &quot;</span>, id, symbol)</span><br><span class="line">反例(不要这么做):</span><br><span class="line">logger.debug(<span class="string">&quot;Processing trade with id: &quot;</span> + id + <span class="string">&quot; symbol: &quot;</span> + symbol);</span><br></pre></td></tr></table></figure>
+</logger></root></logger></appender></logger></property></property></property>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%97%A5%E5%BF%97/" rel="tag"># 日志</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/05/21/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%94%9F%E6%B4%BB%E5%B0%8F%E7%9F%A5%E8%AF%86/%E5%8C%BB%E8%8D%AF%E5%81%A5%E5%BA%B7/%E8%82%8C%E8%82%89%E6%94%BE%E6%9D%BE%E6%8C%89%E6%91%A9%E5%9B%BE%E8%A7%A3/" rel="prev" title="肌肉放松按摩图解">
+                  <i class="fa fa-chevron-left"></i> 肌肉放松按摩图解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/05/22/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/%E6%95%B0%E6%8D%AE%E5%BA%93/mongoDB/%E6%95%B0%E6%8D%AE%E5%BA%93-mongoDB/" rel="next" title="数据库-mongoDB">
+                  数据库-mongoDB <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

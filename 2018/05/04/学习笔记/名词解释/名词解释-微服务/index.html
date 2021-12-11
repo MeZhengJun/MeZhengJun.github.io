@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="参考 简短的解释：按照业务范围建立独立的服务，多个服务组成一个完整的业务模型，各服务之间通过RPC，HTTP等方式通信。适合在记录型系统和交互型系统中使用。 下面是详细的说明。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="名词解释-微服务">
+<meta property="og:url" content="http://zhengjun.top/2018/05/04/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-%E5%BE%AE%E6%9C%8D%E5%8A%A1/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="参考 简短的解释：按照业务范围建立独立的服务，多个服务组成一个完整的业务模型，各服务之间通过RPC，HTTP等方式通信。适合在记录型系统和交互型系统中使用。 下面是详细的说明。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhengjun.top/2018/05/04/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-%E5%BE%AE%E6%9C%8D%E5%8A%A1/51c2253a.png">
+<meta property="og:image" content="http://zhengjun.top/2018/05/04/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-%E5%BE%AE%E6%9C%8D%E5%8A%A1/66d21730.png">
+<meta property="og:image" content="http://zhengjun.top/2018/05/04/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-%E5%BE%AE%E6%9C%8D%E5%8A%A1/20e2ccb1.png">
+<meta property="og:image" content="http://zhengjun.top/2018/05/04/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-%E5%BE%AE%E6%9C%8D%E5%8A%A1/340e3861.png">
+<meta property="og:image" content="http://zhengjun.top/2018/05/04/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-%E5%BE%AE%E6%9C%8D%E5%8A%A1/421168fb.png">
+<meta property="article:published_time" content="2018-05-03T23:38:51.000Z">
+<meta property="article:modified_time" content="2018-05-04T05:55:50.000Z">
+<meta property="article:author" content="郑  君">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhengjun.top/2018/05/04/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-%E5%BE%AE%E6%9C%8D%E5%8A%A1/51c2253a.png">
+
+
+<link rel="canonical" href="http://zhengjun.top/2018/05/04/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-%E5%BE%AE%E6%9C%8D%E5%8A%A1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2018/05/04/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-%E5%BE%AE%E6%9C%8D%E5%8A%A1/","path":"2018/05/04/学习笔记/名词解释/名词解释-微服务/","title":"名词解释-微服务"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>名词解释-微服务 | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1-Microservices-Architecture"><span class="nav-number">1.</span> <span class="nav-text">微服务(Microservices Architecture)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E7%9A%84%E4%B8%80%E4%BA%9B%E9%80%9A%E7%94%A8%E7%89%B9%E6%80%A7"><span class="nav-number">1.1.</span> <span class="nav-text">微服务架构的一些通用特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B8%B8%E8%A7%81%E8%AF%AF%E8%A7%A3"><span class="nav-number">1.2.</span> <span class="nav-text">微服务的一些常见误解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E4%B8%8ESOA%E6%9E%B6%E6%9E%84%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">1.3.</span> <span class="nav-text">微服务架构与SOA架构的比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%BA%94%E7%94%A8%E4%BE%8B%E5%AD%90%EF%BC%9A%E8%88%AA%E7%8F%AD%E9%A2%84%E8%AE%A2%E5%BA%94%E7%94%A8"><span class="nav-number">1.4.</span> <span class="nav-text">一个简单的微服务应用例子：航班预订应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%93%AA%E4%BA%9B%E5%BA%94%E7%94%A8%E4%BC%9A%E4%BB%8E%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%94%B6%E7%9B%8A"><span class="nav-number">1.5.</span> <span class="nav-text">哪些应用会从微服务收益</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9%EF%BC%9A"><span class="nav-number">1.6.</span> <span class="nav-text">优点：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9%EF%BC%9A"><span class="nav-number">1.7.</span> <span class="nav-text">缺点：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E7%9A%84%E5%8F%96%E8%88%8D"><span class="nav-number">1.8.</span> <span class="nav-text">关于微服务架构的取舍</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SOA%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84-Service-Oriented-Architecture"><span class="nav-number">2.</span> <span class="nav-text">SOA服务架构(Service Oriented Architecture)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E4%BD%93%E6%9E%B6%E6%9E%84-Monolithic-Architecture"><span class="nav-number">3.</span> <span class="nav-text">单体架构(Monolithic Architecture )</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/05/04/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-%E5%BE%AE%E6%9C%8D%E5%8A%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          名词解释-微服务
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2018-05-04 07:38:51 / 修改时间：13:55:50" itemprop="dateCreated datePublished" datetime="2018-05-04T07:38:51+08:00">2018-05-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/" itemprop="url" rel="index"><span itemprop="name">名词解释</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/community/blogs/3302cc3b-074e-44da-90b1-5055f1dc0d9c/entry/%E8%A7%A3%E6%9E%90%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84_%E4%B8%80_%E4%BB%80%E4%B9%88%E6%98%AF%E5%BE%AE%E6%9C%8D%E5%8A%A1?lang=en">参考</a></p>
+<p>简短的解释：按照业务范围建立独立的服务，多个服务组成一个完整的业务模型，各服务之间通过RPC，HTTP等方式通信。<br>适合在记录型系统和交互型系统中使用。</p>
+<p>下面是详细的说明。</p>
+<span id="more"></span>
+
+<h2 id="微服务-Microservices-Architecture"><a href="#微服务-Microservices-Architecture" class="headerlink" title="微服务(Microservices Architecture)"></a>微服务(Microservices Architecture)</h2><p>微服务的概念源于2014年3月Martin Fowler所写的一篇文章<a target="_blank" rel="noopener" href="http://martinfowler.com/articles/microservices.html">Microservices</a>。</p>
+<p>微服务是一种架构风格，一个大型复杂软件应用由一个或多个微服务组成。系统中的各个微服务可被独立部署，各个微服务之间是松耦合的。每个微服务仅关注于完成一件任务并很好地完成该任务。在所有情况下，每个任务代表着一个小的业务能力。<br>不同服务通过一些轻量级交互机制来通信，例如 RPC、HTTP 等.</p>
+<ol>
+<li>遵循职责单一原则（Single Responsibility Principle）</li>
+<li>服务间的消息通信：</li>
+</ol>
+<ul>
+<li>同步消息 REST：同步消息就是客户端需要保持等待，直到服务器返回应答。</li>
+<li>异步消息：客户端不需要一直等待服务应答，有应答后会得到通知。一般采用AMQP, STOMP, MQTT 这三种通讯协议</li>
+<li>消息格式：JSON, XML, Thrift, ProtoBuf, Avro</li>
+</ul>
+<h3 id="微服务架构的一些通用特性"><a href="#微服务架构的一些通用特性" class="headerlink" title="微服务架构的一些通用特性"></a>微服务架构的一些通用特性</h3><ol>
+<li>通过服务实现应用的组件化(Componentizationvia Services)：<br>微服务架构中将组件定义为可被独立替换和升级的软件单元，在应用架构设计中通过将整体应用切分成可独立部署及升级的微服务方式进行组件化设计。</li>
+<li>围绕业务能力组织服务(Organizedaround Business Capabilities)：<br>微服务架构采取以业务能力为出发点组织服务的策略，因此微服务团队的组织结构必须是跨功能的（如：既管应用，也管数据库）、强搭配的DevOps开发运维一体化团队，通常这些团队不会太大（如：亚马逊的“Two pizzateam”- 不超过12人）。<img alt="51c2253a.png" src="/2018/05/04/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-%E5%BE%AE%E6%9C%8D%E5%8A%A1/51c2253a.png" width="400" height></li>
+<li>产品而非项目模式(Productsnot Projects)：<br>传统的应用模式是一个团队以项目模式开发完整的应用，开发完成后就交付给运维团队负责维护；微服务架构则倡导一个团队应该如开发产品般负责一个“微服务”完整的生命周期，倡导“谁开发，谁运营”的开发运维一体化方法。</li>
+<li>智能端点与管道扁平化(Smartendpoints and dumb pipes)：<br>微服务架构主张将组件间通讯的相关业务逻辑/智能放在组件端点侧而非放在通讯组件中，通讯机制或组件应该尽量简单及松耦合。RESTful HTTP协议和仅提供消息路由功能的轻量级异步机制是微服务架构中最常用的通讯机制。</li>
+<li>“去中心化”治理(DecentralizedGovernance)：<br>整体式应用往往倾向于采用单一技术平台，微服务架构则鼓励使用合适的工具完成各自的任务，每个微服务可以考虑选用最佳工具完成(如不同的编程语言)。微服务的技术标准倾向于寻找其他开发者已成功验证解决类似问题的技术。</li>
+<li>“去中心化”数据管理(DecentralizedData Management)：<br>微服务架构倡导采用多样性持久化(PolyglotPersistence)的方法，让每个微服务管理其自有数据库，并允许不同微服务采用不同的数据持久化技术。</li>
+<li>基础设施自动化(InfrastructureAutomation)：<br>云化及自动化部署等技术极大地降低了微服务构建、部署和运维的难度，通过应用持续集成和持续交付等方法有助于达到加速推出市场的目的。</li>
+<li>故障处理设计(Designfor failure)：<br>微服务架构所带来的一个后果是必须考虑每个服务的失败容错机制。因此，微服务非常重视建立架构及业务相关指标的实时监控和日志机制。</li>
+<li>演进式的设计(EvolutionaryDesign)：<br>微服务应用更注重快速更新，因此系统的设计会随时间不断变化及演进。微服务的设计受业务功能的生命周期等因素影响。如某应用是整体式应用，但逐渐朝微应用架构方向演进，整体式应用仍是核心，但新功能将使用应用所提供的API构建。再如在某微服务应用中，可替代性模块化设计的基本原则，在实施后发现某两个微服务经常必须同时更新，则这很可能意味着应将其合并为一个微服务。</li>
+</ol>
+<h3 id="微服务的一些常见误解"><a href="#微服务的一些常见误解" class="headerlink" title="微服务的一些常见误解"></a>微服务的一些常见误解</h3><img alt="66d21730.png" src="/2018/05/04/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-%E5%BE%AE%E6%9C%8D%E5%8A%A1/66d21730.png" width="400" height>
+
+<h3 id="微服务架构与SOA架构的比较"><a href="#微服务架构与SOA架构的比较" class="headerlink" title="微服务架构与SOA架构的比较"></a>微服务架构与SOA架构的比较</h3><img alt="20e2ccb1.png" src="/2018/05/04/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-%E5%BE%AE%E6%9C%8D%E5%8A%A1/20e2ccb1.png" width="400" height>
+微服务架构强调的是系统按业务边界做细粒度的拆分和部署。这是和SOA的区别之一
+
+<h3 id="一个简单的微服务应用例子：航班预订应用"><a href="#一个简单的微服务应用例子：航班预订应用" class="headerlink" title="一个简单的微服务应用例子：航班预订应用"></a>一个简单的微服务应用例子：航班预订应用</h3><img alt="340e3861.png" src="/2018/05/04/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-%E5%BE%AE%E6%9C%8D%E5%8A%A1/340e3861.png" width="400" height>
+将航班预订应用划分为预订航班、时间表查询、计算票价、分配座位、管理奖励、更新客户、调整库存七个微服务实施。
+
+<h3 id="哪些应用会从微服务收益"><a href="#哪些应用会从微服务收益" class="headerlink" title="哪些应用会从微服务收益"></a>哪些应用会从微服务收益</h3><ol>
+<li><p>记录型系统(System of Record)将从微服务方法中获益最多。例如可将大型应用按相对独立的业务功能分解成若干个微服务实现。<br>指传统的应用系统，对应用所关注领域的信息进行增删改查作为应用的核心能力。如CRM、ERP、OA等系统。记录型系统使用的往往是一些传统的经典IT技术构建，往往更难改变，其集成难度也较高。</p>
+</li>
+<li><p>交互型系统(System of Engagement)也将受益于微服务方法，例如渠道应用可以应用“后端服务前端”的模式实现。<br>指以与用户交互为主要目的而开发的应用系统。如各种移动应用、微信、微博等等。交互型系统更多地会采用现代的各种新技术语言及运行时部署，具体高度的敏捷性，通过简单的现代化连接即可实现集成。</p>
+</li>
+<li><p>分析型系统(System of Insight)则可能对微服务受益不多。其他架构模式如管道及过滤模式可能更适用于分析型系统。</p>
+</li>
+</ol>
+<h3 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h3><ol>
+<li>每个服务都比较简单，只关注于一个业务功能。</li>
+<li>微服务架构方式是松耦合的，可以提供更高的灵活性。</li>
+<li>微服务可通过最佳及最合适的不同的编程语言与工具进行开发，能够做到有的放矢地解决针对性问题。</li>
+<li>每个微服务可由不同团队独立开发，互不影响，加快推出市场的速度。</li>
+<li>微服务架构是持续交付(CD)的巨大推动力，允许在频繁发布不同服务的同时保持系统其他部分的可用性和稳定性。</li>
+<li>独立部署，灵活扩展</li>
+<li>资源的有效隔离<br>微服务设计的原则之一，就是每一个微服务拥有独立的数据源，假如微服务A想要读写微服务B的数据库，只能调用微服务B对外暴露的接口来完成。这样有效避免了服务之间争用数据库和缓存资源所带来的问题。</li>
+</ol>
+<h3 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h3><ol>
+<li>增加开发和测试的复杂度</li>
+<li>增加的开发难度，需要保证不同服务之间数据的一致性，引入了分布式事务和异步补偿机制</li>
+<li>运维开销及成本增加：整体应用可能只需部署至一小片应用服务区集群，而微服务架构可能变成需要构建/测试/部署/运行数十个独立的服务，并可能需要支持多种语言和环境。这导致一个整体式系统如果由20个微服务组成，可能需要40~60个进程。</li>
+<li>必须有坚实的DevOps开发运维一体化技能：开发人员需要熟知运维与投产环境，开发人员也需要掌握必要的数据存储技术如NoSQL，具有较强DevOps技能的人员比较稀缺，会带来招聘人才方面的挑战。</li>
+<li>隐式接口及接口匹配问题：把系统分为多个协作组件后会产生新的接口，这意味着简单的交叉变化可能需要改变许多组件，并需协调一起发布。在实际环境中，一个新品发布可能被迫同时发布大量服务，由于集成点的大量增加，微服务架构会有更高的发布风险。</li>
+<li>代码重复：某些底层功能需要被多个服务所用，为了避免将“同步耦合引入到系统中”，有时需要向不同服务添加一些代码，这就会导致代码重复。</li>
+<li>分布式系统的复杂性：作为一种分布式系统，微服务引入了复杂性和其他若干问题，例如网络延迟、容错性、消息序列化、不可靠的网络、异步机制、版本化、差异化的工作负载等，开发人员需要考虑以上的分布式系统问题。</li>
+<li>异步机制：微服务往往使用异步编程、消息与并行机制，如果应用存在跨微服务的事务性处理，其实现机制会变得复杂化。</li>
+<li>可测性的挑战：在动态环境下服务间的交互会产生非常微妙的行为，难以可视化及全面测试。经典微服务往往不太重视测试，更多的是通过监控发现生产环境的异常，进而快速回滚或采取其他必要的行动。但对于特别在意风险规避监管或投产环境错误会产生显著影响的场景下需要特别注意。</li>
+</ol>
+<h3 id="关于微服务架构的取舍"><a href="#关于微服务架构的取舍" class="headerlink" title="关于微服务架构的取舍"></a>关于微服务架构的取舍</h3><ul>
+<li>在合适的项目，合适的团队，采用微服务架构收益会大于成本。</li>
+<li>微服务架构有很多吸引人的地方，但在拥抱微服务之前，也需要认清它所带来的挑战。</li>
+<li>需要避免为了“微服务”而“微服务”。</li>
+<li>微服务架构引入策略 – 对传统企业而言，开始时可以考虑引入部分合适的微服务架构原则对已有系统进行改造或新建微服务应用，逐步探索及积累微服务架构经验，而非全盘实施微服务架构。</li>
+</ul>
+<h2 id="SOA服务架构-Service-Oriented-Architecture"><a href="#SOA服务架构-Service-Oriented-Architecture" class="headerlink" title="SOA服务架构(Service Oriented Architecture)"></a>SOA服务架构(Service Oriented Architecture)</h2><p>面向服务架构。SOA的精髓是严格的松散耦合，不允许直接访问其它服务的数据，大家按照一个契约或标准（service interface）来进行交流。<br>是一种粗粒度，松耦合的服务架构，针对的是异构系统之间的通信。<br>优点：</p>
+<ol>
+<li>松耦合</li>
+<li>组件化</li>
+<li>可复用</li>
+<li>跨平台、跨语言</li>
+<li>易上手</li>
+</ol>
+<h2 id="单体架构-Monolithic-Architecture"><a href="#单体架构-Monolithic-Architecture" class="headerlink" title="单体架构(Monolithic Architecture )"></a>单体架构(Monolithic Architecture )</h2><p>企业级的应用一般都会面临各种各样的业务需求，而常见的方式是把大量功能堆积到同一个单体架构中去。比如：常见的ERP、CRM等系统都以单体架构的方式运行，同时由于提供了大量的业务功能，随着功能的升级，整个研发、发布、定位问题，扩展，升级这样一个“怪物”系统会变得越来越困难。</p>
+<p>缺点：</p>
+<ol>
+<li><p>项目过于臃肿<br>当大大小小的功能模块都集中在同一项目的时候，整个项目必然会变得臃肿，让开发者难以维护。</p>
+</li>
+<li><p>资源无法隔离<br>整个单体系统的各个功能模块都依赖于同样的数据库、内存等资源，一旦某个功能模块对资源使用不当，整个系统都会被拖垮。</p>
+</li>
+<li><p>无法灵活扩展<br>当系统的访问量越来越大的时候，单体系统固然可以进行水平扩展，部署在多台机器上组成集群：<br>但是这种扩展并非灵活的扩展。比如我们现在的性能瓶颈是支付模块，希望只针对支付模块做水平扩展，这一点在单体系统是做不到的。</p>
+<img alt="421168fb.png" src="/2018/05/04/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-%E5%BE%AE%E6%9C%8D%E5%8A%A1/421168fb.png" width="400" height></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/05/03/%E5%BC%80%E6%BA%90%E5%BA%93/SOUI/soui-%E9%97%AE%E9%A2%98%E9%9B%86%E9%94%A6/" rel="prev" title="soui-问题集锦">
+                  <i class="fa fa-chevron-left"></i> soui-问题集锦
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/05/04/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/%E6%95%B0%E6%8D%AE%E5%BA%93/%E9%80%9A%E7%94%A8/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1ACID/" rel="next" title="数据库事务ACID">
+                  数据库事务ACID <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

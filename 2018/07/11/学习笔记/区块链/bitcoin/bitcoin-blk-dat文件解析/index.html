@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="参考1参考2 除非特殊说明，否则字节序都是 Little-Endian 的。文件是由多个 block 组成的，每个 block 结构如下：        字节数 内容 说明    4字节 0xF9 0xBE 0xB4 0xD9 Magic Number，用于确认block开始   4字节 Block Length unsigned int   Block Length CBlock类序列化后的数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bitcoin-blk*.dat文件解析">
+<meta property="og:url" content="http://zhengjun.top/2018/07/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/bitcoin/bitcoin-blk-dat%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="参考1参考2 除非特殊说明，否则字节序都是 Little-Endian 的。文件是由多个 block 组成的，每个 block 结构如下：        字节数 内容 说明    4字节 0xF9 0xBE 0xB4 0xD9 Magic Number，用于确认block开始   4字节 Block Length unsigned int   Block Length CBlock类序列化后的数据">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhengjun.top/2018/07/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/bitcoin/bitcoin-blk-dat%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90/77a7947c.png">
+<meta property="og:image" content="http://zhengjun.top/2018/07/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/bitcoin/bitcoin-blk-dat%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90/94a1b129.png">
+<meta property="og:image" content="http://zhengjun.top/2018/07/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/bitcoin/bitcoin-blk-dat%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90/a03b61a4.png">
+<meta property="og:image" content="http://zhengjun.top/2018/07/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/bitcoin/bitcoin-blk-dat%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90/f42cb426.png">
+<meta property="article:published_time" content="2018-07-11T11:23:31.000Z">
+<meta property="article:modified_time" content="2018-10-23T03:20:10.000Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="blockchain">
+<meta property="article:tag" content="比特币">
+<meta property="article:tag" content="bitcoin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhengjun.top/2018/07/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/bitcoin/bitcoin-blk-dat%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90/77a7947c.png">
+
+
+<link rel="canonical" href="http://zhengjun.top/2018/07/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/bitcoin/bitcoin-blk-dat%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2018/07/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/bitcoin/bitcoin-blk-dat%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90/","path":"2018/07/11/学习笔记/区块链/bitcoin/bitcoin-blk-dat文件解析/","title":"bitcoin-blk*.dat文件解析"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>bitcoin-blk*.dat文件解析 | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#coinbase-%E4%BA%A4%E6%98%93"><span class="nav-number">1.</span> <span class="nav-text">coinbase 交易</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E7%AC%94%E4%BA%A4%E6%98%93-coinbase-%E6%99%AE%E9%80%9A%E4%BA%A4%E6%98%93"><span class="nav-number">2.</span> <span class="nav-text">2笔交易 coinbase + 普通交易</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/07/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/bitcoin/bitcoin-blk-dat%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          bitcoin-blk*.dat文件解析
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-07-11 19:23:31" itemprop="dateCreated datePublished" datetime="2018-07-11T19:23:31+08:00">2018-07-11</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2018-10-23 11:20:10" itemprop="dateModified" datetime="2018-10-23T11:20:10+08:00">2018-10-23</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>9.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>9 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/lazypiggy/article/details/79414709">参考1</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/u013137970/article/details/69891985">参考2</a></p>
+<p>除非特殊说明，否则字节序都是 Little-Endian 的。<br>文件是由多个 block 组成的，每个 block 结构如下：</p>
+<img alt="77a7947c.png" src="/2018/07/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/bitcoin/bitcoin-blk-dat%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90/77a7947c.png" width height>
+
+<img alt="94a1b129.png" src="/2018/07/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/bitcoin/bitcoin-blk-dat%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90/94a1b129.png" width height>
+
+<table>
+<thead>
+<tr>
+<th>字节数</th>
+<th>内容</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>4字节</td>
+<td>0xF9 0xBE 0xB4 0xD9</td>
+<td>Magic Number，用于确认block开始</td>
+</tr>
+<tr>
+<td>4字节</td>
+<td>Block Length</td>
+<td>unsigned int</td>
+</tr>
+<tr>
+<td>Block Length</td>
+<td>CBlock类序列化后的数据</td>
+<td>CBlock类定义在block.h文件中</td>
+</tr>
+</tbody></table>
+<p>CBlock 数据包括 CBlockHeader 以及一些列的 CTransaction 数据，<br>其中 CBlockHeader 80 bytes 包括：</p>
+<span id="more"></span>
+
+<img alt="a03b61a4.png" src="/2018/07/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/bitcoin/bitcoin-blk-dat%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90/a03b61a4.png" width height>
+
+<table>
+<thead>
+<tr>
+<th>字节数</th>
+<th>内容</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>4字节</td>
+<td>版本号</td>
+<td>int32_t</td>
+</tr>
+<tr>
+<td>32字节</td>
+<td>前一个block的hash值</td>
+<td>uint256</td>
+</tr>
+<tr>
+<td>32字节</td>
+<td>MerkleRoot</td>
+<td>uint256</td>
+</tr>
+<tr>
+<td>4字节</td>
+<td>时间戳</td>
+<td>块生成时的网络时间</td>
+</tr>
+<tr>
+<td>4字节</td>
+<td>目标值</td>
+<td>当前区块生成所达成目标值的特征</td>
+</tr>
+<tr>
+<td>4字节</td>
+<td>随机数</td>
+<td>用于挖矿时生成符合要求的块哈希</td>
+</tr>
+</tbody></table>
+<p>在CBlockHerder之后，是交易数量及每个交易的记录<br>交易数量为紧缩格式（CompactSize）的无符号整数<br>紧缩格式整数的读取，在serialize.h的ReadCompactSize模板中，其规则为若第一个字节是255，则读取后续8字节作为uint64；若第一字节是254，则读取后续4字节作为uint32；若第一字节是253，则读取后续2字节作为uint16；否则将第一个字节作为uint8。<br>因此，这是一个可变长度的数据，最小占用1字节，最大占用9字节。</p>
+<h2 id="coinbase-交易"><a href="#coinbase-交易" class="headerlink" title="coinbase 交易"></a>coinbase 交易</h2><table>
+<thead>
+<tr>
+<th>字节数</th>
+<th>内容</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1-9字节</td>
+<td>交易数量</td>
+<td>CompactSize 的无符号整数</td>
+</tr>
+<tr>
+<td>4字节</td>
+<td>版本号</td>
+<td>int32_t</td>
+</tr>
+<tr>
+<td>1-9字节</td>
+<td>交易输入数量</td>
+<td>CompactSize 的无符号整数</td>
+</tr>
+<tr>
+<td>32字节</td>
+<td>引用交易的hash值</td>
+<td>uint256</td>
+</tr>
+<tr>
+<td>4字节</td>
+<td>引用交易的输出index</td>
+<td>int32_t</td>
+</tr>
+<tr>
+<td>1-9字节</td>
+<td>Coinbase数据长度</td>
+<td>CompactSize 的无符号整数</td>
+</tr>
+<tr>
+<td>n字节</td>
+<td>Coinbase数据</td>
+<td>一些数据 采用大端格式编码</td>
+</tr>
+<tr>
+<td>4字节</td>
+<td>sequence</td>
+<td>int32_t</td>
+</tr>
+<tr>
+<td>1-9字节</td>
+<td>交易输出数量</td>
+<td>CompactSize 的无符号整数</td>
+</tr>
+<tr>
+<td>8字节</td>
+<td>交易数量</td>
+<td>单位聪</td>
+</tr>
+<tr>
+<td>1-9字节</td>
+<td>锁定脚本长度</td>
+<td>CompactSize 的无符号整数</td>
+</tr>
+<tr>
+<td>n字节</td>
+<td>锁定脚本</td>
+<td>scriptPubKey</td>
+</tr>
+<tr>
+<td>4字节</td>
+<td>锁定时间</td>
+<td>一个区块号或UNIX时间戳</td>
+</tr>
+</tbody></table>
+<p>锁定脚本说明：开头的41含义，表示要将接下来的65个字节压入堆栈。<br>最后一个字节的16进制数值，ac，表示的是OP_CHECKSIG。</p>
+<img alt="f42cb426.png" src="/2018/07/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/bitcoin/bitcoin-blk-dat%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90/f42cb426.png" width height>
+
+<p>第一块 index 0 coinbase 交易<br>hex 数据</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">F9BEB4D91D0100000100000000000000000000000000000000000000000000000000000000000000000000003ba3edfd7a7b12b27ac72c3e67768f617fc81bc3888a51323a9fb8aa4b1e5e4a29ab5f49ffff001d1dac2b7c0101000000010000000000000000000000000000000000000000000000000000000000000000ffffffff4d04ffff001d0104455468652054696d65732030332f4a616e2f32303039204368616e63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062616e6b73ffffffff0100f2052a01000000434104678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5fac00000000</span><br></pre></td></tr></table></figure>
+<p>json 数据</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;hash&quot;: &quot;000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f&quot;,</span><br><span class="line">  &quot;ver&quot;: 1,</span><br><span class="line">  &quot;prev_block&quot;: &quot;0000000000000000000000000000000000000000000000000000000000000000&quot;,</span><br><span class="line">  &quot;mrkl_root&quot;: &quot;4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b&quot;,</span><br><span class="line">  &quot;time&quot;: 1231006505,</span><br><span class="line">  &quot;bits&quot;: 486604799,</span><br><span class="line">  &quot;nonce&quot;: 2083236893,</span><br><span class="line">  &quot;n_tx&quot;: 1,</span><br><span class="line">  &quot;size&quot;: 285,</span><br><span class="line">  &quot;tx&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;hash&quot;: &quot;4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b&quot;,</span><br><span class="line">      &quot;ver&quot;: 1,</span><br><span class="line">      &quot;vin_sz&quot;: 1,</span><br><span class="line">      &quot;vout_sz&quot;: 1,</span><br><span class="line">      &quot;lock_time&quot;: 0,</span><br><span class="line">      &quot;size&quot;: 204,</span><br><span class="line">      &quot;in&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;prev_out&quot;: &#123;</span><br><span class="line">            &quot;hash&quot;: &quot;0000000000000000000000000000000000000000000000000000000000000000&quot;,</span><br><span class="line">            &quot;n&quot;: 4294967295</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;coinbase&quot;: &quot;04ffff001d0104455468652054696d65732030332f4a616e2f32303039204368616e63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062616e6b73&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      &quot;out&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;value&quot;: &quot;50.00000000&quot;,</span><br><span class="line">          &quot;scriptPubKey&quot;: &quot;04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f OP_CHECKSIG&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      &quot;nid&quot;: &quot;c2151f94f6ca6cecbe5d17cd12aaa40e5b1571ca10da82f2f5bcdb6205dcad6a&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;mrkl_tree&quot;: [</span><br><span class="line">    &quot;4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b&quot;</span><br><span class="line">  ],</span><br><span class="line">  &quot;next_block&quot;: &quot;00000000839a8e6886ab5951d76f411475428afc90947ee320161bbf18eb6048&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解析</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">F9BEB4D9 固定头 magic bytes</span><br><span class="line">1D010000 区块长度 11D 小端表示 285</span><br><span class="line">01000000 版本号</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 引用 block 的hash值 32 bytes</span><br><span class="line">3BA3EDFD7A7B12B27AC72C3E67768F617FC81BC3888A51323A9FB8AA4B1E5E4A MerkleRoot 32 bytes</span><br><span class="line">29AB5F49 块生成时的网络时间 Unix time</span><br><span class="line">FFFF001D 目标值 0x1D00FFFF</span><br><span class="line">1DAC2B7C 随机数 2083236893</span><br><span class="line">01 交易数量 长度可变 1-9</span><br><span class="line">01000000 version	uint32	交易版本号</span><br><span class="line">01 varint	tx_in_count	uint	交易输入数量</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 交易哈希	不引用任何一个交易，值全部为0</span><br><span class="line">FFFFFFFF 	交易输出索引</span><br><span class="line">4D Coinbase数据长度 77，下面是Coinbase数据	在V2版本的区块中，除了需要以区块高度开始外，其它数据可以任意填写，用于extra nonce和挖矿标签</span><br><span class="line">  04FFFF001D 这个是难度值</span><br><span class="line">  0104 暂时未知</span><br><span class="line">  45 长度，下面是数据 The Times 03/Jan/2009 Chancellor on brink of second bailout for banks</span><br><span class="line">    5468652054696D65732030332F4A616E2F32303039204368616E63656C6C6F72206F6E206272696E6B206F66207365636F6E64206261696C6F757420666F722062616E6B73</span><br><span class="line">FFFFFFFF  sequence</span><br><span class="line">01 交易输出数量</span><br><span class="line">00F2052A01000000 8	交易总量	用聪表示的比特币值 50.00000000</span><br><span class="line">43 1-9	锁定脚本大小	用字节表示的后面的锁定脚本长度 67，下面是锁定脚本	一个定义了支付输出所需条件的脚本</span><br><span class="line">  41 表示把1-75范围内的字节压栈 这里是65字节</span><br><span class="line">    04678AFDB0FE5548271967F1A67130B7105CD6A828E03909A67962E0EA1F61DEB649F6BC3F4CEF38C4F35504E51EC112DE5C384DF7BA0B8D578A4C702B6BF11D5F</span><br><span class="line">  AC OP_CHECKSIG 操作</span><br><span class="line">00000000 锁定时间	一个区块号或UNIX时间戳</span><br></pre></td></tr></table></figure>
+
+<p>废弃的支付到公钥脚本：<br>早期的版本，OP_CHECKSIG 直接使用没有对公钥做 hash，<br>scriptPubKey: <pubKey> OP_CHECKSIG<br>scriptSig: <sig></sig></pubKey></p>
+<p><a target="_blank" rel="noopener" href="https://en.bitcoin.it/wiki/Script">script参考</a></p>
+<h2 id="2笔交易-coinbase-普通交易"><a href="#2笔交易-coinbase-普通交易" class="headerlink" title="2笔交易 coinbase + 普通交易"></a>2笔交易 coinbase + 普通交易</h2><p>height 170<br><code>00000000d1145790a8694403d4063f323d499e655c83426834d4ce2f8dd4a2ee</code><br>hex 数据</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0100000055bd840a78798ad0da853f68974f3d183e2bd1db6a842c1feecf222a00000000ff104ccb05421ab93e63f8c3ce5c2c2e9dbb37de2764b3a3175c8166562cac7d51b96a49ffff001d283e9e700201000000010000000000000000000000000000000000000000000000000000000000000000ffffffff0704ffff001d0102ffffffff0100f2052a01000000434104d46c4968bde02899d2aa0963367c7a6ce34eec332b32e42e5f3407e052d64ac625da6f0718e7b302140434bd725706957c092db53805b821a85b23a7ac61725bac000000000100000001c997a5e56e104102fa209c6a852dd90660a20b2d9c352423edce25857fcd3704000000004847304402204e45e16932b8af514961a1d3a1a25fdf3f4f7732e9d624c6c61548ab5fb8cd410220181522ec8eca07de4860a4acdd12909d831cc56cbbac4622082221a8768d1d0901ffffffff0200ca9a3b00000000434104ae1a62fe09c5f51b13905f07f06b99a2f7159b2225f374cd378d71302fa28414e7aab37397f554a7df5f142c21c1b7303b8a0626f1baded5c72a704f7e6cd84cac00286bee0000000043410411db93e1dcdb8a016b49840f8c53bc1eb68a382e97b1482ecad7b148a6909a5cb2e0eaddfb84ccf9744464f82e160bfa9b8b64f9d4c03f999b8643f656b412a3ac00000000</span><br></pre></td></tr></table></figure>
+<p>json 数据</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;hash&quot;: &quot;00000000d1145790a8694403d4063f323d499e655c83426834d4ce2f8dd4a2ee&quot;,</span><br><span class="line">  &quot;ver&quot;: 1,</span><br><span class="line">  &quot;prev_block&quot;: &quot;000000002a22cfee1f2c846adbd12b3e183d4f97683f85dad08a79780a84bd55&quot;,</span><br><span class="line">  &quot;mrkl_root&quot;: &quot;7dac2c5666815c17a3b36427de37bb9d2e2c5ccec3f8633eb91a4205cb4c10ff&quot;,</span><br><span class="line">  &quot;time&quot;: 1231731025,</span><br><span class="line">  &quot;bits&quot;: 486604799,</span><br><span class="line">  &quot;nonce&quot;: 1889418792,</span><br><span class="line">  &quot;n_tx&quot;: 2,</span><br><span class="line">  &quot;size&quot;: 490,</span><br><span class="line">  &quot;tx&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;hash&quot;: &quot;b1fea52486ce0c62bb442b530a3f0132b826c74e473d1f2c220bfa78111c5082&quot;,</span><br><span class="line">      &quot;ver&quot;: 1,</span><br><span class="line">      &quot;vin_sz&quot;: 1,</span><br><span class="line">      &quot;vout_sz&quot;: 1,</span><br><span class="line">      &quot;lock_time&quot;: 0,</span><br><span class="line">      &quot;size&quot;: 134,</span><br><span class="line">      &quot;in&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;prev_out&quot;: &#123;</span><br><span class="line">            &quot;hash&quot;: &quot;0000000000000000000000000000000000000000000000000000000000000000&quot;,</span><br><span class="line">            &quot;n&quot;: 4294967295</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;coinbase&quot;: &quot;04ffff001d0102&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      &quot;out&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;value&quot;: &quot;50.00000000&quot;,</span><br><span class="line">          &quot;scriptPubKey&quot;: &quot;04d46c4968bde02899d2aa0963367c7a6ce34eec332b32e42e5f3407e052d64ac625da6f0718e7b302140434bd725706957c092db53805b821a85b23a7ac61725b OP_CHECKSIG&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      &quot;nid&quot;: &quot;c56705435de47674259d6c92125907645d4fb512fa8e7f31457f5f29ba983d80&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;hash&quot;: &quot;f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16&quot;,</span><br><span class="line">      &quot;ver&quot;: 1,</span><br><span class="line">      &quot;vin_sz&quot;: 1,</span><br><span class="line">      &quot;vout_sz&quot;: 2,</span><br><span class="line">      &quot;lock_time&quot;: 0,</span><br><span class="line">      &quot;size&quot;: 275,</span><br><span class="line">      &quot;in&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;prev_out&quot;: &#123;</span><br><span class="line">            &quot;hash&quot;: &quot;0437cd7f8525ceed2324359c2d0ba26006d92d856a9c20fa0241106ee5a597c9&quot;,</span><br><span class="line">            &quot;n&quot;: 0</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;scriptSig&quot;: &quot;304402204e45e16932b8af514961a1d3a1a25fdf3f4f7732e9d624c6c61548ab5fb8cd410220181522ec8eca07de4860a4acdd12909d831cc56cbbac4622082221a8768d1d0901&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      &quot;out&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;value&quot;: &quot;10.00000000&quot;,</span><br><span class="line">          &quot;scriptPubKey&quot;: &quot;04ae1a62fe09c5f51b13905f07f06b99a2f7159b2225f374cd378d71302fa28414e7aab37397f554a7df5f142c21c1b7303b8a0626f1baded5c72a704f7e6cd84c OP_CHECKSIG&quot;,</span><br><span class="line">          &quot;next_in&quot;: &#123;</span><br><span class="line">            &quot;hash&quot;: &quot;ea44e97271691990157559d0bdd9959e02790c34db6c006d779e82fa5aee708e&quot;,</span><br><span class="line">            &quot;n&quot;: 0</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;value&quot;: &quot;40.00000000&quot;,</span><br><span class="line">          &quot;scriptPubKey&quot;: &quot;0411db93e1dcdb8a016b49840f8c53bc1eb68a382e97b1482ecad7b148a6909a5cb2e0eaddfb84ccf9744464f82e160bfa9b8b64f9d4c03f999b8643f656b412a3 OP_CHECKSIG&quot;,</span><br><span class="line">          &quot;next_in&quot;: &#123;</span><br><span class="line">            &quot;hash&quot;: &quot;a16f3ce4dd5deb92d98ef5cf8afeaf0775ebca408f708b2146c4fb42b41e14be&quot;,</span><br><span class="line">            &quot;n&quot;: 0</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      &quot;nid&quot;: &quot;a1629e004eb3d703ecf3807f976e402a626d84c559f8eab1450adf207619f319&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;mrkl_tree&quot;: [</span><br><span class="line">    &quot;b1fea52486ce0c62bb442b530a3f0132b826c74e473d1f2c220bfa78111c5082&quot;,</span><br><span class="line">    &quot;f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16&quot;,</span><br><span class="line">    &quot;7dac2c5666815c17a3b36427de37bb9d2e2c5ccec3f8633eb91a4205cb4c10ff&quot;</span><br><span class="line">  ],</span><br><span class="line">  &quot;next_block&quot;: &quot;00000000c9ec538cab7f38ef9c67a95742f56ab07b0a37c5be6b02808dbfb4e0&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>解析</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">01000000  版本号</span><br><span class="line">55bd840a78798ad0da853f68974f3d183e2bd1db6a842c1feecf222a00000000 前区块 hash 32bytes</span><br><span class="line">ff104ccb05421ab93e63f8c3ce5c2c2e9dbb37de2764b3a3175c8166562cac7d Merkle root hash 32bytes</span><br><span class="line">51b96a49 Unix timestamp 4bytes</span><br><span class="line">ffff001d Taget 4bytes</span><br><span class="line">283e9e70 Nonce 4bytes</span><br><span class="line">02 交易数量 1-9bytes</span><br><span class="line">  01000000 交易版本号 4bytes</span><br><span class="line">  01 交易输入数量 1-9bytes</span><br><span class="line">  0000000000000000000000000000000000000000000000000000000000000000 引用交易 hash 32bytes</span><br><span class="line">  ffffffff 交易输出索引 4bytes</span><br><span class="line">  07 Coinbase数据长度 1-9bytes</span><br><span class="line">  04ffff001d0102 Coinbase数据 nbytes</span><br><span class="line">  ffffffff sequence 4bytes</span><br><span class="line">  01 交易输出数量 1-9bytes</span><br><span class="line">  00f2052a01000000 交易数量 8bytes 单位聪</span><br><span class="line">  43 锁定脚本长度 1-9bytes</span><br><span class="line">  4104d46c4968bde02899d2aa0963367c7a6ce34eec332b32e42e5f3407e052d64ac625da6f0718e7b302140434bd725706957c092db53805b821a85b23a7ac61725bac 锁定脚本</span><br><span class="line">  00000000 锁定时间 4bytes</span><br><span class="line">01000000 交易版本号 4bytes</span><br><span class="line">01 交易输出数量 1-9bytes</span><br><span class="line">c997a5e56e104102fa209c6a852dd90660a20b2d9c352423edce25857fcd3704 引用交易 hash 32bytes</span><br><span class="line">00000000 交易输出索引 4bytes 被花费的UTXO的索引号，第一个是0</span><br><span class="line">48 解锁脚本长度 1-9bytes 72bytes</span><br><span class="line">47304402204e45e16932b8af514961a1d3a1a25fdf3f4f7732e9d624c6c61548ab5fb8cd410220181522ec8eca07de4860a4acdd12909d831cc56cbbac4622082221a8768d1d0901 解锁脚本</span><br><span class="line">ffffffff sequence 4bytes</span><br><span class="line">02 输出数量</span><br><span class="line">  00ca9a3b00000000 交易数量 8bytes 10.00000000 聪</span><br><span class="line">  43 锁定脚本长度 1-9bytes 67bytes</span><br><span class="line">  4104ae1a62fe09c5f51b13905f07f06b99a2f7159b2225f374cd378d71302fa28414e7aab37397f554a7df5f142c21c1b7303b8a0626f1baded5c72a704f7e6cd84cac 锁定脚本</span><br><span class="line">  00286bee00000000 交易数量 8bytes 40.00000000 聪</span><br><span class="line">  43 锁定脚本长度 1-9bytes 67bytes</span><br><span class="line">  410411db93e1dcdb8a016b49840f8c53bc1eb68a382e97b1482ecad7b148a6909a5cb2e0eaddfb84ccf9744464f82e160bfa9b8b64f9d4c03f999b8643f656b412a3ac 锁定脚本</span><br><span class="line">00000000 锁定时间 4bytes</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/blockchain/" rel="tag"># blockchain</a>
+              <a href="/tags/%E6%AF%94%E7%89%B9%E5%B8%81/" rel="tag"># 比特币</a>
+              <a href="/tags/bitcoin/" rel="tag"># bitcoin</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/07/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/bitcoin/ubuntu14-04%E7%BC%96%E8%AF%91bitcoin0-16-1/" rel="prev" title="ubuntu14.04编译bitcoin0.16.1">
+                  <i class="fa fa-chevron-left"></i> ubuntu14.04编译bitcoin0.16.1
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/07/12/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/go/go-%E5%B8%B8%E7%94%A8%E4%BB%A3%E7%A0%81%E6%AE%B5/" rel="next" title="go-常用代码段">
+                  go-常用代码段 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

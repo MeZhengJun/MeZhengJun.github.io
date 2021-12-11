@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="编译 xpmpool 安装 gcc 4.9boost 1.55 版本以下需要使用 gcc 4.9 以下的版本 因为 ABI 兼容性问题导致 &#x2F;&#x2F; 检查一下版本信息，如果高于 4.9 需要重装gcc -vsudo apt-get remove gcc g++sudo apt-get install gcc-4.9 g++-4.9&#x2F;&#x2F; 做一下软连接cd &#x2F;usr&#x2F;binsudo ln -s &#x2F;usr&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="primecoin-xpmpool-compile">
+<meta property="og:url" content="http://zhengjun.top/2018/08/17/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/primecoin/primecoin-xpmpool-compile/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="编译 xpmpool 安装 gcc 4.9boost 1.55 版本以下需要使用 gcc 4.9 以下的版本 因为 ABI 兼容性问题导致 &#x2F;&#x2F; 检查一下版本信息，如果高于 4.9 需要重装gcc -vsudo apt-get remove gcc g++sudo apt-get install gcc-4.9 g++-4.9&#x2F;&#x2F; 做一下软连接cd &#x2F;usr&#x2F;binsudo ln -s &#x2F;usr&#x2F;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-08-17T14:50:16.000Z">
+<meta property="article:modified_time" content="2018-09-27T02:11:34.000Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="blockchain">
+<meta property="article:tag" content="primecoin">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://zhengjun.top/2018/08/17/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/primecoin/primecoin-xpmpool-compile/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2018/08/17/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/primecoin/primecoin-xpmpool-compile/","path":"2018/08/17/学习笔记/区块链/primecoin/primecoin-xpmpool-compile/","title":"primecoin-xpmpool-compile"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>primecoin-xpmpool-compile | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-gcc-4-9"><span class="nav-number">1.</span> <span class="nav-text">安装 gcc 4.9</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91-boost-1-46-1"><span class="nav-number">2.</span> <span class="nav-text">编译 boost 1.46.1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%8F%AF%E8%83%BD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%9A"><span class="nav-number">2.1.</span> <span class="nav-text">编译可能遇到的问题：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91-wt-3-3-2"><span class="nav-number">3.</span> <span class="nav-text">编译 wt 3.3.2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E4%BE%9D%E8%B5%96%E5%8C%85"><span class="nav-number">3.1.</span> <span class="nav-text">编译依赖包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91-openssl-1-0-2p"><span class="nav-number">3.2.</span> <span class="nav-text">编译 openssl 1.0.2p</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91-primecoind"><span class="nav-number">4.</span> <span class="nav-text">编译 primecoind</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1"><span class="nav-number">5.</span> <span class="nav-text">启动服务</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/08/17/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/primecoin/primecoin-xpmpool-compile/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          primecoin-xpmpool-compile
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-08-17 22:50:16" itemprop="dateCreated datePublished" datetime="2018-08-17T22:50:16+08:00">2018-08-17</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2018-09-27 10:11:34" itemprop="dateModified" datetime="2018-09-27T10:11:34+08:00">2018-09-27</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>编译 xpmpool</p>
+<h2 id="安装-gcc-4-9"><a href="#安装-gcc-4-9" class="headerlink" title="安装 gcc 4.9"></a>安装 gcc 4.9</h2><p>boost 1.55 版本以下需要使用 gcc 4.9 以下的版本 因为 ABI 兼容性问题导致</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 检查一下版本信息，如果高于 4.9 需要重装</span></span><br><span class="line">gcc -v</span><br><span class="line">sudo apt-get remove gcc g++</span><br><span class="line">sudo apt-get install gcc<span class="number">-4.9</span> g++<span class="number">-4.9</span></span><br><span class="line"><span class="comment">// 做一下软连接</span></span><br><span class="line">cd /usr/bin</span><br><span class="line">sudo ln -s /usr/bin/g++<span class="number">-4.9</span> /usr/bin/g++ -f</span><br><span class="line">sudo ln -s /usr/bin/gcc<span class="number">-4.9</span> /usr/bin/gcc -f</span><br><span class="line"></span><br><span class="line">gcc -v</span><br></pre></td></tr></table></figure>
+
+<p>详细说明：<br>This is essentially a won’t fix. compiling boost with gcc5, which uses<br>C++11 ABI, changes boost ABI and breaks most reverse dependencies.<br>The boost maintainer decided against backporting fixes to older<br>boost1.55, and rename the sonames throughout as that would be<br>non-standard.<br>Boost 1.58 and later is the default in testing and unstable, and it<br>uses gcc5 and thus the C++11 ABI.</p>
+<p>Thus your options are to use:<br>(a) gcc4.9 or lower, C++98 ABI, and debian’s boost1.55 or lower.<br>(b) gcc5 or better, C++11 ABI, and debian’s boost1.57 or better.</p>
+<h2 id="编译-boost-1-46-1"><a href="#编译-boost-1-46-1" class="headerlink" title="编译 boost 1.46.1"></a>编译 boost 1.46.1</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 查看版本</span></span><br><span class="line">dpkg -s libboost-dev | grep <span class="string">&#x27;Version&#x27;</span></span><br><span class="line"><span class="comment">// 如果存在删掉</span></span><br><span class="line">sudo apt-get --purge remove libboost-*</span><br><span class="line">sudo apt-get --purge remove libboost-dev libboost-doc</span><br><span class="line"></span><br><span class="line">sudo apt-get install libbz2-dev</span><br><span class="line"></span><br><span class="line"><span class="keyword">not</span> use icu</span><br><span class="line">libicu-dev</span><br></pre></td></tr></table></figure>
+
+<h3 id="编译可能遇到的问题："><a href="#编译可能遇到的问题：" class="headerlink" title="编译可能遇到的问题："></a>编译可能遇到的问题：</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">/usr/include/boost/config/requires_threads.hpp:<span class="number">29</span>:<span class="number">4</span>: error: <span class="meta">#<span class="meta-keyword">error</span> <span class="meta-string">&quot;Threading support unavaliable: it has been explicitly disabled with BOOST_DISABLE_THREADS&quot;</span></span></span><br></pre></td></tr></table></figure>
+<p>这是因为boost是根据编译器的宏定义来判断gcc是否支持多线程，但是gcc 4.7及以上的版本使用的宏与老版本使用的宏不同，这样，boost自然就不能正确获取gcc支持多线程的宏，从而导致不能成功编译boost_thread支持的程序。解决办法是在boost/config/stdlib/libstdcpp3.hpp文件的：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#ifdef __GLIBCXX__ // gcc 3.4 and greater:</span><br><span class="line">#  if defined(_GLIBCXX_HAVE_GTHR_DEFAULT) \</span><br><span class="line">        || defined(_GLIBCXX__PTHREADS)</span><br></pre></td></tr></table></figure>
+<p>修改为</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#  if defined(_GLIBCXX_HAVE_GTHR_DEFAULT) \</span><br><span class="line">        || defined(_GLIBCXX__PTHREADS) \</span><br><span class="line">	|| defined(_GLIBCXX_HAS_GTHREADS)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./boost/thread/xtime.hpp:23:5: error: expected identifier before numeric constant</span><br><span class="line">     TIME_UTC=1</span><br><span class="line">libs/thread/src/pthread/timeconv.inl</span><br></pre></td></tr></table></figure>
+<p>修改 TIME_UTC 为 TIME_UTC_ 和 std 的冲突了</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 下面使用 stage 了这里的 prefix 就无效了</span></span><br><span class="line">./bootstrap.sh</span><br><span class="line"><span class="comment">// 使用这个即可</span></span><br><span class="line">./bjam --build-dir=/tmp/build-boost toolset=gcc stage</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 这个是安装了 ICU 之后的启用参数，实际操作发现还有问题需要修改，所以暂时不用 ICU</span></span><br><span class="line">./bjam --build-dir=/tmp/build-boost -sHAVE_ICU=<span class="number">1</span> -sICU_PATH=/usr/local/include  -sICU_LINK=<span class="string">&quot;/LIBPATH:/usr/local/lib&quot;</span> toolset=gcc</span><br></pre></td></tr></table></figure>
+
+<p>如果是自定义目录需要添加环境变量<br>修改/etc/profile, 文件末尾添加</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export BOOST_INCLUDE=&quot;your install path &quot;/include</span><br><span class="line">export BOOST_LIB=&quot;your install path &quot;/lib</span><br></pre></td></tr></table></figure>
+<p>在/etc/profile.d/ 中新建一个shell文件boost.sh</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line">export BOOST_INCLUDE_PATH=/home/tyler/Documents/boost_1_46_1</span><br><span class="line">export BOOST_LIB_PATH=/home/tyler/Documents/boost_1_46_1/stage/lib</span><br><span class="line">export BOOST_LIB_SUFFIX=1_46_1</span><br></pre></td></tr></table></figure>
+<p>source /etc/profile.d/boost.sh<br>以后在编译程序的时候，只需要加上 ：-I$BOOST_INCLUDE_PATH - L$BOOST_LIB_PATH</p>
+<p>卸载<br>将/usr/local/lib和/usr/local/include/boost两个目录下的文件直接删除就可以。</p>
+<h2 id="编译-wt-3-3-2"><a href="#编译-wt-3-3-2" class="headerlink" title="编译 wt 3.3.2"></a>编译 wt 3.3.2</h2><p>CMake 2.6，找不到 boost 换 2.8<br><a target="_blank" rel="noopener" href="http://www.cmake.org/CMake">CMake</a> (&gt;= 2.4), and</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./bootstrap</span><br><span class="line">make -j 2</span><br><span class="line">sudo make install</span><br><span class="line">cmake --version</span><br></pre></td></tr></table></figure>
+
+<p>wt3.3.10 需要 cmake 2.12 以上</p>
+<h3 id="编译依赖包"><a href="#编译依赖包" class="headerlink" title="编译依赖包"></a>编译依赖包</h3><ul>
+<li>ZEROMQ message system</li>
+<li>Google protobuf protocol</li>
+<li>libwt database abstraction</li>
+<li>libwt webserver</li>
+<li>Postgres SQL server</li>
+</ul>
+<p>ZEROMQ, czmq, protobuf : ./configure; make; sudo make install;make clean</p>
+<p>Postgres SQL server 9.6.9 源码编译</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo apt-get install libreadline-dev</span><br><span class="line">./configure</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br><span class="line">sudo adduser postgres</span><br><span class="line">sudo mkdir /usr/local/pgsql/data</span><br><span class="line">sudo chown postgres /usr/local/pgsql/data</span><br><span class="line">su - postgres</span><br><span class="line">/usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data</span><br><span class="line">/usr/local/pgsql/bin/postgres -D /usr/local/pgsql/data &gt;logfile 2&gt;&amp;1 &amp;</span><br><span class="line">/usr/local/pgsql/bin/createdb test</span><br><span class="line">/usr/local/pgsql/bin/psql test</span><br></pre></td></tr></table></figure>
+<p>然后需要创建数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">进入控制台</span><br><span class="line">/usr/local/pgsql/bin/psql</span><br><span class="line">创建用户</span><br><span class="line">CREATE USER backend WITH PASSWORD &#x27;XYZPASS&#x27;;</span><br><span class="line">创建数据库</span><br><span class="line">CREATE DATABASE testdb8 OWNER backend;</span><br><span class="line">赋予权限</span><br><span class="line">GRANT ALL PRIVILEGES ON DATABASE testdb8 to backend;</span><br><span class="line">查看当前库的表</span><br><span class="line">\d</span><br><span class="line">显示表具体信息</span><br><span class="line">\d table_name</span><br></pre></td></tr></table></figure>
+
+<p>编译 wt 需要<br>使用 CMake 2.8<br>C++ boost library (preferably version 1.46.1 or higher)</p>
+<p>cd wt-x.x.x<br>mkdir build<br>cd build<br>配置<br>cmake -DBOOST_ROOT=/home/tyler/Documents/boost_1_46_1 -DBOOST_DIR=/home/tyler/Documents/boost_1_46_1 -DBOOST_INCLUDE_DIRS=/home/tyler/Documents/boost_1_46_1 -DBOOST_LIB_DIRS=/home/tyler/Documents/boost_1_46_1/stage/lib -DENABLE_POSTGRES=on -DPOSTGRES_PREFIX=/usr/local/pgsql/ -DWT_CPP_11_MODE=-std=c++11 ../</p>
+<p>如果失败了,<br>ccmake ../<br>or<br>cmake-gui ../</p>
+<p>编译<br>make -j 2<br>sudo make install</p>
+<p>编译过程如果有问题：<br>Linking CXX executable test.sqlite3<br>../src/Wt/Dbo/backend/libwtdbosqlite3.so.3.3.2: undefined reference to <code>dlopen</code><br>../src/Wt/Dbo/backend/libwtdbosqlite3.so.3.3.2: undefined reference to <code>dlclose</code><br>../src/Wt/Dbo/backend/libwtdbosqlite3.so.3.3.2: undefined reference to <code>dlerror</code><br>../src/Wt/Dbo/backend/libwtdbosqlite3.so.3.3.2: undefined reference to <code>dlsym</code></p>
+<p>检查 libdl.so 是否存在，如果没有安装下面的库<br><code>apt install libc6-dev-i386</code></p>
+<p>修改 D:\wt-3.3.2\test\CMakeLists.txt<br>找到 HAVE_SQLITE，在 TARGET_LINK_LIBRARIES 语句的最后面加上 dl 链接库</p>
+<p>compiled library path: /usr/local/lib/</p>
+<h3 id="编译-openssl-1-0-2p"><a href="#编译-openssl-1-0-2p" class="headerlink" title="编译 openssl 1.0.2p"></a>编译 openssl 1.0.2p</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">openssl version -a</span><br><span class="line"></span><br><span class="line">./config --prefix=/usr/local --openssldir=/usr/local/openssl threads zlib shared</span><br><span class="line">make</span><br><span class="line">make test</span><br><span class="line">sudo make install</span><br><span class="line"></span><br><span class="line">make clean</span><br></pre></td></tr></table></figure>
+
+<p>如果不指定–prefix和–openssldir, 那么, 生成的文件在<br>/usr/local/include, /usr/local/lib, /usr/local/ssl这三个目录下<br>–prefix是指定include和lib install路径<br>–openssldir是指定bin  certs  man  misc  openssl.cnf  private的安装路径</p>
+<p>export OPENSSL_INCLUDE_PATH=”/usr/local/include/openssl/“<br>export OPENSSL_LIB_PATH=”/usr/local/lib/“</p>
+<p>1.0.1k 版本，如果提示 SSLv2_method 找不到。<br>修改 ssl/s2_meth.c 文件 77 行，增加下面三个方法原来的三行删掉<br><a target="_blank" rel="noopener" href="https://github.com/openssl/openssl/commit/133138569f37d149ed1d7641fe8c75a93fded445">参见</a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">IMPLEMENT_ssl2_meth_func(SSLv2_method,</span><br><span class="line">                         ssl2_accept, ssl2_connect, ssl2_get_method)</span><br><span class="line">#else                           /* !OPENSSL_NO_SSL2 */</span><br><span class="line"></span><br><span class="line">SSL_METHOD *SSLv2_method(void) &#123; return NULL; &#125;</span><br><span class="line">SSL_METHOD *SSLv2_client_method(void) &#123; return NULL; &#125;</span><br><span class="line">SSL_METHOD *SSLv2_server_method(void) &#123; return NULL; &#125;</span><br><span class="line"></span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+
+<h2 id="编译-primecoind"><a href="#编译-primecoind" class="headerlink" title="编译 primecoind"></a>编译 primecoind</h2><p>根据上面编译的配置，修改 makefile.unix 的相关依赖路径</p>
+<p>export BOOST_INCLUDE_PATH=/home/tyler/Documents/boost_1_46_1<br>export BOOST_LIB_PATH=/home/tyler/Documents/boost_1_46_1/stage/lib</p>
+<p>需要编译以下berkeley db db-4.8.30.NC</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tar -xvf db-4.8.30.NC.tar.gz</span><br><span class="line">cd db-4.8.30.NC/build_unix</span><br><span class="line">mkdir -p build</span><br><span class="line">BDB_PREFIX=$(pwd)/build</span><br><span class="line">../dist/configure --disable-shared --enable-cxx --with-pic --prefix=$BDB_PREFIX</span><br><span class="line">make install</span><br><span class="line">cd ../..</span><br></pre></td></tr></table></figure>
+
+<p>export BDB_LIB_PATH=$BDB_PREFIX/lib<br>export BDB_INCLUDE_PATH=$BDB_PREFIX/include<br>export BDB_LIB_SUFFIX=-4.8</p>
+<p>进入目录 primeserver/src 执行<br><code>make -f makefile.unix &gt; log.txt 2&gt;&amp;1</code></p>
+<h2 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">第一次运行需要创建数据库</span><br><span class="line">-initwtdb</span><br><span class="line">矿池手续费地址</span><br><span class="line">-feeaddr</span><br><span class="line">费用计算：</span><br><span class="line">settings-&gt;Fee = GetArg(&quot;-poolfee&quot;, 10);</span><br><span class="line">(block-&gt;Value * mSettings-&gt;Fee) / 100;</span><br><span class="line"></span><br><span class="line">目标值</span><br><span class="line">-target</span><br><span class="line">同步完毕后需要下面的参数启动 primecoind</span><br><span class="line">-gen</span><br><span class="line"></span><br><span class="line">export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:/usr/local/pgsql/lib:/home/tyler/Documents/boost_1_46_1/stage/lib</span><br><span class="line">sudo ldconfig</span><br><span class="line"></span><br><span class="line">启动 postgreSQL</span><br><span class="line">/usr/local/pgsql/bin/pg_ctl -s -D /usr/local/pgsql/data start -w -t 120</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">初始化数据库+同步数据</span><br><span class="line">./primecoind -rpcuser=user -rpcpassword=password -printtoconsole -initwtdb -reindex -txindex=1 -addrindex=1 -datadir=&quot;/mnt/blocks/primecoin_pool_data&quot;</span><br><span class="line"></span><br><span class="line">启动矿池服务</span><br><span class="line">./primecoind -rpcuser=user -rpcpassword=password -printtoconsole -txindex=1 -addrindex=1 -datadir=&quot;/mnt/blocks/primecoin_pool_data&quot; -gen</span><br><span class="line"></span><br><span class="line"> ./primecoind -gen -debug -frontport=6667 -host=121.43.185.81 -feeaddr=AVjsWxuvcmjDvULpuegjKbgjrCthi2JVeq -daemon</span><br><span class="line"></span><br><span class="line">The webserver needs to be started as:</span><br><span class="line">./webserver --docroot /usr/local/share/Wt --http-address 0.0.0.0 --http-port 80</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/blockchain/" rel="tag"># blockchain</a>
+              <a href="/tags/primecoin/" rel="tag"># primecoin</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/08/17/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/linux/ubuntu/ubuntu-16-04%E9%99%8D%E7%BA%A7%E5%88%B0gcc4-9/" rel="prev" title="ubuntu-16.04降级到gcc4.9">
+                  <i class="fa fa-chevron-left"></i> ubuntu-16.04降级到gcc4.9
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/08/18/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E6%A6%82%E5%BF%B5/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%A6%82%E5%BF%B5-lightning-network/" rel="next" title="区块链概念-lightning network">
+                  区块链概念-lightning network <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

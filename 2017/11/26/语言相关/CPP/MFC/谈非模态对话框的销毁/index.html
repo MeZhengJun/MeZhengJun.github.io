@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="非模态对话框相对于模态对话框，他的创建和销毁过程和模态对话框有一定的区别 先看一下MSDN的原文： When you implement a modeless dialog box, always override the OnCancel member function and call DestroyWindow from within it. Don’t call the base clas">
+<meta property="og:type" content="article">
+<meta property="og:title" content="谈非模态对话框的销毁">
+<meta property="og:url" content="http://zhengjun.top/2017/11/26/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/MFC/%E8%B0%88%E9%9D%9E%E6%A8%A1%E6%80%81%E5%AF%B9%E8%AF%9D%E6%A1%86%E7%9A%84%E9%94%80%E6%AF%81/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="非模态对话框相对于模态对话框，他的创建和销毁过程和模态对话框有一定的区别 先看一下MSDN的原文： When you implement a modeless dialog box, always override the OnCancel member function and call DestroyWindow from within it. Don’t call the base clas">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-11-25T23:18:38.000Z">
+<meta property="article:modified_time" content="2017-11-26T02:24:10.000Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="对话框">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://zhengjun.top/2017/11/26/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/MFC/%E8%B0%88%E9%9D%9E%E6%A8%A1%E6%80%81%E5%AF%B9%E8%AF%9D%E6%A1%86%E7%9A%84%E9%94%80%E6%AF%81/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2017/11/26/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/MFC/%E8%B0%88%E9%9D%9E%E6%A8%A1%E6%80%81%E5%AF%B9%E8%AF%9D%E6%A1%86%E7%9A%84%E9%94%80%E6%AF%81/","path":"2017/11/26/语言相关/CPP/MFC/谈非模态对话框的销毁/","title":"谈非模态对话框的销毁"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>谈非模态对话框的销毁 | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MFC%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%85%B3%E9%97%AD%E7%AA%97%E5%8F%A3%E7%9A%84%E9%A1%BA%E5%BA%8F-%E9%9D%9E%E6%A8%A1%E6%80%81%E7%AA%97%E5%8F%A3"><span class="nav-number">1.</span> <span class="nav-text">MFC应用程序关闭窗口的顺序(非模态窗口)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MFC%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E4%B8%AD%E6%89%93%E5%BC%80%E6%A8%A1%E5%BC%8F%E5%AF%B9%E8%AF%9D%E6%A1%86%E7%9A%84%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E9%A1%BA%E5%BA%8F"><span class="nav-number">2.</span> <span class="nav-text">MFC应用程序中打开模式对话框的函数调用顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MFC%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E4%B8%AD%E5%85%B3%E9%97%AD%E6%A8%A1%E5%BC%8F%E5%AF%B9%E8%AF%9D%E6%A1%86%E7%9A%84%E9%A1%BA%E5%BA%8F"><span class="nav-number">3.</span> <span class="nav-text">MFC应用程序中关闭模式对话框的顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%93%E5%BC%80%E6%97%A0%E6%A8%A1%E5%BC%8F%E5%AF%B9%E8%AF%9D%E6%A1%86%E7%9A%84%E9%A1%BA%E5%BA%8F"><span class="nav-number">4.</span> <span class="nav-text">打开无模式对话框的顺序</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2017/11/26/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/MFC/%E8%B0%88%E9%9D%9E%E6%A8%A1%E6%80%81%E5%AF%B9%E8%AF%9D%E6%A1%86%E7%9A%84%E9%94%80%E6%AF%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          谈非模态对话框的销毁
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2017-11-26 07:18:38 / 修改时间：10:24:10" itemprop="dateCreated datePublished" datetime="2017-11-26T07:18:38+08:00">2017-11-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>非模态对话框相对于模态对话框，他的创建和销毁过程和模态对话框有一定的区别</p>
+<p>先看一下MSDN的原文：</p>
+<p>When you implement a modeless dialog box, always override the OnCancel member function and call DestroyWindow from within it. Don’t call the base class CDialog::OnCancel, because it calls EndDialog, which will make the dialog box invisible but will not destroy it. You should also override PostNcDestroy for modeless dialog boxes in order to delete this, since modeless dialog boxes are usually allocated with new. Modal dialog boxes are usually constructed on the frame and do not need PostNcDestroy cleanup.</p>
+<span id="more"></span>
+
+<p>MS的指示：非模态对话框需要重载函数OnCanel，并且在这个函数中调用DestroyWindow。并且不能调用基类的OnCancel，因为基类的OnCancel调用了EndDialog这个函数，这个函数是针对模态对话框的。<br>还有一个必须重载的函数就是PostNcDestroy，这也是一个虚函数，通常的非模态对话框是用类的指针，通过new创建的，这就需要在PostNcDestroy函数中delete掉这个指针。</p>
+<p>了解了理论过后，下面我们就可以用代码实现一下非模态对话框的创建和销毁过程:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//建立</span><br><span class="line">//主框架中：</span><br><span class="line">CTestDlg *pDlg=new CTestDlg;</span><br><span class="line">pDlg-&gt;Create(IDD_TESTDLG,this);</span><br><span class="line">pDlg-&gt;ShowWindow(SW_SHOW);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//对话框中：</span><br><span class="line">void CTestDlg::OnCancel()</span><br><span class="line">&#123;</span><br><span class="line">    DestroyWindow();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void CTestDlg::PostNcDestroy()</span><br><span class="line">&#123;</span><br><span class="line">    CDialog::PostNcDestroy();</span><br><span class="line">    delete this;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果要在点击按钮的情况下，销毁非模态对话框，只需要把按钮的事件映射到OnCancel函数即可。</p>
+<p>以下是一点资料供参考，非模态对话框的销毁顺序：</p>
+<p>MFC应用程序中处理消息的顺序</p>
+<ol>
+<li><p>AfxWndProc()      该函数负责接收消息，找到消息所属的CWnd对象，然后调用AfxCallWndProc</p>
+</li>
+<li><p>AfxCallWndProc()  该函数负责保存消息(保存的内容主要是消息标识符和消息参数)供应用程序以后使用，</p>
+<pre><code>             然后调用WindowProc()函数
+</code></pre>
+</li>
+<li><p>WindowProc()      该函数负责发送消息到OnWndMsg()函数，如果未被处理，则调用DefWindowProc()函数</p>
+</li>
+<li><p>OnWndMsg()        该函数的功能首先按字节对消息进行排序，对于WM_COMMAND消息，调用OnCommand()消息</p>
+<pre><code>             响应函数，对于WM_NOTIFY消息
+             调用OnNotify()消息响应函数。任何被遗漏的消息将是一个窗口消息。OnWndMsg()函数搜
+             索类的消息映像，以找到一个
+             能处理任何窗口消息的处理函数。如果OnWndMsg()函数不能找到这样的处理函数的话，则
+             把消息返回到WindowProc()函数，由它将消息发送给DefWindowProc()函数
+</code></pre>
+</li>
+<li><p>OnCommand()       该函数查看这是不是一个控件通知(lParam参数不为NULL，如果lParam参数为空的话，说明</p>
+<pre><code>             该消息不是控件通知)，如果它是，OnCommand()函数会试图将消息映射到制造通知的控件；
+             如果他不是一个控件通知(或者如果控件拒绝映射的消息)OnCommand()就会调用OnCmdMsg()函数
+</code></pre>
+</li>
+<li><p>OnCmdMsg()        根据接收消息的类，OnCmdMsg()函数将在一个称为命令传递(Command Routing)的过程中潜在的</p>
+<pre><code>             传递命令消息和控件通知。
+             例如：如果拥有该窗口的类是一个框架类，则命令和通知消息也被传递到视图和文档类，并为该
+             类寻找一个消息处理函数
+</code></pre>
+</li>
+</ol>
+<p>MFC应用程序创建窗口的过程</p>
+<ol>
+<li><p>PreCreateWindow()   该函数是一个重载函数，在窗口被创建前，可以在该重载函数中改变创建参数</p>
+<pre><code>               (可以设置窗口风格等等)
+</code></pre>
+</li>
+<li><p>PreSubclassWindow() 这也是一个重载函数，允许首先子分类一个窗口</p>
+</li>
+<li><p>OnGetMinMaxInfo()   该函数为消息响应函数，响应的是WM_GETMINMAXINFO消息，允许设置窗口的最大或者</p>
+<pre><code>               最小尺寸
+</code></pre>
+</li>
+<li><p>OnNcCreate()        该函数也是一个消息响应函数，响应WM_NCCREATE消息，发送消息以告诉窗口的客户区</p>
+<pre><code>               即将被创建
+</code></pre>
+</li>
+<li><p>OnNcCalcSize()      该函数也是消息响应函数,响应WM_NCCALCSIZE消息，作用是允许改变窗口客户区大小</p>
+</li>
+<li><p>OnCreate()          该函数也是一个消息响应函数，响应WM_CREATE消息，发送消息告诉一个窗口已经被创建</p>
+</li>
+<li><p>OnSize()            该函数也是一个消息响应函数，响应WM_SIZE消息，发送该消息以告诉该窗口大小已经</p>
+<pre><code>               发生变化
+</code></pre>
+</li>
+<li><p>OnMove()            消息响应函数，响应WM_MOVE消息，发送此消息说明窗口在移动</p>
+</li>
+<li><p>OnChildNotify()     该函数为重载函数，作为部分消息映射被调用，告诉父窗口即将被告知一个窗口刚刚被</p>
+<pre><code>               创建
+</code></pre>
+</li>
+</ol>
+<h2 id="MFC应用程序关闭窗口的顺序-非模态窗口"><a href="#MFC应用程序关闭窗口的顺序-非模态窗口" class="headerlink" title="MFC应用程序关闭窗口的顺序(非模态窗口)"></a>MFC应用程序关闭窗口的顺序(非模态窗口)</h2><ol>
+<li><p>OnClose()       消息响应函数，响应窗口的WM_CLOSE消息，当关闭按钮被单击的时候发送此消息</p>
+</li>
+<li><p>OnDestroy()     消息响应函数，响应窗口的WM_DESTROY消息，当一个窗口将被销毁时，发送此消息</p>
+</li>
+<li><p>OnNcDestroy()   消息响应函数，响应窗口的WM_NCDESTROY消息，当一个窗口被销毁后发送此消息</p>
+</li>
+<li><p>PostNcDestroy() 重载函数，作为处理OnNcDestroy()函数的最后动作，被CWnd调用</p>
+</li>
+</ol>
+<h2 id="MFC应用程序中打开模式对话框的函数调用顺序"><a href="#MFC应用程序中打开模式对话框的函数调用顺序" class="headerlink" title="MFC应用程序中打开模式对话框的函数调用顺序"></a>MFC应用程序中打开模式对话框的函数调用顺序</h2><ol>
+<li><p>DoModal()             重载函数，重载DoModal()成员函数</p>
+</li>
+<li><p>PreSubclassWindow()   重载函数，允许首先子分类一个窗口</p>
+</li>
+<li><p>OnCreate()            消息响应函数，响应WM_CREATE消息，发送此消息以告诉一个窗口已经被创建</p>
+</li>
+<li><p>OnSize()              消息响应函数，响应WM_SIZE消息，发送此消息以告诉窗口大小发生变化</p>
+</li>
+<li><p>OnMove()              消息响应函数，响应WM_MOVE消息，发送此消息，以告诉窗口正在移动</p>
+</li>
+<li><p>OnSetFont()           消息响应函数，响应WM_SETFONT消息，发送此消息，以允许改变对话框中控件的字体</p>
+</li>
+<li><p>OnInitDialog()        消息响应函数，响应WM_INITDIALOG消息，发送此消息以允许初始化对话框中的控件，</p>
+<pre><code>                 或者是创建新控件
+</code></pre>
+</li>
+<li><p>OnShowWindow()        消息响应函数，响应WM_SHOWWINDOW消息，该函数被ShowWindow()函数调用</p>
+</li>
+<li><p>OnCtlColor()          消息响应函数，响应WM_CTLCOLOR消息，被父窗口发送已改变对话框或对话框上面控件</p>
+<pre><code>                 的颜色
+</code></pre>
+</li>
+<li><p>OnChildNotify()     重载函数，作为WM_CTLCOLOR消息的结果发送</p>
+</li>
+</ol>
+<h2 id="MFC应用程序中关闭模式对话框的顺序"><a href="#MFC应用程序中关闭模式对话框的顺序" class="headerlink" title="MFC应用程序中关闭模式对话框的顺序"></a>MFC应用程序中关闭模式对话框的顺序</h2><ol>
+<li><p>OnClose()        消息响应函数，响应WM_CLOSE消息，当”关闭”按钮被单击的时候，该函数被调用</p>
+</li>
+<li><p>OnKillFocus()    消息响应函数，响应WM_KILLFOCUS消息，当一个窗口即将失去键盘输入焦点以前被发送</p>
+</li>
+<li><p>OnDestroy()      消息响应函数，响应WM_DESTROY消息，当一个窗口即将被销毁时，被发送</p>
+</li>
+<li><p>OnNcDestroy()    消息响应函数，响应WM_NCDESTROY消息，当一个窗口被销毁以后被发送</p>
+</li>
+<li><p>PostNcDestroy()  重载函数，作为处理OnNcDestroy()函数的最后动作被CWnd调用</p>
+</li>
+</ol>
+<h2 id="打开无模式对话框的顺序"><a href="#打开无模式对话框的顺序" class="headerlink" title="打开无模式对话框的顺序"></a>打开无模式对话框的顺序</h2><ol>
+<li><p>PreSubclassWindow()    重载函数，允许用户首先子分类一个窗口</p>
+</li>
+<li><p>OnCreate()             消息响应函数，响应WM_CREATE消息，发送此消息以告诉一个窗口已经被创建</p>
+</li>
+<li><p>OnSize()               消息响应函数，响应WM_SIZE消息，发送此消息以告诉窗口大小发生变化</p>
+</li>
+<li><p>OnMove()               消息响应函数，响应WM_MOVE消息，发送此消息以告诉窗口正在移动</p>
+</li>
+<li><p>OnSetFont()            消息响应函数，响应WM_SETFONT消息，发送此消息以允许改变对话框中控件的字体</p>
+</li>
+</ol>
+<p>以上这些的执行都是按给定的顺序执行！</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%AF%B9%E8%AF%9D%E6%A1%86/" rel="tag"># 对话框</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/11/25/%E8%AF%BB%E8%BF%87%E7%9A%84%E4%B9%A6/%E5%AD%A6%E4%BC%9A%E5%AD%A6%E4%B9%A0/" rel="prev" title="学会学习">
+                  <i class="fa fa-chevron-left"></i> 学会学习
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/11/26/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/windows/MFC/%E8%B0%88%E9%9D%9E%E6%A8%A1%E6%80%81%E5%AF%B9%E8%AF%9D%E6%A1%86%E7%9A%84%E9%94%80%E6%AF%81/" rel="next" title="谈非模态对话框的销毁">
+                  谈非模态对话框的销毁 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

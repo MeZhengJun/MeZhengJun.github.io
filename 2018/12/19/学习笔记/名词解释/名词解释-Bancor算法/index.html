@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="参考 Bancor 算法由 Bancor Network 项目提出应用，希望通过数学公式自动调节数字资产之间的兑换价格。Bancor算法背后有一套数学模型，这个模型纳入了市场需求的因素，以此来决定token的发行数量和单价。 用来解决流通性不足的问题 使用Bancor算法发行的token直接采用人－机（智能合约）交易，不需要传统数字货币交易需要的对手盘，有效解决了绝大部分小币种流通性不足的问题，相">
+<meta property="og:type" content="article">
+<meta property="og:title" content="名词解释-Bancor算法">
+<meta property="og:url" content="http://zhengjun.top/2018/12/19/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-Bancor%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="参考 Bancor 算法由 Bancor Network 项目提出应用，希望通过数学公式自动调节数字资产之间的兑换价格。Bancor算法背后有一套数学模型，这个模型纳入了市场需求的因素，以此来决定token的发行数量和单价。 用来解决流通性不足的问题 使用Bancor算法发行的token直接采用人－机（智能合约）交易，不需要传统数字货币交易需要的对手盘，有效解决了绝大部分小币种流通性不足的问题，相">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhengjun.top/2018/12/19/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-Bancor%E7%AE%97%E6%B3%95/c684cba7.png">
+<meta property="og:image" content="http://zhengjun.top/2018/12/19/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-Bancor%E7%AE%97%E6%B3%95/a679517e.png">
+<meta property="og:image" content="http://zhengjun.top/2018/12/19/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-Bancor%E7%AE%97%E6%B3%95/10be4936.png">
+<meta property="og:image" content="http://zhengjun.top/2018/12/19/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-Bancor%E7%AE%97%E6%B3%95/76ec32d5.png">
+<meta property="og:image" content="http://zhengjun.top/2018/12/19/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-Bancor%E7%AE%97%E6%B3%95/2ec06c42.png">
+<meta property="og:image" content="http://zhengjun.top/2018/12/19/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-Bancor%E7%AE%97%E6%B3%95/f6c4afc5.png">
+<meta property="og:image" content="http://zhengjun.top/2018/12/19/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-Bancor%E7%AE%97%E6%B3%95/3ec5da54.png">
+<meta property="article:published_time" content="2018-12-19T10:31:26.000Z">
+<meta property="article:modified_time" content="2018-12-26T06:04:02.000Z">
+<meta property="article:author" content="郑  君">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhengjun.top/2018/12/19/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-Bancor%E7%AE%97%E6%B3%95/c684cba7.png">
+
+
+<link rel="canonical" href="http://zhengjun.top/2018/12/19/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-Bancor%E7%AE%97%E6%B3%95/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2018/12/19/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-Bancor%E7%AE%97%E6%B3%95/","path":"2018/12/19/学习笔记/名词解释/名词解释-Bancor算法/","title":"名词解释-Bancor算法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>名词解释-Bancor算法 | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/12/19/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-Bancor%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          名词解释-Bancor算法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-12-19 18:31:26" itemprop="dateCreated datePublished" datetime="2018-12-19T18:31:26+08:00">2018-12-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2018-12-26 14:04:02" itemprop="dateModified" datetime="2018-12-26T14:04:02+08:00">2018-12-26</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/" itemprop="url" rel="index"><span itemprop="name">名词解释</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><a target="_blank" rel="noopener" href="https://www.huoxing24.com/newsdetail/20181024105750483035">参考</a></p>
+<p>Bancor 算法由 Bancor Network 项目提出应用，希望通过数学公式自动调节数字资产之间的兑换价格。<br>Bancor算法背后有一套数学模型，这个模型纳入了市场需求的因素，以此来决定token的发行数量和单价。</p>
+<p>用来解决流通性不足的问题</p>
+<p>使用Bancor算法发行的token直接采用人－机（智能合约）交易，不需要传统数字货币交易需要的对手盘，有效解决了绝大部分小币种流通性不足的问题，相当于以智能合约担当了传统金融市场做市商的角色。</p>
+<p>为其代币内嵌价格发现和流动机制。这些“智能代币”能把一个或数个代币作为储备金，让任何人随时通过智能合约快速兑换、销毁代币或储备金。<br>Bancor白皮书指出。</p>
+<p>假设一个智能代币ABCCoin 有一个连接器，该连接器持有一定数量的XYZCoin。此外，假设另一个智能代币NEWCoin，其连接器也持有XYZCoin。那么先将ABCCoin 转换为XYZCoin，然后将XYZCoin 转换为NEWCoin，用户就可以把ABCCoin 转换为NEWCoin。用户只需要进行一个操作，以上过程在后台无缝完成。</p>
+<span id="more"></span>
+
+<p>Bancor协议用于稳定通证仍存在一些问题。<br>当前的Bancor协议仅依据订单流决定价格，依赖市场参与者的整体理性，存在比价和发行量脱离基本面的风险。<br>价格与市场行为间仍是单一的正反馈关系，缺乏自我纠正机制，容易产生泡沫或恐慌。<br>目前，区块链体系体量较小，大部分参与者使用法币价值维度，通证价格波动剧烈，尚不具备通过Bancor协议创建跨平台稳定通证的条件。</p>
+<p>Bancor 白皮书中对定价模型有着十分严谨和详细的说明。</p>
+<p>它定义了两类token：<br>一种是通常会流通使用的 connector token（比如：BTC、ETH、EOS等），当前在流通的总额（或者募集的总资金）<br>而另一种是作为“超主权”中间媒介的 Smart Token。<br>为了使得兑换价格满足刚才提到的供需关系，设计的公式中的价格为 connector 的可流通余量（balance）除以 按照一定系数的Smart Token 供应量。</p>
+<p>问题：<br>Smart Token’s total value 如何确定的</p>
+<img alt="c684cba7.png" src="/2018/12/19/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-Bancor%E7%AE%97%E6%B3%95/c684cba7.png" width height>
+<img alt="a679517e.png" src="/2018/12/19/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-Bancor%E7%AE%97%E6%B3%95/a679517e.png" width height>
+
+<p>smart token 的价格是由连接 connector token 决定的。 有了这些联系就可以使用代数方法计算出价格。<br><img alt="10be4936.png" src="/2018/12/19/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-Bancor%E7%AE%97%E6%B3%95/10be4936.png" width height></p>
+<p>公式中，智能代币表示基于要发行的新代币，连接器表示锚定货币（比如：BTC、ETH、EOS等）。</p>
+<img alt="76ec32d5.png" src="/2018/12/19/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-Bancor%E7%AE%97%E6%B3%95/76ec32d5.png" width height>
+<img alt="2ec06c42.png" src="/2018/12/19/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-Bancor%E7%AE%97%E6%B3%95/2ec06c42.png" width height>
+<img alt="f6c4afc5.png" src="/2018/12/19/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-Bancor%E7%AE%97%E6%B3%95/f6c4afc5.png" width height>
+
+<p>CW 的英文是 Connector Weight，表示设计出来的 Smart Token 的总价值与实际在使用中的 connector 余量间的关系，设计好后为一个固定参数<br>CW取值在大于０% 至 100%之间，具体由项目团队决定，于CW的不同取值，新代币的价格和市场也呈现出不同的关系，从而对整个社区基于Token的生态价值体系造成不同影响。<br><img alt="3ec5da54.png" src="/2018/12/19/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-Bancor%E7%AE%97%E6%B3%95/3ec5da54.png" width height></p>
+<p>EOS 应用 Bancor 算法过程中，并不是将 EOS 和 RAM 直接用价格曲线进行兑换，而是引入了中间 token——RAMCORE，对应于 Bancor 中的 Smart Token。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/12/19/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A-%E9%95%BF%E5%B0%BE%E6%95%88%E5%BA%94/" rel="prev" title="名词解释-长尾效应">
+                  <i class="fa fa-chevron-left"></i> 名词解释-长尾效应
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/12/20/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/EOS/gameDemo/EOS-game-tutorial/" rel="next" title="EOS-game tutorial">
+                  EOS-game tutorial <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Lua是动态类型语言，变量不要类型定义，区分大小写。 变量使用 字母或下划线开头，后面加字母，数字或下划线。Lua中有8个基本类型分别为： nil、 boolean、number、string、userdata、function、thread和 table。函数 type 可以测试给定变量或者值的类型。  目前使用版本 5.3数值支持两种类型：64bit integers，双精度浮点类型 floa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="lua-入门">
+<meta property="og:url" content="http://zhengjun.top/2020/03/27/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/lua/lua-%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="Lua是动态类型语言，变量不要类型定义，区分大小写。 变量使用 字母或下划线开头，后面加字母，数字或下划线。Lua中有8个基本类型分别为： nil、 boolean、number、string、userdata、function、thread和 table。函数 type 可以测试给定变量或者值的类型。  目前使用版本 5.3数值支持两种类型：64bit integers，双精度浮点类型 floa">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-27T04:56:58.000Z">
+<meta property="article:modified_time" content="2020-05-30T01:40:26.000Z">
+<meta property="article:author" content="郑  君">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://zhengjun.top/2020/03/27/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/lua/lua-%E5%85%A5%E9%97%A8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2020/03/27/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/lua/lua-%E5%85%A5%E9%97%A8/","path":"2020/03/27/语言相关/lua/lua-入门/","title":"lua-入门"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>lua-入门 | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A"><span class="nav-number">1.</span> <span class="nav-text">注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%80%BC"><span class="nav-number">2.</span> <span class="nav-text">数值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">3.</span> <span class="nav-text">字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%BC%E6%8E%A5"><span class="nav-number">3.1.</span> <span class="nav-text">拼接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#G-%E8%AF%B4%E6%98%8E"><span class="nav-number">4.</span> <span class="nav-text">_G 说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A9%BA"><span class="nav-number">5.</span> <span class="nav-text">空</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">6.</span> <span class="nav-text">作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#while%E5%BE%AA%E7%8E%AF"><span class="nav-number">7.</span> <span class="nav-text">while循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#for-%E5%BE%AA%E7%8E%AF"><span class="nav-number">8.</span> <span class="nav-text">for 循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#until%E5%BE%AA%E7%8E%AF"><span class="nav-number">9.</span> <span class="nav-text">until循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#if-else%E5%88%86%E6%94%AF"><span class="nav-number">10.</span> <span class="nav-text">if-else分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0"><span class="nav-number">11.</span> <span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%92%E5%BD%92"><span class="nav-number">11.1.</span> <span class="nav-text">递归</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AD%E5%8C%85"><span class="nav-number">11.2.</span> <span class="nav-text">闭包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-number">11.3.</span> <span class="nav-text">函数的返回值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Table"><span class="nav-number">12.</span> <span class="nav-text">Table</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%8D%E5%8E%86"><span class="nav-number">12.1.</span> <span class="nav-text">遍历</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84"><span class="nav-number">12.2.</span> <span class="nav-text">数组</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MetaTable-%E5%92%8C-MetaMethod"><span class="nav-number">13.</span> <span class="nav-text">MetaTable 和 MetaMethod</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="nav-number">14.</span> <span class="nav-text">全局变量</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/27/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/lua/lua-%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          lua-入门
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-03-27 12:56:58" itemprop="dateCreated datePublished" datetime="2020-03-27T12:56:58+08:00">2020-03-27</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-05-30 09:40:26" itemprop="dateModified" datetime="2020-05-30T09:40:26+08:00">2020-05-30</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/lua/" itemprop="url" rel="index"><span itemprop="name">lua</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Lua是动态类型语言，变量不要类型定义，区分大小写。 变量使用 字母或下划线开头，后面加字母，数字或下划线。<br>Lua中有8个基本类型分别为： nil、 boolean、<br>number、string、userdata、function、thread和 table。函数 type 可以测试给定变量或者值的类型。 </p>
+<p>目前使用版本 5.3<br>数值支持两种类型：64bit integers，双精度浮点类型 floats</p>
+<p>根据想编译静态库还是动态库，新建对应的 vs 工程，把 lua 源文件加入进去，编译即可。</p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 两个减号是行注释</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--[[</span></span><br><span class="line"><span class="comment"> 这是块注释</span></span><br><span class="line"><span class="comment"> 这是块注释</span></span><br><span class="line"><span class="comment">--]]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="数值"><a href="#数值" class="headerlink" title="数值"></a>数值</h2><p>Lua的数字只有double型，64bits</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">num = <span class="number">1024</span></span><br><span class="line">num = <span class="number">3.0</span></span><br><span class="line">num = <span class="number">3.1416</span></span><br><span class="line">num = <span class="number">314.16e-2</span></span><br><span class="line">num = <span class="number">0.31416E1</span></span><br><span class="line">num = <span class="number">0xff</span></span><br><span class="line">num = <span class="number">0x56</span></span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><p>不是 0 结尾的，可以包含任意二进制数据， 所以 lua_pushlstring 需要长度参数。<br>对于 0 结尾的，可以使用 lua_pushstring 传入，它使用 strlen 来获取长度</p>
+<p>字符串你可以用单引号，也可以用双引号，还支持C类型的转义，比如： ‘\a’ （响铃）， ‘\b’ （退格）， ‘\f’ （表单）， ‘\n’ （换行）， ‘\r’ （回车）， ‘\t’ （横向制表）， ‘\v’ （纵向制表）， ‘\’ （反斜杠）， ‘\”‘ （双引号）， 以及 ‘\” （单引号)</p>
+<p>下面的四种方式定义了完全相同的字符串（其中的两个中括号可以用于定义有换行的字符串）</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">a = <span class="string">&#x27;alo\n123&quot;&#x27;</span></span><br><span class="line">a = <span class="string">&quot;alo\n123\&quot;&quot;</span></span><br><span class="line">a = <span class="string">&#x27;\97lo\10\04923&quot;&#x27;</span></span><br><span class="line">a = <span class="string">[[alo</span></span><br><span class="line"><span class="string">123&quot;]]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="拼接"><a href="#拼接" class="headerlink" title="拼接"></a>拼接</h3><figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">str = <span class="string">&quot;a1&quot;</span>..<span class="string">&quot;_a2&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="G-说明"><a href="#G-说明" class="headerlink" title="_G 说明"></a>_G 说明</h2><p>保存全局环境变量的</p>
+<p>输出</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> n <span class="keyword">in</span> <span class="built_in">pairs</span>(<span class="built_in">_G</span>) <span class="keyword">do</span> <span class="built_in">print</span>(n) <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="空"><a href="#空" class="headerlink" title="空"></a>空</h2><p>C语言中的NULL在Lua中是nil，比如下面的v的值就是nil</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">v = UndefinedVariable</span><br></pre></td></tr></table></figure>
+
+<h2 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h2><p>另外，需要注意的是：lua中的变量如果没有特殊说明，全是全局变量，那怕是语句块或是函数里。变量前加local关键字的是局部变量。</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">theGlobalVar = <span class="number">50</span></span><br><span class="line"><span class="keyword">local</span> theLocalVar = <span class="string">&quot;local variable&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="while循环"><a href="#while循环" class="headerlink" title="while循环"></a>while循环</h2><figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">sum = <span class="number">0</span></span><br><span class="line">num = <span class="number">1</span></span><br><span class="line"><span class="keyword">while</span> num &lt;= <span class="number">100</span> <span class="keyword">do</span></span><br><span class="line">    sum = sum + num</span><br><span class="line">    num = num + <span class="number">1</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;sum =&quot;</span>,sum)</span><br></pre></td></tr></table></figure>
+
+<h2 id="for-循环"><a href="#for-循环" class="headerlink" title="for 循环"></a>for 循环</h2><p>从1加到100</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">sum = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i = <span class="number">1</span>, <span class="number">100</span> <span class="keyword">do</span></span><br><span class="line">    sum = sum + i</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>从1到100的奇数和</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">sum = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i = <span class="number">1</span>, <span class="number">100</span>, <span class="number">2</span> <span class="keyword">do</span></span><br><span class="line">    sum = sum + i</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>从100到1的偶数和</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">sum = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i = <span class="number">100</span>, <span class="number">1</span>, <span class="number">-2</span> <span class="keyword">do</span></span><br><span class="line">    sum = sum + i</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="until循环"><a href="#until循环" class="headerlink" title="until循环"></a>until循环</h2><figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">sum = <span class="number">2</span></span><br><span class="line"><span class="keyword">repeat</span></span><br><span class="line">   sum = sum ^ <span class="number">2</span> <span class="comment">--幂操作</span></span><br><span class="line">   <span class="built_in">print</span>(sum)</span><br><span class="line"><span class="keyword">until</span> sum &gt;<span class="number">1000</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="if-else分支"><a href="#if-else分支" class="headerlink" title="if-else分支"></a>if-else分支</h2><figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> age == <span class="number">40</span> <span class="keyword">and</span> sex ==<span class="string">&quot;Male&quot;</span> <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;男人四十一枝花&quot;</span>)</span><br><span class="line"><span class="keyword">elseif</span> age &gt; <span class="number">60</span> <span class="keyword">and</span> sex ~=<span class="string">&quot;Female&quot;</span> <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;old man without country!&quot;</span>)</span><br><span class="line"><span class="keyword">elseif</span> age &lt; <span class="number">20</span> <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">io</span>.<span class="built_in">write</span>(<span class="string">&quot;too young, too naive!\n&quot;</span>)</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="keyword">local</span> age = <span class="built_in">io</span>.<span class="built_in">read</span>()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Your age is &quot;</span>..age)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的语句不但展示了if-else语句，也展示了<br>1）“～=”是不等于，而不是!=<br>2）io库的分别从stdin和stdout读写的read和write函数<br>3）字符串的拼接操作符“..”</p>
+<p>另外，条件表达式中的与或非为分是：and, or, not关键字。</p>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><h3 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h3><figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fib</span><span class="params">(n)</span></span></span><br><span class="line">  <span class="keyword">if</span> n &lt; <span class="number">2</span> <span class="keyword">then</span> <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">return</span> fib(n - <span class="number">2</span>) + fib(n - <span class="number">1</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">newCounter</span><span class="params">()</span></span></span><br><span class="line">    <span class="keyword">local</span> i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">()</span></span>     <span class="comment">-- anonymous function</span></span><br><span class="line">       i = i + <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> i</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"> </span><br><span class="line">c1 = newCounter()</span><br><span class="line"><span class="built_in">print</span>(c1())  <span class="comment">--&gt; 1</span></span><br><span class="line"><span class="built_in">print</span>(c1())  <span class="comment">--&gt; 2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myPower</span><span class="params">(x)</span></span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">(y)</span></span> <span class="keyword">return</span> y^x <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"> </span><br><span class="line">power2 = myPower(<span class="number">2</span>)</span><br><span class="line">power3 = myPower(<span class="number">3</span>)</span><br><span class="line"> </span><br><span class="line"><span class="built_in">print</span>(power2(<span class="number">4</span>)) <span class="comment">--4的2次方</span></span><br><span class="line"><span class="built_in">print</span>(power3(<span class="number">5</span>)) <span class="comment">--5的3次方</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="函数的返回值"><a href="#函数的返回值" class="headerlink" title="函数的返回值"></a>函数的返回值</h3><p>可以一条语句上赋多个值，如：</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">name, age, bGay = <span class="string">&quot;haoel&quot;</span>, <span class="number">37</span>, <span class="literal">false</span>, <span class="string">&quot;haoel@hotmail.com&quot;</span></span><br></pre></td></tr></table></figure>
+<p>上面的代码中，因为只有3个变量，所以第四个值被丢弃。</p>
+<p>函数也可以返回多个值：</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getUserInfo</span><span class="params">(id)</span></span></span><br><span class="line">    <span class="built_in">print</span>(id)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;haoel&quot;</span>, <span class="number">37</span>, <span class="string">&quot;haoel@hotmail.com&quot;</span>, <span class="string">&quot;https://coolshell.cn&quot;</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"> </span><br><span class="line">name, age, email, website, bGay = getUserInfo()</span><br></pre></td></tr></table></figure>
+
+<p>注意：上面的示例中，因为没有传id，所以函数中的id输出为nil，因为没有返回bGay，所以bGay也是nil。</p>
+<p>局部函数</p>
+<p>函数前面加上local就是局部函数</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">(x)</span></span> <span class="keyword">return</span> x^<span class="number">2</span> <span class="keyword">end</span></span><br><span class="line">foo = <span class="function"><span class="keyword">function</span><span class="params">(x)</span></span> <span class="keyword">return</span> x^<span class="number">2</span> <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Table"><a href="#Table" class="headerlink" title="Table"></a>Table</h2><p>所谓Table其实就是一个Key Value的数据结构<br>table的索引（index）是从1开始的。</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">haoel = &#123;name=<span class="string">&quot;ChenHao&quot;</span>, age=<span class="number">37</span>, handsome=True&#125;</span><br><span class="line"></span><br><span class="line">haoel.website=<span class="string">&quot;https://coolshell.cn/&quot;</span></span><br><span class="line"><span class="keyword">local</span> age = haoel.age</span><br><span class="line">haoel.handsome = <span class="literal">false</span></span><br><span class="line">haoel.name=<span class="literal">nil</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h3><figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> k, v <span class="keyword">in</span> <span class="built_in">pairs</span>(t) <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">print</span>(k, v)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">arr = &#123;<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">40</span>,<span class="number">50</span>&#125;</span><br><span class="line"><span class="comment">-- 等价于</span></span><br><span class="line">arr = &#123;[<span class="number">1</span>]=<span class="number">10</span>, [<span class="number">2</span>]=<span class="number">20</span>, [<span class="number">3</span>]=<span class="number">30</span>, [<span class="number">4</span>]=<span class="number">40</span>, [<span class="number">5</span>]=<span class="number">50</span>&#125;</span><br><span class="line"><span class="comment">-- 可以定义不同类型的数组 其中的函数可以这样调用：arr[4]()。</span></span><br><span class="line">arr = &#123;<span class="string">&quot;string&quot;</span>, <span class="number">100</span>, <span class="string">&quot;haoel&quot;</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span></span> <span class="built_in">print</span>(<span class="string">&quot;coolshell.cn&quot;</span>) <span class="keyword">end</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i=<span class="number">1</span>, #arr <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">print</span>(arr[i])</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- Lua的下标不是从0开始的，是从1开始的</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="MetaTable-和-MetaMethod"><a href="#MetaTable-和-MetaMethod" class="headerlink" title="MetaTable 和 MetaMethod"></a>MetaTable 和 MetaMethod</h2><p>MetaTable和MetaMethod是Lua中的重要的语法，MetaTable主要是用来做一些类似于C++重载操作符式的功能。</p>
+<p>比如，我们有两个分数：</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">fraction_a = &#123;numerator=<span class="number">2</span>, denominator=<span class="number">3</span>&#125;</span><br><span class="line">fraction_b = &#123;numerator=<span class="number">4</span>, denominator=<span class="number">7</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们想实现分数间的相加：2/3 + 4/7，我们如果要执行： fraction_a + fraction_b，会报错的。</p>
+<p>所以，我们可以动用MetaTable，如下所示：</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">fraction_op=&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fraction_op.__add</span><span class="params">(f1, f2)</span></span></span><br><span class="line">    ret = &#123;&#125;</span><br><span class="line">    ret.numerator = f1.numerator * f2.denominator + f2.numerator * f1.denominator</span><br><span class="line">    ret.denominator = f1.denominator * f2.denominator</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>为之前定义的两个table设置MetaTable：（其中的setmetatble是库函数）</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="built_in">setmetatable</span>(fraction_a, fraction_op)</span><br><span class="line"><span class="built_in">setmetatable</span>(fraction_b, fraction_op)</span><br></pre></td></tr></table></figure>
+
+<p>于是你就可以这样干了：（调用的是fraction_op.__add()函数）</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">fraction_s = fraction_a + fraction_b</span><br></pre></td></tr></table></figure>
+<p>至于__add这是MetaMethod，这是Lua内建约定的，其它的还有如下的MetaMethod：</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="built_in">__add</span>(a, b)                     对应表达式 a + b</span><br><span class="line"><span class="built_in">__sub</span>(a, b)                     对应表达式 a - b</span><br><span class="line"><span class="built_in">__mul</span>(a, b)                     对应表达式 a * b</span><br><span class="line"><span class="built_in">__div</span>(a, b)                     对应表达式 a / b</span><br><span class="line"><span class="built_in">__mod</span>(a, b)                     对应表达式 a % b</span><br><span class="line"><span class="built_in">__pow</span>(a, b)                     对应表达式 a ^ b</span><br><span class="line"><span class="built_in">__unm</span>(a)                        对应表达式 -a</span><br><span class="line"><span class="built_in">__concat</span>(a, b)                  对应表达式 a .. b</span><br><span class="line"><span class="built_in">__len</span>(a)                        对应表达式 #a</span><br><span class="line"><span class="built_in">__eq</span>(a, b)                      对应表达式 a == b</span><br><span class="line"><span class="built_in">__lt</span>(a, b)                      对应表达式 a &lt; b</span><br><span class="line"><span class="built_in">__le</span>(a, b)                      对应表达式 a &lt;= b</span><br><span class="line"><span class="built_in">__index</span>(a, b)                   对应表达式 a.b</span><br><span class="line"><span class="built_in">__newindex</span>(a, b, c)             对应表达式 a.b = c</span><br><span class="line"><span class="built_in">__call</span>(a, ...)                  对应表达式 a(...)</span><br></pre></td></tr></table></figure>
+
+<h2 id="全局变量"><a href="#全局变量" class="headerlink" title="全局变量"></a>全局变量</h2><p>Lua把这些全局变量放在了一个叫“_G”的Table里</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="built_in">_G</span>.globalVar</span><br><span class="line"><span class="built_in">_G</span>[<span class="string">&quot;globalVar&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/03/27/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/cpp-variant/" rel="prev" title="cpp-variant">
+                  <i class="fa fa-chevron-left"></i> cpp-variant
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/03/27/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/lua/lua-cpp%E7%BB%91%E5%AE%9A/" rel="next" title="lua-cpp绑定">
+                  lua-cpp绑定 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

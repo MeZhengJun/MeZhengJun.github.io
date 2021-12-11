@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="msdn 串口总体描述book: C Programmer’s Guide to Serial Communications Nonoverlapped I&#x2F;O vs Overlapped I&#x2F;OOverlapped I&#x2F;O 是异步的，Nonoverlapped I&#x2F;O 是同步的，同步操作，调用线程会被阻塞，通常使用多个线程来操作，但是如果一个线程中 readFile 阻塞，那么另一个线程的 wr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="串口通讯">
+<meta property="og:url" content="http://zhengjun.top/2020/02/18/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/%E6%B5%8B%E9%87%8F/%E4%B8%B2%E5%8F%A3%E9%80%9A%E8%AE%AF/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="msdn 串口总体描述book: C Programmer’s Guide to Serial Communications Nonoverlapped I&#x2F;O vs Overlapped I&#x2F;OOverlapped I&#x2F;O 是异步的，Nonoverlapped I&#x2F;O 是同步的，同步操作，调用线程会被阻塞，通常使用多个线程来操作，但是如果一个线程中 readFile 阻塞，那么另一个线程的 wr">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-18T04:31:14.000Z">
+<meta property="article:modified_time" content="2020-05-21T09:28:34.931Z">
+<meta property="article:author" content="郑  君">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://zhengjun.top/2020/02/18/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/%E6%B5%8B%E9%87%8F/%E4%B8%B2%E5%8F%A3%E9%80%9A%E8%AE%AF/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2020/02/18/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/%E6%B5%8B%E9%87%8F/%E4%B8%B2%E5%8F%A3%E9%80%9A%E8%AE%AF/","path":"2020/02/18/功能分类/测量/串口通讯/","title":"串口通讯"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>串口通讯 | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Serial-Status"><span class="nav-number">1.</span> <span class="nav-text">Serial Status</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Error-Handling-and-Communications-Status"><span class="nav-number">2.</span> <span class="nav-text">Error Handling and Communications Status</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Modem-Status-a-k-a-Line-Status"><span class="nav-number">3.</span> <span class="nav-text">Modem Status (a.k.a. Line Status)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Extended-Functions"><span class="nav-number">4.</span> <span class="nav-text">Extended Functions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flow-Control"><span class="nav-number">5.</span> <span class="nav-text">Flow Control</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hardware-flow-control"><span class="nav-number">5.1.</span> <span class="nav-text">Hardware flow control</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Software-flow-control"><span class="nav-number">5.2.</span> <span class="nav-text">Software flow control</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Communications-Time-outs"><span class="nav-number">6.</span> <span class="nav-text">Communications Time-outs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reading-and-Writing"><span class="nav-number">7.</span> <span class="nav-text">Reading and Writing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1%E6%8F%A1%E6%89%8B%E5%8D%8F%E8%AE%AE%E2%80%93XON-XOFF%E6%96%B9%E6%B3%95"><span class="nav-number">8.</span> <span class="nav-text">串口通信握手协议–XON&#x2F;XOFF方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E9%80%9A%E8%AE%AF"><span class="nav-number">9.</span> <span class="nav-text">异步通讯</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%B2%E5%8F%A3%E7%9A%84%E8%B6%85%E6%97%B6%E8%AE%BE%E7%BD%AE"><span class="nav-number">10.</span> <span class="nav-text">串口的超时设置</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/02/18/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/%E6%B5%8B%E9%87%8F/%E4%B8%B2%E5%8F%A3%E9%80%9A%E8%AE%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          串口通讯
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-02-18 12:31:14" itemprop="dateCreated datePublished" datetime="2020-02-18T12:31:14+08:00">2020-02-18</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-05-21 17:28:34" itemprop="dateModified" datetime="2020-05-21T17:28:34+08:00">2020-05-21</time>
+      </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>11k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/previous-versions/ff802693(v=msdn.10)?redirectedfrom=MSDN">msdn 串口总体描述</a><br>book: C Programmer’s Guide to Serial Communications</p>
+<p>Nonoverlapped I/O vs Overlapped I/O<br>Overlapped I/O 是异步的，Nonoverlapped I/O 是同步的，<br>同步操作，调用线程会被阻塞，通常使用多个线程来操作，但是如果一个线程中 readFile 阻塞，那么另一个线程的 writeFile 也会被阻塞。<br>异步，同步接口的选择依据主要是可移植性。</p>
+<p>Overlapped I/O<br>更具有灵活性和效率，允许多线程在阻塞等待时同时处理不同的I/O操作，允许单线程在阻塞时在后台执行多个请求</p>
+<p>等待有两种方式：</p>
+<ol>
+<li>等待 hEvent member of the OVERLAPPED structure 使用 WaitForSingleObject</li>
+<li>wait for the call to the GetOverlappedResult function</li>
+</ol>
+<h2 id="Serial-Status"><a href="#Serial-Status" class="headerlink" title="Serial Status"></a>Serial Status</h2><p>两种方式：</p>
+<ol>
+<li>使用事件 mask</li>
+<li>使用 polling （低效，不推荐）</li>
+</ol>
+<span id="more"></span>
+
+<p>SetCommMask 订阅事件通知<br>WaitCommEvent  等待事件发生，同步等待时，会阻塞</p>
+<p>async:<br>If SetCommMask sets a new event mask, any pending WaitCommEvent will complete successfully, and the event mask produced by the operation is NULL.</p>
+<p>sync:<br>WaitCommEvent will be blocked until an event occurs. If another thread calls SetCommMask to set a new event mask, that thread will be blocked on the call to SetCommMask. The reason is that the original call to WaitCommEvent in the first thread is still executing. The call to SetCommMask blocks the thread until the WaitCommEvent function returns in the first thread. This side effect is universal for ports open for nonoverlapped I/O. If a thread is blocked on any communications function and another thread calls a communications function, the second thread is blocked until the communications function returns in the first thread.</p>
+<h2 id="Error-Handling-and-Communications-Status"><a href="#Error-Handling-and-Communications-Status" class="headerlink" title="Error Handling and Communications Status"></a>Error Handling and Communications Status</h2><p>EV_ERR 用来处理错误，同时可以查看缓冲区未读取的字节数</p>
+<h2 id="Modem-Status-a-k-a-Line-Status"><a href="#Modem-Status-a-k-a-Line-Status" class="headerlink" title="Modem Status (a.k.a. Line Status)"></a>Modem Status (a.k.a. Line Status)</h2><p>The call to SetCommMask may include the flags EV_CTS, EV_DSR, EV_RING, and EV_RLSD. These flags indicate changes in the voltage on the lines of the serial port. There is no indication of the actual status of these lines, just that a change occurred. The GetCommModemStatus function retrieves the actual state of these status lines by returning a bit mask indicating a 0 for low or no voltage and 1 for high voltage for each of the lines.</p>
+<p>Please note that the term RLSD (Receive Line Signal Detect) is commonly referred to as the CD (Carrier Detect) line.</p>
+<p>Changes in these lines may also cause a flow-control event. The ClearCommError function reports whether transmission is suspended because of flow control. If necessary, a thread may call ClearCommError to detect whether the event is the cause of a flow-control action. Flow control is covered in the “Flow Control” section later in this article.</p>
+<p>Here is some code that demonstrates how to call GetCommModemStatus:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">DWORD dwModemStatus;</span><br><span class="line">BOOL  fCTS, fDSR, fRING, fRLSD;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!<span class="built_in">GetCommModemStatus</span>(hComm, &amp;dwModemStatus))</span><br><span class="line">    <span class="comment">// Error in GetCommModemStatus;</span></span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">fCTS = MS_CTS_ON &amp; dwModemStatus;</span><br><span class="line">fDSR = MS_DSR_ON &amp; dwModemStatus;</span><br><span class="line">fRING = MS_RING_ON &amp; dwModemStatus;</span><br><span class="line">fRLSD = MS_RLSD_ON &amp; dwModemStatus;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Do something with the flags.</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Extended-Functions"><a href="#Extended-Functions" class="headerlink" title="Extended Functions"></a>Extended Functions</h2><p>The driver will automatically change the state of control lines as necessary. Generally speaking, changing status lines is under the control of a driver. If a device uses communications port control lines in a manner different from RS-232 standards, the standard serial communications driver will not work to control the device. If the standard serial communications driver will not control the device, a custom device driver is necessary.</p>
+<p>There are occasions when standard control lines are under the control of the application instead of the serial communications driver. For instance, an application may wish to implement its own flow control. The application would be responsible for changing the status of the RTS and DTR lines. EscapeCommFunction directs a communications driver to perform such extended operations. EscapeCommFunction can make the driver perform some other function, such as setting or clearing a BREAK condition.</p>
+<h2 id="Flow-Control"><a href="#Flow-Control" class="headerlink" title="Flow Control"></a>Flow Control</h2><p>Flow control in serial communications provides a mechanism for suspending communications while one of the devices is busy or for some reason cannot do any communication. There are traditionally two types of flow control: hardware and software.</p>
+<p>A common problem with serial communications is write operations that actually do not write the data to the device. Often, the problem lies in flow control being used when the program did not specify it. A close examination of the DCB structure reveals that one or more of the following members may be TRUE: fOutxCtsFlow, fOutxDsrFlow, or fOutX. Another mechanism to reveal that flow control is enabled is to call ClearCommError and examine the COMSTAT structure. It will reveal when transmission is suspended because of flow control.</p>
+<p>Before discussing the types of flow control, a good understanding of some terms is in order. Serial communications takes place between two devices. Traditionally, there is a PC and a modem or printer. The PC is labeled the Data Terminal Equipment (DTE). The DTE is sometimes called the host. The modem, printer, or other peripheral equipment is identified as the Data Communications Equipment (DCE). The DCE is sometimes referred to as the device.</p>
+<h3 id="Hardware-flow-control"><a href="#Hardware-flow-control" class="headerlink" title="Hardware flow control"></a>Hardware flow control</h3><p>Hardware flow control uses voltage signals on control lines of the serial cable to control whether sending or receiving is enabled. The DTE and the DCE must agree on the types of flow control used for a communications session. Setting the DCB structure to enable flow control just configures the DTE. The DCE also needs configuration to make certain the DTE and DCE use the same type of flow control. There is no mechanism provided by Windows to set the flow control of the DCE. DIP switches on the device, or commands sent to it typically establish its configuration. The following table describes the control lines, the direction of the flow control, and the line’s effect on the DTE and DCE.</p>
+<p>The need for flow control is easy to recognize when the CE_RXOVER error occurs. This error indicates an overflow of the receive buffer and data loss. If data arrives at the port faster than it is read, CE_RXOVER can occur. Increasing the input buffer size may cause the error to occur less frequently, but it does not completely solve the problem. Input flow control is necessary to completely alleviate this problem. When the driver detects that the input buffer is nearly full, it will lower the input flow-control lines. This should cause the DCE to stop transmitting, which gives the DTE enough time to read the data from the input buffer. When the input buffer has more room available, the voltage on flow-control lines is set high, and the DCE resumes sending data.</p>
+<p>A similar error is CE_OVERRUN. This error occurs when new data arrives before the communications hardware and serial communications driver completely receives old data. This can occur when the transmission speed is too high for the type of communications hardware or CPU. This can also occur when the operating system is not free to service the communications hardware. The only way to alleviate this problem is to apply some combination of decreasing the transmission speed, replacing the communications hardware, and increasing the CPU speed. Sometimes third-party hardware drivers that are not very efficient with CPU resources cause this error. Flow control cannot completely solve the problems that cause the CE_OVERRUN error, although it may help to reduce the frequency of the error.</p>
+<h3 id="Software-flow-control"><a href="#Software-flow-control" class="headerlink" title="Software flow control"></a>Software flow control</h3><p>Software flow control uses data in the communications stream to control the transmission and reception of data. Because software flow control uses two special characters, XOFF and XON, binary transfers cannot use software flow control; the XON or XOFF character may appear in the binary data and would interfere with data transfer. Software flow control befits text-based communications or data being transferred that does not contain the XON and XOFF characters.</p>
+<p>In order to enable software flow control, the fOutX and fInX members of the DCB must be set to TRUE. The fOutX member controls output flow control. The fInX member controls input flow control.</p>
+<p>One thing to note is that the DCB allows the program to dynamically assign the values the system recognizes as flow-control characters. The XoffChar member of the DCB dictates the XOFF character for both input and output flow control. The XonChar member of the DCB similarly dictates the XON character.</p>
+<p>For input flow control, the XoffLim member of the DCB specifies the minimum amount of free space allowed in the input buffer before the XOFF character is sent. If the amount of free space in the input buffer drops below this amount, then the XOFF character is sent. For input flow control, the XonLim member of the DCB specifies the minimum number of bytes allowed in the input buffer before the XON character is sent. If the amount of data in the input buffer drops below this value, then the XON character is sent.</p>
+<p>If software flow control is enabled for input control, then the fTXContinueOnXoff member of the DCB takes effect. The fTXContinueOnXoff member controls whether transmission is suspended after the XOFF character is automatically sent by the system. If fTXContinueOnXoff is TRUE, then transmission continues after the XOFF is sent when the receive buffer is full. If fTXContinueOnXoff is FALSE, then transmission is suspended until the system automatically sends the XON character. DCE devices using software flow control will suspend their sending after the XOFF character is received. Some equipment will resume sending when the XON character is sent by the DTE. On the other hand, some DCE devices will resume sending after any character arrives. The fTXContinueOnXoff member should be set to FALSE when communicating with a DCE device that resumes sending after any character arrives. If the DTE continued transmission after it automatically sent the XOFF, the resumption of transmission would cause the DCE to continue sending, defeating the XOFF.</p>
+<p>There is no mechanism available in the Windows API to cause the DTE to behave the same way as these devices. The DCB structure contains no members for specifying suspended transmission to resume when any character is received. The XON character is the only character that causes transmission to resume.</p>
+<p>One other interesting note about software flow control is that reception of XON and XOFF characters causes pending read operations to complete with zero bytes read. The XON and XOFF characters cannot be read by the application, since they are not placed in the input buffer.</p>
+<p>A lot of programs on the market, including the Terminal program that comes with Windows, give the user three choices for flow control: Hardware, Software, or None. The Windows operating system itself does not limit an application in this way. The settings of the DCB allow for Software and Hardware flow control simultaneously. In fact, it is possible to separately configure each member of the DCB that affects flow control, which allows for several different flow-control configurations. The limits placed on flow-control choices are there for ease-of-use reasons to reduce confusion for end users. The limits placed on flow-control choices may also be because devices used for communications may not support all types of flow control.</p>
+<h2 id="Communications-Time-outs"><a href="#Communications-Time-outs" class="headerlink" title="Communications Time-outs"></a>Communications Time-outs</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 下面代码是设置 readFile 返回 0 字节，立即返回，使用事件通知的方式必须设置</span></span><br><span class="line">COMMTIMEOUTS comTimeOut;</span><br><span class="line"><span class="built_in">SecureZeroMemory</span>(&amp;comTimeOut, <span class="built_in"><span class="keyword">sizeof</span></span>(COMMTIMEOUTS));</span><br><span class="line">comTimeOut.ReadIntervalTimeout = MAXDWORD;</span><br><span class="line"><span class="keyword">if</span> (FALSE == <span class="built_in">SetCommTimeouts</span>(m_hCom, &amp;comTimeOut))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">assert</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="built_in">ErrorInfo</span>(<span class="built_in">TEXT</span>(<span class="string">&quot;SetCommTimeouts&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Reading-and-Writing"><a href="#Reading-and-Writing" class="headerlink" title="Reading and Writing"></a>Reading and Writing</h2><p>数据终端准备(DTR)<br>请求发送(RTS)   </p>
+<p>DCD :载波检测。主要用于Modem通知计算机其处于在线状态，即Modem检测到拨号音， 处于在线状态。<br>RXD :此引脚用于接收外部设备送来的数据；在你使用Modem时，你会发现RXD指示灯在闪烁，说明RXD引脚上有数据 进入。<br>TXD :此引脚将计算机的数据发送给外部设备；在你使用Modem时，你会发现TXD指示灯在闪烁，说明计算机正在通过TXD引脚发送数据。<br>DTR :（Data terminal ready）数据终端就绪；当此引脚高电平时，通知Modem可以进行数据传输，计算机已经准备好。<br>GND :信号地；此位不做过多解释。<br>DSR :（Data set ready) 数据设备就绪；此引脚高电平时，通知计算机Modem已经准备好，可以进行数据通讯了。<br>RTS :(Request to send) 请求发送；此脚有计算机来控制，用以通知Modem马上传送数据至计算机；否则，Modem将收到的数据暂时放入缓冲区中。<br>CTS :(clear to send) 清除发送；此脚由Modem控制，用以通知计算机将欲传的数据送至Modem。<br>RI　 :Modem通知计算机有呼叫进来，是否接听呼叫由计算机决定</p>
+<h2 id="串口通信握手协议–XON-XOFF方法"><a href="#串口通信握手协议–XON-XOFF方法" class="headerlink" title="串口通信握手协议–XON/XOFF方法"></a>串口通信握手协议–XON/XOFF方法</h2><p>PC机中常用的两种流控制是硬件流控制（包括RTS/CTS、DTR/CTS等）和软件流控制XON/XOFF（继续/停止）</p>
+<p>char XonChar;  //请求发送方继续发送时的字符 0x11<br>char XoffChar; //请求发送方停止发送时的字符 0x13<br>WORD XonLim; //指定在XON字符发送之前接收缓冲区中空缓冲区可允许的最小字节数<br>WORD XoffLim; //指定在XOFF字符发送这前接收缓冲区中数据缓冲可允许的最小字节数</p>
+<p>on,off 都是 接收方-&gt;发送方的</p>
+<p>RTS_CONTROL_ENABLE<br>fRtsControl</p>
+<h2 id="异步通讯"><a href="#异步通讯" class="headerlink" title="异步通讯"></a>异步通讯</h2><p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-setcommmask">msdn</a></p>
+<p>设置监控事件<br>SetCommMask</p>
+<p>Mask: RXCHAR CTS DSR RLSD BREAK ERR RING</p>
+<p>等待事件发生，如果没设置 FILE_FLAG_OVERLAPPED 则阻塞。<br>WaitCommEvent </p>
+<p>ClearCommError<br>获取尚未读取的字节，<br>COMSTAT<br>DWORD cbInQue; // 尚未读取的字节</p>
+<p>BOOL ReadFile(<br>  HANDLE       hFile,<br>  LPVOID       lpBuffer,<br>  DWORD        nNumberOfBytesToRead,<br>  LPDWORD      lpNumberOfBytesRead,<br>  LPOVERLAPPED lpOverlapped<br>);</p>
+<h2 id="串口的超时设置"><a href="#串口的超时设置" class="headerlink" title="串口的超时设置"></a>串口的超时设置</h2><p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-commtimeouts">msdn</a></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">COMMTIMEOUTS结构如下：   </span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span>   <span class="class"><span class="keyword">struct</span>   _<span class="title">COMMTIMEOUTS</span>   &#123;</span>     </span><br><span class="line">DWORD   ReadIntervalTimeout;                 <span class="comment">//任意相邻连个字符之间的超时设置</span></span><br><span class="line">DWORD   ReadTotalTimeoutMultiplier;        <span class="comment">//读操作总的超时时间的系数 </span></span><br><span class="line">DWORD   ReadTotalTimeoutConstant;       <span class="comment">//读操作总的超时时间的修正常量 </span></span><br><span class="line">DWORD   WriteTotalTimeoutMultiplier;       <span class="comment">//写操作总的超时时间的系数</span></span><br><span class="line">DWORD   WriteTotalTimeoutConstant;       <span class="comment">//写操作总的超时时间的修正常量</span></span><br><span class="line">&#125;   COMMTIMEOUTS,*LPCOMMTIMEOUTS;   </span><br></pre></td></tr></table></figure>
+
+<p>ReadIntervalTimeout: MAXDWORD 并且 ReadTotalTimeoutConstant and ReadTotalTimeoutMultiplier 都是 0， 则携带已接收数据立即返回，即使没有数据也返回。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">COMMTIMEOUTS comTimeOut;</span><br><span class="line"><span class="built_in">SecureZeroMemory</span>(&amp;comTimeOut, <span class="built_in"><span class="keyword">sizeof</span></span>(COMMTIMEOUTS));</span><br><span class="line">comTimeOut.ReadIntervalTimeout = MAXDWORD;</span><br><span class="line"><span class="keyword">if</span> (FALSE == <span class="built_in">SetCommTimeouts</span>(m_hCom, &amp;comTimeOut))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">assert</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="built_in">ErrorInfo</span>(<span class="built_in">TEXT</span>(<span class="string">&quot;SetCommTimeouts&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/02/18/%E5%BC%80%E6%BA%90%E5%BA%93/Qt/qt-QtSerialPort/" rel="prev" title="qt-QtSerialPort">
+                  <i class="fa fa-chevron-left"></i> qt-QtSerialPort
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/02/18/%E9%9A%8F%E7%AC%94/2020%E5%B9%B4%E5%AF%84%E8%AF%AD/" rel="next" title="2020年寄语">
+                  2020年寄语 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

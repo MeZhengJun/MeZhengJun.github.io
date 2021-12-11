@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="学习Java springMVC的系列文章，在这里整合spring,springMVC,mybatis，就是传说中的SSM框架。 视频发布在youtube上面了https:&#x2F;&#x2F;youtu.be&#x2F;CzaJsOGVOLI优酷上面的链接http:&#x2F;&#x2F;v.youku.com&#x2F;v_show&#x2F;id_XMjc4NzU5ODU3Ng&#x3D;&#x3D;.html?f&#x3D;49760672">
+<meta property="og:type" content="article">
+<meta property="og:title" content="004 整合spring, springMVC, mybatis(重构)">
+<meta property="og:url" content="http://zhengjun.top/2017/05/19/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/004-%E6%95%B4%E5%90%88spring-springMVC-mybatis-%E9%87%8D%E6%9E%84/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="学习Java springMVC的系列文章，在这里整合spring,springMVC,mybatis，就是传说中的SSM框架。 视频发布在youtube上面了https:&#x2F;&#x2F;youtu.be&#x2F;CzaJsOGVOLI优酷上面的链接http:&#x2F;&#x2F;v.youku.com&#x2F;v_show&#x2F;id_XMjc4NzU5ODU3Ng&#x3D;&#x3D;.html?f&#x3D;49760672">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-05-19T14:35:54.000Z">
+<meta property="article:modified_time" content="2017-11-24T05:16:52.000Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="springMVC">
+<meta property="article:tag" content="mybatis">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://zhengjun.top/2017/05/19/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/004-%E6%95%B4%E5%90%88spring-springMVC-mybatis-%E9%87%8D%E6%9E%84/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2017/05/19/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/004-%E6%95%B4%E5%90%88spring-springMVC-mybatis-%E9%87%8D%E6%9E%84/","path":"2017/05/19/语言相关/Java/springMVC系列/004-整合spring-springMVC-mybatis-重构/","title":"004 整合spring, springMVC, mybatis(重构)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>004 整合spring, springMVC, mybatis(重构) | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#004-%E6%95%B4%E5%90%88spring-springMVC-mybatis%EF%BC%88%E9%87%8D%E6%9E%84%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">004 整合spring,springMVC,mybatis（重构）</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2017/05/19/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/004-%E6%95%B4%E5%90%88spring-springMVC-mybatis-%E9%87%8D%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          004 整合spring, springMVC, mybatis(重构)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-05-19 22:35:54" itemprop="dateCreated datePublished" datetime="2017-05-19T22:35:54+08:00">2017-05-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2017-11-24 13:16:52" itemprop="dateModified" datetime="2017-11-24T13:16:52+08:00">2017-11-24</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">后端</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF/springMVC%E5%AE%9E%E8%B7%B5%E7%B3%BB%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">springMVC实践系列</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>13k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>12 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>学习Java springMVC的系列文章，在这里整合spring,springMVC,mybatis，就是传说中的SSM框架。</p>
+<p>视频发布在youtube上面了<br><a target="_blank" rel="noopener" href="https://youtu.be/CzaJsOGVOLI">https://youtu.be/CzaJsOGVOLI</a><br>优酷上面的链接<br><a target="_blank" rel="noopener" href="http://v.youku.com/v_show/id_XMjc4NzU5ODU3Ng==.html?f=49760672">http://v.youku.com/v_show/id_XMjc4NzU5ODU3Ng==.html?f=49760672</a></p>
+<span id="more"></span>
+<h3 id="004-整合spring-springMVC-mybatis（重构）"><a href="#004-整合spring-springMVC-mybatis（重构）" class="headerlink" title="004 整合spring,springMVC,mybatis（重构）"></a>004 整合spring,springMVC,mybatis（重构）</h3><p>这里数据库使用MySql版本是5.6.36</p>
+<p>接着003的项目操作。</p>
+<p>先启动一下MySql，看看要连接的数据库，名字test。<br>这里提供一下创建表和数据的脚本user.sql可以直接导入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/*</span><br><span class="line"> Navicat Premium Data Transfer</span><br><span class="line"></span><br><span class="line"> Source Server         : mysql</span><br><span class="line"> Source Server Type    : MySQL</span><br><span class="line"> Source Server Version : 50636</span><br><span class="line"> Source Host           : localhost</span><br><span class="line"> Source Database       : test</span><br><span class="line"></span><br><span class="line"> Target Server Type    : MySQL</span><br><span class="line"> Target Server Version : 50636</span><br><span class="line"> File Encoding         : utf-8</span><br><span class="line"></span><br><span class="line"> Date: 05/22/2017 21:45:38 PM</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">SET NAMES utf8mb4;</span><br><span class="line">SET FOREIGN_KEY_CHECKS = 0;</span><br><span class="line"></span><br><span class="line">-- ----------------------------</span><br><span class="line">--  Table structure for `user`</span><br><span class="line">-- ----------------------------</span><br><span class="line">DROP TABLE IF EXISTS `user`;</span><br><span class="line">CREATE TABLE `user` (</span><br><span class="line">  `id` bigint(20) NOT NULL DEFAULT &#x27;0&#x27; COMMENT &#x27;主键id&#x27;,</span><br><span class="line">  `name` varchar(40) NOT NULL DEFAULT &#x27;&#x27; COMMENT &#x27;名称&#x27;,</span><br><span class="line">  `age` smallint(6) NOT NULL DEFAULT &#x27;0&#x27; COMMENT &#x27;年龄&#x27;,</span><br><span class="line">  `email` varchar(20) DEFAULT NULL,</span><br><span class="line">  `creatTime` datetime DEFAULT CURRENT_TIMESTAMP COMMENT &#x27;创建时间&#x27;,</span><br><span class="line">  `loginTime` datetime DEFAULT CURRENT_TIMESTAMP COMMENT &#x27;登录时间&#x27;,</span><br><span class="line">  `teacherId` bigint(20) DEFAULT &#x27;1&#x27; COMMENT &#x27;教师外键&#x27;,</span><br><span class="line">  `gender` varchar(10) CHARACTER SET utf8 NOT NULL DEFAULT &#x27;&#x27; COMMENT &#x27;性别&#x27;,</span><br><span class="line">  PRIMARY KEY (`id`),</span><br><span class="line">  KEY `teacherIdx` (`teacherId`),</span><br><span class="line">  CONSTRAINT `teacherExt` FOREIGN KEY (`teacherId`) REFERENCES `teacher` (`id`) ON DELETE SET NULL ON UPDATE CASCADE</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT=&#x27;学生表&#x27;;</span><br><span class="line"></span><br><span class="line">-- ----------------------------</span><br><span class="line">--  Records of `user`</span><br><span class="line">-- ----------------------------</span><br><span class="line">BEGIN;</span><br><span class="line">INSERT INTO `user` VALUES (&#x27;1&#x27;, &#x27;student1&#x27;, &#x27;11&#x27;, &#x27;student1@126.com&#x27;, &#x27;2017-05-20 10:40:34&#x27;, &#x27;2017-05-21 15:40:34&#x27;, &#x27;1&#x27;, &#x27;Male&#x27;), (&#x27;2&#x27;, &#x27;student2&#x27;, &#x27;22&#x27;, &#x27;student2@126.com&#x27;, &#x27;2017-05-12 18:43:32&#x27;, &#x27;2017-05-21 15:40:34&#x27;, &#x27;2&#x27;, &#x27;Female&#x27;), (&#x27;3&#x27;, &#x27;student3&#x27;, &#x27;33&#x27;, &#x27;student3@126.com&#x27;, &#x27;2017-05-21 08:40:34&#x27;, &#x27;2017-05-21 15:40:34&#x27;, &#x27;1&#x27;, &#x27;Male&#x27;);</span><br><span class="line">COMMIT;</span><br><span class="line"></span><br><span class="line">SET FOREIGN_KEY_CHECKS = 1;</span><br></pre></td></tr></table></figure>
+<p>这个网址可以很方便的用来查找maven依赖包的相关信息<br><a target="_blank" rel="noopener" href="https://mvnrepository.com/">https://mvnrepository.com/</a><br>添加spring-test依赖</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;junit&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;junit&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;4.12&lt;/version&gt;</span><br><span class="line">	&lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-test&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;</span><br><span class="line">    &lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<p>需要添加一个依赖包，否则会报错</p>
+<p><code>java.lang.NoClassDefFoundError: org/springframework/dao/support/DaoSupport</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;spring-tx&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<p>使用mybatis有几种方式，在这里我尝试了安装eclipse插件，发现不知道为什么生成映射的时候有时找不到属性文件，所以不用插件生成，使用maven来生成映射文件，插件也是有用的可以用来生成配置文件。</p>
+<p>在Eclipse marketplace里面安装MyBatis Generator插件目前版本是1.3.5</p>
+<p>现在使用maven的方式来使用mybatis，官方说明网址如下：<br><a target="_blank" rel="noopener" href="http://www.mybatis.org/generator/running/runningWithMaven.html">http://www.mybatis.org/generator/running/runningWithMaven.html</a></p>
+<p>添加spring，MyBatis和MySql相关依赖包</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;!-- mybatis数据库相关依赖 --&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.mybatis&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;mybatis&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;3.4.4&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.mybatis&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;mybatis-spring&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;1.3.1&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;!-- mysql依赖 --&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;mysql&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;5.1.39&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;!-- 数据源 --&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;com.alibaba&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;druid&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;1.0.29&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<p>创建generatorConfig.xml文件，<br>在src/main/resources路径下File-New-Other 如果安装了插件搜索mybatis会看到MyBatis Generator Configuration File默认文件名是generatorConfig.xml</p>
+<p>参考下面官方链接<br><a target="_blank" rel="noopener" href="http://www.mybatis.org/generator/configreference/xmlconfig.html">http://www.mybatis.org/generator/configreference/xmlconfig.html</a><br>这里使用了变量，相关定义信息在jdbc.properties中</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE generatorConfiguration PUBLIC &quot;-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN&quot; &quot;http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd&quot;&gt;</span><br><span class="line">&lt;generatorConfiguration&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!-- 引入配置文件 --&gt;</span><br><span class="line">	&lt;properties resource=&quot;jdbc.properties&quot; /&gt;</span><br><span class="line">	&lt;!-- 指定数据连接驱动jar地址 --&gt;</span><br><span class="line">	&lt;classPathEntry location=&quot;$&#123;classPath&#125;&quot; /&gt;</span><br><span class="line">	&lt;context id=&quot;context1&quot; targetRuntime=&quot;MyBatis3&quot;&gt;</span><br><span class="line">		&lt;jdbcConnection connectionURL=&quot;$&#123;jdbc_url&#125;&quot;</span><br><span class="line">			driverClass=&quot;$&#123;jdbc_driver&#125;&quot; password=&quot;$&#123;jdbc_password&#125;&quot; userId=&quot;$&#123;jdbc_user&#125;&quot; /&gt;</span><br><span class="line">		&lt;javaTypeResolver&gt;</span><br><span class="line">			&lt;property name=&quot;forceBigDecimals&quot; value=&quot;false&quot; /&gt;</span><br><span class="line">		&lt;/javaTypeResolver&gt;</span><br><span class="line">		&lt;javaModelGenerator targetPackage=&quot;$&#123;package.model&#125;&quot;</span><br><span class="line">			targetProject=&quot;$&#123;targetProject&#125;&quot;&gt;</span><br><span class="line">			&lt;property name=&quot;enableSubPackages&quot; value=&quot;true&quot; /&gt;</span><br><span class="line">			&lt;property name=&quot;trimStrings&quot; value=&quot;true&quot; /&gt;</span><br><span class="line">		&lt;/javaModelGenerator&gt;</span><br><span class="line">		&lt;sqlMapGenerator targetPackage=&quot;$&#123;package.mapping&#125;&quot;</span><br><span class="line">			targetProject=&quot;$&#123;targetProject&#125;&quot;&gt;</span><br><span class="line">			&lt;property name=&quot;enableSubPackages&quot; value=&quot;true&quot; /&gt;</span><br><span class="line">		&lt;/sqlMapGenerator&gt;</span><br><span class="line">		&lt;javaClientGenerator targetPackage=&quot;$&#123;package.dao&#125;&quot;</span><br><span class="line">			targetProject=&quot;$&#123;targetProject&#125;&quot; type=&quot;XMLMAPPER&quot;&gt;</span><br><span class="line">			&lt;property name=&quot;enableSubPackages&quot; value=&quot;true&quot; /&gt;</span><br><span class="line">		&lt;/javaClientGenerator&gt;</span><br><span class="line">		&lt;!-- schema是数据库名 domainObjectName要生成的实体类名 --&gt;</span><br><span class="line">		&lt;table schema=&quot;$&#123;dbName&#125;&quot; tableName=&quot;teacher&quot; domainObjectName=&quot;Teacher&quot;</span><br><span class="line">			enableCountByExample=&quot;false&quot; enableUpdateByExample=&quot;false&quot;</span><br><span class="line">			enableDeleteByExample=&quot;false&quot; enableSelectByExample=&quot;false&quot;</span><br><span class="line">			selectByExampleQueryId=&quot;false&quot;&gt;</span><br><span class="line">			&lt;!-- 这里使用表字段实际的名称生成属性字段 --&gt;</span><br><span class="line">			&lt;property name=&quot;useActualColumnNames&quot; value=&quot;true&quot; /&gt;</span><br><span class="line">		&lt;/table&gt;</span><br><span class="line">		&lt;table schema=&quot;$&#123;dbName&#125;&quot; tableName=&quot;user&quot; domainObjectName=&quot;User&quot;</span><br><span class="line">			enableCountByExample=&quot;false&quot; enableUpdateByExample=&quot;false&quot;</span><br><span class="line">			enableDeleteByExample=&quot;false&quot; enableSelectByExample=&quot;false&quot;</span><br><span class="line">			selectByExampleQueryId=&quot;false&quot;&gt;</span><br><span class="line">			&lt;property name=&quot;useActualColumnNames&quot; value=&quot;true&quot; /&gt;</span><br><span class="line">		&lt;/table&gt;</span><br><span class="line">		&lt;!-- 解决MySql无符号数值类型的字段 --&gt;</span><br><span class="line">		&lt;!-- &lt;columnOverride column=&quot;???&quot; property=&quot;???&quot; /&gt; --&gt;</span><br><span class="line">		&lt;!-- &lt;/table&gt; --&gt;</span><br><span class="line">	&lt;/context&gt;</span><br><span class="line">&lt;/generatorConfiguration&gt;</span><br></pre></td></tr></table></figure>
+<p>除了使用和表字段一致的设置外，还有一种方式就是表字段使用下划线分割单词，那么生成的属性字段就是驼峰表示了比如:teacher_id 属性字段是teacherId</p>
+<p>jdbc.properties</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#Mybatis Generator configuration  </span><br><span class="line"></span><br><span class="line">project=test</span><br><span class="line">dbName=test</span><br><span class="line">targetProject=src/main/java</span><br><span class="line">package.dao=com.study.dao</span><br><span class="line">package.model=com.study.model</span><br><span class="line">package.mapping=com.study.mapping</span><br><span class="line">classPath=/Users/zhengjun/Documents/java_library/mysql-connector-java-5.1.39.jar</span><br><span class="line"></span><br><span class="line">jdbc_driver=com.mysql.jdbc.Driver</span><br><span class="line">jdbc_url=jdbc:mysql://127.0.0.1:3306/$&#123;dbName&#125;?useUnicode=true&amp;characterEncoding=UTF-8&amp;allowMultiQueries=true&amp;serverTimezone=UTC</span><br><span class="line">jdbc_user=root</span><br><span class="line">jdbc_password=</span><br></pre></td></tr></table></figure>
+
+<p>正常情况应该在generatorConfig.xml文件上面右键单击选择Run As&gt;Run MyBatis Generator会自动生成相应的文件。但是不知道为什么会有找不到jdbc.properties的情况。<br>这里使用maven，先要配置插件在POM.xml里面添加</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- 这里要添加mybatis插件 --&gt;</span><br><span class="line">&lt;plugin&gt;</span><br><span class="line">	&lt;groupId&gt;org.mybatis.generator&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;mybatis-generator-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;1.3.5&lt;/version&gt;</span><br><span class="line">	&lt;configuration&gt;</span><br><span class="line">		&lt;verbose&gt;true&lt;/verbose&gt;</span><br><span class="line">		&lt;overwrite&gt;false&lt;/overwrite&gt;</span><br><span class="line">	&lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+<p>然后使用maven创建一个配置，然后run as就会自动生成映射文件<br>Goals：mybatis-generator:generate -e</p>
+<p>注意：默认不会覆盖已有的同名文件，mapper除外，每次都会自动更新。</p>
+<p>MySql 使用注意事项<br>无符号类型<br>MySql支持有符号，无符号，数字类型字段。这些不是JDBC类型，因此MyBatis 生成器不能自动转换这种类型的字段。JAVA数据类型都是有符号的， 当使用无符号类型时这就会导致缺失精度。可以使用 <columnOverride> 解决MySql无符号数值类型的字段。下面是一个如何处理无符号bigint字段类型例子:</columnOverride></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;table tableName=&quot;ALLTYPES&quot; &gt;</span><br><span class="line">  &lt;columnOverride column=&quot;UNSIGNED_BIGINT_FIELD&quot; javaType=&quot;java.lang.Object&quot; jdbcType=&quot;LONG&quot; /&gt;</span><br><span class="line">&lt;/table&gt;</span><br></pre></td></tr></table></figure>
+<p>您还必须自己强制将返回值转换为适当的类型(在上面这种情况下，需要转换为 java.math.BigInteger)。</p>
+<p>要连接数据库，还需要编辑springmvc.xml添加数据源等信息,<br>这里用到变量参数，所以还要引入属性文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- 引入属性文件 --&gt;</span><br><span class="line">&lt;context:property-placeholder location=&quot;classpath:jdbc.properties&quot;/&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- 数据源 org.apache.commons.dbcp.BasicDataSource com.alibaba.druid.pool.DruidDataSource --&gt;</span><br><span class="line">&lt;bean id=&quot;dataSource&quot; class=&quot;com.alibaba.druid.pool.DruidDataSource&quot; init-method=&quot;init&quot; destroy-method=&quot;close&quot;&gt;</span><br><span class="line"></span><br><span class="line">	&lt;property name=&quot;driverClassName&quot; value=&quot;$&#123;jdbc_driver&#125;&quot; /&gt;</span><br><span class="line">	&lt;property name=&quot;url&quot; value=&quot;$&#123;jdbc_url&#125;&quot; /&gt;</span><br><span class="line">	&lt;property name=&quot;username&quot; value=&quot;$&#123;jdbc_user&#125;&quot; /&gt;</span><br><span class="line">	&lt;property name=&quot;password&quot; value=&quot;$&#123;jdbc_password&#125;&quot; /&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!-- 初始化连接大小 --&gt;</span><br><span class="line">	&lt;property name=&quot;initialSize&quot; value=&quot;0&quot; /&gt;</span><br><span class="line">	&lt;!-- 连接池最大使用连接数量 --&gt;</span><br><span class="line">	&lt;property name=&quot;maxActive&quot; value=&quot;20&quot; /&gt;</span><br><span class="line">	&lt;!-- 连接池最小空闲 --&gt;</span><br><span class="line">	&lt;property name=&quot;minIdle&quot; value=&quot;0&quot; /&gt;</span><br><span class="line">	&lt;!-- 获取连接最大等待时间 --&gt;</span><br><span class="line">	&lt;property name=&quot;maxWait&quot; value=&quot;60000&quot; /&gt;</span><br><span class="line"></span><br><span class="line">	&lt;property name=&quot;validationQuery&quot;&gt;</span><br><span class="line">		&lt;value&gt;SELECT 1&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;property name=&quot;testOnBorrow&quot; value=&quot;false&quot; /&gt;</span><br><span class="line">	&lt;property name=&quot;testOnReturn&quot; value=&quot;false&quot; /&gt;</span><br><span class="line">	&lt;property name=&quot;testWhileIdle&quot; value=&quot;true&quot; /&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 --&gt;</span><br><span class="line">	&lt;property name=&quot;timeBetweenEvictionRunsMillis&quot; value=&quot;60000&quot; /&gt;</span><br><span class="line">	&lt;!-- 配置一个连接在池中最小生存的时间，单位是毫秒 --&gt;</span><br><span class="line">	&lt;property name=&quot;minEvictableIdleTimeMillis&quot; value=&quot;25200000&quot; /&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!-- 打开removeAbandoned功能 --&gt;</span><br><span class="line">	&lt;property name=&quot;removeAbandoned&quot; value=&quot;true&quot; /&gt;</span><br><span class="line">	&lt;!-- 1800秒，也就是30分钟 --&gt;</span><br><span class="line">	&lt;property name=&quot;removeAbandonedTimeout&quot; value=&quot;1800&quot; /&gt;</span><br><span class="line">	&lt;!-- 关闭abanded连接时输出错误日志 --&gt;</span><br><span class="line">	&lt;property name=&quot;logAbandoned&quot; value=&quot;true&quot; /&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!-- 监控数据库 --&gt;</span><br><span class="line">	&lt;!-- &lt;property name=&quot;filters&quot; value=&quot;stat&quot; /&gt; --&gt;</span><br><span class="line">	&lt;property name=&quot;filters&quot; value=&quot;mergeStat&quot; /&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 配置druid监控spring jdbc --&gt;</span><br><span class="line">&lt;bean id=&quot;druid-stat-interceptor&quot;</span><br><span class="line">	class=&quot;com.alibaba.druid.support.spring.stat.DruidStatInterceptor&quot;&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line">&lt;bean id=&quot;druid-stat-pointcut&quot; class=&quot;org.springframework.aop.support.JdkRegexpMethodPointcut&quot;</span><br><span class="line">	scope=&quot;prototype&quot;&gt;</span><br><span class="line">	&lt;property name=&quot;patterns&quot;&gt;</span><br><span class="line">		&lt;list&gt;</span><br><span class="line">			&lt;value&gt;com.study.service.*&lt;/value&gt;</span><br><span class="line">		&lt;/list&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean id=&quot;sqlSessionFactory&quot; class=&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;&gt;</span><br><span class="line">	&lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;&gt;&lt;/property&gt;</span><br><span class="line">	&lt;property name=&quot;mapperLocations&quot; value=&quot;classpath:com/study/mapping/*.xml&quot;&gt;&lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean class=&quot;org.mybatis.spring.mapper.MapperScannerConfigurer&quot;&gt;</span><br><span class="line">	&lt;property name=&quot;basePackage&quot; value=&quot;com.study.dao&quot;&gt;&lt;/property&gt;</span><br><span class="line">	&lt;property name=&quot;sqlSessionFactoryBeanName&quot; value=&quot;sqlSessionFactory&quot;&gt;&lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 事务管理器 --&gt;</span><br><span class="line">&lt;bean id=&quot;transactionManager&quot;</span><br><span class="line">class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;</span><br><span class="line">	&lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;&gt;&lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line">&lt;!-- 支持事务注解 @Transactional --&gt;</span><br><span class="line">&lt;tx:annotation-driven/&gt;</span><br></pre></td></tr></table></figure>
+<p>这里不添加annotation-driven会造成事务不生效<br><code>org.mybatis.spring.SqlSessionUtils - Closing non transactional SqlSession</code></p>
+<p>编写测试文件，测试数据库操作</p>
+<p>新建一个service包 com.study.mybatis.service<br>然后新建一个接口IUserService</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public interface IUserService &#123;</span><br><span class="line"></span><br><span class="line">	public User getUserById(String id);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>在新建一个实现类IUserServiceImpl,声明为service，支持事务</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@Service(&quot;userService&quot;)</span><br><span class="line">@Transactional</span><br><span class="line">public class IUserServiceImpl implements IUserService &#123;</span><br><span class="line"></span><br><span class="line">	@Autowired</span><br><span class="line">	UserMapper userMapper;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public User getUserById(String id) &#123;</span><br><span class="line">		return userMapper.selectByPrimaryKey(Long.parseLong(id));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>写完注解之后，还需要在springMVC.xml里面配置到自动扫描的里面，否则会提示找不到bean</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- 配置自动扫描的包 --&gt;</span><br><span class="line">&lt;context:component-scan base-package=&quot;com.study.controller, com.study.service&quot;&gt;&lt;/context:component-scan&gt;</span><br></pre></td></tr></table></figure>
+
+<p>然后写UserTest里面的测试代码<br>现在类上面写上注解。使用spring-test，指定配置文件路径</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@RunWith(SpringJUnit4ClassRunner.class)</span><br><span class="line">@ContextConfiguration(locations = &quot;classpath:springmvc.xml&quot;)</span><br><span class="line">public class TestUser &#123;</span><br><span class="line"></span><br><span class="line">	@Autowired</span><br><span class="line">	IUserService userService;</span><br><span class="line"></span><br><span class="line">	@Test</span><br><span class="line">	public void TestGetUser()</span><br><span class="line">	&#123;</span><br><span class="line">		User user = userService.getUserById(&quot;1&quot;);</span><br><span class="line">		assertTrue(user.getName().equals(&quot;student1&quot;));</span><br><span class="line">		System.out.println(user.getName());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在TestGetUser上面右键单击Run as-JUnit Test，正常应该可以看到控制台输出用户的名字</p>
+<p>把template项目做个模板，版本0.0.3，这里在执行mvn install之前，修改下面路径的pom文件即可。<br>在这里还可以把打包方式从jar改成war，这样从模板生成的项目就是war包形式了</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/template/target/generated-sources/archetype/target/classes/archetype-resources/pom.xml</span><br><span class="line">&lt;finalName&gt;$&#123;artifactId&#125;&lt;/finalName&gt;：</span><br><span class="line">发布前执行时，生成$&#123;artifactId&#125;.war文件。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">如果有需要交流的，或者有更好的实现方法的同学，欢迎通过电子邮件或者留言来互通有无，共同进步。</span><br><span class="line">ascomtohom@126.com</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/springMVC/" rel="tag"># springMVC</a>
+              <a href="/tags/mybatis/" rel="tag"># mybatis</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/05/19/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/005-%E4%BD%BF%E7%94%A8log4j2%E8%BE%93%E5%87%BA%E6%97%A5%E5%BF%97%EF%BC%88%E9%87%8D%E6%9E%84%EF%BC%89/" rel="prev" title="005 使用log4j2输出日志（重构）">
+                  <i class="fa fa-chevron-left"></i> 005 使用log4j2输出日志（重构）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/05/20/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/001-%E4%BD%BF%E7%94%A8maven%E5%BB%BA%E7%AB%8BDynamic-Web-Module-3-1-%E9%A1%B9%E7%9B%AE/" rel="next" title="001 使用maven建立Dynamic Web Module 3.1 项目">
+                  001 使用maven建立Dynamic Web Module 3.1 项目 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

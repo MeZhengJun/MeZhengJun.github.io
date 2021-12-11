@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="ref centos7 升级到最新版先确认openssl是否是最新版，需要支持https。apache现在最新版是2.4.33版本   卸载当前版本sudo yum remove httpd -y 下载源码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="web-apache安装配置">
+<meta property="og:url" content="http://zhengjun.top/2018/03/26/Web%E5%BC%80%E5%8F%91/web-apache%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="ref centos7 升级到最新版先确认openssl是否是最新版，需要支持https。apache现在最新版是2.4.33版本   卸载当前版本sudo yum remove httpd -y 下载源码">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-03-26T06:24:28.000Z">
+<meta property="article:modified_time" content="2018-03-28T12:12:00.000Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="apache">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://zhengjun.top/2018/03/26/Web%E5%BC%80%E5%8F%91/web-apache%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2018/03/26/Web%E5%BC%80%E5%8F%91/web-apache%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/","path":"2018/03/26/Web开发/web-apache安装配置/","title":"web-apache安装配置"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>web-apache安装配置 | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#centos7-%E5%8D%87%E7%BA%A7%E5%88%B0%E6%9C%80%E6%96%B0%E7%89%88"><span class="nav-number">1.</span> <span class="nav-text">centos7 升级到最新版</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%B8%E8%BD%BD%E5%BD%93%E5%89%8D%E7%89%88%E6%9C%AC"><span class="nav-number">1.1.</span> <span class="nav-text">卸载当前版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E6%BA%90%E7%A0%81"><span class="nav-number">1.2.</span> <span class="nav-text">下载源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E6%BA%90%E7%A0%81"><span class="nav-number">1.3.</span> <span class="nav-text">编译源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.4.</span> <span class="nav-text">设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E4%BB%A3%E7%90%86%E7%94%A8%E6%88%B7"><span class="nav-number">1.5.</span> <span class="nav-text">设置代理用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0"><span class="nav-number">1.6.</span> <span class="nav-text">配置参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Setup-GZIP-compression"><span class="nav-number">2.</span> <span class="nav-text">Setup GZIP compression</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Setup-assets-caching-with-expires-headers"><span class="nav-number">3.</span> <span class="nav-text">Setup assets caching with expires headers</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%AB%99%E8%99%9A%E6%8B%9F%E7%9B%AE%E5%BD%95"><span class="nav-number">4.</span> <span class="nav-text">网站虚拟目录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A1%AE%E4%BF%9D%E6%9D%83%E9%99%90"><span class="nav-number">4.1.</span> <span class="nav-text">确保权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E7%BD%91%E7%AB%99%E7%9B%AE%E5%BD%95%EF%BC%8C%E5%9F%9F%E5%90%8D%E4%B8%BAstudy-com"><span class="nav-number">4.2.</span> <span class="nav-text">创建网站目录，域名为study.com</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E7%94%A8%E6%88%B7%E7%BB%84"><span class="nav-number">4.3.</span> <span class="nav-text">设置用户组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E6%9D%83%E9%99%90"><span class="nav-number">4.4.</span> <span class="nav-text">设置权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E4%B8%BB%E6%9C%BA%E9%85%8D%E7%BD%AE"><span class="nav-number">4.5.</span> <span class="nav-text">创建虚拟主机配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%AF%E6%8C%81PHP"><span class="nav-number">5.</span> <span class="nav-text">支持PHP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E3%80%81%E8%87%AA%E5%90%AF%E5%8A%A8"><span class="nav-number">6.</span> <span class="nav-text">启动、自启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%90%AF"><span class="nav-number">7.</span> <span class="nav-text">重启</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%81%9C%E6%AD%A2"><span class="nav-number">8.</span> <span class="nav-text">停止</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%8A%B6%E6%80%81"><span class="nav-number">9.</span> <span class="nav-text">查看状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#centos7-%E5%AE%89%E8%A3%85"><span class="nav-number">10.</span> <span class="nav-text">centos7 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B2%E7%81%AB%E5%A2%99"><span class="nav-number">10.1.</span> <span class="nav-text">防火墙</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%89%88%E6%9C%AC"><span class="nav-number">11.</span> <span class="nav-text">查看版本</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/03/26/Web%E5%BC%80%E5%8F%91/web-apache%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          web-apache安装配置
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-03-26 14:24:28" itemprop="dateCreated datePublished" datetime="2018-03-26T14:24:28+08:00">2018-03-26</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2018-03-28 20:12:00" itemprop="dateModified" datetime="2018-03-28T20:12:00+08:00">2018-03-28</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">后端</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><a target="_blank" rel="noopener" href="https://blacksaildivision.com/how-to-install-apache-httpd-on-centos">ref</a></p>
+<h2 id="centos7-升级到最新版"><a href="#centos7-升级到最新版" class="headerlink" title="centos7 升级到最新版"></a>centos7 升级到最新版</h2><p>先确认openssl是否是最新版，需要支持https。apache现在最新版是2.4.33版本  </p>
+<h3 id="卸载当前版本"><a href="#卸载当前版本" class="headerlink" title="卸载当前版本"></a>卸载当前版本</h3><p><code>sudo yum remove httpd -y</code></p>
+<h3 id="下载源码"><a href="#下载源码" class="headerlink" title="下载源码"></a>下载源码</h3><span id="more"></span>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum install -y epel-release</span><br><span class="line"></span><br><span class="line">安装编译依赖</span><br><span class="line">sudo yum install autoconf expat-devel libtool libnghttp2-devel pcre-devel -y</span><br><span class="line"></span><br><span class="line">下载源码</span><br><span class="line">Apache httpd - https://github.com/apache/httpd/releases</span><br><span class="line">APR - https://github.com/apache/apr/releases</span><br><span class="line">APR-util https://github.com/apache/apr-util/releases</span><br><span class="line"></span><br><span class="line">curl -O -L https://github.com/apache/httpd/archive/2.4.33.tar.gz</span><br><span class="line">curl -O -L https://github.com/apache/apr/archive/1.6.3.tar.gz</span><br><span class="line">curl -O -L https://github.com/apache/apr-util/archive/1.6.1.tar.gz</span><br><span class="line"></span><br><span class="line">tar -zxvf 2.4.29.tar.gz</span><br><span class="line">tar -zxvf 1.6.3.tar.gz</span><br><span class="line">tar -zxvf 1.6.1.tar.gz</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="编译源码"><a href="#编译源码" class="headerlink" title="编译源码"></a>编译源码</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">httpd编译的时候需要apr和apr-utils，所以要放到指定的目录下</span><br><span class="line">cp -r apr-1.6.3 httpd-2.4.33/srclib/apr</span><br><span class="line">cp -r apr-util-1.6.1 httpd-2.4.33/srclib/apr-util</span><br><span class="line">注意目标目录不要改动。</span><br><span class="line"></span><br><span class="line">编译源码</span><br><span class="line">cd httpd-2.4.33</span><br><span class="line">./buildconf</span><br><span class="line">./configure --enable-ssl --enable-so --enable-http2 --with-mpm=event --with-included-apr --with-ssl=/usr/local/openssl --prefix=/usr/local/apache2</span><br><span class="line">make</span><br><span class="line"></span><br><span class="line">configure 参数说明</span><br><span class="line">--enable-ssl will build Apache with SSL support, so you can enable HTTPS on your websites.</span><br><span class="line">--enable-so will enable dynamically loaded modules. So you can enable and disable modules without recompilation (I will describe modules in configuration part)</span><br><span class="line">--enable-http2 will enable HTTP/2 support.</span><br><span class="line">--with-mpm will set multiprocessing modules for Apache. I&#x27;m using event, but you can use worker or prefork instead. event works best for me and I think that it is mpm that will give you most performance.</span><br><span class="line">--with-included-apr It will use APR library that you copied to srclib directory</span><br><span class="line">--with-ssl will point compiler to newer version of OpenSSL. Make sure that you compiled it first!</span><br><span class="line">--prefix is the installation path for Apache httpd compiled package</span><br><span class="line"></span><br><span class="line">编译需要一段时间，看你服务器的处理器速度了。</span><br><span class="line"></span><br><span class="line">安装</span><br><span class="line">sudo make install</span><br><span class="line"></span><br><span class="line">清理安装包和源码目录。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">添加到环境变量</span><br><span class="line">sudo nano /etc/profile.d/httpd.sh</span><br><span class="line">添加如下内容：</span><br><span class="line">pathmunge /usr/local/apache2/bin</span><br><span class="line"></span><br><span class="line">登出后在登入，检查版本</span><br><span class="line">httpd -v</span><br><span class="line"></span><br><span class="line">增加系统入口使用systemctl命令</span><br><span class="line">sudo nano /etc/systemd/system/httpd.service</span><br><span class="line"></span><br><span class="line">加入下面内容：</span><br><span class="line">[Unit]</span><br><span class="line">Description=The Apache HTTP Server</span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">ExecStart=/usr/local/apache2/bin/apachectl -k start</span><br><span class="line">ExecReload=/usr/local/apache2/bin/apachectl -k graceful</span><br><span class="line">ExecStop=/usr/local/apache2/bin/apachectl -k graceful-stop</span><br><span class="line">PIDFile=/usr/local/apache2/logs/httpd.pid</span><br><span class="line">PrivateTmp=true</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line"></span><br><span class="line">重新载入</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line"></span><br><span class="line">sudo systemctl start httpd</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置代理用户"><a href="#设置代理用户" class="headerlink" title="设置代理用户"></a>设置代理用户</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">创建代理用户</span><br><span class="line">sudo groupadd www</span><br><span class="line">sudo useradd httpd -g www --no-create-home --shell /sbin/nologin</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置参数"><a href="#配置参数" class="headerlink" title="配置参数"></a>配置参数</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">修改默认端口为8080</span><br><span class="line">找到apache的配置文件目录</span><br><span class="line"></span><br><span class="line">sudo nano /usr/local/apache2/conf/httpd.conf</span><br><span class="line"></span><br><span class="line">Listen 127.0.0.1:8080</span><br><span class="line"></span><br><span class="line"># Set ServerName to prevent warning on Apache start</span><br><span class="line">ServerName localhost</span><br><span class="line"></span><br><span class="line"># Set user and group</span><br><span class="line">User httpd</span><br><span class="line">Group www</span><br><span class="line"></span><br><span class="line"># Configure entry file for your application. If you plan to use PHP make sure that it&#x27;s as first possible file</span><br><span class="line">DirectoryIndex index.php index.html</span><br><span class="line"></span><br><span class="line"># If you are using PHP with PHP-FPM which I highly suggest enable proxy modules</span><br><span class="line">LoadModule proxy_module modules/mod_proxy.so</span><br><span class="line">LoadModule proxy_fcgi_module modules/mod_proxy_fcgi.so</span><br><span class="line"></span><br><span class="line"># Enable pretty links and mod_rewrite that is highly used in all frameworks and CMSes</span><br><span class="line">LoadModule rewrite_module modules/mod_rewrite.so</span><br><span class="line"></span><br><span class="line"># Useful for WordPress sites - enables Require for setting up access to given resources.</span><br><span class="line">LoadModule access_compat_module modules/mod_access_compat.so</span><br><span class="line"></span><br><span class="line"># One more useful thing for WordPress and Let&#x27;s Encrypt - enables Alias. If you are using composer and wpackagist it&#x27;s a must, otherwise if you don&#x27;t plan to use aliases, leave that disabled</span><br><span class="line">LoadModule alias_module modules/mod_alias.so</span><br><span class="line"></span><br><span class="line"># Enable gzip extension for compressing static files</span><br><span class="line">LoadModule deflate_module modules/mod_deflate.so</span><br><span class="line">LoadModule filter_module modules/mod_filter.so</span><br><span class="line"></span><br><span class="line"># Enable expires header for caching assets on browser side</span><br><span class="line">LoadModule expires_module modules/mod_expires.so</span><br><span class="line"></span><br><span class="line"># Enable SSL</span><br><span class="line">LoadModule http2_module modules/mod_http2.so</span><br><span class="line">LoadModule socache_shmcb_module modules/mod_socache_shmcb.so</span><br><span class="line">LoadModule ssl_module modules/mod_ssl.so</span><br><span class="line"></span><br><span class="line"># Enable status module for monitoring Apache. If you don&#x27;t plan to use that, leave that commented out</span><br><span class="line">LoadModule authz_host_module modules/mod_authz_host.so</span><br><span class="line">LoadModule status_module modules/mod_status.so</span><br><span class="line"></span><br><span class="line">LoadModule cgid_module modules/mod_cgid.so</span><br></pre></td></tr></table></figure>
+
+<h2 id="Setup-GZIP-compression"><a href="#Setup-GZIP-compression" class="headerlink" title="Setup GZIP compression"></a>Setup GZIP compression</h2><p><code>sudo nano /usr/local/apache2/conf/extra/httpd-deflate.conf</code></p>
+<p>写入如下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;IfModule mod_deflate.c&gt;</span><br><span class="line">    &lt;IfModule mod_filter.c&gt;</span><br><span class="line">        AddOutputFilterByType DEFLATE application/ecmascript</span><br><span class="line">        AddOutputFilterByType DEFLATE application/javascript</span><br><span class="line">        AddOutputFilterByType DEFLATE application/rss+xml</span><br><span class="line">        AddOutputFilterByType DEFLATE application/xml</span><br><span class="line">        AddOutputFilterByType DEFLATE application/x-javascript</span><br><span class="line">        AddOutputFilterByType DEFLATE text/css</span><br><span class="line">        AddOutputFilterByType DEFLATE text/html</span><br><span class="line">        AddOutputFilterByType DEFLATE text/plain</span><br><span class="line">        AddOutputFilterByType DEFLATE text/xml</span><br><span class="line">    &lt;/IfModule&gt;</span><br><span class="line">&lt;/IfModule&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在配置文件最下面的include位置添加，保存后重启</p>
+<p><code>Include conf/extra/httpd-deflate.conf</code></p>
+<h2 id="Setup-assets-caching-with-expires-headers"><a href="#Setup-assets-caching-with-expires-headers" class="headerlink" title="Setup assets caching with expires headers"></a>Setup assets caching with expires headers</h2><p><code>sudo nano /usr/local/apache2/conf/extra/httpd-expires.conf</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;IfModule mod_expires.c&gt;</span><br><span class="line">    # Enable expirations</span><br><span class="line">    ExpiresActive On</span><br><span class="line"></span><br><span class="line">    # Default directive for types not specified below</span><br><span class="line">    ExpiresDefault &quot;access plus 1 week&quot;</span><br><span class="line"></span><br><span class="line">    # Expirations for given mime type</span><br><span class="line">    ExpiresByType image/gif &quot;access plus 1 month&quot;</span><br><span class="line">    ExpiresByType image/ico &quot;access plus 1 month&quot;</span><br><span class="line">    ExpiresByType image/jpg &quot;access plus 1 month&quot;</span><br><span class="line">    ExpiresByType image/jpeg &quot;access plus 1 month&quot;</span><br><span class="line">    ExpiresByType image/png &quot;access plus 1 month&quot;</span><br><span class="line">    ExpiresByType text/css &quot;access plus 1 month&quot;</span><br><span class="line">    ExpiresByType text/javascript &quot;access plus 1 month&quot;</span><br><span class="line">&lt;/IfModule&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>Include conf/extra/httpd-expires.conf</code></p>
+<h2 id="网站虚拟目录"><a href="#网站虚拟目录" class="headerlink" title="网站虚拟目录"></a>网站虚拟目录</h2><p>centOs应该在<code>/var/www</code></p>
+<h3 id="确保权限"><a href="#确保权限" class="headerlink" title="确保权限"></a>确保权限</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo chmod 755 /var/www</span><br><span class="line">sudo chown httpd:www /var/www</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建网站目录，域名为study-com"><a href="#创建网站目录，域名为study-com" class="headerlink" title="创建网站目录，域名为study.com"></a>创建网站目录，域名为study.com</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo mkdir /var/www/study.com</span><br><span class="line">放网页文件</span><br><span class="line">sudo mkdir /var/www/study.com/htdocs</span><br><span class="line">放日志</span><br><span class="line">sudo mkdir /var/www/study.com/logs</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置用户组"><a href="#设置用户组" class="headerlink" title="设置用户组"></a>设置用户组</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo chown root:root /var/www/study.com</span><br><span class="line">sudo chown httpd:www /var/www/study.com/htdocs</span><br><span class="line">sudo chown httpd:www /var/www/study.com/logs</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置权限"><a href="#设置权限" class="headerlink" title="设置权限"></a>设置权限</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo chmod 755 /var/www/study.com</span><br><span class="line">sudo chmod 2775 /var/www/study.com/htdocs</span><br><span class="line">sudo chmod 2775 /var/www/study.com/logs</span><br></pre></td></tr></table></figure>
+<p>前面的2表示新创建的子目录用户组和父目录一致(httpd:www)</p>
+<h3 id="创建虚拟主机配置"><a href="#创建虚拟主机配置" class="headerlink" title="创建虚拟主机配置"></a>创建虚拟主机配置</h3><p><code>sudo nano /usr/local/apache2/conf/extra/vhost-study.com.conf</code></p>
+<p>内容如下，根据实际情况调整：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;VirtualHost *:80&gt;</span><br><span class="line"></span><br><span class="line">ServerName study.com</span><br><span class="line"># 可以指定多个域名</span><br><span class="line">ServerAlias www.study.com www.gd.com</span><br><span class="line"># Directory settings</span><br><span class="line">DocumentRoot /var/www/study.com/htdocs</span><br><span class="line">&lt;Directory /var/www/study.com/htdocs&gt;</span><br><span class="line">    AllowOverride All</span><br><span class="line">    Require all granted</span><br><span class="line">    Options +FollowSymLinks -Indexes -Includes</span><br><span class="line">&lt;/Directory&gt;</span><br><span class="line"></span><br><span class="line"># Logging</span><br><span class="line">ErrorLog &quot;/var/www/study.com/logs/httpd-error.log&quot;</span><br><span class="line">CustomLog &quot;/var/www/study.com/logs/httpd-access.log&quot; common</span><br><span class="line"></span><br><span class="line">&lt;/VirtualHost&gt;</span><br></pre></td></tr></table></figure>
+
+<p>写入主配置文件<br><code>sudo nano /usr/local/apache2/conf/httpd.conf</code><br><code>Include conf/extra/vhost-study.com.conf</code></p>
+<h2 id="支持PHP"><a href="#支持PHP" class="headerlink" title="支持PHP"></a>支持PHP</h2><p>找到<br>AddType application/x-compress .Z<br>AddType application/x-gzip .gz .tgz<br>后面添加<br>AddType application/x-httpd-php .php<br>AddType application/x-httpd-php-source .php7</p>
+<p>这个没有找到<br>//LoadModule php7_module modules/libphp7.so</p>
+<p>问题</p>
+<p>查看fcgid模块是否支持<br>httpd -M | grep fcgid<br>fcgid_module (shared)</p>
+<p>查看使用的php-fpm模式<br>httpd -V</p>
+<p>Server MPM:event</p>
+<p>MPM（Multi -Processing Modules，多重处理模块）是Apache的核心组件之一，Apache通过MPM来使用操作系统的资源，对进程和线程池进行管理。</p>
+<h2 id="启动、自启动"><a href="#启动、自启动" class="headerlink" title="启动、自启动"></a>启动、自启动</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo systemctl start httpd</span><br><span class="line">自启动</span><br><span class="line">sudo systemctl enable httpd</span><br></pre></td></tr></table></figure>
+
+<h2 id="重启"><a href="#重启" class="headerlink" title="重启"></a>重启</h2><p><code>sudo systemctl restart httpd</code></p>
+<h2 id="停止"><a href="#停止" class="headerlink" title="停止"></a>停止</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo systemctl stop httpd</span><br><span class="line">systemctl restart nginx.service</span><br></pre></td></tr></table></figure>
+
+<h2 id="查看状态"><a href="#查看状态" class="headerlink" title="查看状态"></a>查看状态</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo systemctl status httpd</span><br></pre></td></tr></table></figure>
+
+<h2 id="centos7-安装"><a href="#centos7-安装" class="headerlink" title="centos7 安装"></a>centos7 安装</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum clean all</span><br><span class="line">sudo yum -y update</span><br><span class="line">sudo yum -y install httpd</span><br></pre></td></tr></table></figure>
+
+<h3 id="防火墙"><a href="#防火墙" class="headerlink" title="防火墙"></a>防火墙</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo firewall-cmd --permanent --add-port=80/tcp</span><br><span class="line">sudo firewall-cmd --permanent --add-port=443/tcp</span><br><span class="line">sudo firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+
+<h2 id="查看版本"><a href="#查看版本" class="headerlink" title="查看版本"></a>查看版本</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">httpd -v</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/apache/" rel="tag"># apache</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/03/26/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/mysql-%E6%96%B0%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B9%B6%E8%AE%BE%E7%BD%AE%E6%9D%83%E9%99%90/" rel="prev" title="mysql-新建数据库并设置权限">
+                  <i class="fa fa-chevron-left"></i> mysql-新建数据库并设置权限
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/03/26/Web%E5%BC%80%E5%8F%91/web-centos7%E5%8D%87%E7%BA%A7openssl/" rel="next" title="web-centos7升级openssl">
+                  web-centos7升级openssl <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

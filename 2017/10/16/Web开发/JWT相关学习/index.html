@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="JSON Web Token(JWT)  JWT是一个开放的标准（RFC 7519），定义了一种紧凑，自包含的方式使用json对象来安全的传递信息。这些信息可以验证和信任，因为是通过HMAC或者RSA等算法做数字签名的。  JWT 特点 体积小，因而传输速度快 传输方式多样，可以通过URL&#x2F;POST参数&#x2F;HTTP头部等方式传输 严格的结构化。它自身（在 payload 中）就包含了所有与用户相关的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JWT相关学习">
+<meta property="og:url" content="http://zhengjun.top/2017/10/16/Web%E5%BC%80%E5%8F%91/JWT%E7%9B%B8%E5%85%B3%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="JSON Web Token(JWT)  JWT是一个开放的标准（RFC 7519），定义了一种紧凑，自包含的方式使用json对象来安全的传递信息。这些信息可以验证和信任，因为是通过HMAC或者RSA等算法做数字签名的。  JWT 特点 体积小，因而传输速度快 传输方式多样，可以通过URL&#x2F;POST参数&#x2F;HTTP头部等方式传输 严格的结构化。它自身（在 payload 中）就包含了所有与用户相关的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhengjun.top/2017/10/16/Web%E5%BC%80%E5%8F%91/JWT%E7%9B%B8%E5%85%B3%E5%AD%A6%E4%B9%A0/8c087283.png">
+<meta property="og:image" content="http://zhengjun.top/2017/10/16/Web%E5%BC%80%E5%8F%91/JWT%E7%9B%B8%E5%85%B3%E5%AD%A6%E4%B9%A0/7a77b75b.png">
+<meta property="og:image" content="http://zhengjun.top/2017/10/16/Web%E5%BC%80%E5%8F%91/JWT%E7%9B%B8%E5%85%B3%E5%AD%A6%E4%B9%A0/5e50c8e9.png">
+<meta property="article:published_time" content="2017-10-16T12:22:56.000Z">
+<meta property="article:modified_time" content="2021-12-07T13:05:47.806Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="JWT">
+<meta property="article:tag" content="认证">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhengjun.top/2017/10/16/Web%E5%BC%80%E5%8F%91/JWT%E7%9B%B8%E5%85%B3%E5%AD%A6%E4%B9%A0/8c087283.png">
+
+
+<link rel="canonical" href="http://zhengjun.top/2017/10/16/Web%E5%BC%80%E5%8F%91/JWT%E7%9B%B8%E5%85%B3%E5%AD%A6%E4%B9%A0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2017/10/16/Web%E5%BC%80%E5%8F%91/JWT%E7%9B%B8%E5%85%B3%E5%AD%A6%E4%B9%A0/","path":"2017/10/16/Web开发/JWT相关学习/","title":"JWT相关学习"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JWT相关学习 | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#JWT-%E7%89%B9%E7%82%B9"><span class="nav-number">1.</span> <span class="nav-text">JWT 特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JWT-%E5%AE%89%E5%85%A8%E6%80%A7"><span class="nav-number">2.</span> <span class="nav-text">JWT 安全性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cookie%E7%9A%84%E7%BC%BA%E9%99%B7"><span class="nav-number">3.</span> <span class="nav-text">Cookie的缺陷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JWT%E8%AE%A4%E8%AF%81%E8%BF%87%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">JWT认证过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP%E6%97%A0%E7%8A%B6%E6%80%81%EF%BC%8Ccookie%EF%BC%8C-session"><span class="nav-number">5.</span> <span class="nav-text">HTTP无状态，cookie， session</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#cookie"><span class="nav-number">5.1.</span> <span class="nav-text">cookie</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#session"><span class="nav-number">5.2.</span> <span class="nav-text">session</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Web%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">5.3.</span> <span class="nav-text">Web服务器</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2017/10/16/Web%E5%BC%80%E5%8F%91/JWT%E7%9B%B8%E5%85%B3%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JWT相关学习
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-10-16 20:22:56" itemprop="dateCreated datePublished" datetime="2017-10-16T20:22:56+08:00">2017-10-16</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-12-07 21:05:47" itemprop="dateModified" datetime="2021-12-07T21:05:47+08:00">2021-12-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><a target="_blank" rel="noopener" href="https://jwt.io/">JSON Web Token(JWT)</a></p>
+<blockquote>
+<p>JWT是一个开放的标准（RFC 7519），定义了一种紧凑，自包含的方式使用json对象来安全的传递信息。这些信息可以验证和信任，因为是通过HMAC或者RSA等算法做数字签名的。</p>
+</blockquote>
+<h3 id="JWT-特点"><a href="#JWT-特点" class="headerlink" title="JWT 特点"></a>JWT 特点</h3><ul>
+<li>体积小，因而传输速度快</li>
+<li>传输方式多样，可以通过URL/POST参数/HTTP头部等方式传输</li>
+<li>严格的结构化。它自身（在 payload 中）就包含了所有与用户相关的验证消息，如用户可访问路由、访问有效期等信息，服务器无需再去连接数据库验证信息的有效性，并且 payload 支持为你的应用而定制化</li>
+<li>支持跨域验证，可以应用于单点登录。</li>
+</ul>
+<span id="more"></span>
+<center>
+<img alt="8c087283.png" src="/2017/10/16/Web%E5%BC%80%E5%8F%91/JWT%E7%9B%B8%E5%85%B3%E5%AD%A6%E4%B9%A0/8c087283.png" width height>
+
+<img alt="7a77b75b.png" src="/2017/10/16/Web%E5%BC%80%E5%8F%91/JWT%E7%9B%B8%E5%85%B3%E5%AD%A6%E4%B9%A0/7a77b75b.png" width height>
+</center>
+
+<p><a target="_blank" rel="noopener" href="http://blog.rainy.im/2015/06/10/react-jwt-pretty-good-practice/">以下内容摘自该链接</a><br>JWT是Auth0提出的通过对JSON进行加密签名来实现授权验证的方案，编码之后的JWT看起来是这样的一串字符：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ</span><br></pre></td></tr></table></figure>
+<p>由.分为三段，通过解码可以得到：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 1. Headers</span><br><span class="line">// 包括类别（typ）、加密算法（alg）；</span><br><span class="line">&#123;</span><br><span class="line">  &quot;alg&quot;: &quot;HS256&quot;,</span><br><span class="line">  &quot;typ&quot;: &quot;JWT&quot;</span><br><span class="line">&#125;</span><br><span class="line">// 2. Payload</span><br><span class="line">// 包括需要传递的用户信息，是用户自定义的字段；</span><br><span class="line">&#123;</span><br><span class="line">  &quot;sub&quot;: &quot;1234567890&quot;,</span><br><span class="line">  &quot;name&quot;: &quot;John Doe&quot;,</span><br><span class="line">  &quot;admin&quot;: true,</span><br><span class="line">  &quot;role&quot;: &quot;user&quot;</span><br><span class="line">&#125;</span><br><span class="line">// 3. Signature</span><br><span class="line">// 根据alg算法与私有秘钥进行加密得到的签名字串；</span><br><span class="line">// 这一段是最重要的敏感信息，只能在服务端解密；</span><br><span class="line">HMACSHA256(  </span><br><span class="line">    base64UrlEncode(header) + &quot;.&quot; +</span><br><span class="line">    base64UrlEncode(payload),</span><br><span class="line">    SECREATE_KEY</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>在使用过程中，服务端通过用户登录验证之后，将Header+Payload信息加密后得到第三段签名，然后将签名返回给客户端，在后续请求中，服务端只需要对用户请求中包含的JWT进行解码，即可验证是否可以授权用户获取相应信息，其原理如下图所示：</p>
+<center>
+<img alt="5e50c8e9.png" src="/2017/10/16/Web%E5%BC%80%E5%8F%91/JWT%E7%9B%B8%E5%85%B3%E5%AD%A6%E4%B9%A0/5e50c8e9.png" width height>
+</center>
+通过比较可以看出，使用JWT可以省去服务端读取Session的步骤，这样更符合RESTful的规范。但是对于客户端（或App端）来说，为了保存用户授权信息，仍然需要通过Cookie或类似的机制进行本地保存。因此JWT是用来取代服务端的Session而非客户端Cookie的方案，当然对于客户端本地存储，HTML5提供了Cookie之外更多的解决方案（localStorage/sessionStorage），究竟采用哪种存储方式，其实从Js操作上来看没有本质上的差异，不同的选择更多是出于安全性的考虑。
+
+<p>payload字段说明：<br>iss: jwt签发者<br>sub: jwt所面向的用户<br>aud: 接收jwt的一方<br>exp: jwt的过期时间，这个过期时间必须要大于签发时间<br>nbf: 定义在什么时间之前，该jwt都是不可用的.<br>iat: jwt的签发时间<br>jti: jwt的唯一身份标识，主要用来作为一次性token,从而回避重放攻击。  </p>
+<h3 id="JWT-安全性"><a href="#JWT-安全性" class="headerlink" title="JWT 安全性"></a>JWT 安全性</h3><p>用户授权这样敏感的信息，安全性当然是首先需要考虑的因素。这里主要讨论在使用JWT时如何防止XSS和XSRF两种攻击。</p>
+<p>XSS是Web中最常见的一种漏洞，其主要原因是对用户输入信息不加过滤，导致用户（被误导）恶意输入的Js代码在访问该网页时被执行，而Js可以读取当前网站域名下保存的Cookie信息。针对这种攻击，无论是Cookie还是localStorage中的信息都有可能被窃取，但防止XSS也相对简单一些，对用户输入的所有信息进行过滤即可。另外，现在越来越多的CDN服务，让我们可以节省服务器流量，但同时也有可能引入不安全的Js脚本</p>
+<p>另外一种更加棘手的XSRF漏洞主要利用Cookie是按照域名存储，同时访问某域名时浏览器会自动携带该域名所保存的Cookie信息这一特征。如果执意要将JWT存储在Cookie中，服务端则需要额外验证请求来源，或者在提交表单中加入随机签名并在处理表单时进行验证。</p>
+<p>我在后面的实例中采用将JWT保存在localStorage中的方案，请求时将JWT放入Request Header中的Authorization位。对JWT安全性问题想要了解更多可以参考下面几篇文章：</p>
+<p><a target="_blank" rel="noopener" href="https://stormpath.com/blog/where-to-store-your-jwts-cookies-vs-html5-web-storage/">https://stormpath.com/blog/where-to-store-your-jwts-cookies-vs-html5-web-storage/</a><br><a target="_blank" rel="noopener" href="https://stormpath.com/blog/jwt-the-right-way/">https://stormpath.com/blog/jwt-the-right-way/</a><br><a target="_blank" rel="noopener" href="https://auth0.com/blog/2014/01/27/ten-things-you-should-know-about-tokens-and-cookies/">https://auth0.com/blog/2014/01/27/ten-things-you-should-know-about-tokens-and-cookies/</a><br><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/27067251/where-to-store-jwt-in-browser-how-to-protect-against-csrf">http://stackoverflow.com/questions/27067251/where-to-store-jwt-in-browser-how-to-protect-against-csrf</a></p>
+<p>签名始终要验证<br>签名密钥要保证安全<br>JWT里面不要放敏感数据</p>
+<p>If you worried about replay attacks, include a nonce (jti claim), expiration time (exp claim), and creation time (iat claim) in the claims. These are well defined in the JWT Spec</p>
+<p>JWT在客户端的保存问题：  </p>
+<ol>
+<li>cookies  </li>
+<li>HTML5 web storage (localStorage or sessionStorage)  </li>
+</ol>
+<p>常见的攻击：</p>
+<ul>
+<li>cross-site scripting (XSS)</li>
+<li>cross-site request forgery (CSRF)</li>
+<li>Man-in-the-middle attack（MITM）</li>
+</ul>
+<p>推荐把JWT保存到cookies里面，使用现代框架可以解决CSRF问题。</p>
+<p>H5 web storage无法避免XSS攻击，在同一域名下的脚本都可以访问Web storage<br>cookies使用HttpOnly cookie flag之后javascript无法访问，避免了XSS，还可以设置Secure标记，要求只通过https发送cookies，并且不需要服务端保存状态<br>但是cookie容易受到CSRF攻击。使用现代框架可以解决CSRF问题。例如AngularJS</p>
+<p>JWT localStorage or sessionStorage (Web Storage)</p>
+<p>Exchanging a username and password for a JWT to store it in browser storage (sessionStorage or localStorage) is rather simple. The response body would contain the JWT as an access token:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">&#123;</span><br><span class="line">&quot;access_token&quot;: &quot;eyJhbGciOiJIUzI1NiIsI.eyJpc3MiOiJodHRwczotcGxlL.mFrs3Zo8eaSNcxiNfvRh9dqKP4F1cB&quot;,</span><br><span class="line">  &quot;expires_in&quot;:3600</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>On the client side, you would store the token in HTML5 Web Storage (assuming that we have a success callback):</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function tokenSuccess(err, response) &#123;</span><br><span class="line">    if(err)&#123;</span><br><span class="line">        throw err;</span><br><span class="line">    &#125;</span><br><span class="line">    $window.sessionStorage.accessToken = response.body.access_token;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>To pass the access token back to your protected APIs, you would use the HTTP Authorization Header and the Bearer scheme. The request that your SPA would make would resemble:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">HTTP/1.1</span><br><span class="line"></span><br><span class="line">GET /stars/pollux</span><br><span class="line">Host: galaxies.com</span><br><span class="line">Authorization: Bearer eyJhbGciOiJIUzI1NiIsI.eyJpc3MiOiJodHRwczotcGxlL.mFrs3Zo8eaSNcxiNfvRh9dqKP4F1cB</span><br></pre></td></tr></table></figure>
+
+<p>单点登录<br>Session方式来存储用户id，一开始用户的Session只会存储在一台服务器上。对于有多个子域名的站点，每个子域名至少会对应一台不同的服务器，例如：  </p>
+<p><a target="_blank" rel="noopener" href="http://www.taobao.com/">www.taobao.com</a><br>nv.taobao.com<br>nz.taobao.com<br>login.taobao.com<br>所以如果要实现在login.taobao.com登录后，在其他的子域名下依然可以取到Session，这要求我们在多台服务器上同步Session。</p>
+<p>使用JWT的方式则没有这个问题的存在，因为用户的状态已经被传送到了客户端。因此，我们只需要将含有JWT的Cookie的domain设置为顶级域名即可，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Set-Cookie: jwt=lll.zzz.xxx; HttpOnly; max-age=980000; domain=.taobao.com</span><br></pre></td></tr></table></figure>
+
+<p>注意domain必须设置为一个点加顶级域名，即.taobao.com。这样，taobao.com和*.taobao.com就都可以接受到这个Cookie，并获取JWT了。</p>
+<h3 id="Cookie的缺陷"><a href="#Cookie的缺陷" class="headerlink" title="Cookie的缺陷"></a>Cookie的缺陷</h3><ol>
+<li>Cookie会被附加在每个HTTP请求中，所以无形中增加了流量。</li>
+<li>由于在HTTP请求中的Cookie是明文传递的，所以安全性成问题。（除非用HTTPS）</li>
+<li>Cookie的大小限制在4KB左右。对于复杂的存储需求来说是不够用的。</li>
+</ol>
+<p>一个set-Cookie字段只能设置一个cookie，当你要想设置多个 cookie，需要添加同样多的set-Cookie字段。<br>服务端可以设置cookie 的所有选项：expires、domain、path、secure、HttpOnly</p>
+<p>客户端可以设置cookie 的下列选项：expires、domain、path、secure（有条件：只有在https协议的网页中，客户端设置secure类型的 cookie 才能成功），但无法设置HttpOnly选项。</p>
+<h3 id="JWT认证过程"><a href="#JWT认证过程" class="headerlink" title="JWT认证过程"></a>JWT认证过程</h3><ol>
+<li>客户端post表单name,password</li>
+<li>服务端验证用户名和密码，成功后，将用户ID，权限等信息作为JWT Payload的一个属性，生成token</li>
+<li>服务端将token作为该请求Cookie的一部分返回给用户。注意，在这里必须使用HttpOnly属性来防止Cookie被JavaScript读取，从而避免跨站脚本攻击（XSS攻击）</li>
+<li>在Cookie失效或者被删除前，用户每次访问，服务端都可以从Cookie中校验token的有效性</li>
+<li>获取该ID用户的信息，根据请求响应进行响应</li>
+<li>单点登录，将含有JWT的Cookie的domain设置为顶级域名即可<br><code>Set-Cookie: jwt=lll.zzz.xxx; HttpOnly; max-age=980000; domain=.taobao.com</code><br>注意domain必须设置为一个点加顶级域名，即.taobao.com。这样，taobao.com和*.taobao.com就都可以接受到这个Cookie，并获取JWT了。</li>
+</ol>
+<h3 id="HTTP无状态，cookie，-session"><a href="#HTTP无状态，cookie，-session" class="headerlink" title="HTTP无状态，cookie， session"></a>HTTP无状态，cookie， session</h3><p>由于HTTP协议本身是无状态的，也就是说服务器只接受客户端的HTTP request，然后返回一个HTTP response。这样用户就每一次都需要输入用户名和密码。</p>
+<h4 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h4><p>是服务端发送给客户端浏览器的一组数据。<br>浏览器会保存并在每一次请求中发送给同一个服务端。<br>通常的作用是用来标识多次请求来至于同一个浏览器-保持用户登录状态<br>主要用途：<br>session管理：登录，购物车，游戏分数等任何服务端需要记录的数据<br>个性化：用户设置，主题，其他设置<br>记录：记录和分析用户行为</p>
+<p>cookies的属性还包含有路径，过期时间等。 路径是为了判断是由服务器端的哪一个url设置了该cookies，对于一个复杂的网站或者cookies中信息比较多时，可以减少传递不必要的信息。过期时间是为了一定的安全性着想。</p>
+<h4 id="session"><a href="#session" class="headerlink" title="session"></a>session</h4><p>session也是服务器将一部分信息存储在浏览器端，然后浏览器再次请求时携带这一部分信息供服务器查询。<br>session的实现方式有好几种，只要能起到将所需信息在第二次之后的请求中发送给服务器的功能就可以了。<br>session的实现方式中有一种是采用 cookies的方式。 在flask中， session可以认为是存储在cookies中的 键为 “session”的一个加密字符串， 然后这个字符串本身又是一个 键值对。</p>
+<h4 id="Web服务器"><a href="#Web服务器" class="headerlink" title="Web服务器"></a>Web服务器</h4><p>SPA应用Web服务器的功能：<br>认证与授权<br>数据验证<br>数据存储与同步</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/JWT/" rel="tag"># JWT</a>
+              <a href="/tags/%E8%AE%A4%E8%AF%81/" rel="tag"># 认证</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/10/14/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%94%9F%E6%B4%BB%E5%B0%8F%E7%9F%A5%E8%AF%86/%E8%A1%8C%E5%8A%A8%E6%B8%85%E5%8D%95/%E5%A6%82%E4%BD%95%E8%AE%A9%E5%A4%A7%E8%84%91%E8%BE%BE%E5%88%B0%E6%9C%80%E4%BD%B3%E7%8A%B6%E6%80%81/" rel="prev" title="如何让大脑达到最佳状态">
+                  <i class="fa fa-chevron-left"></i> 如何让大脑达到最佳状态
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/10/19/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/javascript/bootstrap/bootstrap%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="next" title="bootstrap学习笔记">
+                  bootstrap学习笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

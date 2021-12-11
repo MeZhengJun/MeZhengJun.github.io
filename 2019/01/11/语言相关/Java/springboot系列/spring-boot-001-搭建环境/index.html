@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Java 1.8，IDEA 2018.1gradle Spring Boot 2.2 增加了对Java 13的支持 对于老版本的Java 11、Java 8依然支持良好。所以，对于还在使用Java 8的用户也可以安心的升级使用。 http:&#x2F;&#x2F;start.spring.io 配置 VPN 代理 配置 VPN我这里使用的是 shadowsocks。socks5 配置为 127.0.0.1:1086">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring boot_001_搭建环境">
+<meta property="og:url" content="http://zhengjun.top/2019/01/11/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/spring-boot-001-%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="Java 1.8，IDEA 2018.1gradle Spring Boot 2.2 增加了对Java 13的支持 对于老版本的Java 11、Java 8依然支持良好。所以，对于还在使用Java 8的用户也可以安心的升级使用。 http:&#x2F;&#x2F;start.spring.io 配置 VPN 代理 配置 VPN我这里使用的是 shadowsocks。socks5 配置为 127.0.0.1:1086">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhengjun.top/2019/01/11/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/spring-boot-001-%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83/2083268e.png">
+<meta property="og:image" content="http://zhengjun.top/2019/01/11/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/spring-boot-001-%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83/44a1b1fc.png">
+<meta property="og:image" content="http://zhengjun.top/2019/01/11/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/spring-boot-001-%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83/c298783b.png">
+<meta property="article:published_time" content="2019-01-11T06:01:15.000Z">
+<meta property="article:modified_time" content="2020-03-01T12:39:28.395Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="Spring Boot">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhengjun.top/2019/01/11/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/spring-boot-001-%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83/2083268e.png">
+
+
+<link rel="canonical" href="http://zhengjun.top/2019/01/11/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/spring-boot-001-%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2019/01/11/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/spring-boot-001-%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83/","path":"2019/01/11/语言相关/Java/springboot系列/spring-boot-001-搭建环境/","title":"spring boot_001_搭建环境"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>spring boot_001_搭建环境 | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-VPN-%E4%BB%A3%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">配置 VPN 代理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="nav-number">2.</span> <span class="nav-text">新建项目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E7%9A%84%E5%BC%95%E7%94%A8"><span class="nav-number">2.1.</span> <span class="nav-text">静态资源的引用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#using-webjars"><span class="nav-number">2.1.1.</span> <span class="nav-text">using webjars</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#using-resources"><span class="nav-number">2.1.2.</span> <span class="nav-text">using resources</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-thymeleaf"><span class="nav-number">2.2.</span> <span class="nav-text">使用 thymeleaf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-font-awsome-5"><span class="nav-number">2.3.</span> <span class="nav-text">使用 font awsome 5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A2%9E%E5%8A%A0%E9%85%8D%E7%BD%AE%E7%B1%BB%EF%BC%8C%E6%89%A9%E5%B1%95-mvc-%E9%85%8D%E7%BD%AE"><span class="nav-number">2.4.</span> <span class="nav-text">增加配置类，扩展 mvc 配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%8B%A6%E6%88%AA%E5%99%A8%E6%A3%80%E6%9F%A5%E7%99%BB%E9%99%86%E6%9D%83%E9%99%90"><span class="nav-number">2.5.</span> <span class="nav-text">使用拦截器检查登陆权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E5%A4%9A%E4%B8%AA%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">2.6.</span> <span class="nav-text">设置多个环境配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%86%E6%88%90-Swagger2"><span class="nav-number">3.</span> <span class="nav-text">集成 Swagger2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#user-Model"><span class="nav-number">4.</span> <span class="nav-text">user Model</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%91%E5%B8%83%E9%A1%B9%E7%9B%AE"><span class="nav-number">5.</span> <span class="nav-text">发布项目</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/01/11/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/spring-boot-001-%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          spring boot_001_搭建环境
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-01-11 14:01:15" itemprop="dateCreated datePublished" datetime="2019-01-11T14:01:15+08:00">2019-01-11</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-03-01 20:39:28" itemprop="dateModified" datetime="2020-03-01T20:39:28+08:00">2020-03-01</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">后端</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF/Spring-Boot/" itemprop="url" rel="index"><span itemprop="name">Spring Boot</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Java 1.8，IDEA 2018.1<br>gradle</p>
+<p>Spring Boot 2.2 增加了对Java 13的支持 对于老版本的Java 11、Java 8依然支持良好。所以，对于还在使用Java 8的用户也可以安心的升级使用。</p>
+<p><a target="_blank" rel="noopener" href="http://start.spring.io/">http://start.spring.io</a></p>
+<h1 id="配置-VPN-代理"><a href="#配置-VPN-代理" class="headerlink" title="配置 VPN 代理"></a>配置 VPN 代理</h1><ul>
+<li><p>配置 VPN<br>我这里使用的是 shadowsocks。socks5 配置为 127.0.0.1:1086</p>
+</li>
+<li><p>配置 IDEA<br><code>Appearance &amp; Behavior &gt; System Settings &gt; Http Proxy</code></p>
+<img alt="2083268e.png" src="/2019/01/11/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/spring-boot-001-%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83/2083268e.png" width height>
+使用下面的 check connection 输入网址 `www.google.com` 可以正常访问就可以了。</li>
+</ul>
+<h1 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h1><p><code>File-New-Project-Spring Initializr</code> 选择 Gradle 工程，JAR 包，JAVA 11<br>依赖选择 Web, thymeleaf，mongodb</p>
+<p>如果之前装了 java 8， 需要修改一下配置，settings/build,execution,deployment/Gradle/ 修改 JVM 版本</p>
+<p>创建基本目录结构:common,controller,model,repository,service<br><img alt="44a1b1fc.png" src="/2019/01/11/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/spring-boot-001-%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83/44a1b1fc.png" width height></p>
+<p>引入 bootstrap 4.3.1</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&lt;link rel=<span class="string">&quot;stylesheet&quot;</span> href=<span class="string">&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css&quot;</span> integrity=<span class="string">&quot;sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh&quot;</span> crossorigin=<span class="string">&quot;anonymous&quot;</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://code.jquery.com/jquery-3.4.1.slim.min.js&quot;</span> <span class="attr">integrity</span>=<span class="string">&quot;sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n&quot;</span> <span class="attr">crossorigin</span>=<span class="string">&quot;anonymous&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js&quot;</span> <span class="attr">integrity</span>=<span class="string">&quot;sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo&quot;</span> <span class="attr">crossorigin</span>=<span class="string">&quot;anonymous&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js&quot;</span> <span class="attr">integrity</span>=<span class="string">&quot;sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6&quot;</span> <span class="attr">crossorigin</span>=<span class="string">&quot;anonymous&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="静态资源的引用"><a href="#静态资源的引用" class="headerlink" title="静态资源的引用"></a>静态资源的引用</h2><h3 id="using-webjars"><a href="#using-webjars" class="headerlink" title="using webjars"></a>using webjars</h3><p>在 resources/templates 下面创建 index.html</p>
+<p><a target="_blank" rel="noopener" href="https://www.webjars.org/">https://www.webjars.org/</a></p>
+<p>使用 webjars 引用公共静态资源</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">http://localhost:8080/webjars/jquery/3.4.1/jquery.js</span><br></pre></td></tr></table></figure>
+
+<h3 id="using-resources"><a href="#using-resources" class="headerlink" title="using resources"></a>using resources</h3><p>默认的静态资源存放路径 resources/static</p>
+<h2 id="使用-thymeleaf"><a href="#使用-thymeleaf" class="headerlink" title="使用 thymeleaf"></a>使用 thymeleaf</h2><ol>
+<li>导入名称空间</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span> <span class="attr">xmlns:th</span>=<span class="string">&quot;http://www.thymeleaf.org&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>使用 th:xxx 语法替换原生属性值</li>
+</ol>
+<h2 id="使用-font-awsome-5"><a href="#使用-font-awsome-5" class="headerlink" title="使用 font awsome 5"></a>使用 font awsome 5</h2><p>在 css 里面配置时，出现小方块，不显示图标问题，在 html 里面配置时，正常</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">```</span><br><span class="line"></span><br><span class="line">## 添加日志</span><br><span class="line"></span><br><span class="line">spring boot 默认是 info</span><br><span class="line">可以在 application.properties 里面添加</span><br><span class="line"></span><br><span class="line">```yaml</span><br><span class="line"># com.example.demo 是项目包，日志可以指定包设置</span><br><span class="line">logging.level.com.example.demo=trace</span><br><span class="line"># 当前项目路径下生成</span><br><span class="line">logging.file.name=demo.log</span><br><span class="line"># / 表示当前磁盘根路径</span><br><span class="line">#logging.file.path=/demo/log/demo.log</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line"></span><br><span class="line">logger.trace(<span class="string">&quot;log trace&quot;</span>);</span><br><span class="line">logger.debug(<span class="string">&quot;log debug&quot;</span>);</span><br><span class="line">logger.info(<span class="string">&quot;log info&quot;</span>);</span><br><span class="line">logger.warn(<span class="string">&quot;log warn&quot;</span>);</span><br><span class="line">logger.error(<span class="string">&quot;log error&quot;</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="增加配置类，扩展-mvc-配置"><a href="#增加配置类，扩展-mvc-配置" class="headerlink" title="增加配置类，扩展 mvc 配置"></a>增加配置类，扩展 mvc 配置</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">extMvcConfig</span> <span class="keyword">implements</span> <span class="title">WebMvcConfigurer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addViewControllers</span><span class="params">(ViewControllerRegistry registry)</span> </span>&#123;</span><br><span class="line">        registry.addViewController(<span class="string">&quot;/main&quot;</span>).setViewName(<span class="string">&quot;dashboard&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用拦截器检查登陆权限"><a href="#使用拦截器检查登陆权限" class="headerlink" title="使用拦截器检查登陆权限"></a>使用拦截器检查登陆权限</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">extLoginInterceptor</span> <span class="keyword">implements</span> <span class="title">HandlerInterceptor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Object user = request.getSession().getAttribute(<span class="string">&quot;loginUser&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (user == <span class="keyword">null</span>)&#123;</span><br><span class="line">            request.setAttribute(<span class="string">&quot;msg&quot;</span>,<span class="string">&quot;没有权限,请登录.&quot;</span>);</span><br><span class="line">            request.getRequestDispatcher(<span class="string">&quot;/index.html&quot;</span>).forward(request,response);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">extMvcConfig</span> <span class="keyword">implements</span> <span class="title">WebMvcConfigurer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addViewControllers</span><span class="params">(ViewControllerRegistry registry)</span> </span>&#123;</span><br><span class="line">        registry.addViewController(<span class="string">&quot;/dashboard.html&quot;</span>).setViewName(<span class="string">&quot;dashboard&quot;</span>);</span><br><span class="line">        registry.addViewController(<span class="string">&quot;/&quot;</span>).setViewName(<span class="string">&quot;index&quot;</span>);</span><br><span class="line">        registry.addViewController(<span class="string">&quot;/index.html&quot;</span>).setViewName(<span class="string">&quot;index&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addInterceptors</span><span class="params">(InterceptorRegistry registry)</span> </span>&#123;</span><br><span class="line">        registry.addInterceptor(<span class="keyword">new</span> extLoginInterceptor()).addPathPatterns(<span class="string">&quot;/**&quot;</span>).excludePathPatterns(<span class="string">&quot;/index.html&quot;</span>,<span class="string">&quot;/&quot;</span>,<span class="string">&quot;/index&quot;</span>,<span class="string">&quot;/static/**&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="设置多个环境配置"><a href="#设置多个环境配置" class="headerlink" title="设置多个环境配置"></a>设置多个环境配置</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 默认使用 application.properties</span><br><span class="line">可以创建 application-&#123;profile&#125;.properties</span><br><span class="line">例如：</span><br><span class="line">application-develop.properties</span><br><span class="line"></span><br><span class="line">然后在 application.properties 里面配置</span><br><span class="line">spring.profiles.active=develop</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用 yaml</span></span><br><span class="line">有个文档块模式可以分开写不同的配置</span><br><span class="line"></span><br><span class="line">使用 --- 区分配置块</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>激活配置文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">java -jar xxx.jar --spring.profiles.active=develop</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="集成-Swagger2"><a href="#集成-Swagger2" class="headerlink" title="集成 Swagger2"></a>集成 Swagger2</h1><p>添加插件, 在这里获取 <a target="_blank" rel="noopener" href="https://mvnrepository.com/">https://mvnrepository.com/</a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// https://mvnrepository.com/artifact/io.springfox/springfox-swagger2</span><br><span class="line">compile group: &#x27;io.springfox&#x27;, name: &#x27;springfox-swagger2&#x27;, version: &#x27;2.9.2&#x27;</span><br><span class="line">// https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui</span><br><span class="line">compile group: &#x27;io.springfox&#x27;, name: &#x27;springfox-swagger-ui&#x27;, version: &#x27;2.9.2&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>运行后访问如下地址<br><a target="_blank" rel="noopener" href="http://localhost:8080/swagger-ui.html">http://localhost:8080/swagger-ui.html</a></p>
+<h1 id="user-Model"><a href="#user-Model" class="headerlink" title="user Model"></a>user Model</h1><p>创建 java class modelUser<br>model-modelUser</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@ApiModel(value=&quot;User 对象&quot;,description=&quot;User 对象类的相关描述&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">modelUser</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty(value=&quot;user name&quot;,name=&quot;name&quot;,example=&quot;小明&quot;,required=true)</span></span><br><span class="line">    <span class="keyword">public</span> String name;</span><br><span class="line">    <span class="meta">@ApiModelProperty(value=&quot;user password&quot;,name=&quot;password&quot;,example=&quot;123456&quot;,required=true)</span></span><br><span class="line">    <span class="keyword">public</span> String password;</span><br><span class="line">    <span class="meta">@ApiModelProperty(value=&quot;user email&quot;,name=&quot;email&quot;,example=&quot;xm@126.com&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String email;</span><br><span class="line">    <span class="meta">@ApiModelProperty(value=&quot;user cellphone&quot;,name=&quot;phone&quot;,example=&quot;13812811234&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String phone;</span><br><span class="line">    <span class="meta">@ApiModelProperty(value=&quot;user register date&quot;,name=&quot;registerDate&quot;,example=&quot;2018-01-02 08:08:08&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String registerDate;</span><br><span class="line">    <span class="meta">@ApiModelProperty(value=&quot;user last login date&quot;,name=&quot;lastLoginDate&quot;,example=&quot;2018-01-03 08:08:18&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String lastLoginDate;</span><br><span class="line">    <span class="meta">@ApiModelProperty(value=&quot;user flag, -1 delete,0 not use, 1 active, &quot;,name=&quot;flag&quot;,example=&quot;00&quot;,allowableValues = &quot;-1,0,1&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> flag;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>modelResult 作为返回对象</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@ApiModel(value = &quot;Result 对象&quot;, description = &quot;Result 对象类的相关描述&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">modelResult</span> </span>&#123;</span><br><span class="line">    <span class="meta">@ApiModelProperty(value = &quot;Result code&quot;, name = &quot;code&quot;, example = &quot;0&quot;, required = true)</span></span><br><span class="line">    <span class="keyword">public</span> Integer code;</span><br><span class="line">    <span class="meta">@ApiModelProperty(value = &quot;Result message&quot;, name = &quot;msg&quot;, example = &quot;success&quot;, required = true)</span></span><br><span class="line">    <span class="keyword">public</span> String msg;</span><br><span class="line">    <span class="meta">@ApiModelProperty(value = &quot;Result timestamp&quot;, name = &quot;timestamp&quot;, example = &quot;2018-01-01 12:21:12.111&quot;, required = true)</span></span><br><span class="line">    <span class="keyword">public</span> String timestamp;</span><br><span class="line">    <span class="meta">@ApiModelProperty(value = &quot;Specific data Optional,should be json format&quot;, name = &quot;data&quot;, example = &quot;null&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> Object datas;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>实现了简单的 CRUD 操作</p>
+<h1 id="发布项目"><a href="#发布项目" class="headerlink" title="发布项目"></a>发布项目</h1><p>IDEA 右边的 Gradle-build-bootJar 双击即可，然后部署上去 java -jar xx.jar 就可以启动了<br>如果右边没有发现 Gradle 选项，那么关闭 idea 再重新打开就应该有了。<br><img alt="c298783b.png" src="/2019/01/11/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/spring-boot-001-%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83/c298783b.png" width height></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Spring-Boot/" rel="tag"># Spring Boot</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/01/11/%E8%AF%BB%E8%BF%87%E7%9A%84%E4%B9%A6/2018%E5%B9%B4%E7%9A%84%E9%98%85%E8%AF%BB%E8%B4%A6%E5%8D%95/" rel="prev" title="2018年的阅读账单">
+                  <i class="fa fa-chevron-left"></i> 2018年的阅读账单
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/01/11/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/linux/centos/centos-install-java/" rel="next" title="centos-install java">
+                  centos-install java <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

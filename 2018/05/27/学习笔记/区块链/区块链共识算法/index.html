@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="什么是共识机制区块链可以看作一本记录所有交易的分布式公开帐簿，区块链网络中的每个参与者都把它看作一本所有权的权威记录。公开账本历史数据不可篡改，只允许往后添加，每个节点都具有相同的权限，那么就带来一个问题：公开账本每个新区块由谁来负责写入？因为所有节点都一样，如果所有节点同时一起写入账本数据，那么肯定数据会不一致。因此需要一种机制来保证区块链中的每一区块只能由一个节点来负责写入，如何选出写入账本数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="区块链共识算法">
+<meta property="og:url" content="http://zhengjun.top/2018/05/27/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="什么是共识机制区块链可以看作一本记录所有交易的分布式公开帐簿，区块链网络中的每个参与者都把它看作一本所有权的权威记录。公开账本历史数据不可篡改，只允许往后添加，每个节点都具有相同的权限，那么就带来一个问题：公开账本每个新区块由谁来负责写入？因为所有节点都一样，如果所有节点同时一起写入账本数据，那么肯定数据会不一致。因此需要一种机制来保证区块链中的每一区块只能由一个节点来负责写入，如何选出写入账本数">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-05-27T11:46:39.000Z">
+<meta property="article:modified_time" content="2018-07-11T01:27:46.000Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="区块链">
+<meta property="article:tag" content="blockchain">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://zhengjun.top/2018/05/27/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2018/05/27/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95/","path":"2018/05/27/学习笔记/区块链/区块链共识算法/","title":"区块链共识算法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>区块链共识算法 | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%85%B1%E8%AF%86%E6%9C%BA%E5%88%B6"><span class="nav-number">1.</span> <span class="nav-text">什么是共识机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E6%B5%81%E7%9A%84%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="nav-number">2.</span> <span class="nav-text">主流的共识算法有哪些</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%92%88%E5%AF%B9%E9%9D%9E%E6%8B%9C%E5%8D%A0%E5%BA%AD%E9%94%99%E8%AF%AF%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">2.1.</span> <span class="nav-text">针对非拜占庭错误的情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E8%A6%81%E8%83%BD%E5%AE%B9%E5%BF%8D%E6%8B%9C%E5%8D%A0%E5%BA%AD%E9%94%99%E8%AF%AF%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">2.2.</span> <span class="nav-text">对于要能容忍拜占庭错误的情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DBFT%E6%9C%BA%E5%88%B6"><span class="nav-number">2.3.</span> <span class="nav-text">DBFT机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E9%87%8F%E8%AF%81%E6%98%8EPoW-Proof-of-Work"><span class="nav-number">2.4.</span> <span class="nav-text">工作量证明PoW(Proof of Work)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%83%E7%9B%8A%E8%AF%81%E6%98%8EPoS-Proof-of-Stake"><span class="nav-number">2.5.</span> <span class="nav-text">权益证明PoS(Proof of Stake)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%88%E6%9D%83%E8%82%A1%E6%9D%83%E8%AF%81%E6%98%8E%E6%9C%BA%E5%88%B6DPOS-Delegated-Proof-of-Stake"><span class="nav-number">2.6.</span> <span class="nav-text">授权股权证明机制DPOS(Delegated Proof of Stake)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%89%8D%E4%B8%BB%E6%B5%81%E5%8C%BA%E5%9D%97%E9%93%BE%E5%88%86%E5%88%AB%E7%94%A8%E7%9A%84%E6%98%AF%E4%BB%80%E4%B9%88%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">目前主流区块链分别用的是什么共识算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PoW%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95%E4%BB%A3%E8%A1%A8%EF%BC%9A%E6%AF%94%E7%89%B9%E5%B8%81-amp-%E8%8E%B1%E7%89%B9%E5%B8%81-amp-%E4%BB%A5%E5%A4%AA%E5%9D%8A"><span class="nav-number">3.1.</span> <span class="nav-text">PoW共识算法代表：比特币&amp;莱特币&amp;以太坊</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PoS%E6%9C%BA%E5%88%B6%E4%BB%A3%E8%A1%A8%EF%BC%9APeercoin-amp-Nxt"><span class="nav-number">3.2.</span> <span class="nav-text">PoS机制代表：Peercoin &amp; Nxt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DPoS%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95%E4%BB%A3%E8%A1%A8%EF%BC%9ABitshare-amp-EOS"><span class="nav-number">3.3.</span> <span class="nav-text">DPoS共识算法代表：Bitshare &amp; EOS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pool-%E9%AA%8C%E8%AF%81%E6%B1%A0%E6%9C%BA%E5%88%B6"><span class="nav-number">3.4.</span> <span class="nav-text">Pool(验证池机制)</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/05/27/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          区块链共识算法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-05-27 19:46:39" itemprop="dateCreated datePublished" datetime="2018-05-27T19:46:39+08:00">2018-05-27</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2018-07-11 09:27:46" itemprop="dateModified" datetime="2018-07-11T09:27:46+08:00">2018-07-11</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="什么是共识机制"><a href="#什么是共识机制" class="headerlink" title="什么是共识机制"></a>什么是共识机制</h2><p>区块链可以看作一本记录所有交易的分布式公开帐簿，区块链网络中的每个参与者都把它看作一本所有权的权威记录。<br>公开账本历史数据不可篡改，只允许往后添加，每个节点都具有相同的权限，那么就带来一个问题：<br><code>公开账本每个新区块由谁来负责写入？</code><br>因为所有节点都一样，如果所有节点同时一起写入账本数据，那么肯定数据会不一致。<br>因此需要一种机制来保证区块链中的每一区块只能由一个节点来负责写入，<br>如何选出写入账本数据的节点，这就是共识机制。让平等的参与者按照某种秩序达成一致意见。</p>
+<p>所谓的共识就是在人人平等的社会里需要大家共同形成一个共识，产生一个操作者、临时决策者，代表大家来进行中心化的操作，大家按照这个共识来维持去中心化的网络世界。</p>
+<h2 id="主流的共识算法有哪些"><a href="#主流的共识算法有哪些" class="headerlink" title="主流的共识算法有哪些"></a>主流的共识算法有哪些</h2><p>在分布式网络中如何保证数据一致性。</p>
+<p>说到一致性问题，就不得不提大名鼎鼎的拜占庭将军问题。是 Leslie Lamport 1982 年提出用来解释一致性问题的一个虚构模型。拜占庭是古代东罗马帝国的首都，由于地域宽广，守卫边境的多个将军（系统中的多个节点）需要通过信使来传递消息，达成某些一致的决定。但由于将军中可能存在叛徒（系统中节点出错），这些叛徒将努力向不同的将军发送不同的消息，试图会干扰一致性的达成。</p>
+<p>结论：<br>Leslie Lamport 证明，当叛变者不超过1/3时，存在有效的算法，不论叛变者如何折腾，忠诚的将军们总能达成一致的结果。如果叛变者过多，则无法保证一定能达到一致性。</p>
+<span id="more"></span>
+
+<h3 id="针对非拜占庭错误的情况"><a href="#针对非拜占庭错误的情况" class="headerlink" title="针对非拜占庭错误的情况"></a>针对非拜占庭错误的情况</h3><p>分布式数据库设计一般都是基于paxos或raft算法。</p>
+<h3 id="对于要能容忍拜占庭错误的情况"><a href="#对于要能容忍拜占庭错误的情况" class="headerlink" title="对于要能容忍拜占庭错误的情况"></a>对于要能容忍拜占庭错误的情况</h3><p>一般包括 PBFT/DBFT 系列、PoW 系列算法等<br>PBFT/DBFT 系列算法是确定的，一旦达成共识就不可逆转；<br>而 PoW 系列算法则是不确定的，随着时间推移，被推翻的概率越来越小。</p>
+<p>实用拜占庭容错算法，PBFT(Practical Byzantine Fault Tolerance)<br>拜占庭容错技术被广泛应用在分布式系统中，比如分布式文件系统、分布式协作系统、云计算等。</p>
+<p>dBFT：小蚁共识（delegated BFT），一种改进的拜占庭容错算法<br>小蚁采用的共识机制是在Castro 和 Liskov提出的“实用拜占庭容错算法”（Practical Byzantine Fault Tolerance）的基础上，经过改进后使其能够适用于 区块链系统。</p>
+<h3 id="DBFT机制"><a href="#DBFT机制" class="headerlink" title="DBFT机制"></a>DBFT机制</h3><p>是由权益来选出记账人，然后记账人之间通过拜占庭容错算法来达成共识，这种方式的优点是：</p>
+<ol>
+<li>专业化的记账人；</li>
+<li>可以容忍任何类型的错误；</li>
+<li>记账由多人协同完成，每一个区块都有最终性，不会分叉；</li>
+<li>算法的可靠性有严格的数学证明；<br>缺点：</li>
+<li>当有1/3或以上记账人停止工作后，系统将无法提供服务；</li>
+<li>当有1/3或以上记账人联合作恶，且其它所有的记账人被恰好分割为两个网络孤岛时，恶意记账人可以使系统出现分叉，但是会留下密码学证据；</li>
+</ol>
+<h3 id="工作量证明PoW-Proof-of-Work"><a href="#工作量证明PoW-Proof-of-Work" class="headerlink" title="工作量证明PoW(Proof of Work)"></a>工作量证明PoW(Proof of Work)</h3><p>通过计算来猜测一个数值（nonce），得以解决规定的 hash 问题（来源于 hashcash）。保证在一段时间内，系统中只能出现少数合法提案。<br>同时，这些少量的合法提案会在网络中进行广播，收到的用户进行验证后会基于它认为的最长链上继续难题的计算。因此，系统中可能出现链的分叉（Fork），但最终会有一条链成为最长的链。</p>
+<h3 id="权益证明PoS-Proof-of-Stake"><a href="#权益证明PoS-Proof-of-Stake" class="headerlink" title="权益证明PoS(Proof of Stake)"></a>权益证明PoS(Proof of Stake)</h3><p>2013 年被提出，最早在 Peercoin 系统中被实现，类似现实生活中的股东机制，拥有股份越多的人越容易获取记账权。<br>典型的过程是通过保证金（代币、资产、名声等具备价值属性的物品即可）来对赌一个合法的块成为新的区块，收益为抵押资本的利息和交易服务费。提供证明的保证金（例如通过转账货币记录）越多，则获得记账权的概率就越大。合法记账者可以获得收益。</p>
+<p>总体上说，POS算法存在一个持币人的集合，他们把手中的代币放入POS机制中，这样他们就变成验证者。假设在区块链最前面一个区块（区块链中最新的块），这时POS算法在这些验证者中随机选取一个（选择验证者的权重依据他们投入的代币多少，比如一个投入押金为10000代币的验证者被选择的概率是一个投入1000代币验证者的10倍），给他们权利产生下一个区块。如果在一定时间内，这个验证者没有产生一个区块，则选出第二个验证者来代替来产生新区块。与POW一样，以最长的链为准。</p>
+<p>PoS 是试图解决在 PoW 中大量资源被浪费的缺点。恶意参与者将存在保证金被罚没的风险，即损失经济利益。</p>
+<p>一般的，对于 PoS 来说，需要掌握超过全网 的资源，才有可能左右最终的结果。这个也很容易理解，三个人投票，前两人分别支持一方，这时候，第三方的投票将决定最终结果。</p>
+<h3 id="授权股权证明机制DPOS-Delegated-Proof-of-Stake"><a href="#授权股权证明机制DPOS-Delegated-Proof-of-Stake" class="headerlink" title="授权股权证明机制DPOS(Delegated Proof of Stake)"></a>授权股权证明机制DPOS(Delegated Proof of Stake)</h3><p>PoS 的改进算法，DPOS与POS原理相似。与POS的主要区别在于节点选举若干代理，由代理人验证和记账。</p>
+<h2 id="目前主流区块链分别用的是什么共识算法"><a href="#目前主流区块链分别用的是什么共识算法" class="headerlink" title="目前主流区块链分别用的是什么共识算法"></a>目前主流区块链分别用的是什么共识算法</h2><h3 id="PoW共识算法代表：比特币-amp-莱特币-amp-以太坊"><a href="#PoW共识算法代表：比特币-amp-莱特币-amp-以太坊" class="headerlink" title="PoW共识算法代表：比特币&amp;莱特币&amp;以太坊"></a>PoW共识算法代表：比特币&amp;莱特币&amp;以太坊</h3><p>挖矿的过程就是找到x使得以下等式成立：<br><code>SHA256(SHA256(version + prev_hash + merkle_root + ntime + nbits + x )) &lt; TARGET</code><br>上式的x的范围是0~2^32, TARGET可以根据当前难度求出的。由于hash的特性，找这样一个x只能暴力搜索。<br>谁先找到谁就或者这一区块的写入权，并获得奖励，因此pow共识机制对所有节点都公平，谁的算力强谁就更有机会更高概率获得写入权。</p>
+<h3 id="PoS机制代表：Peercoin-amp-Nxt"><a href="#PoS机制代表：Peercoin-amp-Nxt" class="headerlink" title="PoS机制代表：Peercoin &amp; Nxt"></a>PoS机制代表：Peercoin &amp; Nxt</h3><p>点点币（Peercoin ）的权益证明机制结合了随机化与币龄的概念，未使用至少30天的币可以参与竞争下一区块，越久和越大的币集有更大的可能去签名下一区块。然而，一旦币的权益被用于签名一个区块，则币龄将清为零，这样必须等待至少30日才能签署另区块。同时，为防止非常老或非常大的权益控制区块链，寻找下一区块的最大概率在90天后达到最大值，这一过程保护了网络，并随着时间逐渐生成新的币而无需消耗大量的计算能力。点点币的开发者声称这将使得恶意攻击变得困难，因为没有中心化的挖矿池需求，而且购买半数以上的币的开销似乎超过获得51%的工作量证明的哈希计算能力。</p>
+<p>权益证明必须采用某种方法定义任意区块链中的下一合法区块，依据账户结余来选择将导致中心化，例如单个首富成员可能会拥有长久的优势。为此，人们还设计了其他不同的方法来选择下一合法区块。</p>
+<p>NXT币采用随机方法预测下一合法区块，使用公式查找与权益大小结合的最小哈希值。由于权益公开，每个节点都可以合理的准确度预计哪个账户有权建立区块。</p>
+<h3 id="DPoS共识算法代表：Bitshare-amp-EOS"><a href="#DPoS共识算法代表：Bitshare-amp-EOS" class="headerlink" title="DPoS共识算法代表：Bitshare &amp; EOS"></a>DPoS共识算法代表：Bitshare &amp; EOS</h3><p>比特股( Bitshare)是一类采用DPoS机制的密码货币，它期望通过引入一个技术民主层来减少中心化的负面影响。<br>比特股引入了见证人这个概念，见证人可以生成区块，每一个持有比特股的人都可以投票选举见证人。得到总同意票数中的前N个(N通常定义为101)候选者可以当选为见证人，当选见证人的个数(N)需满足：至少一半的参与投票者相信N已经充分地去中心化。</p>
+<p>见证人的候选名单每个维护周期(1天)更新一次。见证人然后随机排列，每个见证人按序有2秒的权限时间生成区块，若见证人在给定的时间片不能生成区块，区块生成权限交给下一个时间片对应的见证人。DPoS的这种设计使得区块的生成更为快速，也更加节能。DPoS充分利用了持股人的投票，以公平民主的方式达成共识，他们投票选出的N个见证人，可以视为N个矿池，而这N个矿池彼此的权利是完全相等的。持股人可以随时通过投票更换这些见证人(矿池)，只要他们提供的算力不稳定，计算机宕机，或者试图利用手中的权力作恶。</p>
+<p>比特股还设计了另外一类竞选，代表竞选。选出的代表拥有提出改变网络参数的特权，包括交易费用、区块大小、见证人费用和区块区间。若大多数代表同意所提出的改变，持股人有两周的审查期，这期间可以罢免代表并废止所提出的改变。这一设计确保代表技术上没有直接修改参数的权利以及所有的网络参数的改变最终需得到持股人的同意。</p>
+<h3 id="Pool-验证池机制"><a href="#Pool-验证池机制" class="headerlink" title="Pool(验证池机制)"></a>Pool(验证池机制)</h3>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" rel="tag"># 区块链</a>
+              <a href="/tags/blockchain/" rel="tag"># blockchain</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/05/27/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/java%E5%90%8E%E7%AB%AF%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="prev" title="java后端面试题">
+                  <i class="fa fa-chevron-left"></i> java后端面试题
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/05/27/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/" rel="next" title="区块链常见概念">
+                  区块链常见概念 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

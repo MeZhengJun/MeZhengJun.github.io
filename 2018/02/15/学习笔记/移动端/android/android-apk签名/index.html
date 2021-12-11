@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="##APK Signe签名是为了什么 为了保证每个应用程序开发商合法ID，防止部分开放商可能通过使用相同的Package Name来混淆替换已经安装的程序，我们需要对我们发布的APK文件进行唯一签名，保证我们每次发布的版本的一致性(如自动更新不会因为版本不一致而无法安装)。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="android-apk签名">
+<meta property="og:url" content="http://zhengjun.top/2018/02/15/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%A7%BB%E5%8A%A8%E7%AB%AF/android/android-apk%E7%AD%BE%E5%90%8D/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="##APK Signe签名是为了什么 为了保证每个应用程序开发商合法ID，防止部分开放商可能通过使用相同的Package Name来混淆替换已经安装的程序，我们需要对我们发布的APK文件进行唯一签名，保证我们每次发布的版本的一致性(如自动更新不会因为版本不一致而无法安装)。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhengjun.top/2018/02/15/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%A7%BB%E5%8A%A8%E7%AB%AF/android/android-apk%E7%AD%BE%E5%90%8D/ef7a55cf.png">
+<meta property="og:image" content="http://zhengjun.top/2018/02/15/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%A7%BB%E5%8A%A8%E7%AB%AF/android/android-apk%E7%AD%BE%E5%90%8D/753c946c.png">
+<meta property="og:image" content="http://zhengjun.top/2018/02/15/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%A7%BB%E5%8A%A8%E7%AB%AF/android/android-apk%E7%AD%BE%E5%90%8D/a1e1448a.png">
+<meta property="article:published_time" content="2018-02-15T05:01:42.000Z">
+<meta property="article:modified_time" content="2018-02-19T01:02:14.000Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="android">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhengjun.top/2018/02/15/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%A7%BB%E5%8A%A8%E7%AB%AF/android/android-apk%E7%AD%BE%E5%90%8D/ef7a55cf.png">
+
+
+<link rel="canonical" href="http://zhengjun.top/2018/02/15/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%A7%BB%E5%8A%A8%E7%AB%AF/android/android-apk%E7%AD%BE%E5%90%8D/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2018/02/15/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%A7%BB%E5%8A%A8%E7%AB%AF/android/android-apk%E7%AD%BE%E5%90%8D/","path":"2018/02/15/学习笔记/移动端/android/android-apk签名/","title":"android-apk签名"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>android-apk签名 | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Android-%E7%AD%BE%E5%90%8D%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">Android 签名方法</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/02/15/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%A7%BB%E5%8A%A8%E7%AB%AF/android/android-apk%E7%AD%BE%E5%90%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          android-apk签名
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-02-15 13:01:42" itemprop="dateCreated datePublished" datetime="2018-02-15T13:01:42+08:00">2018-02-15</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2018-02-19 09:02:14" itemprop="dateModified" datetime="2018-02-19T09:02:14+08:00">2018-02-19</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%A7%BB%E5%8A%A8%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">移动端</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>##APK Signe<br>签名是为了什么</p>
+<p>为了保证每个应用程序开发商合法ID，防止部分开放商可能通过使用相同的Package Name来混淆替换已经安装的程序，我们需要对我们发布的APK文件进行唯一签名，保证我们每次发布的版本的一致性(如自动更新不会因为版本不一致而无法安装)。</p>
+<span id="more"></span>
+
+<p>###签名需要了解的知识点</p>
+<ol>
+<li>数据摘要(数据指纹)、签名文件，证书文件</li>
+<li>jarsign工具签名和signapk工具签名</li>
+<li>keystore文件和pk8文件，x509.pem文件的关系</li>
+<li>如何手动的签名apk</li>
+</ol>
+<p>签名文件和证书<br>发送者：<br>1）对要发送的原始消息提取消息摘要；<br>2）对提取的信息摘要用自己的私钥加密。附加上自己的数字证书<br>接收者：<br>先使用CA公钥解开数字证书，获取发送者的公钥信息<br>1）对原始消息部分提取消息摘要，注意这里使用的消息摘要算法要和发送方使用的一致；<br>2）对附加上的那段数字签名，使用得到的公钥解密；<br>3）比较前两步所得到的两段消息是否一致。如果一致，则表明消息确实是期望的发送者发的，且内容没有被篡改过；相反，如果不一致，则表明传送的过程中一定出了问题，消息不可信。</p>
+<p>数字证书用来保证公钥的可信性。<br>“证书中心”（certificate authority，简称CA），为公钥做认证。证书中心用自己的私钥，对请求者的公钥和一些相关信息一起加密，生成”数字证书”（Digital Certificate）。<br>　<br>数字签名和签名验证的大体流程：</p>
+<img alt="ef7a55cf.png" src="/2018/02/15/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%A7%BB%E5%8A%A8%E7%AB%AF/android/android-apk%E7%AD%BE%E5%90%8D/ef7a55cf.png" width height>
+　　
+将apk解压；
+找到META-INF 下的.RSA文件；
+进入cmd环境，进入.RSA文件文件所在路径，命令：
+`keytool -printcert -file XXX.RSA`
+即可查看签名信息。
+### jarsign工具签名和signapk工具签名
+jarsign工具签名时使用的是keystore文件
+signapk工具签名时使用的是pk8,x509.pem文件　　
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jarsigner -verbose -sigalg SHA1withDSA -digestalg SHA1  -keystore D:\jiangwei.keystore -storepass jiangwei D:\123.apk jiangwei</span><br></pre></td></tr></table></figure>
+<h3 id="Android-签名方法"><a href="#Android-签名方法" class="headerlink" title="Android 签名方法"></a>Android 签名方法</h3><p>apksign.jar由Android SDK提供</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">java -jar signapk.jar testkey.x509.pem testkey.pk8 update.apk update_signed.apk</span><br></pre></td></tr></table></figure>
+<p>它接受一个PEM公钥文件，PK8私钥文件，对update.apk进行签名，签名后的文件保存到update_signed.apk。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">openssl pkcs8 -topk8 -outform DER -in userkey.pem  -inform PEM -out userkey.pk8 -nocrypt</span><br></pre></td></tr></table></figure>
+<p>.cer/.crt是用于存放证书，它是2进制形式存放的，不含私钥。</p>
+<p>jarsinger是由JDK提供，使用方法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jarsigner -verbose -keystore d:\\debug.keystore -signedjar update_signed.apk update.apk androiddebugkey -digestalg SHA1 -sigalg MD5withRSA -keypass android -storepass android</span><br></pre></td></tr></table></figure>
+<p>其中：<br>-keystore表示keystore文件的路径<br>androiddebugkey 表示keystore中的一个别名<br>-digestalg表示摘要算法<br>-sigalg 表示签名算法<br>-keypass 表示别名密码<br>-storepass表示keystore密码</p>
+<p>对一个APK文件签名之后，APK文件根目录下会增加META-INF目录，该目录下增加三个文件：　　</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">MANIFEST.MF</span><br><span class="line">NETEASE.RSA</span><br><span class="line">NETEASE.SF</span><br></pre></td></tr></table></figure>
+<p>其中.RSA文件还可能是.DSA文件，RSA与SF文件的文件名可以更改，但是它们的命名必须一样。<br>MANIFEST.MF中保存了APK里所有文件的SHA1校验值的BASE64编码，格式如下（一个文件对应一条记录）：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Name: res/anim/abc_fade_in.xml</span><br><span class="line">SHA1-Digest: ohPEA4mboaFUu9LZMUwk7FmjbPI=</span><br><span class="line">Name: res/anim/abc_fade_out.xml</span><br><span class="line">SHA1-Digest: MTJWZc22b5LNeBboqBhxcQh5xHQ=</span><br></pre></td></tr></table></figure>
+<p>SF文件里保存了MANIFEST.MF文件的SHA1校验值的BASE64编码，同时还保存了MANIFEST.MF中每一条记录的SHA1检验值BASE64编码，格式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SHA1-Digest-Manifest: ZRhh1HuaoEKMn6o21W1as0sMlaU=</span><br><span class="line">Name: res/anim/abc_fade_in.xml</span><br><span class="line">SHA1-Digest: wE1QEZhFkLBWMw4TRtxPdsiMRtA=</span><br><span class="line">Name: res/anim/abc_fade_out.xml</span><br><span class="line">SHA1-Digest: MfCV1efdxSKtesRMF81I08Zyvvo=</span><br></pre></td></tr></table></figure>
+
+<p>CERT.RSA文件<br>这里我们看到的都是二进制文件，因为RSA文件加密了，所以我们需要用openssl命令才能查看其内容</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">openssl pkcs7 -inform DER -in CERT.RSA -noout -print_certs -text</span><br></pre></td></tr></table></figure>
+
+<img alt="753c946c.png" src="/2018/02/15/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%A7%BB%E5%8A%A8%E7%AB%AF/android/android-apk%E7%AD%BE%E5%90%8D/753c946c.png" width height>
+
+<p>CERT.RSA是一个满足PKCS7格式的文件。这里会把之前生成的 CERT.SF文件， 用私钥计算出签名, 然后将签名以及包含公钥信息的数字证书一同写入  CERT.RSA  中保存。</p>
+<img alt="a1e1448a.png" src="/2018/02/15/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%A7%BB%E5%8A%A8%E7%AB%AF/android/android-apk%E7%AD%BE%E5%90%8D/a1e1448a.png" width height>
+
+
+<p>###名词解释<br>####CSR</p>
+<ul>
+<li>Certificate Signing Request,即证书签名请求,这个并不是证书,而是向权威证书颁发机构获得签名证书的申请,其核心内容是一个公钥(当然还附带了一些别的信息),在生成这个申请的时候,同时也会生成一个私钥,私钥要自己保管好.做过iOS APP的朋友都应该知道是怎么向苹果申请开发者证书的吧.<br>查看的办法:</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">openssl req -noout -text -in my.csr</span><br></pre></td></tr></table></figure>
+<p>(如果是DER格式的话照旧加上-inform der,这里不写了)</p>
+<p>####PEM文件(.pem)<br>PEM是Privacy Enhanced Mail的缩写<br>PEM说明该文件是标准X.509证书文件，编码格式为PEM编码。</p>
+<p>解密私钥</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">openssl rsa -in userkey.pem   -out userPri.pem</span><br></pre></td></tr></table></figure>
+<p>####X.509<br>X.509 不是证书文件，是一种证书标准。定义证书文件中结构和内容<br>###证书编码的转换</p>
+<ul>
+<li>PEM转为DER</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">openssl x509 -in cert.crt -outform der -out cert.der</span><br></pre></td></tr></table></figure>
+<p>DER转为PEM</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">openssl x509 -in cert.crt -inform der -outform pem -out cert.pem</span><br></pre></td></tr></table></figure>
+<p>(提示:要转换KEY文件也类似,只不过把x509换成rsa,要转CSR的话,把x509换成req…)</p>
+<p>PEM,PK8转为key store<br>使用下面的工具<br><a target="_blank" rel="noopener" href="https://github.com/getfatday/keytool-importkeypair">https://github.com/getfatday/keytool-importkeypair</a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./keytool-importkeypair -k debug.keystore -p android -pk8 ./userkey.pk8 -cert ./SuoErSi_USER.crt -alias userkey</span><br></pre></td></tr></table></figure>
+
+<p>列出keystore存在的所有证书<br>keytool -list -v -keystore keystore.jks</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">JDK中keytool常用参数说明（不同版本有差异，详细可参见【附录】中的官方文档链接）:</span><br><span class="line"></span><br><span class="line">-genkey 在用户主目录</span><br><span class="line">-genkey 在用户主目录中创建一个默认文件”.keystore”,还会产生一个mykey的别名，mykey中包含用户的公钥、私钥和证书(在没有指定生成位置的情况下,keystore会存在用户系统默认目录)</span><br><span class="line">-alias 产生别名 每个keystore都关联这一个独一无二的alias，这个alias通常不区分大小写</span><br><span class="line">-keystore 指定密钥库的名称(产生的各类信息将不在.keystore文件中)</span><br><span class="line">-keyalg 指定密钥的算法 (如 RSA DSA，默认值为：DSA)</span><br><span class="line">-validity 指定创建的证书有效期多少天(默认 90)</span><br><span class="line">-keysize 指定密钥长度 （默认 1024）</span><br><span class="line">-storepass 指定密钥库的密码(获取keystore信息所需的密码)</span><br><span class="line">-keypass 指定别名条目的密码(私钥的密码)</span><br><span class="line">-dname 指定证书发行者信息 其中： “CN=名字与姓氏,OU=组织单位名称,O=组织名称,L=城市或区域名 称,ST=州或省份名称,C=单位的两字母国家代码”</span><br><span class="line">-list 显示密钥库中的证书信息 keytool -list -v -keystore 指定keystore -storepass 密码</span><br><span class="line">-v 显示密钥库中的证书详细信息</span><br><span class="line">-export 将别名指定的证书导出到文件 keytool -export -alias 需要导出的别名 -keystore 指定keystore -file 指定导出的证书位置及证书名称 -storepass 密码</span><br><span class="line">-file 参数指定导出到文件的文件名</span><br><span class="line">-delete 删除密钥库中某条目 keytool -delete -alias 指定需删除的别 -keystore 指定keystore – storepass 密码</span><br><span class="line">-printcert 查看导出的证书信息 keytool -printcert -file g:\sso\michael.crt</span><br><span class="line">-keypasswd 修改密钥库中指定条目口令 keytool -keypasswd -alias 需修改的别名 -keypass 旧密码 -new 新密码 -storepass keystore密码 -keystore sage</span><br><span class="line">-storepasswd 修改keystore口令 keytool -storepasswd -keystore g:\sso\michael.keystore(需修改口令的keystore) -storepass pwdold(原始密码) -new pwdnew(新密码)</span><br><span class="line">-import 将已签名数字证书导入密钥库 keytool -import -alias 指定导入条目的别名 -keystore 指定keystore -file 需导入的证书</span><br><span class="line">中创建一个默认文件”.keystore”,还会产生一个mykey的别名，mykey中包含用户的公钥、私钥和证书(在没有指定生成位置的情况下,keystore会存在用户系统默认目录)</span><br><span class="line">-alias 产生别名 每个keystore都关联这一个独一无二的alias，这个alias通常不区分大小写</span><br><span class="line">-keystore 指定密钥库的名称(产生的各类信息将不在.keystore文件中)</span><br><span class="line">-keyalg 指定密钥的算法 (如 RSA DSA，默认值为：DSA)</span><br><span class="line">-validity 指定创建的证书有效期多少天(默认 90)</span><br><span class="line">-keysize 指定密钥长度 （默认 1024）</span><br><span class="line">-storepass 指定密钥库的密码(获取keystore信息所需的密码)</span><br><span class="line">-keypass 指定别名条目的密码(私钥的密码)</span><br><span class="line">-dname 指定证书发行者信息 其中： “CN=名字与姓氏,OU=组织单位名称,O=组织名称,L=城市或区域名 称,ST=州或省份名称,C=单位的两字母国家代码”</span><br><span class="line">-list 显示密钥库中的证书信息 keytool -list -v -keystore 指定keystore -storepass 密码</span><br><span class="line">-v 显示密钥库中的证书详细信息</span><br><span class="line">-export 将别名指定的证书导出到文件 keytool -export -alias 需要导出的别名 -keystore 指定keystore -file 指定导出的证书位置及证书名称 -storepass 密码</span><br><span class="line">-file 参数指定导出到文件的文件名</span><br><span class="line">-delete 删除密钥库中某条目 keytool -delete -alias 指定需删除的别 -keystore 指定keystore – storepass 密码</span><br><span class="line">-printcert 查看导出的证书信息 keytool -printcert -file g:\sso\michael.crt</span><br><span class="line">-keypasswd 修改密钥库中指定条目口令 keytool -keypasswd -alias 需修改的别名 -keypass 旧密码 -new 新密码 -storepass keystore密码 -keystore sage</span><br><span class="line">-storepasswd 修改keystore口令 keytool -storepasswd -keystore g:\sso\michael.keystore(需修改口令的keystore) -storepass pwdold(原始密码) -new pwdnew(新密码)</span><br><span class="line">-import 将已签名数字证书导入密钥库 keytool -import -alias 指定导入条目的别名 -keystore 指定keystore -file 需导入的证书</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/android/" rel="tag"># android</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/02/15/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E8%80%83%E8%AF%95%E7%9B%B8%E5%85%B3/%E8%87%AA%E8%80%83-%E7%BD%91%E7%BB%9C%E7%BB%8F%E6%B5%8E%E4%B8%8E%E4%BC%81%E4%B8%9A%E7%AE%A1%E7%90%86/" rel="prev" title="自考-网络经济与企业管理">
+                  <i class="fa fa-chevron-left"></i> 自考-网络经济与企业管理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/02/15/%E5%B7%A5%E5%85%B7%E7%9B%B8%E5%85%B3/%E7%BB%88%E7%AB%AF/" rel="next" title="终端">
+                  终端 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

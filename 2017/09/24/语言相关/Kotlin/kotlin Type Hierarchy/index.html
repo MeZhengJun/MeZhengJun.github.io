@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Kotlin类型层级一览（翻译原文）原文链接 Kotlin有很多关于语言的文档和教程指南。但是没有看关于类型层级的相关描述。了解之后，我发现非常的简洁。 Kotlin类型层级要学习的规则非常少，这些规则保持一致性和可预见性。有了这些规则，Kotlin可以提供有用的，用户可扩展的语言特性，例如：null安全，多态性和无法执行代码检测；不需要在IDE和编译阶段做特殊处理和额外的操作。 从顶层开始所有K">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin Type Hierarchy">
+<meta property="og:url" content="http://zhengjun.top/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="Kotlin类型层级一览（翻译原文）原文链接 Kotlin有很多关于语言的文档和教程指南。但是没有看关于类型层级的相关描述。了解之后，我发现非常的简洁。 Kotlin类型层级要学习的规则非常少，这些规则保持一致性和可预见性。有了这些规则，Kotlin可以提供有用的，用户可扩展的语言特性，例如：null安全，多态性和无法执行代码检测；不需要在IDE和编译阶段做特殊处理和额外的操作。 从顶层开始所有K">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhengjun.top/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin%20Type%20Hierarchy-16ae82b4.png">
+<meta property="og:image" content="http://zhengjun.top/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin%20Type%20Hierarchy-3ead3803.png">
+<meta property="og:image" content="http://zhengjun.top/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin%20Type%20Hierarchy-fa210f96.png">
+<meta property="og:image" content="http://zhengjun.top/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin%20Type%20Hierarchy-e161388a.png">
+<meta property="og:image" content="http://zhengjun.top/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin%20Type%20Hierarchy-bca1adc9.png">
+<meta property="og:image" content="http://zhengjun.top/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin%20Type%20Hierarchy-9f1cf554.png">
+<meta property="og:image" content="http://zhengjun.top/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin%20Type%20Hierarchy-8ca74cde.png">
+<meta property="og:image" content="http://zhengjun.top/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin%20Type%20Hierarchy-8679a9c3.png">
+<meta property="og:image" content="http://zhengjun.top/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin%20Type%20Hierarchy-eb177d5c.png">
+<meta property="og:image" content="http://zhengjun.top/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin%20Type%20Hierarchy-07543dec.png">
+<meta property="og:image" content="http://zhengjun.top/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin%20Type%20Hierarchy-35fe50d5.png">
+<meta property="article:published_time" content="2017-09-24T12:58:43.000Z">
+<meta property="article:modified_time" content="2021-12-07T13:06:46.800Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="Kotlin">
+<meta property="article:tag" content="Language">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhengjun.top/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin%20Type%20Hierarchy-16ae82b4.png">
+
+
+<link rel="canonical" href="http://zhengjun.top/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/","path":"2017/09/24/语言相关/Kotlin/kotlin Type Hierarchy/","title":"Kotlin Type Hierarchy"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Kotlin Type Hierarchy | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Kotlin%E7%B1%BB%E5%9E%8B%E5%B1%82%E7%BA%A7%E4%B8%80%E8%A7%88%EF%BC%88%E7%BF%BB%E8%AF%91%E5%8E%9F%E6%96%87%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">Kotlin类型层级一览（翻译原文）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E9%A1%B6%E5%B1%82%E5%BC%80%E5%A7%8B"><span class="nav-number">1.1.</span> <span class="nav-text">从顶层开始</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nothing"><span class="nav-number">1.2.</span> <span class="nav-text">Nothing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nullable-Nothing%EF%BC%9F"><span class="nav-number">1.3.</span> <span class="nav-text">Nullable Nothing？</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Kotlin Type Hierarchy
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-09-24 20:58:43" itemprop="dateCreated datePublished" datetime="2017-09-24T20:58:43+08:00">2017-09-24</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-12-07 21:06:46" itemprop="dateModified" datetime="2021-12-07T21:06:46+08:00">2021-12-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Kotlin类型层级一览（翻译原文）"><a href="#Kotlin类型层级一览（翻译原文）" class="headerlink" title="Kotlin类型层级一览（翻译原文）"></a>Kotlin类型层级一览（翻译原文）</h1><p><a target="_blank" rel="noopener" href="http://natpryce.com/articles/000818.html#fn1">原文链接</a></p>
+<p>Kotlin有很多关于语言的文档和教程指南。但是没有看关于类型层级的相关描述。<br>了解之后，我发现非常的简洁。</p>
+<p>Kotlin类型层级要学习的规则非常少，这些规则保持一致性和可预见性。有了这些规则，Kotlin可以提供有用的，用户可扩展的语言特性，例如：null安全，多态性和无法执行代码检测；不需要在IDE和编译阶段做特殊处理和额外的操作。</p>
+<h2 id="从顶层开始"><a href="#从顶层开始" class="headerlink" title="从顶层开始"></a>从顶层开始</h2><p>所有Kotlin对象的类型都组织在“子类型/父类型”的关系层级中。<br>最顶层一级是抽象类”Any”，例如：String和Int都是Any的子类型  </p>
+<center>
+<img alt="kotlinTypeHierarchy-16ae82b4.png" src="/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin Type Hierarchy-16ae82b4.png" width height>
+</center>
+Any等价于Java的Object类。和Java不同Kotlin没有区分“原始类型”和用户定义类型。他们都是类型层级的一部分。
+如果定义了一个类，但是没有继承任何其他父类，那么这个类就会自动的继承至Any
+<span id="more"></span>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Fruit(val ripeness: Double)</span><br></pre></td></tr></table></figure>
+<center>
+<img alt="kotlin Type Hierarchy-3ead3803.png" src="/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin Type Hierarchy-3ead3803.png" width height>  
+</center>
+如果你定义了一个基类，那么这个基类就是新类的父类，但是最终的父类还是Any
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">abstract class Fruit(val ripeness: Double)</span><br><span class="line">class Banana(ripeness: Double, val bendiness: Double):</span><br><span class="line">    Fruit(ripeness)</span><br><span class="line">class Peach(ripeness: Double, val fuzziness: Double):</span><br><span class="line">    Fruit(ripeness)</span><br></pre></td></tr></table></figure>
+<center>
+<img alt="kotlin Type Hierarchy-fa210f96.png" src="/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin Type Hierarchy-fa210f96.png" width height>  
+</center>
+如果你的类实现了一个或多个接口，那么这个类会有多个父类型，最终的祖先类型是Any
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">interface ICanGoInASalad</span><br><span class="line">interface ICanBeSunDried</span><br><span class="line"></span><br><span class="line">class Tomato(ripeness: Double):</span><br><span class="line">    Fruit(ripeness),</span><br><span class="line">    ICanGoInASalad,</span><br><span class="line">    ICanBeSunDried</span><br></pre></td></tr></table></figure>
+<center>
+<img alt="kotlin Type Hierarchy-e161388a.png" src="/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin Type Hierarchy-e161388a.png" width height>
+</center>
+
+<p>Kotlin类型检查强制子类型/父类型之间的关系<br>例如：可以使用父类型变量保存一个子类型</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">var f: Fruit = Banana(bendiness=0.5)</span><br><span class="line">f = Peach(fuzziness=0.8)</span><br></pre></td></tr></table></figure>
+<p>但是不能够使用子类型变量保存父类型</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">val b = Banana(bendiness=0.5)</span><br><span class="line">val f: Fruit = b</span><br><span class="line">val b2: Banana = f</span><br><span class="line">// Error: Type mismatch: 推导类型是Fruit但是希望的是Banana</span><br></pre></td></tr></table></figure>
+<p>Nullable可以为空的类型<br>和Java不同Kotlin区分“非空”和“空”类型。上面提到的都是非空类型。Kotlin不允许把null赋值给“非空类型”。这样可以保证你在解引用一个“非空类型”的时候，永远也不会抛出NullPointerException异常<br>类型检查会拒绝把null或者“空类型”赋值给“非空类型”<br>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">var s : String = null</span><br><span class="line">// Error: Null can not be a value of a non-null type String</span><br></pre></td></tr></table></figure>
+<p>如果想要一个“空类型”，可以使用后缀“?“。例如：String?就是一个可以为空的字符串类型。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">var s : String? = null</span><br><span class="line">s = &quot;foo&quot;</span><br><span class="line">s = null</span><br><span class="line">s = bar</span><br></pre></td></tr></table></figure>
+<p>类型检查会保证你在使用”空类型“之前一定会检查是否为空。参见<br><a target="_blank" rel="noopener" href="https://kotlinlang.org/docs/reference/null-safety.html">Null Safety section of the Kotlin language reference</a><br>”非空类型“和”空类型“是可以继承的。例如：String是Any的子类型，String?是Any?的子类型，Banana是Fruit子类，Banana?是Fruit?子类。  </p>
+<center>
+<img alt="kotlin Type Hierarchy-bca1adc9.png" src="/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin Type Hierarchy-bca1adc9.png" width height>
+</center>
+
+<p>就像Any是所有非空类型的父类一样，Any？也是所有空类型的父类。<br>同时Any?也是Any的父类，Any?是kotlin类型层级中最顶端的。</p>
+<p>一个非空类型是它对应的空类型的子类。例如：String是Any的子类，同时也是String?的子类。  </p>
+<center>
+<img alt="kotlin Type Hierarchy-9f1cf554.png" src="/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin Type Hierarchy-9f1cf554.png" width height>
+</center>
+这就是为什么可以把非空类型赋值给空类型变量，反之则不行。
+Kotlin的安全null是符合“子类型/父类型”规则的产物，而不是通过特殊规则来强制保证。
+同样的也适用于用户自定义的类型
+<center>
+<img alt="kotlin Type Hierarchy-8ca74cde.png" src="/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin Type Hierarchy-8ca74cde.png" width height>
+</center>
+## Unit
+Kotlin是一个面向表达式的语言。所有的控制流语句(除了非常规的变量赋值)都是表达式。Kotlin没有void返回值的函数，所有的函数都有一个返回值。如果不显示指定，默认返回Unit,只有一个值的类型。
+
+<p>大多数情况下不需要显示指定返回值，编译器会认为返回Unit，否则编译器会推导返回类型。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">fun example() &#123;</span><br><span class="line">    println(&quot;block body and no explicit return type, so returns Unit&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">val u: Unit = example()</span><br></pre></td></tr></table></figure>
+<p>Unit并不特殊，它和其他类型一样也是Any的子类型，也可以是空类型。  </p>
+<center>
+<img alt="kotlin Type Hierarchy-8679a9c3.png" src="/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin Type Hierarchy-8679a9c3.png" width height>  
+</center>
+类型Unit?是一个奇怪的情况，仅仅是保持Kotlin类型系统一致性的产物。尚未找到明确需要使用它的地方。事实上在类型系统中不需要针对“void”做特殊处理，可以很好的做通用型编程来处理各种函数。
+
+<h2 id="Nothing"><a href="#Nothing" class="headerlink" title="Nothing"></a>Nothing</h2><p>在cotlin类型层级中最底层的是Nothing。    </p>
+<center>
+<img alt="kotlin Type Hierarchy-eb177d5c.png" src="/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin Type Hierarchy-eb177d5c.png" width height>  
+</center>
+
+<p>就像他的名字一样，Nothing是一个没有实例的类型。Nothing表达式不会返回任何值。<br>注意Unit和Nothing的区别。对一个Unit表达式求值的时候返回一个单例模式的值Unit。对Nothing表达式求值永远都不会返回。</p>
+<p>也就是说任何在Nothing类型的表达式后面的代码是执行不到的。编译器会警告这类无法执行的代码。</p>
+<p>什么样的表达式会得出Nothing呢？那就是执行流程控制的时候。<br>例如：<br>使用throw关键字中断一个表达式计算，从函数中抛出异常。抛异常就是一个Nothing类型的表达式。</p>
+<p>通过把Nothing作为所有其他类型的子类型，类型系统允许任何一个表达式可以在计算的时候失败（注：原文如下，感觉不理解这段话，翻译的可能有问题。the type system allows any expression in the program to actually fail to calculate a value.）。这是对真实世界任何可能性的建模。例如JVM在计算表达式的时候内存溢出，或者有人拔掉了计算机的电源线。<br>这也意味着我们可以在任何表达式中抛出异常。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">fun formatCell(value: Double): String =</span><br><span class="line">    if (value.isNaN())</span><br><span class="line">        throw IllegalArgumentException(&quot;$value is not a number&quot;)</span><br><span class="line">    else</span><br><span class="line">        value.toString()</span><br></pre></td></tr></table></figure>
+<p>一个无限循环的函数或者终止当前进程的返回类型都是Nothing。例如Kotlin标准库声明的exitProcess函数如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">fun exitProcess(status: Int): Nothing</span><br></pre></td></tr></table></figure>
+<p>如果你自己写的函数返回了Nothing，编译器会检查调用你函数之后是否有无法执行的代码，就像内置的流程控制语句一样。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">inline fun forever(action: ()-&gt;Unit): Nothing &#123;</span><br><span class="line">    while(true) action()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun example() &#123;</span><br><span class="line">    forever &#123;</span><br><span class="line">        println(&quot;doing...&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    println(&quot;done&quot;) // Warning: Unreachable code</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>就像安全null一样，无法执行代码的检查也不是像Java一样通过额外操作或者在IDE和编译器中做特殊处理做到的，而是类型系统的一个功能。</p>
+<h2 id="Nullable-Nothing？"><a href="#Nullable-Nothing？" class="headerlink" title="Nullable Nothing？"></a>Nullable Nothing？</h2><p>Nothing和其他类型一样，可以为空，通过Nothing?表示。Nothing?只有一个值null，事实上Nothing?就是null类型.<br>Nothing？是所有空类型的最终的子类型，这使得null可以赋值给任何空类型。  </p>
+<center>
+<img alt="kotlin Type Hierarchy-07543dec.png" src="/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin Type Hierarchy-07543dec.png" width="300" height>    
+</center>
+## 总结
+当考虑所有情况的时候，Kotlin的整个类型层级似乎非常复杂。
+<center>
+<img alt="kotlin Type Hierarchy-35fe50d5.png" src="/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/kotlin Type Hierarchy-35fe50d5.png" width height>  
+</center>
+但是不要畏惧
+
+<p>我希望通过这篇文章演示Kotlin拥有一个简单并且保持一致性的类型系统。<br>只有很少的规则需要学习：<br>1 一个最顶端的Any?和最底端的Nothing相关的子类/父类层级关系<br>2 空类型和非空类型之间的子类关系<br>就这些，没有特殊情况。<br>那些有用的语言特性例如安全null，面向对象的多态，无法执行代码的检测，都是这些简单，可预见的规则的结果。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Kotlin/" rel="tag"># Kotlin</a>
+              <a href="/tags/Language/" rel="tag"># Language</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/06/21/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/012-%E6%8F%90%E4%BE%9BHttps%E6%94%AF%E6%8C%81-2017-06-22%E6%9B%B4%E6%96%B0/" rel="prev" title="012 提供Https支持(2017.06.22更新)">
+                  <i class="fa fa-chevron-left"></i> 012 提供Https支持(2017.06.22更新)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/09/24/%E6%9C%AC%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%AF%9E%E7%94%9F/" rel="next" title="本博客的诞生">
+                  本博客的诞生 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="为啥 zmq 的文档找起来这么费劲，4.0.x zsocket_new&#x2F;&#x2F;  Create a new socket within our CZMQ context, replaces zmq_socket.&#x2F;&#x2F;  Use this to get automatic management of the socket at shutdown.&#x2F;&#x2F;  Note: SUB sockets do not">
+<meta property="og:type" content="article">
+<meta property="og:title" content="zmq-usually use api">
+<meta property="og:url" content="http://zhengjun.top/2018/09/28/%E5%BC%80%E6%BA%90%E5%BA%93/zmq/zmq-usually-use-api/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="为啥 zmq 的文档找起来这么费劲，4.0.x zsocket_new&#x2F;&#x2F;  Create a new socket within our CZMQ context, replaces zmq_socket.&#x2F;&#x2F;  Use this to get automatic management of the socket at shutdown.&#x2F;&#x2F;  Note: SUB sockets do not">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-09-28T08:07:56.000Z">
+<meta property="article:modified_time" content="2018-09-30T03:36:18.000Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="zmq">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://zhengjun.top/2018/09/28/%E5%BC%80%E6%BA%90%E5%BA%93/zmq/zmq-usually-use-api/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2018/09/28/%E5%BC%80%E6%BA%90%E5%BA%93/zmq/zmq-usually-use-api/","path":"2018/09/28/开源库/zmq/zmq-usually-use-api/","title":"zmq-usually use api"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>zmq-usually use api | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#zsocket-new"><span class="nav-number">1.</span> <span class="nav-text">zsocket_new</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zsocket-bind"><span class="nav-number">2.</span> <span class="nav-text">zsocket_bind</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#thread"><span class="nav-number">3.</span> <span class="nav-text">thread</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#zactor"><span class="nav-number">3.1.</span> <span class="nav-text">zactor</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zthread-fork"><span class="nav-number">4.</span> <span class="nav-text">zthread_fork</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zsocket-wait"><span class="nav-number">5.</span> <span class="nav-text">zsocket_wait</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zmq-proxy"><span class="nav-number">6.</span> <span class="nav-text">zmq_proxy</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/09/28/%E5%BC%80%E6%BA%90%E5%BA%93/zmq/zmq-usually-use-api/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          zmq-usually use api
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-09-28 16:07:56" itemprop="dateCreated datePublished" datetime="2018-09-28T16:07:56+08:00">2018-09-28</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2018-09-30 11:36:18" itemprop="dateModified" datetime="2018-09-30T11:36:18+08:00">2018-09-30</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E6%BA%90%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E6%BA%90%E5%BA%93/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>为啥 zmq 的文档找起来这么费劲，4.0.x</p>
+<h2 id="zsocket-new"><a href="#zsocket-new" class="headerlink" title="zsocket_new"></a>zsocket_new</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//  Create a new socket within our CZMQ context, replaces zmq_socket.</span><br><span class="line">//  Use this to get automatic management of the socket at shutdown.</span><br><span class="line">//  Note: SUB sockets do not automatically subscribe to everything; you</span><br><span class="line">//  must set filters explicitly.</span><br><span class="line">CZMQ_EXPORT void *  zsocket_new (zctx_t *self, int type);</span><br></pre></td></tr></table></figure>
+
+<h2 id="zsocket-bind"><a href="#zsocket-bind" class="headerlink" title="zsocket_bind"></a>zsocket_bind</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//  Bind a socket to a formatted endpoint. If the port is specified as</span><br><span class="line">//  &#x27;*&#x27;, binds to any free port from ZSOCKET_DYNFROM to ZSOCKET_DYNTO</span><br><span class="line">//  and returns the actual port number used. Otherwise asserts that the</span><br><span class="line">//  bind succeeded with the specified port number. Always returns the</span><br><span class="line">//  port number if successful.</span><br><span class="line">CZMQ_EXPORT int zsocket_bind (void *self, const char *format, ...);</span><br></pre></td></tr></table></figure>
+
+<h2 id="thread"><a href="#thread" class="headerlink" title="thread"></a>thread</h2><h3 id="zactor"><a href="#zactor" class="headerlink" title="zactor"></a>zactor</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//  This is a stable class, and may not change except for emergencies. It</span><br><span class="line">//  is provided in stable builds.</span><br><span class="line">//  This class has draft methods, which may change over time. They are not</span><br><span class="line">//  in stable releases, by default. Use --enable-drafts to enable.</span><br><span class="line">// Actors get a pipe and arguments from caller</span><br><span class="line">typedef void (zactor_fn) (</span><br><span class="line">   zsock_t *pipe, void *args);</span><br><span class="line"></span><br><span class="line">//  Create a new actor passing arbitrary arguments reference.</span><br><span class="line">CZMQ_EXPORT zactor_t *</span><br><span class="line">   zactor_new (zactor_fn task, void *args);</span><br><span class="line"></span><br><span class="line">//  Destroy an actor.</span><br><span class="line">CZMQ_EXPORT void</span><br><span class="line">   zactor_destroy (zactor_t **self_p);</span><br><span class="line"></span><br><span class="line">//  Send a zmsg message to the actor, take ownership of the message</span><br><span class="line">//  and destroy when it has been sent.</span><br><span class="line">CZMQ_EXPORT int</span><br><span class="line">   zactor_send (zactor_t *self, zmsg_t **msg_p);</span><br><span class="line"></span><br><span class="line">//  Receive a zmsg message from the actor. Returns NULL if the actor</span><br><span class="line">//  was interrupted before the message could be received, or if there</span><br><span class="line">//  was a timeout on the actor.</span><br><span class="line">//  Caller owns return value and must destroy it when done.</span><br><span class="line">CZMQ_EXPORT zmsg_t *</span><br><span class="line">   zactor_recv (zactor_t *self);</span><br><span class="line"></span><br><span class="line">//  Probe the supplied object, and report if it looks like a zactor_t.</span><br><span class="line">CZMQ_EXPORT bool</span><br><span class="line">   zactor_is (void *self);</span><br><span class="line"></span><br><span class="line">//  Probe the supplied reference. If it looks like a zactor_t instance,</span><br><span class="line">//  return the underlying libzmq actor handle; else if it looks like</span><br><span class="line">//  a libzmq actor handle, return the supplied value.</span><br><span class="line">CZMQ_EXPORT void *</span><br><span class="line">   zactor_resolve (void *self);</span><br><span class="line"></span><br><span class="line">//  Return the actor&#x27;s zsock handle. Use this when you absolutely need</span><br><span class="line">//  to work with the zsock instance rather than the actor.</span><br><span class="line">CZMQ_EXPORT zsock_t *</span><br><span class="line">   zactor_sock (zactor_t *self);</span><br><span class="line"></span><br><span class="line">//  Self test of this class.</span><br><span class="line">CZMQ_EXPORT void</span><br><span class="line">   zactor_test (bool verbose);</span><br><span class="line"></span><br><span class="line">#ifdef CZMQ_BUILD_DRAFT_API</span><br><span class="line">// Function to be called on zactor_destroy. Default behavior is to send zmsg_t with string &quot;$TERM&quot; in a first frame.</span><br><span class="line">//</span><br><span class="line">// An example - to send $KTHXBAI string</span><br><span class="line">//</span><br><span class="line">//     if (zstr_send (self, &quot;$KTHXBAI&quot;) == 0)</span><br><span class="line">//         zsock_wait (self);</span><br><span class="line">typedef void (zactor_destructor_fn) (</span><br><span class="line">   zactor_t *self);</span><br><span class="line"></span><br><span class="line">//  *** Draft method, for development use, may change without warning ***</span><br><span class="line">//  Change default destructor by custom function. Actor MUST be able to handle new message instead of default $TERM.</span><br><span class="line">CZMQ_EXPORT void</span><br><span class="line">   zactor_set_destructor (zactor_t *self, zactor_destructor_fn destructor);</span><br><span class="line"></span><br><span class="line">#endif // CZMQ_BUILD_DRAFT_API</span><br><span class="line">Please add &#x27;@interface&#x27; section in &#x27;./../src/zactor.c&#x27;.</span><br></pre></td></tr></table></figure>
+
+<h2 id="zthread-fork"><a href="#zthread-fork" class="headerlink" title="zthread_fork"></a>zthread_fork</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//  Create an attached thread. An attached thread gets a ctx and a PAIR</span><br><span class="line">//  pipe back to its parent. It must monitor its pipe, and exit if the</span><br><span class="line">//  pipe becomes unreadable. Do not destroy the ctx, the thread does this</span><br><span class="line">//  automatically when it ends.</span><br><span class="line">CZMQ_EXPORT void * zthread_fork (zctx_t *ctx, zthread_attached_fn *thread_fn, void *args);</span><br></pre></td></tr></table></figure>
+
+<h2 id="zsocket-wait"><a href="#zsocket-wait" class="headerlink" title="zsocket_wait"></a>zsocket_wait</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//  Wait on a signal. Use this to coordinate between threads, over</span><br><span class="line">//  pipe pairs. Returns -1 on error, 0 on success.</span><br><span class="line">CZMQ_EXPORT int zsocket_wait (void *self);</span><br></pre></td></tr></table></figure>
+
+<h2 id="zmq-proxy"><a href="#zmq-proxy" class="headerlink" title="zmq_proxy"></a>zmq_proxy</h2><p>在当前线程内开始ZMQ内置代理。<br>代理将一个前端socket连接到一个后端。一般来说，数据会从前端流向后端。根据socket的类型，数据可能向相反的方向流动。方向指示概念上的；代理是完全对称的，在技术上前端和后端没有什么区别。<br>zmq_proxy()函数在当前的线程空间中运行，并且只有在当前使用的context被关闭之后才会返回。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//  This port range is defined by IANA for dynamic or private ports</span><br><span class="line">//  We use this when choosing a port for dynamic binding.</span><br><span class="line">#define ZSOCKET_DYNFROM     0xc000</span><br><span class="line">#define ZSOCKET_DYNTO       0xffff</span><br><span class="line"></span><br><span class="line">//  Callback function for zero-copy methods</span><br><span class="line">typedef void (zsocket_free_fn) (void *data, void *arg);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//  Destroy a socket within our CZMQ context, replaces zmq_close.</span><br><span class="line">CZMQ_EXPORT void</span><br><span class="line">    zsocket_destroy (zctx_t *ctx, void *self);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//  Unbind a socket from a formatted endpoint.</span><br><span class="line">//  Returns 0 if OK, -1 if the endpoint was invalid or the function</span><br><span class="line">//  isn&#x27;t supported.</span><br><span class="line">CZMQ_EXPORT int</span><br><span class="line">    zsocket_unbind (void *self, const char *format, ...);</span><br><span class="line"></span><br><span class="line">//  Connect a socket to a formatted endpoint</span><br><span class="line">//  Returns 0 if OK, -1 if the endpoint was invalid.</span><br><span class="line">CZMQ_EXPORT int</span><br><span class="line">    zsocket_connect (void *self, const char *format, ...);</span><br><span class="line"></span><br><span class="line">//  Disconnect a socket from a formatted endpoint</span><br><span class="line">//  Returns 0 if OK, -1 if the endpoint was invalid or the function</span><br><span class="line">//  isn&#x27;t supported.</span><br><span class="line">CZMQ_EXPORT int</span><br><span class="line">    zsocket_disconnect (void *self, const char *format, ...);</span><br><span class="line"></span><br><span class="line">//  Poll for input events on the socket. Returns TRUE if there is input</span><br><span class="line">//  ready on the socket, else FALSE.</span><br><span class="line">CZMQ_EXPORT bool</span><br><span class="line">    zsocket_poll (void *self, int msecs);</span><br><span class="line"></span><br><span class="line">//  Returns socket type as printable constant string</span><br><span class="line">CZMQ_EXPORT const char *</span><br><span class="line">    zsocket_type_str (void *self);</span><br><span class="line"></span><br><span class="line">//  Send data over a socket as a single message frame.</span><br><span class="line">//  Accepts these flags: ZFRAME_MORE and ZFRAME_DONTWAIT.</span><br><span class="line">//  Returns -1 on error, 0 on success</span><br><span class="line">CZMQ_EXPORT int</span><br><span class="line">    zsocket_sendmem (void *self, const void *data, size_t size, int flags);</span><br><span class="line"></span><br><span class="line">//  Send a signal over a socket. A signal is a zero-byte message.</span><br><span class="line">//  Signals are used primarily between threads, over pipe sockets.</span><br><span class="line">//  Returns -1 if there was an error sending the signal.</span><br><span class="line">CZMQ_EXPORT int</span><br><span class="line">    zsocket_signal (void *self);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//  Self test of this class</span><br><span class="line">CZMQ_EXPORT void</span><br><span class="line">    zsocket_test (bool verbose);</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/zmq/" rel="tag"># zmq</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/09/28/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/primecoin/primecoin-compile-0-8-6-version/" rel="prev" title="primecoin-compile 0.8.6 version">
+                  <i class="fa fa-chevron-left"></i> primecoin-compile 0.8.6 version
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/09/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/primecoin/primecoin-pool-Implement/" rel="next" title="primecoin pool Implement">
+                  primecoin pool Implement <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

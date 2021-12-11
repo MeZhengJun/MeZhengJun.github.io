@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="慢慢的把之前收集的代码片段迁移过来。 格式化开源库fmt 大小写转换&#x2F;&#x2F; toUppertransform(strOutput.begin(), strOutput.end(), strOutput.begin(), ::toupper);&#x2F;&#x2F; toLowertransform(strOutput.begin(), strOutput.end(), strOutput.begin(), ::tol">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cpp_string">
+<meta property="og:url" content="http://zhengjun.top/2017/12/14/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/cpp-string/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="慢慢的把之前收集的代码片段迁移过来。 格式化开源库fmt 大小写转换&#x2F;&#x2F; toUppertransform(strOutput.begin(), strOutput.end(), strOutput.begin(), ::toupper);&#x2F;&#x2F; toLowertransform(strOutput.begin(), strOutput.end(), strOutput.begin(), ::tol">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-12-14T02:11:09.000Z">
+<meta property="article:modified_time" content="2020-10-27T05:51:22.121Z">
+<meta property="article:author" content="郑  君">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://zhengjun.top/2017/12/14/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/cpp-string/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2017/12/14/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/cpp-string/","path":"2017/12/14/语言相关/CPP/cpp-string/","title":"cpp_string"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>cpp_string | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%BC%80%E6%BA%90%E5%BA%93"><span class="nav-number">1.</span> <span class="nav-text">格式化开源库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%A7%E5%B0%8F%E5%86%99%E8%BD%AC%E6%8D%A2"><span class="nav-number">2.</span> <span class="nav-text">大小写转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sscanf-s"><span class="nav-number">3.</span> <span class="nav-text">sscanf_s</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%B3%E8%BF%87%E6%8C%87%E5%AE%9A%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">3.1.</span> <span class="nav-text">跳过指定字符串</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8E%BB%E5%89%8D%E5%90%8E%E7%A9%BA%E7%99%BD%E5%AD%97%E7%AC%A6"><span class="nav-number"></span> <span class="nav-text">去前后空白字符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vector2string"><span class="nav-number"></span> <span class="nav-text">vector2string</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F"><span class="nav-number"></span> <span class="nav-text">排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%80%92%E5%BA%8F"><span class="nav-number"></span> <span class="nav-text">倒序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#base64-%E7%BC%96%E7%A0%81"><span class="nav-number"></span> <span class="nav-text">base64 编码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%94%9F%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%88raw-string-literals%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">原生字符串（raw string literals）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8B%86%E5%88%86%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number"></span> <span class="nav-text">拆分字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#string-to-hex-byte"><span class="nav-number">1.</span> <span class="nav-text">string to hex byte</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%95%B0%E5%AD%97%E8%BD%AC%E6%8D%A2"><span class="nav-number">2.</span> <span class="nav-text">字符串数字转换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%95%B0%E5%AD%97"><span class="nav-number">2.1.</span> <span class="nav-text">字符串转数字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E8%BD%AC%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">2.2.</span> <span class="nav-text">数字转字符串</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%BD%E5%AD%97%E7%AC%A6%E8%BD%AC-ASCII"><span class="nav-number"></span> <span class="nav-text">宽字符转 ASCII</span></a></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2017/12/14/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/cpp-string/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          cpp_string
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-12-14 10:11:09" itemprop="dateCreated datePublished" datetime="2017-12-14T10:11:09+08:00">2017-12-14</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-10-27 13:51:22" itemprop="dateModified" datetime="2020-10-27T13:51:22+08:00">2020-10-27</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>12k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>11 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>慢慢的把之前收集的代码片段迁移过来。</p>
+<h2 id="格式化开源库"><a href="#格式化开源库" class="headerlink" title="格式化开源库"></a>格式化开源库</h2><p><a target="_blank" rel="noopener" href="https://github.com/fmtlib/fmt">fmt</a></p>
+<h2 id="大小写转换"><a href="#大小写转换" class="headerlink" title="大小写转换"></a>大小写转换</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// toUpper</span></span><br><span class="line"><span class="built_in">transform</span>(strOutput.<span class="built_in">begin</span>(), strOutput.<span class="built_in">end</span>(), strOutput.<span class="built_in">begin</span>(), ::toupper);</span><br><span class="line"><span class="comment">// toLower</span></span><br><span class="line"><span class="built_in">transform</span>(strOutput.<span class="built_in">begin</span>(), strOutput.<span class="built_in">end</span>(), strOutput.<span class="built_in">begin</span>(), ::tolower);</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h2 id="sscanf-s"><a href="#sscanf-s" class="headerlink" title="sscanf_s"></a>sscanf_s</h2><h3 id="跳过指定字符串"><a href="#跳过指定字符串" class="headerlink" title="跳过指定字符串"></a>跳过指定字符串</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> index = <span class="number">0</span>;</span><br><span class="line">_stscanf_s(it.<span class="built_in">c_str</span>(), <span class="string">L&quot;dev_config_%d&quot;</span>, &amp;index);</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="去前后空白字符"><a href="#去前后空白字符" class="headerlink" title="去前后空白字符"></a>去前后空白字符</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;list&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _UNICODE</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> tstring wstring</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> tstring string</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// _UNICODE</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">strTrim</span><span class="params">(tstring&amp; s)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    s.<span class="built_in">erase</span>(<span class="number">0</span>, s.<span class="built_in">find_first_not_of</span>(_T(<span class="string">&quot; \t\f\v\n\r&quot;</span>)));</span><br><span class="line">    s.<span class="built_in">erase</span>(s.<span class="built_in">find_last_not_of</span>(_T(<span class="string">&quot; \t\f\v\n\r&quot;</span>)) + <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="vector2string"><a href="#vector2string" class="headerlink" title="vector2string"></a>vector2string</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">std::vector&lt;<span class="keyword">char</span>&gt; v;</span><br><span class="line"><span class="function">std::string <span class="title">str</span><span class="params">(v.begin(), v.end())</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h1 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">string strPlain = <span class="built_in">w2s</span>(harddriveSN) + <span class="built_in">w2s</span>(cpuSN) + <span class="built_in">w2s</span>(originMac);</span><br><span class="line"><span class="built_in">sort</span>(strPlain.<span class="built_in">begin</span>(), strPlain.<span class="built_in">end</span>());</span><br></pre></td></tr></table></figure>
+
+<h1 id="倒序"><a href="#倒序" class="headerlink" title="倒序"></a>倒序</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">string strPlain = <span class="built_in">w2s</span>(harddriveSN) + <span class="built_in">w2s</span>(cpuSN) + <span class="built_in">w2s</span>(originMac);</span><br><span class="line"><span class="built_in">sort</span>(strPlain.<span class="built_in">begin</span>(), strPlain.<span class="built_in">end</span>());</span><br><span class="line"><span class="built_in">reverse</span>(strPlain.<span class="built_in">begin</span>(), strPlain.<span class="built_in">end</span>());</span><br></pre></td></tr></table></figure>
+
+<h1 id="base64-编码"><a href="#base64-编码" class="headerlink" title="base64 编码"></a>base64 编码</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">https:<span class="comment">//github.com/ReneNyffenegger/cpp-base64</span></span><br><span class="line">https:<span class="comment">//renenyffenegger.ch/notes/development/Base64/Encoding-and-decoding-base-64-with-cpp</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="原生字符串（raw-string-literals）"><a href="#原生字符串（raw-string-literals）" class="headerlink" title="原生字符串（raw string literals）"></a>原生字符串（raw string literals）</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *lua_script = <span class="string">R&quot;(</span></span><br><span class="line"><span class="string">version = &#x27;1.0.0&#x27;</span></span><br><span class="line"><span class="string">function add(a, b)</span></span><br><span class="line"><span class="string">    return a + b;</span></span><br><span class="line"><span class="string">end</span></span><br><span class="line"><span class="string">)&quot;</span>;</span><br><span class="line"></span><br><span class="line">string path = <span class="string">R&quot;(this &quot;word&quot; is escaped)&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<h1 id="拆分字符串"><a href="#拆分字符串" class="headerlink" title="拆分字符串"></a>拆分字符串</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">tstring str = _T(<span class="string">&quot;1,2,3,45 4,5&quot;</span>);</span><br><span class="line">vector&lt;tstring&gt; vBuf;</span><br><span class="line"><span class="keyword">int</span> iRet = <span class="built_in">strSplit</span>(str, _T(<span class="string">&quot; ,&quot;</span>), vBuf, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/** split string for stl string type</span></span><br><span class="line"><span class="comment">@param [in] source</span></span><br><span class="line"><span class="comment">@param [in] delimiter</span></span><br><span class="line"><span class="comment">@param [out] out</span></span><br><span class="line"><span class="comment">@param [in] iTrim 1 trim 0 not trim</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">strSplit</span><span class="params">(<span class="keyword">const</span> tstring&amp; source, <span class="keyword">const</span> tstring&amp; delimiter, vector&lt;tstring&gt;&amp; out, <span class="keyword">const</span> <span class="keyword">int</span> iTrim)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    out.<span class="built_in">clear</span>();</span><br><span class="line">    TCHAR* pContex;</span><br><span class="line">    TCHAR* pFind = _tcstok_s((<span class="keyword">wchar_t</span>*)source.<span class="built_in">c_str</span>(), delimiter.<span class="built_in">c_str</span>(), &amp;pContex);</span><br><span class="line">    <span class="keyword">if</span> (<span class="number">0</span> == _tcscmp(_T(<span class="string">&quot;\0&quot;</span>), pContex))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    tstring strTmp;</span><br><span class="line">    <span class="keyword">while</span> (pFind)</span><br><span class="line">    &#123;</span><br><span class="line">        strTmp = pFind;</span><br><span class="line">        <span class="keyword">if</span> (iTrim)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">strTrim</span>(strTmp);</span><br><span class="line">        &#125;</span><br><span class="line">        out.<span class="built_in">push_back</span>(strTmp);</span><br><span class="line">        pFind = _tcstok_s(<span class="literal">NULL</span>, delimiter.<span class="built_in">c_str</span>(), &amp;pContex);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/** split string for stl string type</span></span><br><span class="line"><span class="comment">@param [in] source</span></span><br><span class="line"><span class="comment">@param [in] delimiter</span></span><br><span class="line"><span class="comment">@param [out] out</span></span><br><span class="line"><span class="comment">@param [in] iTrim 1 trim 0 not trim</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">stlSplit</span><span class="params">(<span class="keyword">const</span> tstring&amp; source, <span class="keyword">const</span> tstring&amp; delimiter, vector&lt;tstring&gt;&amp; out, <span class="keyword">int</span> iTrim)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">size_t</span> fpos = <span class="number">0</span>, bpos = <span class="number">0</span>;</span><br><span class="line">    out.<span class="built_in">clear</span>();</span><br><span class="line">    tstring strTmp;</span><br><span class="line">    <span class="keyword">while</span> ((fpos = source.<span class="built_in">find_first_of</span>(delimiter, fpos)) != string::npos)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (iTrim)</span><br><span class="line">        &#123;</span><br><span class="line">            strTmp = source.<span class="built_in">substr</span>(bpos, fpos - bpos);</span><br><span class="line">            <span class="built_in">strTrim</span>(strTmp);</span><br><span class="line">            <span class="keyword">if</span> (<span class="literal">false</span> == strTmp.<span class="built_in">empty</span>())</span><br><span class="line">            &#123;</span><br><span class="line">                out.<span class="built_in">push_back</span>(strTmp);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            out.<span class="built_in">push_back</span>(source.<span class="built_in">substr</span>(bpos, fpos - bpos));</span><br><span class="line">        &#125;</span><br><span class="line">        ++fpos;</span><br><span class="line">        bpos = fpos;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (bpos &lt; source.<span class="built_in">size</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (iTrim)</span><br><span class="line">        &#123;</span><br><span class="line">            strTmp = source.<span class="built_in">substr</span>(bpos);</span><br><span class="line">            <span class="built_in">strTrim</span>(strTmp);</span><br><span class="line">            <span class="keyword">if</span> (<span class="literal">false</span> == strTmp.<span class="built_in">empty</span>())</span><br><span class="line">            &#123;</span><br><span class="line">                out.<span class="built_in">push_back</span>(strTmp);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            out.<span class="built_in">push_back</span>(source.<span class="built_in">substr</span>(bpos));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">char sentence[] = &quot;192.168...9...14&quot;;</span><br><span class="line">    cout &lt;&lt; &quot;sentence = &quot; &lt;&lt; sentence &lt;&lt; &quot;\nThe tokens are:\n&quot;;</span><br><span class="line">    char *p;</span><br><span class="line">    char *token = strtok_s(sentence, &quot;.&quot;, &amp;p);</span><br><span class="line">    while (token != NULL)&#123;</span><br><span class="line"></span><br><span class="line">        cout &lt;&lt; token &lt;&lt; &#x27;\n&#x27;;</span><br><span class="line">        token = strtok_s(NULL, &quot;.&quot;, &amp;p);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">/* strtok example */</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;string.h&gt;</span><br><span class="line"></span><br><span class="line">int main ()</span><br><span class="line">&#123;</span><br><span class="line">  char str[] =&quot;This is a sample string,just testing.&quot;;</span><br><span class="line">  char * pch;</span><br><span class="line">  printf (&quot;Splitting string \&quot;%s\&quot; in tokens:\n&quot;,str);</span><br><span class="line">  pch = strtok (str,&quot; &quot;);</span><br><span class="line">  while (pch != NULL)</span><br><span class="line">  &#123;</span><br><span class="line">    printf (&quot;%s\n&quot;,pch);</span><br><span class="line">    pch = strtok (NULL, &quot; ,.&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">Splitting string &quot;This is a sample string,just testing.&quot; in tokens:</span><br><span class="line">This</span><br><span class="line">is</span><br><span class="line">a</span><br><span class="line">sample</span><br><span class="line">string</span><br><span class="line">just</span><br><span class="line">testing </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">01.char buf[]=&quot;port=5000&quot;;  </span><br><span class="line">02.char key[100]=&quot;&quot;;  </span><br><span class="line">03.char value[100]=&quot;&quot;;  </span><br><span class="line">04.  </span><br><span class="line">05.strcpy(key,strtok(buf,&quot;=&quot;));  </span><br><span class="line">06.strcpy(value,strtok(NULL,&quot;=&quot;));  </span><br><span class="line">07.printf(&quot;key=%s\n&quot;,key);  </span><br><span class="line">08.printf(&quot;value=%s\n&quot;,value);  </span><br></pre></td></tr></table></figure>
+
+<h2 id="string-to-hex-byte"><a href="#string-to-hex-byte" class="headerlink" title="string to hex byte"></a>string to hex byte</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">Convert string to byte vector</span></span><br><span class="line"><span class="comment">str: [in] string need convert</span></span><br><span class="line"><span class="comment">byte: [in] byte vector for store</span></span><br><span class="line"><span class="comment">return: false is successful, otherwise is true.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">str2byte</span><span class="params">(<span class="keyword">const</span> string&amp; str, vector&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt;&amp; byte)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	byte.<span class="built_in">clear</span>();</span><br><span class="line">	string str1 = str;</span><br><span class="line">	<span class="keyword">size_t</span> fpos;</span><br><span class="line">	<span class="keyword">while</span> (string::npos != (fpos = str1.<span class="built_in">find_first_of</span>(<span class="string">&quot; \t\n\r;&quot;</span>)))</span><br><span class="line">	&#123;</span><br><span class="line">		str1.<span class="built_in">erase</span>(fpos, <span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (str1.<span class="built_in">size</span>() % <span class="number">2</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="comment">//	int dbg = 0;</span></span><br><span class="line">	<span class="keyword">for</span> (string::const_iterator it = str1.<span class="built_in">begin</span>(); it != str1.<span class="built_in">end</span>(); it += <span class="number">2</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="number">0</span> &gt;= <span class="built_in">sscanf_s</span>((<span class="keyword">const</span> <span class="keyword">char</span>*)&amp;(*it), <span class="string">&quot;%02X&quot;</span>, &amp;i))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//++dbg;</span></span><br><span class="line">		byte.<span class="built_in">push_back</span>((<span class="keyword">unsigned</span> <span class="keyword">char</span>)i);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">Convert string to byte array</span></span><br><span class="line"><span class="comment">@param str [in] string need convert</span></span><br><span class="line"><span class="comment">@param buf [in] byte array for store</span></span><br><span class="line"><span class="comment">@param len [in][out] array length</span></span><br><span class="line"><span class="comment">@param return</span></span><br><span class="line"><span class="comment">-false is successful</span></span><br><span class="line"><span class="comment">-true is failed</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">str2byte</span><span class="params">(<span class="keyword">const</span> string&amp; str, byte* buf, DWORD&amp; len)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	string str1 = str;</span><br><span class="line">	<span class="keyword">size_t</span> fpos;</span><br><span class="line">	<span class="keyword">while</span> (string::npos != (fpos = str1.<span class="built_in">find_first_of</span>(<span class="string">&quot; \t\n\r&quot;</span>)))</span><br><span class="line">	&#123;</span><br><span class="line">		str1.<span class="built_in">erase</span>(fpos, <span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">	UINT dbg = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (string::const_iterator it = str1.<span class="built_in">begin</span>(); it != str1.<span class="built_in">end</span>(); it += <span class="number">2</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="number">0</span> &gt;= <span class="built_in">sscanf_s</span>((<span class="keyword">const</span> <span class="keyword">char</span>*)&amp;(*it), <span class="string">&quot;%02X&quot;</span>, &amp;i))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		buf[dbg] = ((<span class="keyword">unsigned</span> <span class="keyword">char</span>)i);</span><br><span class="line">		++dbg;</span><br><span class="line">		<span class="keyword">if</span> (dbg &gt; len)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	len = dbg;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">Convert string to byte vector</span></span><br><span class="line"><span class="comment">str: [in] string need convert</span></span><br><span class="line"><span class="comment">byte: [in] byte vector for store</span></span><br><span class="line"><span class="comment">return: false is successful, otherwise is true.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">str2byte</span><span class="params">(<span class="keyword">const</span> TCHAR* pstr, vector&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt;&amp; vByte)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	vByte.<span class="built_in">clear</span>();</span><br><span class="line">	wstring str = pstr;</span><br><span class="line">	<span class="keyword">size_t</span> fpos;</span><br><span class="line">	<span class="keyword">while</span> (wstring::npos != (fpos = str.<span class="built_in">find_first_of</span>(<span class="built_in">TEXT</span>(<span class="string">&quot; \t\n\r&quot;</span>))))</span><br><span class="line">	&#123;</span><br><span class="line">		str.<span class="built_in">erase</span>(fpos, <span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span> uc = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> iTmp = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (wstring::const_iterator it = str.<span class="built_in">begin</span>(); it != str.<span class="built_in">end</span>(); it += <span class="number">2</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="number">0</span> &gt;= _stscanf_s((<span class="keyword">const</span> TCHAR*)&amp;(*it), <span class="built_in">TEXT</span>(<span class="string">&quot;%02X&quot;</span>), &amp;iTmp))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		vByte.<span class="built_in">push_back</span>((<span class="keyword">unsigned</span> <span class="keyword">char</span>)iTmp);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> ASLUCKY_STRINGHELPER__</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ASLUCKY_STRINGHELPER__</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">convert byte array to tchar vector</span></span><br><span class="line"><span class="comment">@param bArr [in] byte array</span></span><br><span class="line"><span class="comment">@param size [in] byte array size</span></span><br><span class="line"><span class="comment">\param strOut [in] string of data output</span></span><br><span class="line"><span class="comment">\param strOutLen [in] length of strOut buffer</span></span><br><span class="line"><span class="comment">\return</span></span><br><span class="line"><span class="comment">- 0 successful</span></span><br><span class="line"><span class="comment">- 1 string buffer is small</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">byte2Str</span><span class="params">(<span class="keyword">const</span> BYTE* bArr, <span class="keyword">const</span> DWORD size, TCHAR* strOut, DWORD strOutLen)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	strOut[<span class="number">0</span>] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">	<span class="keyword">if</span> (!size)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	DWORD pos = <span class="number">0</span>;</span><br><span class="line">	TCHAR hexval[] = &#123; <span class="string">&#x27;0&#x27;</span>, <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;2&#x27;</span>, <span class="string">&#x27;3&#x27;</span>, <span class="string">&#x27;4&#x27;</span>, <span class="string">&#x27;5&#x27;</span>, <span class="string">&#x27;6&#x27;</span>, <span class="string">&#x27;7&#x27;</span>, <span class="string">&#x27;8&#x27;</span>, <span class="string">&#x27;9&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span> &#125;;</span><br><span class="line">	<span class="keyword">for</span> (DWORD j = <span class="number">0</span>; j &lt; size; j++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (pos + <span class="number">3</span> &gt; strOutLen)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		strOut[pos] = hexval[((bArr[j] &gt;&gt; <span class="number">4</span>) &amp; <span class="number">0x0F</span>)];</span><br><span class="line">		strOut[pos + <span class="number">1</span>] = hexval[(bArr[j]) &amp; <span class="number">0x0F</span>];</span><br><span class="line">		strOut[pos + <span class="number">2</span>] = <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">		pos += <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	strOut[pos - <span class="number">1</span>] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">convert byte array to tchar vector</span></span><br><span class="line"><span class="comment">@param bArr [in] byte array</span></span><br><span class="line"><span class="comment">@param size [in] byte array size</span></span><br><span class="line"><span class="comment">@param vstr [in] TCHAR vector</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">byte2Str</span><span class="params">(<span class="keyword">const</span> BYTE* bArr, <span class="keyword">const</span> DWORD size, vector&lt;TCHAR&gt;&amp; vstr)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	vstr.<span class="built_in">clear</span>();</span><br><span class="line">	vstr.<span class="built_in">reserve</span>(<span class="number">500</span>);</span><br><span class="line">	<span class="keyword">if</span> (!size)</span><br><span class="line">	&#123;</span><br><span class="line">		vstr.<span class="built_in">push_back</span>(<span class="string">&#x27;\0&#x27;</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	TCHAR hexval[] = &#123; <span class="string">&#x27;0&#x27;</span>, <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;2&#x27;</span>, <span class="string">&#x27;3&#x27;</span>, <span class="string">&#x27;4&#x27;</span>, <span class="string">&#x27;5&#x27;</span>, <span class="string">&#x27;6&#x27;</span>, <span class="string">&#x27;7&#x27;</span>, <span class="string">&#x27;8&#x27;</span>, <span class="string">&#x27;9&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span> &#125;;</span><br><span class="line">	<span class="keyword">for</span> (DWORD j = <span class="number">0</span>; j &lt; size; j++)</span><br><span class="line">	&#123;</span><br><span class="line">		vstr.<span class="built_in">push_back</span>(hexval[((bArr[j] &gt;&gt; <span class="number">4</span>) &amp; <span class="number">0x0F</span>)]);</span><br><span class="line">		vstr.<span class="built_in">push_back</span>(hexval[(bArr[j]) &amp; <span class="number">0x0F</span>]);</span><br><span class="line">		vstr.<span class="built_in">push_back</span>(<span class="string">&#x27; &#x27;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	vstr.<span class="built_in">push_back</span>(<span class="string">&#x27;\0&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">byte2StrA</span><span class="params">(<span class="keyword">const</span> BYTE* bArr, <span class="keyword">const</span> DWORD size, vector&lt;CHAR&gt;&amp; vstr)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	vstr.<span class="built_in">clear</span>();</span><br><span class="line">	vstr.<span class="built_in">reserve</span>(<span class="number">500</span>);</span><br><span class="line">	<span class="keyword">if</span> (!size)</span><br><span class="line">	&#123;</span><br><span class="line">		vstr.<span class="built_in">push_back</span>(<span class="string">&#x27;\0&#x27;</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	TCHAR hexval[] = &#123; <span class="string">&#x27;0&#x27;</span>, <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;2&#x27;</span>, <span class="string">&#x27;3&#x27;</span>, <span class="string">&#x27;4&#x27;</span>, <span class="string">&#x27;5&#x27;</span>, <span class="string">&#x27;6&#x27;</span>, <span class="string">&#x27;7&#x27;</span>, <span class="string">&#x27;8&#x27;</span>, <span class="string">&#x27;9&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span> &#125;;</span><br><span class="line">	<span class="keyword">for</span> (DWORD j = <span class="number">0</span>; j &lt; size; j++)</span><br><span class="line">	&#123;</span><br><span class="line">		vstr.<span class="built_in">push_back</span>(hexval[((bArr[j] &gt;&gt; <span class="number">4</span>) &amp; <span class="number">0x0F</span>)]);</span><br><span class="line">		vstr.<span class="built_in">push_back</span>(hexval[(bArr[j]) &amp; <span class="number">0x0F</span>]);</span><br><span class="line">	&#125;</span><br><span class="line">	vstr.<span class="built_in">push_back</span>(<span class="string">&#x27;\0&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="字符串数字转换"><a href="#字符串数字转换" class="headerlink" title="字符串数字转换"></a>字符串数字转换</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">char</span> buf[<span class="number">200</span>] = &#123;<span class="string">&#x27;\0&#x27;</span>&#125;;</span><br><span class="line"><span class="keyword">if</span> ( <span class="number">-1</span> == <span class="built_in">sprintf_s</span>(buf,<span class="number">200</span>,(<span class="string">&quot;%04d%02d%02d&quot;</span>),t.wYear,t.wMonth,t.wDay) )</span><br><span class="line">&#123;</span><br><span class="line">    logName += <span class="string">&quot;payHelper.txt&quot;</span>;</span><br><span class="line">&#125;<span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    logName += &amp;buf[<span class="number">0</span>];</span><br><span class="line">    logName += <span class="string">&quot;_xxx.txt&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="字符串转数字"><a href="#字符串转数字" class="headerlink" title="字符串转数字"></a>字符串转数字</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//C++11</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">stoi</span> <span class="params">(<span class="keyword">const</span> string&amp;  str, <span class="keyword">size_t</span>* idx = <span class="number">0</span>, <span class="keyword">int</span> base = <span class="number">10</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">stoi</span> <span class="params">(<span class="keyword">const</span> wstring&amp; str, <span class="keyword">size_t</span>* idx = <span class="number">0</span>, <span class="keyword">int</span> base = <span class="number">10</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">stol</span> <span class="params">(<span class="keyword">const</span> string&amp;  str, <span class="keyword">size_t</span>* idx = <span class="number">0</span>, <span class="keyword">int</span> base = <span class="number">10</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">stol</span> <span class="params">(<span class="keyword">const</span> wstring&amp; str, <span class="keyword">size_t</span>* idx = <span class="number">0</span>, <span class="keyword">int</span> base = <span class="number">10</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">double</span> <span class="title">stold</span> <span class="params">(<span class="keyword">const</span> string&amp;  str, <span class="keyword">size_t</span>* idx = <span class="number">0</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">double</span> <span class="title">stold</span> <span class="params">(<span class="keyword">const</span> wstring&amp; str, <span class="keyword">size_t</span>* idx = <span class="number">0</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">stof</span> <span class="params">(<span class="keyword">const</span> string&amp;  str, <span class="keyword">size_t</span>* idx = <span class="number">0</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">stof</span> <span class="params">(<span class="keyword">const</span> wstring&amp; str, <span class="keyword">size_t</span>* idx = <span class="number">0</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">stod</span> <span class="params">(<span class="keyword">const</span> string&amp;  str, <span class="keyword">size_t</span>* idx = <span class="number">0</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">stod</span> <span class="params">(<span class="keyword">const</span> wstring&amp; str, <span class="keyword">size_t</span>* idx = <span class="number">0</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int64_t</span> totalSize = _tstoi64(dInfo.totalSize.<span class="built_in">c_str</span>());</span><br><span class="line"><span class="keyword">int64_t</span> freeSize = _tstoi64(dInfo.freeSize.<span class="built_in">c_str</span>());</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="number">0</span> == totalSize || <span class="number">0</span> == freeSize)</span><br><span class="line">&#123;</span><br><span class="line">    dInfo.usedSize = _T(<span class="string">&quot;&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Parses str interpreting its content as a floating-point number, which is returned as a value of type <span class="keyword">float</span>.</span><br><span class="line">If idx is <span class="keyword">not</span> a null pointer, the function also sets the value of idx to the position of the first character in str after the number.</span><br><span class="line"></span><br><span class="line"> 	<span class="function">_stscanf_s</span></span><br><span class="line"><span class="function">        sscanf_s</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">        <span class="title">if</span> <span class="params">(<span class="number">1</span> != _stscanf_s(pstrPort.c_str(), TEXT(<span class="string">&quot;%d&quot;</span>), &amp;iPort))</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> RET_INVALIDE_PARAM;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function">CString <span class="title">thestring</span><span class="params">(<span class="string">&quot;13.37&quot;</span>)</span></span>;</span><br><span class="line"><span class="keyword">double</span> d = <span class="built_in">atof</span>(thestring).</span><br><span class="line">...<span class="keyword">or</span> <span class="keyword">for</span> Unicode builds, _wtof():</span><br><span class="line"></span><br><span class="line">CString <span class="built_in">thestring</span>(<span class="string">L&quot;13.37&quot;</span>);</span><br><span class="line"><span class="keyword">double</span> d = _wtof(thestring).</span><br><span class="line"></span><br><span class="line">CString strOrder;</span><br><span class="line">	<span class="built_in">GetDlgItemText</span>(IDC_EDIT_ORDER,strOrder);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">double</span> order = _tstof(strOrder);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">_tstof	atof	atof	_wtof</span><br><span class="line">_tstoi	atoi	atoi	_wtoi</span><br><span class="line">_tstoi64	_atoi64	_atoi64	_wtoi64</span><br><span class="line">_tstol	atol	atol	_wtol</span><br><span class="line"></span><br><span class="line">_ttoi64	_atoi64	_atoi64	_wtoi64</span><br><span class="line">_ttol	atol	atol	_wtol</span><br></pre></td></tr></table></figure>
+
+<h3 id="数字转字符串"><a href="#数字转字符串" class="headerlink" title="数字转字符串"></a>数字转字符串</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">_itoa_s</span><br><span class="line"></span><br><span class="line">C++11</span><br><span class="line">#include &lt;string&gt;     // std::wstring, std::to_wstring</span><br><span class="line"></span><br><span class="line">string to_string (int val);</span><br><span class="line">string to_string (long val);</span><br><span class="line">string to_string (long long val);</span><br><span class="line">string to_string (unsigned val);</span><br><span class="line">string to_string (unsigned long val);</span><br><span class="line">string to_string (unsigned long long val);</span><br><span class="line">string to_string (float val);</span><br><span class="line">string to_string (double val);</span><br><span class="line">string to_string (long double val);</span><br><span class="line"></span><br><span class="line">wstring to_wstring (int val);</span><br><span class="line">wstring to_wstring (long val);</span><br><span class="line">wstring to_wstring (long long val);</span><br><span class="line">wstring to_wstring (unsigned val);</span><br><span class="line">wstring to_wstring (unsigned long val);</span><br><span class="line">wstring to_wstring (unsigned long long val);</span><br><span class="line">wstring to_wstring (float val);</span><br><span class="line">wstring to_wstring (double val);</span><br><span class="line">wstring to_wstring (long double val);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line"></span><br><span class="line">int main ()</span><br><span class="line">&#123;</span><br><span class="line">  int i;</span><br><span class="line">  char buffer [33];</span><br><span class="line">  printf (&quot;Enter a number: &quot;);</span><br><span class="line">  scanf (&quot;%d&quot;,&amp;i);</span><br><span class="line">  snprintf(buffer, sizeof(buffer), &quot;%d&quot;, i);</span><br><span class="line">  printf (&quot;decimal: %s\n&quot;,buffer);</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="宽字符转-ASCII"><a href="#宽字符转-ASCII" class="headerlink" title="宽字符转 ASCII"></a>宽字符转 ASCII</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;list&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _UNICODE</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> tstring wstring</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> tstring string</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// _UNICODE</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">strTrim</span><span class="params">(tstring&amp; s)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    s.<span class="built_in">erase</span>(<span class="number">0</span>, s.<span class="built_in">find_first_not_of</span>(_T(<span class="string">&quot; \t\f\v\n\r&quot;</span>)));</span><br><span class="line">    s.<span class="built_in">erase</span>(s.<span class="built_in">find_last_not_of</span>(_T(<span class="string">&quot; \t\f\v\n\r&quot;</span>)) + <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//下面代码在转换mht内容的时候失败了，提示有的字符没有,中文可用</span></span><br><span class="line"><span class="function">wstring <span class="title">s2w</span><span class="params">(<span class="keyword">const</span> string&amp; str)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">size_t</span> num = <span class="number">0</span>;</span><br><span class="line">    vector&lt;<span class="keyword">wchar_t</span>&gt;<span class="built_in">buf</span>(str.<span class="built_in">size</span>() * <span class="number">2</span> + <span class="number">2</span>);</span><br><span class="line">    <span class="keyword">_locale_t</span> local = _create_locale(LC_ALL, <span class="string">&quot;chs&quot;</span>);</span><br><span class="line">    <span class="comment">//if failed set buf empty string and num = 0</span></span><br><span class="line">    _mbstowcs_s_l(&amp;num, &amp;buf[<span class="number">0</span>], buf.<span class="built_in">size</span>(), str.<span class="built_in">c_str</span>(), _TRUNCATE, local);</span><br><span class="line">    _free_locale(local);</span><br><span class="line">    <span class="keyword">return</span> &amp;buf[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">string <span class="title">w2s</span><span class="params">(<span class="keyword">const</span> wstring&amp; wstr)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">size_t</span> num = <span class="number">0</span>;</span><br><span class="line">    vector&lt;<span class="keyword">char</span>&gt;<span class="built_in">buf</span>(wstr.<span class="built_in">size</span>() * <span class="number">2</span> + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">_locale_t</span> local = _create_locale(LC_ALL, <span class="string">&quot;chs&quot;</span>);</span><br><span class="line">    <span class="comment">//if failed set buf empty string and num = 0</span></span><br><span class="line">    _wcstombs_s_l(&amp;num, &amp;buf[<span class="number">0</span>], buf.<span class="built_in">size</span>(), wstr.<span class="built_in">c_str</span>(), _TRUNCATE, local);</span><br><span class="line">    _free_locale(local);</span><br><span class="line">    <span class="keyword">return</span> &amp;buf[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//这个目前好用,对中文有问题</span></span><br><span class="line"><span class="function">std::wstring <span class="title">s2w</span><span class="params">(<span class="keyword">const</span> std::string &amp;str)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">std::wstring <span class="title">wstr</span><span class="params">(str.length(), <span class="string">L&#x27; &#x27;</span>)</span></span>;</span><br><span class="line">    std::<span class="built_in">copy</span>(str.<span class="built_in">begin</span>(), str.<span class="built_in">end</span>(), wstr.<span class="built_in">begin</span>());</span><br><span class="line">    <span class="keyword">return</span> wstr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//只拷贝低字节至string中</span></span><br><span class="line"><span class="function">std::string <span class="title">w2s</span><span class="params">(<span class="keyword">const</span> std::wstring &amp;wstr)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">std::string <span class="title">str</span><span class="params">(wstr.length(), <span class="string">&#x27; &#x27;</span>)</span></span>;</span><br><span class="line">    std::<span class="built_in">copy</span>(wstr.<span class="built_in">begin</span>(), wstr.<span class="built_in">end</span>(), str.<span class="built_in">begin</span>());</span><br><span class="line">    <span class="keyword">return</span> str;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//============================================下面代码在转换mht内容的时候失败了，提示有的字符没有 对中文有问题</span></span><br><span class="line"><span class="function">std::wstring <span class="title">s2w</span><span class="params">(<span class="keyword">const</span> std::string &amp;str)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    wstring wstr;</span><br><span class="line">    <span class="keyword">size_t</span> nLen = str.<span class="built_in">size</span>();</span><br><span class="line">    wstr.<span class="built_in">resize</span>(nLen, <span class="string">L&#x27; &#x27;</span>);</span><br><span class="line">    <span class="keyword">int</span> nResult = <span class="built_in">MultiByteToWideChar</span>(CP_ACP, <span class="number">0</span>, (LPCSTR)str.<span class="built_in">c_str</span>(), nLen, (LPWSTR)wstr.<span class="built_in">c_str</span>(), nLen);</span><br><span class="line">    <span class="keyword">if</span> (nResult == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        wstr = _T(<span class="string">&quot;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> wstr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//wstring高字节不为0，返回FALSE</span></span><br><span class="line"><span class="function">std::string <span class="title">w2s</span><span class="params">(<span class="keyword">const</span> std::wstring &amp;wstr)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    string str;</span><br><span class="line">    <span class="keyword">size_t</span> nLen = wstr.<span class="built_in">size</span>();</span><br><span class="line">    str.<span class="built_in">resize</span>(nLen, <span class="string">&#x27; &#x27;</span>);</span><br><span class="line">    <span class="keyword">int</span> nResult = <span class="built_in">WideCharToMultiByte</span>(CP_ACP, <span class="number">0</span>, (LPCWSTR)wstr.<span class="built_in">c_str</span>(), nLen, (LPSTR)str.<span class="built_in">c_str</span>(), nLen, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">if</span> (nResult == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        str = <span class="string">&quot;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> str;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/12/14/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/cpp_string/" rel="prev" title="cpp_string">
+                  <i class="fa fa-chevron-left"></i> cpp_string
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/12/16/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%94%9F%E6%B4%BB%E5%B0%8F%E7%9F%A5%E8%AF%86/%E5%9B%AD%E8%89%BA/%E6%B5%8B%E9%87%8F%E5%9C%9F%E5%A3%A4PH%E5%80%BC/" rel="next" title="测量土壤PH值">
+                  测量土壤PH值 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

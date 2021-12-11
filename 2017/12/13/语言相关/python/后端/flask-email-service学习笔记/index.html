@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="flask email service学习笔记使用flask搭建一个邮件服务。提供RESTFul类型的api接口。接收，返回JSON数据这里没有做更细致的优化配置，只是把路走通。关于nginx等的如何优化配置这里没有描述。视频分享到youtube上了。https:&#x2F;&#x2F;youtu.be&#x2F;PsCGu52T98I优酷链接http:&#x2F;&#x2F;v.youku.com&#x2F;v_show&#x2F;id_XMzAwODM5ODU2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="flask_email_service学习笔记">
+<meta property="og:url" content="http://zhengjun.top/2017/12/13/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/%E5%90%8E%E7%AB%AF/flask-email-service%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="flask email service学习笔记使用flask搭建一个邮件服务。提供RESTFul类型的api接口。接收，返回JSON数据这里没有做更细致的优化配置，只是把路走通。关于nginx等的如何优化配置这里没有描述。视频分享到youtube上了。https:&#x2F;&#x2F;youtu.be&#x2F;PsCGu52T98I优酷链接http:&#x2F;&#x2F;v.youku.com&#x2F;v_show&#x2F;id_XMzAwODM5ODU2">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhengjun.top/2017/12/13/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/%E5%90%8E%E7%AB%AF/flask-email-service%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/24d43a84.png">
+<meta property="og:image" content="http://zhengjun.top/2017/12/13/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/%E5%90%8E%E7%AB%AF/flask-email-service%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/7ff3af41.png">
+<meta property="article:published_time" content="2017-12-13T12:28:14.000Z">
+<meta property="article:modified_time" content="2018-02-24T12:26:10.000Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="flask">
+<meta property="article:tag" content="email">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhengjun.top/2017/12/13/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/%E5%90%8E%E7%AB%AF/flask-email-service%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/24d43a84.png">
+
+
+<link rel="canonical" href="http://zhengjun.top/2017/12/13/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/%E5%90%8E%E7%AB%AF/flask-email-service%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2017/12/13/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/%E5%90%8E%E7%AB%AF/flask-email-service%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/","path":"2017/12/13/语言相关/python/后端/flask-email-service学习笔记/","title":"flask_email_service学习笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>flask_email_service学习笔记 | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#flask-email-service%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="nav-number">1.</span> <span class="nav-text">flask email service学习笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="nav-number">1.1.</span> <span class="nav-text">搭建开发环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8nginx"><span class="nav-number">1.1.1.</span> <span class="nav-text">使用nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8gunicorn"><span class="nav-number">1.1.2.</span> <span class="nav-text">使用gunicorn</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Celery-Flower"><span class="nav-number">1.1.3.</span> <span class="nav-text">使用Celery+Flower</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8RabbitMQ"><span class="nav-number">1.1.4.</span> <span class="nav-text">使用RabbitMQ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Supervisor"><span class="nav-number">1.1.5.</span> <span class="nav-text">使用Supervisor</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#flask-email-service%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-html-%E5%9B%BE%E7%89%87%EF%BC%88%E8%A1%A5%E5%85%85%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">flask email service学习笔记-html+图片（补充）</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2017/12/13/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/%E5%90%8E%E7%AB%AF/flask-email-service%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          flask_email_service学习笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-12-13 20:28:14" itemprop="dateCreated datePublished" datetime="2017-12-13T20:28:14+08:00">2017-12-13</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2018-02-24 20:26:10" itemprop="dateModified" datetime="2018-02-24T20:26:10+08:00">2018-02-24</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">后端</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="flask-email-service学习笔记"><a href="#flask-email-service学习笔记" class="headerlink" title="flask email service学习笔记"></a>flask email service学习笔记</h1><p>使用flask搭建一个邮件服务。提供RESTFul类型的api接口。接收，返回JSON数据<br>这里没有做更细致的优化配置，只是把路走通。关于nginx等的如何优化配置这里没有描述。<br>视频分享到youtube上了。<br><a target="_blank" rel="noopener" href="https://youtu.be/PsCGu52T98I">https://youtu.be/PsCGu52T98I</a><br>优酷链接<br><a target="_blank" rel="noopener" href="http://v.youku.com/v_show/id_XMzAwODM5ODU2MA==.html?f=50944544">http://v.youku.com/v_show/id_XMzAwODM5ODU2MA==.html?f=50944544</a><br>GIT地址<br><a target="_blank" rel="noopener" href="https://github.com/aslucky/mailService.git">https://github.com/aslucky/mailService.git</a></p>
+<span id="more"></span>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST 创建新任务-发送邮件</span><br><span class="line">http://[hostname]/api/v1.0/emails</span><br></pre></td></tr></table></figure>
+<p>Flask工作流程<br>客户端——web 服务器——WSGI——application<br><img alt="24d43a84.png" src="/2017/12/13/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/%E5%90%8E%E7%AB%AF/flask-email-service%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/24d43a84.png" width height></p>
+<p>WSGI:Web Server Gateway Interface，看图好理解一些，就是个中间件规范<br><img alt="7ff3af41.png" src="/2017/12/13/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/%E5%90%8E%E7%AB%AF/flask-email-service%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/7ff3af41.png" width height></p>
+<p>用到的技术：nginx+gunicorn+celery(RabbitMQ)+flower+Supervisor+python3+logging<br>本次的开发环境是MAC OS 10.12 + 本机环境是python2.7虚拟环境是python3.6.2<br>简要说明一下上面用到的库都是做什么的。<br>nginx：是一个Web服务器，也可以用作反向代理，负载平衡器和HTTP缓存<br>gunicorn(Green Unicorn)：Python WSGI HTTP Server for UNIX，是WSGI的一个实现。<br>celery:是一个异步分布式任务队列，需要RabbitMQ或者Redis来配合使用。<br>它的基本工作就是管理分配任务到不同的服务器，并且取得结果。至于说服务器之间是如何进行通信的？这个Celery本身不能解决。<br>所以，RabbitMQ作为一个消息队列管理工具被引入到和Celery集成，负责处理服务器之间的通信任务。<br>RabbitMQ:一套开源（MPL）的消息队列服务软件<br><a target="_blank" rel="noopener" href="http://flower-docs-cn.readthedocs.io/zh/latest/index.html">flower</a>：Flower是基于web的监控和管理Celery的工具.<br>Supervisor:是一个C/S架构的进程管理工具，可以很方便的用来启动、重启、关闭进程</p>
+<p>实际部署的时候，只需要运行nginx+supervisor就可以了</p>
+<h2 id="搭建开发环境"><a href="#搭建开发环境" class="headerlink" title="搭建开发环境"></a>搭建开发环境</h2><p>这里使用的是anaconda所以使用conda来创建一个python3.6.x的虚拟环境</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">安装nginx，这里没有详细记录步骤，中间可能会遇到问题，网上搜索一下就可以解决了</span><br><span class="line">brew update</span><br><span class="line">brew install nginx</span><br><span class="line"># 安装RabbitMQ</span><br><span class="line">brew install rabbitmq</span><br><span class="line"># 查看一下现有虚拟环境</span><br><span class="line">conda env list</span><br><span class="line"># 创建一个python3的虚拟环境</span><br><span class="line">conda create --name flaskMailPy3 python=3.6.2</span><br><span class="line"># 激活虚拟环境</span><br><span class="line">source activate flaskMailPy3</span><br><span class="line"># 安装flask</span><br><span class="line">pip install flask</span><br><span class="line"># 安装flask-mail扩展</span><br><span class="line">pip install flask-mail</span><br><span class="line"># 安装gunicorn</span><br><span class="line">pip install gunicorn</span><br><span class="line"># 安装celery</span><br><span class="line">pip install celery</span><br><span class="line"># 安装flower</span><br><span class="line">pip install flower</span><br><span class="line"># 安装supervisor</span><br><span class="line">pip install supervisor</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="使用nginx"><a href="#使用nginx" class="headerlink" title="使用nginx"></a>使用nginx</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 查看安装信息(经常用到, 比如查看安装目录等)</span><br><span class="line">brew info nginx</span><br><span class="line"># 启动nginx服务</span><br><span class="line">brew services start nginx</span><br><span class="line"># 关闭nginx服务</span><br><span class="line">brew services stop nginx</span><br><span class="line">重新加载nginx</span><br><span class="line">nginx -s reload</span><br><span class="line">nginx</span><br><span class="line">停止</span><br><span class="line">nginx -s stop</span><br><span class="line"># 查看所有进程监听的端口</span><br><span class="line">sudo lsof -i -P | grep -i &quot;listen&quot;</span><br><span class="line"># 查看某个端口是否被占用</span><br><span class="line">lsof -i:8000</span><br></pre></td></tr></table></figure>
+<p>利用<a href="http://localhost:8080进行访问">http://localhost:8080进行访问</a><br>配置本地映射到gnunicorn</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">        listen       8080;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        #charset koi8-r;</span><br><span class="line"></span><br><span class="line">        # access_log  logs/host.access.log  main;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">            #root   html;</span><br><span class="line">            #index  index.html index.htm;</span><br><span class="line">            proxy_pass http://127.0.0.1:8000;</span><br><span class="line">            proxy_redirect off;</span><br><span class="line">            proxy_set_header Host $host:80;</span><br><span class="line">            proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>启动nginx。以下部分通过配置supervisor启动即可。</p>
+<h3 id="使用gunicorn"><a href="#使用gunicorn" class="headerlink" title="使用gunicorn"></a>使用gunicorn</h3><p>参见gunicorn_cofig.py配置文件<br>启动gunicorn<br><code>gunicorn mailServerStudy:app -p mailServerStudy.pid -c gunicorn_config.py</code><br>停止gunicorn</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat *.pid</span><br><span class="line">kill xxx</span><br></pre></td></tr></table></figure>
+<p>-D 参数可以后台运行，避免关闭控制台后进程退出</p>
+<h3 id="使用Celery-Flower"><a href="#使用Celery-Flower" class="headerlink" title="使用Celery+Flower"></a>使用Celery+Flower</h3><p><a target="_blank" rel="noopener" href="http://www.celeryproject.org/">http://www.celeryproject.org/</a></p>
+<p>正确使用celery的7条建议<br>No.1 不要使用关系型数据库来作为AMQP的代理<br>NO.2 使用多个Queues（队列），不要只是使用默认的那个（default）<br>NO.3 使用优先级wokers<br>No.4 使用Celery’s的错误处理机制<br>No.5 使用Flower<br>No.6 只有真正需要才追踪task的结果<br>No.7 不要通过数据库或者ORM对象的方式来执行任务</p>
+<p>使用flower管理任务：<br>打开浏览器 <a target="_blank" rel="noopener" href="http://localhost:5555/">http://localhost:5555/</a></p>
+<h3 id="使用RabbitMQ"><a href="#使用RabbitMQ" class="headerlink" title="使用RabbitMQ"></a>使用RabbitMQ</h3><p><a target="_blank" rel="noopener" href="https://www.rabbitmq.com/">https://www.rabbitmq.com/</a></p>
+<p>安装路径/usr/local/sbin，不会自动添加到环境变量中，需要自己设置一下。<br>还需要配置一下系统主机名（system host name），因为rabbitmq使用主机名在各端点之间做通讯的</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo scutil --set HostName myhost.local</span><br><span class="line"># 然后添加到/etc/hosts</span><br><span class="line">127.0.0.1       localhost myhost myhost.local</span><br></pre></td></tr></table></figure>
+<p>常用命令，注意要给rabbitmq对应目录的写权限，否则运行时会提示错误</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">前台运行</span><br><span class="line">rabbitmq-server</span><br><span class="line">后台运行</span><br><span class="line">brew services start rabbitmq</span><br><span class="line">停止rabbitmq服务，这里特别说明不要使用kill来停止服务</span><br><span class="line">rabbitmqctl stop</span><br></pre></td></tr></table></figure>
+<h3 id="使用Supervisor"><a href="#使用Supervisor" class="headerlink" title="使用Supervisor"></a>使用Supervisor</h3><p>Supervisor python2 环境。官方还没有出py3的版本，不过不影响管理py3的进程。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 创建默认的配置文件，默认会到/etc/下面找，如果自定义了路径可以使用-c来指定路径</span><br><span class="line">echo_supervisord_conf &gt; /etc/supervisord.conf</span><br><span class="line"># 要给写权限</span><br><span class="line">sudo chmod -R 777 /var/log/supervisor</span><br><span class="line"># 启动</span><br><span class="line">supervisord -c ~/Documents/java_library/supervisor.conf</span><br><span class="line"># 常用命令</span><br><span class="line"># 停止某一个进程，program_name 为 [program:x] 里的 x</span><br><span class="line">supervisorctl stop program_name</span><br><span class="line"># 启动某个进程</span><br><span class="line">supervisorctl start program_name</span><br><span class="line"># 重启某个进程</span><br><span class="line">supervisorctl restart program_name</span><br><span class="line"># 结束所有属于名为 groupworker 这个分组的进程 (start，restart 同理)</span><br><span class="line">supervisorctl stop groupworker:</span><br><span class="line"># 结束 groupworker:name1 这个进程 (start，restart 同理)</span><br><span class="line">supervisorctl stop groupworker:name1</span><br><span class="line"># 停止全部进程，注：start、restart、stop 都不会载入最新的配置文件</span><br><span class="line">supervisorctl stop all</span><br><span class="line"># 载入最新的配置文件，停止原有进程并按新的配置启动、管理所有进程</span><br><span class="line">supervisorctl reload</span><br><span class="line"># 根据最新的配置文件，启动新配置或有改动的进程，配置没有改动的进程不会受影响而重启</span><br><span class="line">supervisorctl update</span><br></pre></td></tr></table></figure>
+<p>配置文件说明：这里补充一下，视频里面忘了说这个文件了/etc/supervisord.conf<br>配置日志等文件的路径：这里要注意，默认是临时目录，会被系统清理掉，需要修改一下。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[unix_http_server]</span><br><span class="line">file=/Users/zhengjun/Documents/java_library/supervisor/supervisor.sock   ; (the path to the socket file)</span><br><span class="line"></span><br><span class="line">[supervisord]</span><br><span class="line">logfile=/Users/zhengjun/Documents/java_library/supervisor//supervisord.log ; (main log file;default $CWD/supervisord.log)</span><br><span class="line">...</span><br><span class="line">pidfile=/Users/zhengjun/Documents/java_library/supervisor//supervisord.pid ; (supervisord pidfile;default supervisord.pid)</span><br></pre></td></tr></table></figure>
+<p>打开web管理支持：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[supervisorctl]</span><br><span class="line">serverurl=unix:///Users/zhengjun/Documents/java_library/supervisor//supervisor.sock ; use a unix:// URL  for a unix socket</span><br><span class="line">serverurl=http://127.0.0.1:9001 ; use an http:// url to specify an inet socket</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>这里引入程序的配置项，视频里面讲解的是这里引入的配置文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[include]</span><br><span class="line">files = /Users/zhengjun/project/PycharmProjects/mailServerStudy/app/*.conf</span><br></pre></td></tr></table></figure>
+<p>开机自动启动 Supervisord，这一步没有实际操作过，这里就是记录一下<br>引用至：<a target="_blank" rel="noopener" href="http://www.restran.net/2015/10/04/supervisord-tutorial/">http://www.restran.net/2015/10/04/supervisord-tutorial/</a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">添加到/etc/rc.local 里面的脚本中，需要添加在 exit 命令前，使用绝对路径</span><br><span class="line"># 如果是 Ubuntu 添加以下内容</span><br><span class="line">/usr/local/bin/supervisord -c /etc/supervisord.conf</span><br><span class="line"># 如果是 Centos 添加以下内容</span><br><span class="line">/usr/bin/supervisord -c /etc/supervisord.conf</span><br></pre></td></tr></table></figure>
+<p>还有个方法就是使用网友提供的各种系统的运行supervisor的脚本<br><a target="_blank" rel="noopener" href="https://github.com/Supervisor/initscripts">https://github.com/Supervisor/initscripts</a></p>
+<p>使用pycharm创建flask项目，指定flaskMailPy3环境。<br>右键Debug运行之后，点击控制台的链接，可以在浏览器中打开页面。<br>首先要做的是在上面添加utf-8编码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># coding:utf-8</span><br></pre></td></tr></table></figure>
+<p>添加发送邮件接口，直接看代码吧，东西不多。这里就不复制了。会在视频里面详细讲解</p>
+<p>补充说明：后来浏览网页的时候看到了一些开源的邮件库，下面是一个，还没具体查看。<br>envelopes：电子邮件库</p>
+<h1 id="flask-email-service学习笔记-html-图片（补充）"><a href="#flask-email-service学习笔记-html-图片（补充）" class="headerlink" title="flask email service学习笔记-html+图片（补充）"></a>flask email service学习笔记-html+图片（补充）</h1><p>上篇学习笔记的发送邮件中html正文中的图片是采用在html里面使用base64直接编码图片的方式发送的。<br>后来发现网易163的企业邮箱不支持这种内嵌的方式。<br>这里换一种更方便一些的方式。cid:imageName的方式。  </p>
+<p>视频分享:<br><a target="_blank" rel="noopener" href="https://youtu.be/dS6UVMQaPCI">youtube</a><br><a target="_blank" rel="noopener" href="http://v.youku.com/v_show/id_XMzAyNTk1MzcwOA==.html?f=50944544">优酷</a><br><a target="_blank" rel="noopener" href="https://github.com/aslucky/mailService.git">GIT</a></p>
+<p>html模板</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">	&lt;header&gt;&lt;/header&gt;</span><br><span class="line"></span><br><span class="line">	&lt;img height=&quot;120&quot; width=&quot;343&quot; style=&quot;text-align:center;margin-left:8%&quot; src=&quot;cid:invoice&quot; alt=&quot;增值税电子普通发票&quot;/&gt;</span><br><span class="line">	&lt;div&gt;</span><br><span class="line">		&lt;p&gt;尊敬的用户，您好:&lt;/p&gt;</span><br><span class="line">		&lt;p&gt;&lt;strong&gt;您申请的电子发票已投递成功&lt;/strong&gt;,请查收。&lt;br&gt;如您对发票信息有疑问请您联系商家或致电&lt;span&gt;400-xxx-xxxx</span><br><span class="line">&lt;/span&gt;&lt;/p&gt;</span><br><span class="line">		&lt;p&gt;xx电子发票服务&lt;/p&gt;</span><br><span class="line">	&lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br></pre></td></tr></table></figure>
+
+<p>代码修改</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># add html content png</span><br><span class="line">SITE_ROOT = os.path.realpath(os.path.dirname(__file__))</span><br><span class="line">imgPath = os.path.join(SITE_ROOT, &quot;templates&quot;, &quot;invoice.png&quot;)</span><br><span class="line"></span><br><span class="line">with open(imgPath, &#x27;rb&#x27;) as fp:</span><br><span class="line"> msg.attach(filename=imgPath, data=fp.read(),</span><br><span class="line">            content_type=&#x27;application/octet-stream&#x27;, disposition=&#x27;inline&#x27;,</span><br><span class="line">            headers=[(&#x27;Content-ID&#x27;, &#x27;invoice&#x27;)])</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/flask/" rel="tag"># flask</a>
+              <a href="/tags/email/" rel="tag"># email</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/12/13/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/windows/MFC/CEdit/" rel="prev" title="CEdit">
+                  <i class="fa fa-chevron-left"></i> CEdit
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/12/14/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/cpp_string/" rel="next" title="cpp_string">
+                  cpp_string <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

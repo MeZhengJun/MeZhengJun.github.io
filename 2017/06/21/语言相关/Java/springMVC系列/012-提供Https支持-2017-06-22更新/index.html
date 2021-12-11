@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="学习Java springMVC的系列文章，在这里主要是提供Https支持。 视频发布在youtube上面了https:&#x2F;&#x2F;youtu.be&#x2F;fnxF0kXVEJQ优酷上面的链接http:&#x2F;&#x2F;v.youku.com&#x2F;v_show&#x2F;id_XMjgzOTg5MDgwNA&#x3D;&#x3D;.html?f&#x3D;49760672">
+<meta property="og:type" content="article">
+<meta property="og:title" content="012 提供Https支持(2017.06.22更新)">
+<meta property="og:url" content="http://zhengjun.top/2017/06/21/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/012-%E6%8F%90%E4%BE%9BHttps%E6%94%AF%E6%8C%81-2017-06-22%E6%9B%B4%E6%96%B0/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="学习Java springMVC的系列文章，在这里主要是提供Https支持。 视频发布在youtube上面了https:&#x2F;&#x2F;youtu.be&#x2F;fnxF0kXVEJQ优酷上面的链接http:&#x2F;&#x2F;v.youku.com&#x2F;v_show&#x2F;id_XMjgzOTg5MDgwNA&#x3D;&#x3D;.html?f&#x3D;49760672">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhengjun.top/2017/06/21/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/012-%E6%8F%90%E4%BE%9BHttps%E6%94%AF%E6%8C%81-2017-06-22%E6%9B%B4%E6%96%B0/14974247091765/14975076285054.jpg">
+<meta property="article:published_time" content="2017-06-21T14:51:54.000Z">
+<meta property="article:modified_time" content="2019-01-11T03:41:26.000Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="https">
+<meta property="article:tag" content="springMVC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhengjun.top/2017/06/21/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/012-%E6%8F%90%E4%BE%9BHttps%E6%94%AF%E6%8C%81-2017-06-22%E6%9B%B4%E6%96%B0/14974247091765/14975076285054.jpg">
+
+
+<link rel="canonical" href="http://zhengjun.top/2017/06/21/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/012-%E6%8F%90%E4%BE%9BHttps%E6%94%AF%E6%8C%81-2017-06-22%E6%9B%B4%E6%96%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2017/06/21/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/012-%E6%8F%90%E4%BE%9BHttps%E6%94%AF%E6%8C%81-2017-06-22%E6%9B%B4%E6%96%B0/","path":"2017/06/21/语言相关/Java/springMVC系列/012-提供Https支持-2017-06-22更新/","title":"012 提供Https支持(2017.06.22更新)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>012 提供Https支持(2017.06.22更新) | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#012-%E6%8F%90%E4%BE%9BHttps%E6%94%AF%E6%8C%81-2017-06-22%E6%9B%B4%E6%96%B0"><span class="nav-number">1.</span> <span class="nav-text">012 提供Https支持(2017.06.22更新)</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2017/06/21/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/012-%E6%8F%90%E4%BE%9BHttps%E6%94%AF%E6%8C%81-2017-06-22%E6%9B%B4%E6%96%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          012 提供Https支持(2017.06.22更新)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-06-21 22:51:54" itemprop="dateCreated datePublished" datetime="2017-06-21T22:51:54+08:00">2017-06-21</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2019-01-11 11:41:26" itemprop="dateModified" datetime="2019-01-11T11:41:26+08:00">2019-01-11</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">后端</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF/springMVC%E5%AE%9E%E8%B7%B5%E7%B3%BB%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">springMVC实践系列</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>12k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>11 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>学习Java springMVC的系列文章，在这里主要是提供Https支持。</p>
+<p>视频发布在youtube上面了<br><a target="_blank" rel="noopener" href="https://youtu.be/fnxF0kXVEJQ">https://youtu.be/fnxF0kXVEJQ</a><br>优酷上面的链接<br><a target="_blank" rel="noopener" href="http://v.youku.com/v_show/id_XMjgzOTg5MDgwNA==.html?f=49760672">http://v.youku.com/v_show/id_XMjgzOTg5MDgwNA==.html?f=49760672</a></p>
+<span id="more"></span>
+<h1 id="012-提供Https支持-2017-06-22更新"><a href="#012-提供Https支持-2017-06-22更新" class="headerlink" title="012 提供Https支持(2017.06.22更新)"></a>012 提供Https支持(2017.06.22更新)</h1><p>HTTPS（全称：Hypertext Transfer Protocol over Secure Socket Layer），是以安全为目标的HTTP通道，简单讲是HTTP的安全版。即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。</p>
+<p>HTTPS的作用<br>确认网站的真实性：通过权威机构的证书来证明<br>保证数据传输的安全：客户端产生一个对称的密钥，通过服务器的证书来交换密钥，之后的数据使用密钥加密之后传输。</p>
+<p>双向认证 SSL 协议的具体过程<br>　　① 浏览器发送一个连接请求给安全服务器。<br>　　② 服务器将自己的证书，以及同证书相关的信息发送给客户浏览器。<br>　　③ 客户浏览器检查服务器送过来的证书是否是由自己信赖的 CA 中心所签发的。如果是，就继续执行协议；如果不是，客户浏览器就给客户一个警告消息：警告客户这个证书不是可以信赖的，询问客户是否需要继续。<br>　　④ 接着客户浏览器比较证书里的消息，例如域名和公钥，与服务器刚刚发送的相关消息是否一致，如果是一致的，客户浏览器认可这个服务器的合法身份。<br>　　⑤ 服务器要求客户发送客户自己的证书。收到后，服务器验证客户的证书，如果没有通过验证，拒绝连接；如果通过验证，服务器获得用户的公钥。<br>　　⑥ 客户浏览器告诉服务器自己所能够支持的通讯对称密码方案。<br>　　⑦ 服务器从客户发送过来的密码方案中，选择一种加密程度最高的密码方案，用客户的公钥加过密后通知浏览器。<br>　　⑧ 浏览器针对这个密码方案，选择一个通话密钥，接着用服务器的公钥加过密后发送给服务器。<br>　　⑨ 服务器接收到浏览器送过来的消息，用自己的私钥解密，获得通话密钥。<br>　　⑩ 服务器、浏览器接下来的通讯都是用对称密码方案，对称密钥是加过密的。</p>
+<p>Java提供相对简单的被称为keytool的命令行工具，可以简单地产生“自己签名”的证书。自己签名的证书只是用户产生的证书，没有正式在大家所熟知的认证权威那里注册过，因此不能确保它的真实性。但却能保证数据传输的安全性。<br>下面是官方网址<br><a target="_blank" rel="noopener" href="http://docs.oracle.com/javase/7/docs/technotes/tools/solaris/keytool.html">http://docs.oracle.com/javase/7/docs/technotes/tools/solaris/keytool.html</a></p>
+<p>生成证书<br>-dname属性说明<br>CN=cName, OU=orgUnit, O=org, L=city, S=state, C=countryCode</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CN</td>
+<td>个人名字，例如：”Susan Jones”</td>
+</tr>
+<tr>
+<td>OU</td>
+<td>短的组织名字，例如：”Purchasing”</td>
+</tr>
+<tr>
+<td>O</td>
+<td>长的组织名字，例如：”ABCSystems, Inc.”</td>
+</tr>
+<tr>
+<td>L</td>
+<td>本地(城市)名字，例如：”Palo Alto”</td>
+</tr>
+<tr>
+<td>S</td>
+<td>省名字，例如：”California”</td>
+</tr>
+<tr>
+<td>C</td>
+<td>两位国家代码，例如：中国是“CN”</td>
+</tr>
+</tbody></table>
+<p><font color="red"><strong>这里增加了-ext参数，不然会出现<a target="_blank" rel="noopener" href="http://localhost:8190/template%E5%8F%AF%E4%BB%A5%E8%AE%BF%E9%97%AE%E3%80%82%E4%BD%86%E6%98%AFhttp://127.0.0.1:8190/template">http://localhost:8190/template可以访问。但是http://127.0.0.1:8190/template</a> 不能访问的问题。</strong></font></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1 、生成服务器证书库</span><br><span class="line">keytool -validity 365 -genkeypair -v -alias server -keyalg RSA -keysize 2048 -keystore /Users/zhengjun/Documents/java_library/server.keystore -dname &quot;CN=server,OU=Demo,O=Https Demo,L=Pudong,S=Shanghai,c=CN&quot; -storepass 111111 -keypass 111111 -ext SAN=DNS:localhost,IP:127.0.0.1</span><br><span class="line">2 、生成客户端证书库</span><br><span class="line">keytool -validity 365 -genkeypair -v -alias client -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore /Users/zhengjun/Documents/java_library/client.p12 -dname &quot;CN=client,OU=Demo,O=Https Demo,L=Pudong,S=Shanghai,c=CN&quot; -storepass 222222 -keypass 222222 -ext SAN=DNS:localhost,IP:127.0.0.1</span><br><span class="line">3 、从客户端证书库中导出客户端证书</span><br><span class="line">keytool -export -v -alias client -keystore /Users/zhengjun/Documents/java_library/client.p12 -storetype PKCS12 -storepass 222222 -rfc -file /Users/zhengjun/Documents/java_library/client.cer</span><br><span class="line">4 、从服务器证书库中导出服务器证书</span><br><span class="line">keytool -export -v -alias server -keystore /Users/zhengjun/Documents/java_library/server.keystore -storepass 111111 -rfc -file /Users/zhengjun/Documents/java_library/server.cer</span><br><span class="line">5 、生成客户端信任证书库(由服务端证书生成的证书库)</span><br><span class="line">keytool -import -v -alias server -file /Users/zhengjun/Documents/java_library/server.cer -keystore /Users/zhengjun/Documents/java_library/client.truststore -storepass 222222</span><br><span class="line">6 、将客户端证书导入到服务器证书库(使得服务器信任客户端证书)</span><br><span class="line">keytool -import -v -alias client -file /Users/zhengjun/Documents/java_library/client.cer -keystore /Users/zhengjun/Documents/java_library/server.keystore -storepass 111111</span><br><span class="line">7 、查看证书库中的全部证书</span><br><span class="line">keytool -list -keystore /Users/zhengjun/Documents/java_library/server.keystore -storepass 111111</span><br></pre></td></tr></table></figure>
+<p>mac下面如果keychain里面没有证书，可以手动导入进去.File-import items选择*.p12那个，需要输入生成证书时指定的密码。</p>
+<p>配置tomcat中conf下的server.xml文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- Define a SSL/TLS HTTP/1.1 Connector on port 8443</span><br><span class="line">    This connector uses the NIO implementation that requires the JSSE</span><br><span class="line">    style configuration. When using the APR/native implementation, the</span><br><span class="line">    OpenSSL style configuration is required as described in the APR/native</span><br><span class="line">    documentation --&gt;</span><br><span class="line"></span><br><span class="line">&lt;Connector port=&quot;8443&quot; protocol=&quot;org.apache.coyote.http11.Http11NioProtocol&quot;</span><br><span class="line">          maxThreads=&quot;150&quot; SSLEnabled=&quot;true&quot; scheme=&quot;https&quot; secure=&quot;true&quot;</span><br><span class="line">          clientAuth=&quot;false&quot; sslProtocol=&quot;SSL&quot;</span><br><span class="line">          keystoreFile=&quot;/Users/zhengjun/Documents/java_library/server.keystore&quot; keystorePass=&quot;111111&quot;</span><br><span class="line">    truststoreFile=&quot;/Users/zhengjun/Documents/java_library/server.keystore&quot; truststorePass=&quot;111111&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>keystoreFile</td>
+<td>指定服务器密钥库，如“/opt/web/ssl/server.keystore”</td>
+</tr>
+<tr>
+<td>keystorePass</td>
+<td>密钥库生成时的密码</td>
+</tr>
+<tr>
+<td>truststoreFile</td>
+<td>受信任密钥库，和密钥库相同即可</td>
+</tr>
+<tr>
+<td>truststorePass</td>
+<td>受信任密钥库密码</td>
+</tr>
+</tbody></table>
+<p>需要说明的是，修改TOMCAT的server.xml文件，如果是ECLIPSE中建的服务器，不会有效果，需要删除服务器重新建个服务器。配置好后重启tomcat就可以访问</p>
+<p>配置web.xml去掉默认主页支持，交给spring mvc controller处理，配置SSL参数</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- 强制SSL配置，即普通的请求也会重定向为SSL请求 --&gt;</span><br><span class="line">&lt;security-constraint&gt;</span><br><span class="line">   &lt;web-resource-collection&gt;</span><br><span class="line">       &lt;web-resource-name&gt;SSL&lt;/web-resource-name&gt;</span><br><span class="line">       &lt;url-pattern&gt;/*&lt;/url-pattern&gt; &lt;!-- 全站使用SSL --&gt;</span><br><span class="line">   &lt;/web-resource-collection&gt;</span><br><span class="line">   &lt;user-data-constraint&gt;</span><br><span class="line">       &lt;description&gt;SSL required&lt;/description&gt;</span><br><span class="line">       &lt;!-- CONFIDENTIAL: 要保证服务器和客户端之间传输的数据不能够被修改，且不能被第三方查看到 --&gt;</span><br><span class="line">       &lt;!-- INTEGRAL: 要保证服务器和client之间传输的数据不能够被修改 --&gt;</span><br><span class="line">       &lt;!-- NONE: 指示容器必须能够在任一的连接上提供数据。（即用HTTP或HTTPS，由客户端来决定） --&gt;</span><br><span class="line">       &lt;transport-guarantee&gt;CONFIDENTIAL&lt;/transport-guarantee&gt;</span><br><span class="line">   &lt;/user-data-constraint&gt;</span><br><span class="line">&lt;/security-constraint&gt;</span><br><span class="line"></span><br><span class="line">&lt;welcome-file-list&gt;  </span><br><span class="line">    &lt;welcome-file&gt;&lt;/welcome-file&gt;  </span><br><span class="line">&lt;/welcome-file-list&gt;  </span><br></pre></td></tr></table></figure>
+<p>在controller里面添加一个处理主页信息的<br>AdminController</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@Controller</span><br><span class="line">public class AdminController</span><br><span class="line">&#123;</span><br><span class="line">	private static final Logger logger = LogManager.getLogger(AdminController.class.getName());</span><br><span class="line"></span><br><span class="line">	@RequestMapping(&quot;/&quot;)</span><br><span class="line">	public String index(ServletRequest req, ServletResponse res)</span><br><span class="line">	&#123;</span><br><span class="line">		logger.info(&quot;controller index enter.&quot;);</span><br><span class="line"></span><br><span class="line">		return &quot;login&quot;;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@RequestMapping(value = &quot;/v1/login&quot;, method = RequestMethod.POST)</span><br><span class="line">    public String loginProc(ServletRequest req, ServletResponse res)</span><br><span class="line">    &#123;</span><br><span class="line">        logger.info(&quot;controller loginProc enter.&quot;);</span><br><span class="line"></span><br><span class="line">        return &quot;main&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在通过wireshark抓包就看不出来具体的信息了。<br><img src="/2017/06/21/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/012-%E6%8F%90%E4%BE%9BHttps%E6%94%AF%E6%8C%81-2017-06-22%E6%9B%B4%E6%96%B0/14974247091765/14975076285054.jpg"><br>这里因为是自签名所以chrome不信任这个证书，虽然是https，但是被划掉了。</p>
+<p>那么如何使证书受信任呢？这就需要专门的权威部门来签发给你证书。这些机构称为CA，由于CA的信息已经被集成在操作系统中了，所以这些颁发证书的CA机构是操作系统可信的。操作系统检测到证书的颁发者是可信的时候，就会信任此证书。<br>也可以自己充当CA机构来签发证书，该CA所签发的证书只能本机可信。过程如下：</p>
+<ol>
+<li>首先将CA信息安装到操作系统，使操作系统对该CA可信。<br>安装server.cer到操作系统，过程默认。</li>
+<li>使用该CA来签发证书。<br>可以使用openssl来签发数字证书，这里用的是JAVA程序来签发证书的。</li>
+</ol>
+<p>在网上找了一个登陆页面，加入工程<br>views/login.jsp</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;</span><br><span class="line">	pageEncoding=&quot;UTF-8&quot;%&gt;</span><br><span class="line">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">	&lt;title&gt;HTML5/CSS3登录表单DEMO演示&lt;/title&gt;</span><br><span class="line">	&lt;script type=&quot;text/javascript&quot; charset=&quot;UTF-8&quot; src=&quot;resources/js/prefixfree.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;style type=&quot;text/css&quot;&gt;</span><br><span class="line">/**</span><br><span class="line"> * 使用属性选择器 隐藏所有的checkboxes</span><br><span class="line"> */</span><br><span class="line">input[type=checkbox] &#123;</span><br><span class="line">	visibility: hidden;</span><br><span class="line">&#125;</span><br><span class="line">body &#123;</span><br><span class="line">   background: url(resources/images/bg.png);</span><br><span class="line">   background-size: 100% 100%;</span><br><span class="line">   margin:0;</span><br><span class="line">   padding:0;&#125;</span><br><span class="line">.content &#123;</span><br><span class="line">    width:600px;</span><br><span class="line">    height:350px;</span><br><span class="line">    margin:50px auto 10px auto;</span><br><span class="line">&#125;</span><br><span class="line">.login-form &#123;</span><br><span class="line">    width:400px;</span><br><span class="line">    height:177px;</span><br><span class="line">    margin:70px auto 0;</span><br><span class="line">    padding-top:73px;</span><br><span class="line">    position:relative;</span><br><span class="line">    background-image:-*-linear-gradient(top,rgb(255,255,255),rgb(242,242,242));</span><br><span class="line">    box-shadow:0 3px 3px rgba(21,62,78,0.8);</span><br><span class="line">&#125;</span><br><span class="line">.login-form:before &#123;</span><br><span class="line">    content:&quot;&quot;;</span><br><span class="line">    position:absolute;</span><br><span class="line">    top:-50px;</span><br><span class="line">    left:150px;</span><br><span class="line">    width:102px;</span><br><span class="line">    height:102px;</span><br><span class="line">    padding:2px;</span><br><span class="line">    border:1px solid rgb(216,216,219);</span><br><span class="line">    background:#fff url(&quot;resources/images/profilepicture.jpg&quot;) no-repeat 2px 2px;</span><br><span class="line">&#125;</span><br><span class="line">.not-registered &#123;</span><br><span class="line">    position:absolute;</span><br><span class="line">    color:rgb(153,153,153);</span><br><span class="line">    font-weight:bold;</span><br><span class="line">	font-size:13px;</span><br><span class="line">    top:calc(100% + 20px);</span><br><span class="line">    background-color:rgb(255,255,255);</span><br><span class="line">    width:400px;</span><br><span class="line">    height:46px;</span><br><span class="line">    margin:0 auto;</span><br><span class="line">    line-height:46px;</span><br><span class="line">    text-align: center;</span><br><span class="line">    box-shadow:0 3px 3px rgba(21,62,78,0.8);</span><br><span class="line">&#125;</span><br><span class="line">.not-registered a &#123;</span><br><span class="line">    margin-left:5px;</span><br><span class="line">    text-decoration: none;</span><br><span class="line">    color:rgb(52,119,182);</span><br><span class="line">    cursor: pointer;</span><br><span class="line">&#125;</span><br><span class="line">.login-form div &#123;</span><br><span class="line">    width:216px;</span><br><span class="line">    height:28px;</span><br><span class="line">    margin:20px auto;</span><br><span class="line">    position:relative;</span><br><span class="line">    line-height:28px;</span><br><span class="line">    border:none;</span><br><span class="line">&#125;</span><br><span class="line">.login-form .user-icon,</span><br><span class="line">.login-form .password-icon &#123;</span><br><span class="line">    display:inline-block;</span><br><span class="line">    font-family: &#x27;loginform-icon&#x27;;</span><br><span class="line">    font-size:15px;</span><br><span class="line">    text-align:center;</span><br><span class="line">    line-height:28px;</span><br><span class="line">    color:rgb(153,153,153);</span><br><span class="line">    position:absolute;</span><br><span class="line">    left:1px;</span><br><span class="line">    top:1px;</span><br><span class="line">    background-color:rgb(255,255,255);</span><br><span class="line">    border:none;</span><br><span class="line">    border-right:1px solid rgb(229,229,232);</span><br><span class="line">    width:30px;</span><br><span class="line">    height:28px;</span><br><span class="line">    transition: all 300ms linear;</span><br><span class="line">&#125;</span><br><span class="line">.login-form .username input, .login-form .password input &#123;</span><br><span class="line">    height:100%;</span><br><span class="line">    width:calc(100% - 40px);</span><br><span class="line">    padding-left:40px;</span><br><span class="line">    border-radius:2px;</span><br><span class="line">    border:1px solid;</span><br><span class="line">    border-color:rgb(229,229,232) rgb(220,220,221) rgb(213,213,213) rgb(220,220,221);</span><br><span class="line">    display:block;</span><br><span class="line">    transition: all 300ms linear;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.login-form .icon:before, .login-form .icon:after &#123;</span><br><span class="line">    content:&quot;&quot;;</span><br><span class="line">    position:absolute;</span><br><span class="line">    top:10px;</span><br><span class="line">    left:30px;</span><br><span class="line">    width:0;</span><br><span class="line">    height:0;</span><br><span class="line">    border:4px solid transparent;</span><br><span class="line">    border-left-color:rgb(255,255,255);</span><br><span class="line">&#125;</span><br><span class="line">.login-form .icon:before &#123;</span><br><span class="line">    top:9px;</span><br><span class="line">    border:5px solid transparent;</span><br><span class="line">    border-left-color:rgb(229,229,232);</span><br><span class="line">&#125;</span><br><span class="line">.login-form .username input:focus, .login-form .password input:focus &#123;</span><br><span class="line">    border-color:rgb(69,153,228);</span><br><span class="line">    box-shadow:0 0 2px 1px rgb(200,223,244);</span><br><span class="line">&#125;</span><br><span class="line">.login-form .username input:focus + span, .login-form .password input:focus + span &#123;</span><br><span class="line">    background:-*-linear-gradient(top,rgb(255,255,255),rgb(245,245,245));</span><br><span class="line">    color:rgb(51,51,51);</span><br><span class="line">&#125;</span><br><span class="line">.login-form .username input:focus + span:after, .login-form .password input:focus + span:after &#123;</span><br><span class="line">    border-left-color:rgb(250,250,250);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.login-form .account-control label &#123;</span><br><span class="line">    margin-left:24px;</span><br><span class="line">    font-size:12px;</span><br><span class="line">    font-family: Arial, Helvetica, sans-serif;</span><br><span class="line">    cursor:pointer;</span><br><span class="line">&#125;</span><br><span class="line">.login-form button[type=&quot;submit&quot;] &#123;</span><br><span class="line">    color:#fff;</span><br><span class="line">    font-weight:bold;</span><br><span class="line">    float:right;</span><br><span class="line">    width:68px;</span><br><span class="line">    height:30px;</span><br><span class="line">    position:relative;</span><br><span class="line">    background:-*-linear-gradient(top,rgb(74,162,241),rgb(52,119,182)) 1px 0 no-repeat,</span><br><span class="line">               -*-linear-gradient(top,rgb(52,118,181),rgb(36,90,141)) left top no-repeat;</span><br><span class="line">    background-size:66px 28px,68px 29px;</span><br><span class="line">    border:none;</span><br><span class="line">    border-top:1px solid rgb(52,118,181);</span><br><span class="line">    border-radius:2px;</span><br><span class="line">    box-shadow:inset 0 1px 0 rgb(86,174,251);</span><br><span class="line">    text-shadow:0 1px 1px rgb(51,113,173);</span><br><span class="line">    transition: all 200ms linear;</span><br><span class="line">&#125;</span><br><span class="line">.login-form button[type=&quot;submit&quot;]:hover &#123;</span><br><span class="line">    text-shadow:0 0 2px rgb(255,255,255);</span><br><span class="line">    box-shadow:inset 0 1px 0 rgb(86,174,251),0 0 10px 3px rgba(74,162,241,0.5);</span><br><span class="line">&#125;</span><br><span class="line">.login-form button[type=&quot;submit&quot;]:active &#123;</span><br><span class="line">    background:-*-linear-gradient(top,rgb(52,119,182),rgb(74,162,241)) 1px 0 no-repeat,</span><br><span class="line">               -*-linear-gradient(top,rgb(52,118,181),rgb(36,90,141)) left top no-repeat;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.login-form .account-control input &#123;</span><br><span class="line">    width:0px;</span><br><span class="line">    height:0px;</span><br><span class="line">&#125;</span><br><span class="line">.login-form label.check &#123;</span><br><span class="line">    position:absolute;</span><br><span class="line">    left:0;</span><br><span class="line">    top:50%;</span><br><span class="line">    margin:-8px 0;</span><br><span class="line">    display:inline-block;</span><br><span class="line">    width:16px;</span><br><span class="line">    height:16px;</span><br><span class="line">    line-height: 16px;</span><br><span class="line">    text-align:center;</span><br><span class="line">    border-radius:2px;</span><br><span class="line">    background:-*-linear-gradient(top,rgb(255,255,255),rgb(246,246,246)) 1px 1px no-repeat,</span><br><span class="line">               -*-linear-gradient(top,rgb(227,227,230),rgb(165,165,165)) left top no-repeat;</span><br><span class="line">    background-size:14px 14px,16px 16px;</span><br><span class="line">&#125;</span><br><span class="line">.login-form .account-control input:checked + label.check:before &#123;</span><br><span class="line">    content:attr(data-on);</span><br><span class="line">    font-family:loginform-icon;</span><br><span class="line">&#125;</span><br><span class="line">@font-face &#123;</span><br><span class="line">  font-family: &#x27;loginform-icon&#x27;;</span><br><span class="line">  src: url(&quot;resources/font/loginform-icon.eot&quot;);</span><br><span class="line">  src: url(&quot;resources/font/loginform-icon.eot?#iefix&quot;) format(&#x27;embedded-opentype&#x27;),</span><br><span class="line">       url(&quot;resources/font/loginform-icon.woff&quot;) format(&#x27;woff&#x27;),</span><br><span class="line">       url(&quot;resources/font/loginform-icon.ttf&quot;) format(&#x27;truetype&#x27;),</span><br><span class="line">       url(&quot;resources/font/loginform-icon.svg#loginform-icon&quot;) format(&#x27;svg&#x27;);</span><br><span class="line">  font-weight: normal;</span><br><span class="line">  font-style: normal;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot;&gt;  </span><br><span class="line">function doLogin() &#123;</span><br><span class="line">	var password = hex_md5($(&quot;#password&quot;).val());</span><br><span class="line">	document.getElementById(&quot;form1&quot;).submit();</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">	   &lt;div class=&quot;content&quot;&gt;</span><br><span class="line">           &lt;form action=&quot;v1/login&quot; method=&quot;post&quot; class=&quot;login-form&quot;&gt;</span><br><span class="line">               &lt;div class=&quot;username&quot;&gt;</span><br><span class="line">                   &lt;input type=&quot;text&quot; name=&quot;username&quot; placeholder=&quot;user@gmail.com&quot; autocomplete=&quot;on&quot; /&gt;</span><br><span class="line">                   &lt;span class=&quot;user-icon icon&quot;&gt;u&lt;/span&gt;</span><br><span class="line">               &lt;/div&gt;</span><br><span class="line">               &lt;div class=&quot;password&quot;&gt;</span><br><span class="line">                   &lt;input type=&quot;password&quot; name=&quot;password&quot; placeholder=&quot;********&quot; /&gt;</span><br><span class="line">                   &lt;span class=&quot;password-icon icon&quot;&gt;p&lt;/span&gt;</span><br><span class="line">               &lt;/div&gt;</span><br><span class="line">               &lt;div class=&quot;account-control&quot;&gt;</span><br><span class="line">                   &lt;input type=&quot;checkbox&quot; name=&quot;Remember me&quot; id=&quot;Remember me&quot; value=&quot;Remember me&quot; checked=&quot;checked&quot; /&gt;</span><br><span class="line">                   &lt;label for=&quot;Remember me&quot; data-on=&quot;c&quot; class=&quot;check&quot;&gt;&lt;/label&gt;</span><br><span class="line">                   &lt;label for=&quot;Remember me&quot; class=&quot;info&quot;&gt;Remember me&lt;/label&gt;</span><br><span class="line">                   &lt;button type=&quot;submit&quot; onclick=&quot;doLogin();&quot;&gt;Login&lt;/button&gt;</span><br><span class="line">               &lt;/div&gt;</span><br><span class="line">               &lt;p class=&quot;not-registered&quot;&gt;Not a registered user yet?&lt;a&gt;Sign up now!&lt;/a&gt;&lt;/p&gt;</span><br><span class="line">           &lt;/form&gt;</span><br><span class="line">	   &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>这里css样式没有使用外部链接的方式，因为那样加载页面的时候能看出来样式的改变，比较慢。</p>
+<p>images添加图片<br>font添加字体<br>js添加脚本</p>
+<p>添加一个main.jsp作为登录成功之后的主页。<br>简单的打个信息<code>&lt;h3&gt;Main Page&lt;/h3&gt;</code></p>
+<p>现在应该可以看到登录页面了，点击Login可以跳转到主页。具体的验证功能下次再弄吧。这次到这里了。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/https/" rel="tag"># https</a>
+              <a href="/tags/springMVC/" rel="tag"># springMVC</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/06/21/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springMVC%E7%B3%BB%E5%88%97/011-RESTful%E6%8E%A5%E5%8F%A3%E4%BC%98%E5%8C%96/" rel="prev" title="011 RESTful接口优化">
+                  <i class="fa fa-chevron-left"></i> 011 RESTful接口优化
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/09/24/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin%20Type%20Hierarchy/" rel="next" title="Kotlin Type Hierarchy">
+                  Kotlin Type Hierarchy <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

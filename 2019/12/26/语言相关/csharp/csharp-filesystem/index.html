@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="获取当前路径String appPath &#x3D; System.AppDomain.CurrentDomain.BaseDirectory;String appPath &#x3D; System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="csharp-filesystem">
+<meta property="og:url" content="http://zhengjun.top/2019/12/26/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/csharp/csharp-filesystem/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="获取当前路径String appPath &#x3D; System.AppDomain.CurrentDomain.BaseDirectory;String appPath &#x3D; System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName)">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-12-26T07:40:51.000Z">
+<meta property="article:modified_time" content="2021-12-07T13:26:43.145Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="csharp">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://zhengjun.top/2019/12/26/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/csharp/csharp-filesystem/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2019/12/26/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/csharp/csharp-filesystem/","path":"2019/12/26/语言相关/csharp/csharp-filesystem/","title":"csharp-filesystem"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>csharp-filesystem | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E8%B7%AF%E5%BE%84"><span class="nav-number">1.</span> <span class="nav-text">获取当前路径</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%91%E6%8E%A7%E7%9B%AE%E5%BD%95"><span class="nav-number">2.</span> <span class="nav-text">监控目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E6%96%87%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">选择文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%8F%A6%E5%AD%98%E4%B8%BA"><span class="nav-number">4.</span> <span class="nav-text">文件另存为</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A0%E9%99%A4"><span class="nav-number">5.</span> <span class="nav-text">删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%8D%E5%8E%86%E6%96%87%E4%BB%B6"><span class="nav-number">6.</span> <span class="nav-text">遍历文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B9%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8"><span class="nav-number">7.</span> <span class="nav-text">文件夹是否存在</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8"><span class="nav-number">8.</span> <span class="nav-text">文件是否存在</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6"><span class="nav-number">9.</span> <span class="nav-text">读取文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96%E6%9C%80%E5%90%8E%E4%B8%80%E8%A1%8C"><span class="nav-number">10.</span> <span class="nav-text">读取最后一行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%99%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-number">11.</span> <span class="nav-text">写入文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF"><span class="nav-number">12.</span> <span class="nav-text">文件信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6"><span class="nav-number">13.</span> <span class="nav-text">新建文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%BD%E5%8A%A0%E6%96%87%E4%BB%B6"><span class="nav-number">14.</span> <span class="nav-text">追加文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%B7%E8%B4%9D%E6%96%87%E4%BB%B6"><span class="nav-number">14.1.</span> <span class="nav-text">拷贝文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6"><span class="nav-number">14.2.</span> <span class="nav-text">删除文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E6%96%87%E4%BB%B6"><span class="nav-number">14.3.</span> <span class="nav-text">移动文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E5%BA%94%E7%94%A8%E7%89%88%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="nav-number">15.</span> <span class="nav-text">获取应用版本信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E7%94%A8%E5%A4%96%E9%83%A8%E7%A8%8B%E5%BA%8F"><span class="nav-number">16.</span> <span class="nav-text">调用外部程序</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/12/26/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/csharp/csharp-filesystem/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          csharp-filesystem
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-12-26 15:40:51" itemprop="dateCreated datePublished" datetime="2019-12-26T15:40:51+08:00">2019-12-26</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-12-07 21:26:43" itemprop="dateModified" datetime="2021-12-07T21:26:43+08:00">2021-12-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="获取当前路径"><a href="#获取当前路径" class="headerlink" title="获取当前路径"></a>获取当前路径</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">String appPath = System.AppDomain.CurrentDomain.BaseDirectory;</span><br><span class="line"></span><br><span class="line">String appPath = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName)</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h2 id="监控目录"><a href="#监控目录" class="headerlink" title="监控目录"></a>监控目录</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 是否开始监控</span><br><span class="line">private bool isMonitor = false;</span><br><span class="line">// 最后一次修改文件的大小</span><br><span class="line">private Int64 file_size = 0;</span><br><span class="line">// 最后一条的时间，用来判断是否是重复记录</span><br><span class="line">private string lastDatetime = &quot;&quot;;</span><br><span class="line">private List&lt;DateTime&gt; lastWriteTime = new List&lt;DateTime&gt;();</span><br><span class="line"></span><br><span class="line">FileSystemWatcher watcher = new FileSystemWatcher();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">watcher.Path = App.db.m_config[0].MonitorPath;</span><br><span class="line">watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size;</span><br><span class="line">// Only watch csv files.</span><br><span class="line">watcher.Filter = &quot;*.csv&quot;;</span><br><span class="line">// Add event handlers.</span><br><span class="line">watcher.Changed += new FileSystemEventHandler(OnFileChanged);</span><br><span class="line">// Begin watching.</span><br><span class="line">watcher.EnableRaisingEvents = true;</span><br><span class="line">watcher.IncludeSubdirectories = true;</span><br><span class="line"></span><br><span class="line">lastWriteTime.Add(DateTime.MinValue);</span><br><span class="line">lastWriteTime.Add(DateTime.MinValue);</span><br><span class="line">lastWriteTime.Add(DateTime.MinValue);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public void OnFileChanged(object source, FileSystemEventArgs e)</span><br><span class="line">&#123;</span><br><span class="line">      System.IO.FileInfo file = new System.IO.FileInfo(e.FullPath);</span><br><span class="line">      var size = file.Length;//大小&quot;,</span><br><span class="line"></span><br><span class="line">      if (size != 0 &amp;&amp; file_size != size)</span><br><span class="line">      &#123;</span><br><span class="line">            file_size = size;</span><br><span class="line">            Log.Information($&quot;changed file，file_size=&#123;file_size&#125;，size=&#123;size&#125;&quot;);</span><br><span class="line">            System.Threading.Thread.Sleep(1000);</span><br><span class="line">            Dispatcher.Invoke(new Action(() =&gt; &#123; doBusi(e.FullPath); &#125;));</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int type = 0;</span><br><span class="line">if (msg.EndsWith(&quot;P13.txt&quot;))</span><br><span class="line">&#123;</span><br><span class="line">      type = 1;</span><br><span class="line">&#125;else if (msg.EndsWith(&quot;P14.txt&quot;))</span><br><span class="line">&#123;</span><br><span class="line">      type = 2;</span><br><span class="line">&#125;</span><br><span class="line">else if (msg.EndsWith(&quot;P15.txt&quot;))</span><br><span class="line">&#123;</span><br><span class="line">      type = 3;</span><br><span class="line">&#125;</span><br><span class="line">if (type &gt;=1 &amp;&amp; type &lt;= 3)</span><br><span class="line">&#123;</span><br><span class="line">      DateTime wt = File.GetLastWriteTime(msg);</span><br><span class="line"></span><br><span class="line">      if (lastWriteTime[type - 1] != wt)</span><br><span class="line">      &#123;</span><br><span class="line">            Log.Information($&quot;start Convert file，file=&#123;msg&#125;&quot;);</span><br><span class="line"></span><br><span class="line">            Thread.Sleep(80);</span><br><span class="line">            Protocol.CmdType = (int)ModelProtocol.eCmdType.DATAS;</span><br><span class="line">            Protocol.Param = $&quot;&#123;msg&#125;|&#123;App.db.m_config[0].SavePath&#125;&quot;;</span><br><span class="line">            nng_plugin.send(JsonConvert.SerializeObject(Protocol));</span><br><span class="line"></span><br><span class="line">            Dispatcher.Invoke(new Action(</span><br><span class="line">                        () =&gt; &#123; Log2ui(LOG_TYPE_INFO, $&quot;开始计算:&#123;msg&#125;&quot;); &#125;</span><br><span class="line">                        ));</span><br><span class="line">            lastWriteTime[type - 1] = wt;</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="选择文件"><a href="#选择文件" class="headerlink" title="选择文件"></a>选择文件</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">System.Windows.Forms.OpenFileDialog fileDialog = new System.Windows.Forms.OpenFileDialog();</span><br><span class="line">fileDialog.Multiselect = true;</span><br><span class="line">fileDialog.Title = &quot;请选择要转换的文件&quot;;</span><br><span class="line">fileDialog.Filter = &quot;csv files (*.csv)|*.csv|所有文件(*.*)|*.*&quot;;</span><br><span class="line">if (fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)</span><br><span class="line">&#123;</span><br><span class="line">      files = fileDialog.FileNames;</span><br><span class="line">&#125;else</span><br><span class="line">&#123;</span><br><span class="line">      return;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="文件另存为"><a href="#文件另存为" class="headerlink" title="文件另存为"></a>文件另存为</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">try</span><br><span class="line">&#123;</span><br><span class="line">      System.IO.File.Delete(shortcutPath);</span><br><span class="line">&#125;</span><br><span class="line">catch (System.IO.IOException e)</span><br><span class="line">&#123;</span><br><span class="line">      Console.WriteLine(e.Message);</span><br><span class="line">      Log.Error($&quot;delete shortcut failed. msg=&#123;e.Message&#125;&quot;);</span><br><span class="line">      return false;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Delete a directory and all subdirectories with Directory static method...</span><br><span class="line">if(System.IO.Directory.Exists(@&quot;C:\Users\Public\DeleteTest&quot;))</span><br><span class="line">&#123;</span><br><span class="line">      try</span><br><span class="line">      &#123;</span><br><span class="line">            System.IO.Directory.Delete(@&quot;C:\Users\Public\DeleteTest&quot;, true);</span><br><span class="line">      &#125;</span><br><span class="line">      catch (System.IO.IOException e)</span><br><span class="line">      &#123;</span><br><span class="line">            Console.WriteLine(e.Message);</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 删除到回收站 using Microsoft.VisualBasic.FileIO;</span><br><span class="line">FileSystem.DeleteDirectory(NextFolder.FullName, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);</span><br></pre></td></tr></table></figure>
+
+<h2 id="遍历文件"><a href="#遍历文件" class="headerlink" title="遍历文件"></a>遍历文件</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">DirectoryInfo TheFolder=new DirectoryInfo(folderFullName);</span><br><span class="line">//遍历文件</span><br><span class="line">foreach(FileInfo NextFile in TheFolder.GetFiles())</span><br><span class="line">   this.listBox2.Items.Add(NextFile.Name);</span><br><span class="line"></span><br><span class="line">//遍历文件夹</span><br><span class="line">foreach(DirectoryInfo NextFolder in TheFolder.GetDirectories())</span><br><span class="line">   this.listBox1.Items.Add(NextFolder.Name);</span><br><span class="line"></span><br><span class="line">//遍历文件</span><br><span class="line">foreach (FileInfo file in TheFolder.GetFiles(&quot;*.csv&quot;))</span><br><span class="line">&#123;</span><br><span class="line">    list_files.Add(file.FullName);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="文件夹是否存在"><a href="#文件夹是否存在" class="headerlink" title="文件夹是否存在"></a>文件夹是否存在</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">string aaaa = &quot;F:\\notebook\\haha\\&quot;;//路径的正确写法</span><br><span class="line">if (Directory.Exists(aaaa))</span><br><span class="line">&#123;</span><br><span class="line">      MessageBox.Show(&quot;存在文件夹&quot;);</span><br><span class="line">      //Directory.Delete(aaaa, false);//如果文件夹中有文件或目录，此处会报错</span><br><span class="line">      //Directory.Delete(aaaa, true);//true代表删除文件夹及其里面的子目录和文件</span><br><span class="line">&#125;</span><br><span class="line">else</span><br><span class="line">&#123;</span><br><span class="line">      MessageBox.Show(&quot;不存在文件夹&quot;);</span><br><span class="line">      Directory.CreateDirectory(aaaa);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="文件是否存在"><a href="#文件是否存在" class="headerlink" title="文件是否存在"></a>文件是否存在</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//判断文件的存在、创建、删除文件</span><br><span class="line">string dddd = aaaa + &quot;11.txt&quot;;</span><br><span class="line">if (File.Exists(dddd))</span><br><span class="line">&#123;</span><br><span class="line">      MessageBox.Show(&quot;存在文件&quot;);</span><br><span class="line">      File.Delete(dddd);//删除该文件</span><br><span class="line">&#125;</span><br><span class="line">else</span><br><span class="line">&#123;</span><br><span class="line">      MessageBox.Show(&quot;不存在文件&quot;);</span><br><span class="line">      File.Create(dddd);//创建该文件，如果路径文件夹不存在，则报错。</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="读取文件"><a href="#读取文件" class="headerlink" title="读取文件"></a>读取文件</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">string text = System.IO.File.ReadAllText(file);</span><br><span class="line">// 中文乱码时，可以指定编码后读取</span><br><span class="line">string text = System.IO.File.ReadAllText(fileFullPath, Encoding.GetEncoding(&quot;gb2312&quot;));</span><br><span class="line"></span><br><span class="line">byte[] Buffer = ASCIIEncoding.ASCII.GetBytes(text);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// Example #2</span><br><span class="line">// Read each line of the file into a string array. Each element</span><br><span class="line">// of the array is one line of the file.</span><br><span class="line">string[] lines = System.IO.File.ReadAllLines(@&quot;C:\Users\Public\TestFolder\WriteLines2.txt&quot;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="读取最后一行"><a href="#读取最后一行" class="headerlink" title="读取最后一行"></a>读取最后一行</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">try</span><br><span class="line">&#123;</span><br><span class="line">      lastLine = System.IO.File.ReadLines(changeFile, Encoding.GetEncoding(&quot;gb2312&quot;)).Last();</span><br><span class="line">&#125;catch</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="写入文件"><a href="#写入文件" class="headerlink" title="写入文件"></a>写入文件</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">FileStream fs = null;</span><br><span class="line">var br = new BinaryReader(fs);</span><br><span class="line"></span><br><span class="line">BinaryWriter </span><br><span class="line"></span><br><span class="line">using System;</span><br><span class="line">using System.IO;</span><br><span class="line"></span><br><span class="line">class ConsoleApplication</span><br><span class="line">&#123;</span><br><span class="line">    const string fileName = &quot;AppSettings.dat&quot;;</span><br><span class="line"></span><br><span class="line">    static void Main()</span><br><span class="line">    &#123;</span><br><span class="line">        WriteDefaultValues();</span><br><span class="line">        DisplayValues();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void WriteDefaultValues()</span><br><span class="line">    &#123;</span><br><span class="line">        using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))</span><br><span class="line">        &#123;</span><br><span class="line">            writer.Write(1.250F);</span><br><span class="line">            writer.Write(@&quot;c:\Temp&quot;);</span><br><span class="line">            writer.Write(10);</span><br><span class="line">            writer.Write(true);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void DisplayValues()</span><br><span class="line">    &#123;</span><br><span class="line">        float aspectRatio;</span><br><span class="line">        string tempDirectory;</span><br><span class="line">        int autoSaveTime;</span><br><span class="line">        bool showStatusBar;</span><br><span class="line"></span><br><span class="line">        if (File.Exists(fileName))</span><br><span class="line">        &#123;</span><br><span class="line">            using (BinaryReader reader = new BinaryReader(File.Open(fileName, FileMode.Open)))</span><br><span class="line">            &#123;</span><br><span class="line">                aspectRatio = reader.ReadSingle();</span><br><span class="line">                tempDirectory = reader.ReadString();</span><br><span class="line">                autoSaveTime = reader.ReadInt32();</span><br><span class="line">                showStatusBar = reader.ReadBoolean();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            Console.WriteLine(&quot;Aspect ratio set to: &quot; + aspectRatio);</span><br><span class="line">            Console.WriteLine(&quot;Temp directory is: &quot; + tempDirectory);</span><br><span class="line">            Console.WriteLine(&quot;Auto save time set to: &quot; + autoSaveTime);</span><br><span class="line">            Console.WriteLine(&quot;Show status bar: &quot; + showStatusBar);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="文件信息"><a href="#文件信息" class="headerlink" title="文件信息"></a>文件信息</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">FileInfo fi = new FileInfo(file.FullName);</span><br><span class="line">var fileDay = fi.LastWriteTime.ToString(&quot;yyyy-MM-dd&quot;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="新建文件"><a href="#新建文件" class="headerlink" title="新建文件"></a>新建文件</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// .net core 需要下面两行支持 gb2312</span><br><span class="line">System.Text.EncodingProvider provider = System.Text.CodePagesEncodingProvider.Instance;</span><br><span class="line">Encoding.RegisterProvider(provider);</span><br><span class="line"></span><br><span class="line">FileStream fs = new FileStream(storePath, FileMode.Create);</span><br><span class="line">StreamWriter sw = new StreamWriter(fs, Encoding.GetEncoding(&quot;gb2312&quot;));</span><br><span class="line"></span><br><span class="line">string strLine = &quot;&quot;;</span><br><span class="line">foreach (var it in listDatas)</span><br><span class="line">&#123;</span><br><span class="line">      strLine = &quot;&quot;;</span><br><span class="line">      for (int i = 0; i &lt; channel_count; ++i)</span><br><span class="line">      &#123;</span><br><span class="line">      strLine += String.Format(&quot;&#123;0:0.0000&#125;&quot;, it[i]) + &quot;,&quot;;</span><br><span class="line">      &#125;</span><br><span class="line">      strLine = strLine.Remove(strLine.Length - 1);</span><br><span class="line">      strLine += &quot;\r\n&quot;;</span><br><span class="line">      sw.Write(strLine);</span><br><span class="line">&#125;</span><br><span class="line">sw.Flush();</span><br><span class="line">sw.Close();</span><br><span class="line">fs.Close();</span><br></pre></td></tr></table></figure>
+
+<h2 id="追加文件"><a href="#追加文件" class="headerlink" title="追加文件"></a>追加文件</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> FileStream fs = new FileStream(distPath, FileMode.Append);</span><br><span class="line">StreamWriter sw = new StreamWriter(fs, Encoding.GetEncoding(&quot;gb2312&quot;));</span><br><span class="line">sw.WriteLine(writeValues);</span><br><span class="line">sw.Flush();</span><br><span class="line">sw.Close();</span><br></pre></td></tr></table></figure>
+
+<h3 id="拷贝文件"><a href="#拷贝文件" class="headerlink" title="拷贝文件"></a>拷贝文件</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">string OrignFile,NewFile; </span><br><span class="line">OrignFile = Server.MapPath(&quot;.&quot;)+&quot;\\myText.txt&quot;; </span><br><span class="line">NewFile = Server.MapPath(&quot;.&quot;)+&quot;\\myTextCopy.txt&quot;; </span><br><span class="line">File.Copy(OrignFile,NewFile,true);</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除文件"><a href="#删除文件" class="headerlink" title="删除文件"></a>删除文件</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">string delFile = Server.MapPath(&quot;.&quot;)+&quot;\\myTextCopy.txt&quot;; </span><br><span class="line">File.Delete(delFile); </span><br><span class="line"></span><br><span class="line">// 删除到回收站 using Microsoft.VisualBasic.FileIO;</span><br><span class="line">FileSystem.DeleteFile(NextFile.FullName, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);</span><br></pre></td></tr></table></figure>
+
+<h3 id="移动文件"><a href="#移动文件" class="headerlink" title="移动文件"></a>移动文件</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">string OrignFile,NewFile; </span><br><span class="line">OrignFile = Server.MapPath(&quot;.&quot;)+&quot;\\myText.txt&quot;; </span><br><span class="line">NewFile = Server.MapPath(&quot;.&quot;)+&quot;\\myTextCopy.txt&quot;; </span><br><span class="line">File.Move(OrignFile,NewFile); </span><br></pre></td></tr></table></figure>
+
+<h2 id="获取应用版本信息"><a href="#获取应用版本信息" class="headerlink" title="获取应用版本信息"></a>获取应用版本信息</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//遍历文件夹</span><br><span class="line">DirectoryInfo TheFolder = new DirectoryInfo(App.appPath + @&quot;\drivers&quot;);</span><br><span class="line">foreach (DirectoryInfo NextFolder in TheFolder.GetDirectories())</span><br><span class="line">&#123;</span><br><span class="line">   var dr_name = NextFolder.Name;</span><br><span class="line">   FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(App.appPath + @&quot;\drivers\&quot; + NextFolder.Name + @&quot;\&quot;+ NextFolder.Name+&quot;.exe&quot;);</span><br><span class="line">   m_drivers.Add(new Model_driver &#123; Name= NextFolder.Name ,Version = fvi.ProductVersion,Comment=fvi.FileDescription&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="调用外部程序"><a href="#调用外部程序" class="headerlink" title="调用外部程序"></a>调用外部程序</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">try</span><br><span class="line">&#123;</span><br><span class="line">      // call python plugin</span><br><span class="line">      Process p = new Process();</span><br><span class="line">      p.StartInfo = new ProcessStartInfo(App.appPath + @&quot;\plugin\python_plugin.exe&quot;);</span><br><span class="line">      p.StartInfo.Arguments = App.appPath + @&quot;\plugin\run.py&quot;;</span><br><span class="line">      p.StartInfo.WorkingDirectory = App.appPath + @&quot;\plugin\&quot;;</span><br><span class="line">      p.StartInfo.CreateNoWindow = true;</span><br><span class="line">      p.StartInfo.UseShellExecute = false;</span><br><span class="line">//    p.Start();</span><br><span class="line">&#125;catch(Exception ex)</span><br><span class="line">&#123;</span><br><span class="line">      Log.Error(&quot;load python plugin failed. &quot; + ex.Message);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/csharp/" rel="tag"># csharp</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/12/26/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/csharp/csharp-dialog/" rel="prev" title="csharp-dialog">
+                  <i class="fa fa-chevron-left"></i> csharp-dialog
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/12/26/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/csharp/csharp-%E6%9D%82%E9%A1%B9/" rel="next" title="csharp-杂项">
+                  csharp-杂项 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

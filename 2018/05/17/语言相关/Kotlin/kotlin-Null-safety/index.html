@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="原文我翻译的一篇文章。 概览在本篇文章，我们将要研究一下 Kotlin 语言内置的 null 安全特性。 Kotlin 提供了可推测的，本地处理的可空字段 - 不需要额外的支持库。 Maven 依赖&lt;dependency&gt;    &lt;groupId&gt;org.jetbrains.kotlin&lt;&#x2F;groupId&gt;    &lt;artifactId&gt;kotlin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kotlin-Null safety">
+<meta property="og:url" content="http://zhengjun.top/2018/05/17/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin-Null-safety/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="原文我翻译的一篇文章。 概览在本篇文章，我们将要研究一下 Kotlin 语言内置的 null 安全特性。 Kotlin 提供了可推测的，本地处理的可空字段 - 不需要额外的支持库。 Maven 依赖&lt;dependency&gt;    &lt;groupId&gt;org.jetbrains.kotlin&lt;&#x2F;groupId&gt;    &lt;artifactId&gt;kotlin">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-05-17T08:46:39.000Z">
+<meta property="article:modified_time" content="2018-05-24T06:08:40.000Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="Kotlin">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://zhengjun.top/2018/05/17/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin-Null-safety/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2018/05/17/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin-Null-safety/","path":"2018/05/17/语言相关/Kotlin/kotlin-Null-safety/","title":"kotlin-Null safety"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>kotlin-Null safety | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%A7%88"><span class="nav-number">1.</span> <span class="nav-text">概览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Maven-%E4%BE%9D%E8%B5%96"><span class="nav-number">2.</span> <span class="nav-text">Maven 依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A9%BA%E5%80%BC%E5%92%8C%E9%9D%9E%E7%A9%BA%E5%80%BC%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">空值和非空值引用类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Elvis%E6%93%8D%E4%BD%9C%E7%AC%A6"><span class="nav-number">4.</span> <span class="nav-text">Elvis操作符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%AC%A6-%E5%BC%BA%E5%88%B6%E8%BD%AC%E6%8D%A2"><span class="nav-number">5.</span> <span class="nav-text">!! 操作符 强制转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Safe-Calls"><span class="nav-number">6.</span> <span class="nav-text">Safe Calls ?.</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#let-%E6%96%B9%E6%B3%95"><span class="nav-number">6.1.</span> <span class="nav-text">let()方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#also-%E6%96%B9%E6%B3%95"><span class="nav-number">6.2.</span> <span class="nav-text">also() 方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run-%E6%96%B9%E6%B3%95"><span class="nav-number">6.3.</span> <span class="nav-text">run()方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nullable-Unsafe-Get"><span class="nav-number">7.</span> <span class="nav-text">Nullable Unsafe Get</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E5%88%97%E8%A1%A8%E4%B8%AD%E8%BF%87%E6%BB%A4%E7%A9%BA%E5%80%BC"><span class="nav-number">8.</span> <span class="nav-text">从列表中过滤空值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">9.</span> <span class="nav-text">结论</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/05/17/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Kotlin/kotlin-Null-safety/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          kotlin-Null safety
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-05-17 16:46:39" itemprop="dateCreated datePublished" datetime="2018-05-17T16:46:39+08:00">2018-05-17</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2018-05-24 14:08:40" itemprop="dateModified" datetime="2018-05-24T14:08:40+08:00">2018-05-24</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><a target="_blank" rel="noopener" href="http://www.baeldung.com/kotlin-null-safety">原文</a><br>我翻译的一篇文章。</p>
+<h2 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h2><p>在本篇文章，我们将要研究一下 Kotlin 语言内置的 null 安全特性。 Kotlin 提供了可推测的，本地处理的可空字段 - 不需要额外的支持库。</p>
+<h2 id="Maven-依赖"><a href="#Maven-依赖" class="headerlink" title="Maven 依赖"></a>Maven 依赖</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.jetbrains.kotlin&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;kotlin-stdlib&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.1.1&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h2 id="空值和非空值引用类型"><a href="#空值和非空值引用类型" class="headerlink" title="空值和非空值引用类型"></a>空值和非空值引用类型</h2><p>Kotlin 有两种可以被编译器解释的引用类型，能够在编译阶段告知程序员代码的正确性 - 空值和非空值</p>
+<p>默认情况下， Kotlin认为都是非空值：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a: String = <span class="string">&quot;value&quot;</span></span><br><span class="line"></span><br><span class="line">assertEquals(a.length, <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+<p>我们不能把 null 赋值给 a， 如果你尝试赋值，编译器会报错。<br>如果我们想创建一个可以赋空值的变量时，需要在定义变量的时候在后面添加一个 ？</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> b: String? = <span class="string">&quot;value&quot;</span></span><br></pre></td></tr></table></figure>
+<p>这时就可以合法的赋空值了</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">b = <span class="keyword">null</span></span><br></pre></td></tr></table></figure>
+<p>当我们想要访问 b 的时候，我们必须处理 null 的情况来避免编译错误，因为 Kotlin 知道这个变量可能为空</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (b != <span class="keyword">null</span>) &#123;</span><br><span class="line">    println(b.length)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    assertNull(b)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Elvis操作符"><a href="#Elvis操作符" class="headerlink" title="Elvis操作符"></a>Elvis操作符</h2><p>有时，我们希望操作空值时能返回指定的默认值。 这时可以使用 <code>elvis(?:)</code> 操作符，对于 Java Optional class 来说相当于 orElse/orElseGet</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">val value: String? = <span class="keyword">null</span></span><br><span class="line"></span><br><span class="line">val res = value?.length ?: -<span class="number">1</span></span><br><span class="line"></span><br><span class="line">assertEquals(res, -<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>当引用值非空时， <code>length</code> 方法会被调用</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">val value: String? = <span class="string">&quot;name&quot;</span></span><br><span class="line"></span><br><span class="line">val res = value?.length ?: -<span class="number">1</span></span><br><span class="line"></span><br><span class="line">assertEquals(res, <span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="操作符-强制转换"><a href="#操作符-强制转换" class="headerlink" title="!! 操作符 强制转换"></a>!! 操作符 强制转换</h2><p>可以使用 <code>!!</code> 来人工保证不会是空值</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">val nullableInt: Int? = <span class="number">1</span></span><br><span class="line">val nonNullableInt: Int = nullableInt!! <span class="comment">// asserting and smart cast</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Safe-Calls"><a href="#Safe-Calls" class="headerlink" title="Safe Calls ?."></a>Safe Calls <code>?.</code></h2><p>处理每个空值非常繁琐。幸运的是 Kotlin 提供了一个语法称为 “safe calls”，这个语法运行程序员只有在指定引用不为空值的时候执行动作。<br>下面定义两个数据类，演示一下这个特性：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">data class Person(val country: Country?)</span><br><span class="line"></span><br><span class="line">data class Country(val code: String?)</span><br></pre></td></tr></table></figure>
+<p>我们可以看到 <code>country</code> 和 <code>code</code> 字段都是可以为空的类型<br>访问这些字段的时候，我们可以使用 safe call 语法：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">val p: Person? = Person(Country(<span class="string">&quot;ENG&quot;</span>))</span><br><span class="line"></span><br><span class="line">val res = p?.country?.<span class="function">code</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">assertEquals</span><span class="params">(res, <span class="string">&quot;ENG&quot;</span>)</span></span></span><br></pre></td></tr></table></figure>
+<p>当 p 为空值的时候，safe call 语法返回 null</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">val p: Person? = Person(Country(<span class="keyword">null</span>))</span><br><span class="line"></span><br><span class="line">val res = p?.country?.<span class="function">code</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">assertNull</span><span class="params">(res)</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="let-方法"><a href="#let-方法" class="headerlink" title="let()方法"></a>let()方法</h3><p>只想在一个引用不是空值的时候执行动作，我们可以使用 let 操作符。<br>这里有一个值得列表，里面有空值</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">val firstName = <span class="string">&quot;Tom&quot;</span></span><br><span class="line">val secondName = <span class="string">&quot;Michael&quot;</span></span><br><span class="line">val names: List&lt;String?&gt; = listOf(firstName, <span class="keyword">null</span>, secondName)</span><br></pre></td></tr></table></figure>
+<p>然后，我们可以使用 <code>let</code> 函数在列表里面的每个非空值上执行操作</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> res = listOf&lt;String?&gt;()</span><br><span class="line"><span class="keyword">for</span> (item in names) &#123;</span><br><span class="line">    item?.let &#123; res = res.plus(it) &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">assertEquals(<span class="number">2</span>, res.size)</span><br><span class="line">assertTrue &#123; res.contains(firstName) &#125;</span><br><span class="line">assertTrue &#123; res.contains(secondName) &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="also-方法"><a href="#also-方法" class="headerlink" title="also() 方法"></a>also() 方法</h3><p>如果我们想要做一些额外的操作，例如：在操作每个非空值的时候记录日志，我们可以使用 <code>also()</code> 方法，连接在 <code>let()</code>后面</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> res = listOf&lt;String?&gt;()</span><br><span class="line"><span class="keyword">for</span> (item in names) &#123;</span><br><span class="line">    item?.let &#123; res = res.plus(it); it &#125;</span><br><span class="line">  ?.also&#123;it -&gt; println(<span class="string">&quot;non nullable value: $it&quot;</span>)&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样就可以打印出每个非空值的信息</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">non nullable value: Tom</span><br><span class="line">non nullable value: Michael</span><br></pre></td></tr></table></figure>
+
+<h3 id="run-方法"><a href="#run-方法" class="headerlink" title="run()方法"></a>run()方法</h3><p>Kotlin 有一个 <code>run()</code> 方法用来在空值引用上执行一些操作。他和 <code>let()</code> 很像，但是是在函数体内，<code>run()</code> 方法操作这个引用，代替函数参数。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> res = listOf&lt;String?&gt;()</span><br><span class="line"><span class="keyword">for</span> (item in names) &#123;</span><br><span class="line">    item?.run&#123;res = res.plus(<span class="keyword">this</span>)&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Nullable-Unsafe-Get"><a href="#Nullable-Unsafe-Get" class="headerlink" title="Nullable Unsafe Get"></a>Nullable Unsafe Get</h2><p>Kotlin也提供了一个不安全的操作符，可以跳过空值检查逻辑来获取可以为空值的字段，但是要小心使用。<br>两个 “!!” 可以从一个空值引用中获取数值并且在为空时抛出 <code>NullPointerException</code> 异常。这个和 <code>Optional.get()</code> 操作是等价的。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> b: String? = <span class="string">&quot;value&quot;</span></span><br><span class="line">b = <span class="keyword">null</span></span><br><span class="line"></span><br><span class="line">assertFailsWith&lt;NullPointerException&gt; &#123;</span><br><span class="line">    b!!.length</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果这个空值引用的值非空，那么操作可以成功执行。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">val b: String? = <span class="string">&quot;value&quot;</span></span><br><span class="line"></span><br><span class="line">assertEquals(b!!.length, <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="从列表中过滤空值"><a href="#从列表中过滤空值" class="headerlink" title="从列表中过滤空值"></a>从列表中过滤空值</h2><p>Kotlin 的 List 类有一个工具方法 <code>filterNotNull()</code> 只返回列表中的非空数值。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">val list: List&lt;String?&gt; = listOf(<span class="string">&quot;a&quot;</span>, <span class="keyword">null</span>, <span class="string">&quot;b&quot;</span>)</span><br><span class="line"></span><br><span class="line">val res = list.filterNotNull()</span><br><span class="line"></span><br><span class="line">assertEquals(res.size, <span class="number">2</span>)</span><br><span class="line">assertTrue &#123; res.contains(<span class="string">&quot;a&quot;</span>) &#125;</span><br><span class="line">assertTrue &#123; res.contains(<span class="string">&quot;b&quot;</span>) &#125;</span><br></pre></td></tr></table></figure>
+<p>这是一个非常有用的想法，封装了常用的操作逻辑，不用我们自己来实现。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>在这里，我们深入探讨了 Kotlin 的空值安全特性。我们看到了两种类型，空值和非空值。我们使用 <code>safe call</code> 和 <code>elvis</code> 操作符实现了优雅的处理空值逻辑</p>
+<p>样例和代码在<a target="_blank" rel="noopener" href="https://github.com/eugenp/tutorials/tree/master/core-kotlin">GitHub</a>，是一个Maven项目</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Kotlin/" rel="tag"># Kotlin</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/05/17/Web%E5%BC%80%E5%8F%91/java%E6%89%93%E5%8C%85jar-war/" rel="prev" title="java打包jar_war">
+                  <i class="fa fa-chevron-left"></i> java打包jar_war
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/05/19/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/mysql%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/" rel="next" title="mysql数据引擎">
+                  mysql数据引擎 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>

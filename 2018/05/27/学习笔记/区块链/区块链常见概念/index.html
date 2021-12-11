@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="LiWuK0jxrq55oR5-aNOK6r0wFuUC8EvSlpNYhiiBkDk">
+  <meta name="baidu-site-verification" content="code-MRwc3a52M3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Key pool钱包预先生成 100 个密钥，保存在 key pool。新建地址的时候，使用这里面的未使用密钥创建。主要用途是减少备份次数，同时防止硬盘损坏时，碰巧使用了新建的地址，导致备份时没有备份到。旧版默认生成 100 个密钥，可以通过 -keekpool 参数来设置。新版扩充到了 1000 个。 Dapp参考by Vitalik Buterin Dapp(decentralized app">
+<meta property="og:type" content="article">
+<meta property="og:title" content="区块链常见概念">
+<meta property="og:url" content="http://zhengjun.top/2018/05/27/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/index.html">
+<meta property="og:site_name" content="郑君的学习笔记">
+<meta property="og:description" content="Key pool钱包预先生成 100 个密钥，保存在 key pool。新建地址的时候，使用这里面的未使用密钥创建。主要用途是减少备份次数，同时防止硬盘损坏时，碰巧使用了新建的地址，导致备份时没有备份到。旧版默认生成 100 个密钥，可以通过 -keekpool 参数来设置。新版扩充到了 1000 个。 Dapp参考by Vitalik Buterin Dapp(decentralized app">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhengjun.top/2018/05/27/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/f54277b3.png">
+<meta property="og:image" content="http://zhengjun.top/2018/05/27/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/666392f1.png">
+<meta property="og:image" content="http://zhengjun.top/2018/05/27/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/0b1c1105.png">
+<meta property="og:image" content="http://zhengjun.top/2018/05/27/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/2fa39188.png">
+<meta property="og:image" content="http://zhengjun.top/2018/05/27/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/28d3314b.png">
+<meta property="article:published_time" content="2018-05-27T12:37:23.000Z">
+<meta property="article:modified_time" content="2018-08-09T00:42:00.000Z">
+<meta property="article:author" content="郑  君">
+<meta property="article:tag" content="区块链">
+<meta property="article:tag" content="blockchain">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhengjun.top/2018/05/27/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/f54277b3.png">
+
+
+<link rel="canonical" href="http://zhengjun.top/2018/05/27/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhengjun.top/2018/05/27/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/","path":"2018/05/27/学习笔记/区块链/区块链常见概念/","title":"区块链常见概念"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>区块链常见概念 | 郑君的学习笔记</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="郑君的学习笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">郑君的学习笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">要比昨天进步一点点</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Key-pool"><span class="nav-number">1.</span> <span class="nav-text">Key pool</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dapp"><span class="nav-number">2.</span> <span class="nav-text">Dapp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%8F%89-soft-fork"><span class="nav-number">3.</span> <span class="nav-text">分叉 soft fork</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E6%98%93%E5%8D%B3%E6%8C%96%E7%9F%BF"><span class="nav-number">4.</span> <span class="nav-text">交易即挖矿</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DHT-%E5%88%86%E5%B8%83%E5%BC%8F%E5%93%88%E5%B8%8C%E8%A1%A8-Distributed-Hash-Table"><span class="nav-number">5.</span> <span class="nav-text">DHT 分布式哈希表(Distributed Hash Table)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sybil-attack-%E5%A5%B3%E5%B7%AB%E6%94%BB%E5%87%BB"><span class="nav-number">6.</span> <span class="nav-text">Sybil attack 女巫攻击</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E8%A8%80%E6%9C%BA-oracle"><span class="nav-number">7.</span> <span class="nav-text">预言机 oracle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E"><span class="nav-number">8.</span> <span class="nav-text">零知识证明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">9.</span> <span class="nav-text">共识算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#What-exactly-is-the-Nothing-At-Stake-problem"><span class="nav-number">9.1.</span> <span class="nav-text">What exactly is the Nothing-At-Stake problem?</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%A8%E9%93%BE%E6%8A%80%E6%9C%AF"><span class="nav-number">10.</span> <span class="nav-text">跨链技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Interledger"><span class="nav-number">10.1.</span> <span class="nav-text">Interledger</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Polkadot"><span class="nav-number">10.2.</span> <span class="nav-text">Polkadot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Aeternity"><span class="nav-number">10.3.</span> <span class="nav-text">Aeternity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AnLink"><span class="nav-number">10.4.</span> <span class="nav-text">AnLink</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9-double-spending"><span class="nav-number">11.</span> <span class="nav-text">重复消费(double spending)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UTXO"><span class="nav-number">12.</span> <span class="nav-text">UTXO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E7%AE%97%E5%8A%9B"><span class="nav-number">13.</span> <span class="nav-text">哈希算力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B2%E7%AD%BE%E5%90%8D-Blind-Signature"><span class="nav-number">14.</span> <span class="nav-text">盲签名(Blind Signature)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%B7%E9%97%A8%E5%8D%95%E5%90%91%E5%87%BD%E6%95%B0%EF%BC%88trapdoor-one-way-function%EF%BC%89"><span class="nav-number">15.</span> <span class="nav-text">陷门单向函数（trapdoor one-way function）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AAScriptPubKey%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E8%A7%A3%E9%87%8A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8P2SH%E5%9C%B0%E5%9D%80%E5%B0%B1%E5%8F%AF%E4%BB%A5%E4%BA%86%E3%80%82"><span class="nav-number">16.</span> <span class="nav-text">一个ScriptPubKey是什么？解释如何使用P2SH地址就可以了。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPFS%EF%BC%88The-InterPlanetary-File-System%EF%BC%89%E6%98%9F%E9%99%85%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F"><span class="nav-number">17.</span> <span class="nav-text">IPFS（The InterPlanetary File System）星际文件存储系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6"><span class="nav-number">18.</span> <span class="nav-text">智能合约</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郑  君"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">郑  君</p>
+  <div class="site-description" itemprop="description">C++，golang，Java，Python，Kotlin，区块链，全栈</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhengHanYunBlog" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZhengHanYunBlog" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhenghanyun2021@126.com" title="E-Mail → mailto:zhenghanyun2021@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCmh8TlSil0IrCA-AQ9Xx9_Q" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCmh8TlSil0IrCA-AQ9Xx9_Q" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2018/05/27/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          区块链常见概念
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-05-27 20:37:23" itemprop="dateCreated datePublished" datetime="2018-05-27T20:37:23+08:00">2018-05-27</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2018-08-09 08:42:00" itemprop="dateModified" datetime="2018-08-09T08:42:00+08:00">2018-08-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="Key-pool"><a href="#Key-pool" class="headerlink" title="Key pool"></a>Key pool</h2><p>钱包预先生成 100 个密钥，保存在 key pool。新建地址的时候，使用这里面的未使用密钥创建。<br>主要用途是减少备份次数，同时防止硬盘损坏时，碰巧使用了新建的地址，导致备份时没有备份到。<br>旧版默认生成 100 个密钥，可以通过 -keekpool 参数来设置。新版扩充到了 1000 个。</p>
+<h2 id="Dapp"><a href="#Dapp" class="headerlink" title="Dapp"></a>Dapp</h2><p><a target="_blank" rel="noopener" href="https://github.com/DavidJohnstonCEO/DecentralizedApplications">参考</a><br><a target="_blank" rel="noopener" href="https://blog.ethereum.org/2014/05/06/daos-dacs-das-and-more-an-incomplete-terminology-guide/">by Vitalik Buterin</a></p>
+<p>Dapp(decentralized application) 应用的后端代码运行在去中心化的 peer-to-peer 网络中。<br>和运行在中心化服务的 app 相比，一个 Dapp 有前端代码和界面，可以调用后端代码，而且前端可以部署在去中心化的存储中例如 Swarm or IPFS<br>如果 App = frontend + server，那么 Ethereum 的合约是运行在 Ethereum 的全球 p2p 网络中的<br>那么 DApp = frontend + contracts</p>
+<p>Contracts: 去中心化的逻辑处理，运行在 Ethereum Virtual Machine (EVM)<br>Swarm: 去中心化的存储，作为记账协议而设计的，不依赖于物理存储系统，可以是 IPFS, BitTorrent 或将来发明的存储技术<br>Whisper: 去中心化的消息处理</p>
+<p>下面是使用区块链 + 智能合约 + swarm + whisper<br><img alt="f54277b3.png" src="/2018/05/27/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/f54277b3.png" width height></p>
+<img alt="666392f1.png" src="/2018/05/27/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/666392f1.png" width height>
+
+<h2 id="分叉-soft-fork"><a href="#分叉-soft-fork" class="headerlink" title="分叉 soft fork"></a>分叉 soft fork</h2><p>软分叉是把之前的有效区块，认为是无效的，旧节点认为新区块是有效的，新节点区块保持向后兼容性，当新规则启用时作为临时分叉，未升级节点也可以接受已升级节点的区块，同时分叉的新链只接受已升级节点的区块。<br>一旦启用软分叉之后，就取决于已升级节点能否尽快取得绝对性的大多数份额，否则软分叉将会失败，旧链没有任何影响。<br>旧版本在新版本拒绝区块时会发现有新版本需要升级，然后完成升级过程。<br>当大多数矿工完成升级后正式启用新规则，称作 miner-activated softfork (MASF)<br>当大多数节点协同一致支持新规则，不需要矿工支持时，称作 user-activated softfork (UASF)</p>
+<p>硬分叉是一种快速，高优先级，不向后兼容的改变，定义为当实现时产生永久的改变。<br>新链和旧链是相互平行的，各自应用不同的规则，两条链之间不能互相转移资产<br>随之而来的是两份资产的问题，用户分别在两条链上同时拥有相同的资产，比如在硬分叉前，旧链中有100个币，那么分叉后，在旧链和新链将同时有100个币，<br>当然两个链中币的价值也是不同的，因为无法相互转移。</p>
+<img alt="0b1c1105.png" src="/2018/05/27/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/0b1c1105.png" width height>
+
+<span id="more"></span>
+
+<h2 id="交易即挖矿"><a href="#交易即挖矿" class="headerlink" title="交易即挖矿"></a>交易即挖矿</h2><p>“交易即挖矿”实际上就是一种基于平台币的个人交易手续费返还机制</p>
+<p>FCoin的“交易即挖矿”则进行了重新包装，仿照比特币挖矿的分配规则，拿出51%比例的平台币FT作为挖矿奖池，通过“挖矿（在FCoin上交易）”逐渐解锁FT，一旦51%的FT全部回馈完成，“挖矿”即自动终止。</p>
+<p>FCoin交易即挖矿每天（GMT+8）0点开始，每小时都会将用户所产生交易手续费，100%折算成FT进行累积，折算价格按该小时FT的均价计算（均价计算方式为总成交金额/总成交量）。</p>
+<h2 id="DHT-分布式哈希表-Distributed-Hash-Table"><a href="#DHT-分布式哈希表-Distributed-Hash-Table" class="headerlink" title="DHT 分布式哈希表(Distributed Hash Table)"></a>DHT 分布式哈希表(Distributed Hash Table)</h2><p>DHT全称叫分布式哈希表(Distributed Hash Table)，是一种分布式存储方法，一类可由键值来唯一标示的信息按照某种约定/协议被分散地存储在多个节点上，这样也可以有效地避免“中央集权式”的服务器（比如：tracker）的单一故障而带来的整个网络瘫痪。</p>
+<h2 id="Sybil-attack-女巫攻击"><a href="#Sybil-attack-女巫攻击" class="headerlink" title="Sybil attack 女巫攻击"></a>Sybil attack 女巫攻击</h2><p>大规模的p2p系统面临着有问题的和敌对的节点的威胁，为了应付这种威胁，很多系统采用了冗余。然而，如果一个有恶意的实体模仿了多个身份，他就可以控制系统的很大一部分，破坏了系统的冗余策略。我们把这种模仿多个身份的攻击定义为女巫攻击（Sybil Attack）。</p>
+<p>一个节点伪造多个节点id，当对数据进行冗余备份时，有可能这个数据的多个备份都存储在了Sybil节点上，从而削弱了系统的冗余性。</p>
+<p>2002年，Douceur提出抵御Sybil攻击的唯一方法是使用可信的CA机构对身份进行认证。该方案使用集中式的CA为每一个加入系统的节点颁发证书。证书中包含该节点的id、IP地址、公钥，并用CA的私钥对证书进行签名。其中节点id是由CA从id空间中随机选择分配的，防止节点自己选择id，从而进行有目的的攻击。</p>
+<p>2006年，Dinger提出了一种针对Chord网络的自注册机制来防御sybil攻击。在该方案中，与CA机制不同的是节点id是分布式分配的。要加入网络的节点首先计算自己的节点id，节点id是IP和端口号异或后的哈希值；然后该节点在chord环中的r个节点中进行注册，这r个节点用该节点的IP地址和j（1=&lt;j&lt;=r）计算出来的。每个节点为每一个IP地址维护着一张注册节点表，如果在该节点中注册的IP地址数超过了系统常数a，将拒绝该节点注册。</p>
+<p>2006年，Bazzil提出了一种防御sybil攻击的安全路由协议。网络中每个节点都有一个公私钥对，公钥作为其身份。网络中的节点分为两种，超级节点和普通节点。超级节点的公钥是公开的，而普通节点的公钥是不公开的。可以直接进行通信的节点我们称之为邻居。</p>
+<h2 id="预言机-oracle"><a href="#预言机-oracle" class="headerlink" title="预言机 oracle"></a>预言机 oracle</h2><p>先说答案： oracle就是为区块链智能合约提供可信链外数据以触发智能合约顺利执行的数据源。</p>
+<p>为什么叫oracle？</p>
+<p>oracle是智能合约的重要基础。而智能合约是以以太坊为代表的区块链2.0的标志性技术，是区块链技术走向商业化的一块重要基石。<br>需要引入一种机制保障输入智能合约的数据都是可信的，这就是oracle。Oracle是连接现实世界和区块链系统的桥梁。</p>
+<p>举一个更复杂也更具有商业化前景的案例，2018世界杯即将开赛，球迷可用智能合约来实现对赌，比如有球迷A预测巴西队会夺冠，另有球迷B预测德国队夺冠。这样可以开设一个赌局，巴西队夺冠，则B的赌注判给A，反之亦然，如果两队都没有夺冠，则赌约自动解除。</p>
+<p>赌约的规则很简单，但在区块链去中心化体系下存在一个关键问题是，如何将比赛结果放进这个赌约当中去？也就是说如何扣动扳机，让这个智能合约运转起来？</p>
+<p>在去中心化的区块链体系中，赌局双方是意见不同的球迷，没有了第三方中介机构，也就取消了裁判，由此产生了谁来宣布赌局胜负的问题。这就需要第三方信息的介入，这个功能就是预言机oracle发挥作用的地方。</p>
+<p>oracle设计有两大障碍：</p>
+<ol>
+<li>是安全性不够，被骗的可能比在现实世界中被骗的可能仍然大很多；</li>
+<li>是成本高，智能合约使用oracle花费的时间和投入，比在现实世界中获取信息要高得多。</li>
+</ol>
+<h2 id="零知识证明"><a href="#零知识证明" class="headerlink" title="零知识证明"></a>零知识证明</h2><p>ZK-SNARK（Zero Knowledge succinct non-interactive arguments of knowledge） 算法<br>也就是我们常说的零知识证明，具有简洁性、非交互性、计算完好性（验证者只能抵抗计算能力有限的证明者的攻击）<br>简单来说，零知识证明能够让用户不泄漏隐私信息，证明自己的某个属性，如钱包有多少钱等。在Zcash上，交易的发送者、接受者和数额等能够通过加密进行隐藏。<br>但是，了解Zcash的人都知道，这个算法的设计，让Zcash需要一个可信的第三方，这违背了区块链的去中心化，而去中心化正是区块链美妙的地方。<br>当然为了解决隐私问题，还有很多的尝试如交易混合机制等，但都没有彻底解决问题。</p>
+<p>ZK-STARK简介<br>最近出来一个项目，对零知识证明算法提出了改进，它就是Starkware。<br>它运用新一代的零知识证明算法ZK-STARK（Scalable Transparent Argument of Knowledge），提高区块链的可拓展性和隐私性。别看只是隐私这样一个小问题，如果这个隐私问题能够解决的话，并且还不需要一个可信的第三方的话，加密数字货币能够有机会成为通用、普及的货币。<br>另外，算法的设计能够抵抗量子计算的攻击，这也是一个亮点所在。</p>
+<p>但是项目还是存在两个问题，一个是在这个新的算法，一次零知识证明的存储大小增加了千倍（ZK-SNARK的288B增加到了几百KB），对存储要求大幅度增加。另外也没有项目使用这个算法，可行性并没有得到验证。</p>
+<h2 id="共识算法"><a href="#共识算法" class="headerlink" title="共识算法"></a>共识算法</h2><p>目前存在的共识算法。<br>PoW：Proof of Work，工作量证明<br>PoS：Proof of Stake，权益证明<br>DPoS：Delegated Proof of Stake，委托权益证明<br>PBFT：Practical Byzantine Fault Tolerance，实用拜占庭容错算法<br>PoSpace/PoC：Proof-of-space/Proof-of-Capacity，容量证明<br>PoA：Proof of activity，活动证明<br>PoB：Proof of burn，销毁证明<br>PoET：Proof of elapsed time，运行时间证明<br>Casper：Ethereum 提出</p>
+<h3 id="What-exactly-is-the-Nothing-At-Stake-problem"><a href="#What-exactly-is-the-Nothing-At-Stake-problem" class="headerlink" title="What exactly is the Nothing-At-Stake problem?"></a>What exactly is the Nothing-At-Stake problem?</h3><h2 id="跨链技术"><a href="#跨链技术" class="headerlink" title="跨链技术"></a>跨链技术</h2><p>早期跨链技术包括以Blockstream为代表的侧链技术（Sidechain）和以BTC-Relay为代表的中继技术（Relay）。早期的跨链技术更多关注的是资产转移，现有项目更多关注的是链状态的转移。</p>
+<h3 id="Interledger"><a href="#Interledger" class="headerlink" title="Interledger"></a>Interledger</h3><p>Ripple 开发了“InterLedger”协议，可以说这是一个更实际的办法——将所有我们目前正在使用的记账系统连接在一起。<br>Interledger协议创建了一个这样的系统，在这个系统中，两个不同的记账系统可以通过第三方“连接器”或“验证”机器来互相自由地传输货币。记账系统无需去信任“连接器”，因为该协议采用密码算法为这两个记账系统和连接器创建资金托管，当所有参与方对资金量达成共识时，便可相互交易。并且只有参与交易的记账系统才可以跟踪交易，交易的详情可隐藏起来，“验证器”是通过加密算法来运行，因此不会直接看到交易的详情。</p>
+<p>理论上，Interledger可以兼容任何在线记账系统，而银行现有的记账系统只需小小的改变就能使用该协议。</p>
+<h3 id="Polkadot"><a href="#Polkadot" class="headerlink" title="Polkadot"></a>Polkadot</h3><p>如果你熟悉以太坊，就一定知道以太坊客户端的开发者Ethcore，Polkadot项目便是Ethcore公司在跨链通信领域的一个崭新尝试。它被称为第三代公开无需授权的区块链科技，设计核心理念为解决当今两大阻止区块链技术传播和接受的难题：即时拓展性和延伸性。</p>
+<p>Polkadot目前还是以以太坊为主，实现其与私链的互连，并以其他公有链网络为升级目标，最终让以太坊直接与任何链进行通讯。</p>
+<p>Melonport 开发的软件Melon将是运行于多链网络（multi-chain network）Polkadot之上的第一款Dapp。Melon的定位是成为跨链框架上的数字资产管理平台，现有数字代币或资产达700 多种，分布于多个互不相连的平台，其数字资产市场价值约150亿美元，并在持续增长中。</p>
+<h3 id="Aeternity"><a href="#Aeternity" class="headerlink" title="Aeternity"></a>Aeternity</h3><p>计算机科学家Yanislav Malahov和风险资本家Andreas Kohl于去年创建了一家名为Aeternity的软件公司，Malahov 称自己为以太坊的“教父”。 Aternity项目是一种以太坊智能合约在侧链运行的一种实现，致力于重塑当今智能合约的基础。Aeternity的白皮书发布于2016年12月。</p>
+<p>以太坊的智能合约刚问世的时候，的确给人以一种焕然一新的感觉。然而，随着各方试图将以太坊运用到实际商业应用中，智能合约诸如效率低下、功能缺失，特别是过于封闭不易与外部世界通信的弊端渐渐显露。</p>
+<p>Aeternity呈现了一个高度可扩容的区块链架构，以及一个可以被用来检视预言机（oracle）的共识机制。这将使得预言机变得非常高效且廉价，因为它将避免共识机制重叠使用的情况。状态通道将得到整合，从而提升隐私性和可扩容性。通道中的代币可以用完全可靠的、可以访问预言机答案的智能合约来进行传输。合约代码或状态将不会在链上储存，使智能合约更容易分析，处理速度加快，而实际功能性并不会遭受显著损失，由此可以高效地在全球规模上进行部署自创资产和预测市场这样的应用。</p>
+<h3 id="AnLink"><a href="#AnLink" class="headerlink" title="AnLink"></a>AnLink</h3><p>众安科技同样看到了单一区块链在许多应用场景中无法解决复杂问题以及在性能上相对于传统中心化系统所呈现的瓶颈，由此提出并发展了称为“安链-链路由”的区块链网络拓扑结构。</p>
+<p>在AnLink区块链网络中，“母链”构成了信息主干道，不同的母链之间通过链路由协议交换信息。同时，一个母链上承载着不同的子链，这些子链可以是以太坊，可以是比特币，事实上也可以是任何一种分布式账本实现，子链间的通信则由跨链通信协议（CBCP）负责。这种类互联网的分层协议实现，借鉴了已有的技术实现，以解决区块链系统的扩展性问题。</p>
+<h2 id="重复消费-double-spending"><a href="#重复消费-double-spending" class="headerlink" title="重复消费(double spending)"></a>重复消费(double spending)</h2><p>双重支出指的是一笔钱花两次<br><img alt="2fa39188.png" src="/2018/05/27/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/2fa39188.png" width height></p>
+<h2 id="UTXO"><a href="#UTXO" class="headerlink" title="UTXO"></a>UTXO</h2><p>Unspent Transaction Output<br>可以用来消费的金额</p>
+<h2 id="哈希算力"><a href="#哈希算力" class="headerlink" title="哈希算力"></a>哈希算力</h2><p>算力，在通过「挖矿」得到比特币的过程中，一个节点每秒钟能做多少次计算，就是其「算力」的代表<br>单位写成 hash/s, 简写为 h/s。1 h/s 表示 1 秒钟能做 1 次 hash 碰撞<br>H=1次<br>1000H = 1K<br>1000K = 1G<br>1000G = 1T<br>1000T = 1P<br>1000P=1E</p>
+<p>比特币是sha256算法，莱特币是scrypt算法， 以太坊是Ethash算法，</p>
+<h2 id="盲签名-Blind-Signature"><a href="#盲签名-Blind-Signature" class="headerlink" title="盲签名(Blind Signature)"></a>盲签名(Blind Signature)</h2><p>是一种数字签名的方式,在消息内容被签名之前,对于签名者来说消息内容是不可见的.<br>类比例子：对文件签名就是通过在信封里放一张复写纸，签名者在信封上签名时，他的签名便透过复写纸签到文件上。</p>
+<p>它除了满足一般的数字签名条件外，还必须满足下面的两条性质：</p>
+<ol>
+<li>签名者对其所签署的消息是不可见的，即签名者不知道他所签署消息的具体内容。</li>
+<li>签名消息不可追踪，即当签名消息被公布后，签名者无法知道这是他哪次的签署的。</li>
+</ol>
+<p>盲签名(Blind Signature)模型</p>
+<ol>
+<li>接收者首先将待签数据进行盲变换，把变换后的盲数据发给签名者。</li>
+<li>经签名者签名后再发给接收者。</li>
+<li>接收者对签名再作去盲变换，得出的便是签名者对原数据的盲签名。</li>
+<li>这样便满足了条件①。要满足条件②，必须使签名者事后看到盲签名时不能与盲数据联系起来，这通常是依靠某种协议来实现的。</li>
+</ol>
+<img alt="28d3314b.png" src="/2018/05/27/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/28d3314b.png" width height>
+
+<h2 id="陷门单向函数（trapdoor-one-way-function）"><a href="#陷门单向函数（trapdoor-one-way-function）" class="headerlink" title="陷门单向函数（trapdoor one-way function）"></a>陷门单向函数（trapdoor one-way function）</h2><p>单向函数（one-way function）<br>单向函数顺向计算起来非常的容易，但求逆却非常的困难。也就是说，已知x，我们很容易计算出f(x)。但已知f(x)，却很难计算出x。<br>打碎碗碟是一个很好的单向函数的例子，我们将碗碟打碎成数千片的碎片是一件很容易的事情，但要把这些碎片再拼成一个完整无缺的碗碟，却是一件非常困难的事情。</p>
+<p>单向陷门函数trapdoor one-way function）是一类特殊的单向函数，其存在一个陷门。<br>单向陷门函数包含两个明显特征：<br>1）一是单向性。<br>2）二是存在陷门。也就是后门<br>比如函数f(x)，若已知x计算出f(x)很容易，而已知f(x)，逆向求x则很困难。但若存在一个k，使得知道要是知道k，则可以很容易地计算出f(x)的逆；而不知道k，则无法计算出函数f(x)的逆，那么我们就称函数f(x)为单向陷门函数，而k称为陷门。</p>
+<p>拆开表是一个很好的陷门单向函数的例子，我们将表拆成数百片小片非常容易，而把这些小片重新组装成能够工作的表则非常的困难，但我们如果通过秘密消息（表的装配指令），就可以很容易将表复原。这里的“表的装配指令”就是上述的陷门k。</p>
+<h2 id="一个ScriptPubKey是什么？解释如何使用P2SH地址就可以了。"><a href="#一个ScriptPubKey是什么？解释如何使用P2SH地址就可以了。" class="headerlink" title="一个ScriptPubKey是什么？解释如何使用P2SH地址就可以了。"></a>一个ScriptPubKey是什么？解释如何使用P2SH地址就可以了。</h2><p>scriptPubKey定义了如果Bob想要花费这1BTC，应该满足什么条件。<br>用于验证交易是否通过的脚本由两部分组成：<br>解锁脚本：本次交易的 input 中的 scriptSig<br>锁定脚本：上次交易的 output 中的 scriptPubKey</p>
+<p>支付给脚本哈希（P2SH）：<br>支付给脚本哈希（P2SH）交易标准是通过BIP16建立的，允许交易被发送到一个脚本哈希（地址以3开头），而不是一个公钥哈希（地址以1开头）。经P2SH发出的比特币，收款人必须提供一个脚本来与脚本哈希匹配，使得脚本的值为真。</p>
+<h2 id="IPFS（The-InterPlanetary-File-System）星际文件存储系统"><a href="#IPFS（The-InterPlanetary-File-System）星际文件存储系统" class="headerlink" title="IPFS（The InterPlanetary File System）星际文件存储系统"></a>IPFS（The InterPlanetary File System）星际文件存储系统</h2><p><a target="_blank" rel="noopener" href="http://ipfs.io/">http://ipfs.io/</a><br>是一种点到点的分布式文件系统，它连接的计算设备都拥有相同的文件管理模式。<br>IPFS的做法则是不再关心中心服务器的位置，也不考虑文件的名字和路径，只关注文件中可能出现的内容。我把刚才的文件helloworld.js放到IPFS节点，它会得到一个新名字QmXGTaGWTT1uUtfSb2sBAvArMEVLK4rQEcQg5bv7wwdzwU(看到这个是不是有点熟悉：）对头就是象比特币或以太坊的地址)，是一个由文件内容计算出的加密哈希值。哈希值直接反映文件的内容，哪怕只修改1比特，哈希值也会完全不同。当IPFS被请求一个文件哈希时，它会使用一个分布式哈希表找到文件所在的节点，取回文件并验证文件数据。。</p>
+<h2 id="智能合约"><a href="#智能合约" class="headerlink" title="智能合约"></a>智能合约</h2><p>运行在沙箱里面的一个程序。<br>智能合约使很多不同类型的程序和操作得以自动化，最明显的体现之处在于支付环节及付款时的步骤操作。<br>一段代码 (智能合约)，被部署在分享的、复制的账本上，它可以维持自己的状态，控制自己的资产和对接收到的外界信息或者资产进行回应。或者可以这样简单的概括：它是运行在可复制、共享的账本上的计算机程序，可以处理信息，接收、储存和发送价值。</p>
+<p>基于区块链的智能合约的构建及执行分为如下步骤：</p>
+<ol>
+<li>智能合约的构建：由区块链内的多个用户共同参与制定一份智能合约；</li>
+<li>智能合约的存储：智能合约通过P2P网络扩散到每个节点，并存入区块链；</li>
+<li>智能合约的执行：智能合约定期进行自动机状态检查，将满足条件的事务进行验证，达成共识后自动执行并通知用户。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee, if you like!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="郑  君 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="郑  君 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" rel="tag"># 区块链</a>
+              <a href="/tags/blockchain/" rel="tag"># blockchain</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/05/27/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95/" rel="prev" title="区块链共识算法">
+                  <i class="fa fa-chevron-left"></i> 区块链共识算法
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/05/27/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" rel="next" title="区块链架构设计">
+                  区块链架构设计 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郑  君</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/code-unfold.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/fold_action.js"></script>
+
+</body>
+</html>
