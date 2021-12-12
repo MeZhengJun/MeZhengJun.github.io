@@ -96,7 +96,7 @@
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1245</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -167,7 +167,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-count">1245</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -220,620 +220,6 @@
 
 
     <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/02/19/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/cpp-thread/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/02/19/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/cpp-thread/" class="post-title-link" itemprop="url">cpp-thread</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-02-19 17:18:02" itemprop="dateCreated datePublished" datetime="2020-02-19T17:18:02+08:00">2020-02-19</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-04-08 13:00:44" itemprop="dateModified" datetime="2020-04-08T13:00:44+08:00">2020-04-08</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.7k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><p>c++11<br>lock_guard is no longer recommended.</p>
-<p>c++ 17<br>unique_lock and scoped_lock are recommended.</p>
-<p>unique_lock 和 lock_guard 类似，增加一些有用的函数。<br>unique_lock can unlock, not lock_guard</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 发送队列锁</span></span><br><span class="line">std::mutex m_mutex_write;</span><br><span class="line"><span class="function">std::unique_lock <span class="title">guard</span><span class="params">(m_mutex_write)</span></span>;</span><br><span class="line"><span class="comment">// 可以在 guard 生命周期结束前解锁</span></span><br><span class="line">guard.<span class="built_in">unlock</span>();</span><br><span class="line"><span class="comment">// 解锁后还可以再次加锁</span></span><br><span class="line">guard.<span class="built_in">lock</span>();</span><br></pre></td></tr></table></figure>
-
-<h2 id="指针参数"><a href="#指针参数" class="headerlink" title="指针参数"></a>指针参数</h2><p>可以使用智能指针保存参数，然后传给工作线程。<br>目前还没找到更好的办法，只能复制一份给工作线程使用。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">CserialPort::write</span><span class="params">(<span class="keyword">const</span> BYTE* data, <span class="keyword">const</span> DWORD&amp; length)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function">std::shared_ptr&lt;BYTE[]&gt; <span class="title">spBuf</span><span class="params">(<span class="keyword">new</span> BYTE[length])</span></span>;</span><br><span class="line">	<span class="built_in">memcpy</span>(spBuf.<span class="built_in">get</span>(), data, length);</span><br><span class="line"></span><br><span class="line">	std::thread threadWork = std::<span class="built_in">thread</span>(threadWrite, <span class="keyword">this</span>, spBuf,length);</span><br><span class="line">	threadWork.<span class="built_in">detach</span>();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="C-14"><a href="#C-14" class="headerlink" title="C++ 14"></a>C++ 14</h2><p>注意：可被 joinable 的 std::thread 对象必须在他们销毁之前被主线程 join 或者将其设置为 detached.</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="literal">false</span> == m_thread_recive.<span class="built_in">joinable</span>())</span><br><span class="line">&#123;</span><br><span class="line">	m_thread_recive = std::<span class="built_in">thread</span>(threadReceive, <span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">threadReceive</span><span class="params">(<span class="keyword">const</span> <span class="keyword">void</span>* p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	CTcpClient* pwnd = (CTcpClient*)p;</span><br><span class="line">	<span class="keyword">while</span> (FLAG_EXIT_THREAD_RECEIVE != (pwnd-&gt;m_flag&amp;FLAG_EXIT_THREAD_RECEIVE))</span><br><span class="line">	&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">20</span>; ++i)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (FLAG_EXIT_THREAD_RECEIVE == (pwnd-&gt;m_flag&amp;FLAG_EXIT_THREAD_RECEIVE))</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">goto</span> skip_return;</span><br><span class="line">			&#125;</span><br><span class="line">			this_thread::<span class="built_in">sleep_for</span>(chrono::<span class="built_in">milliseconds</span>(<span class="number">100</span>));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">skip_return:</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Create a thread using member function</span></span><br><span class="line"><span class="function">std::thread <span class="title">th</span><span class="params">(&amp;Task::execute, taskPtr, <span class="string">&quot;Sample Task&quot;</span>)</span></span>;</span><br></pre></td></tr></table></figure>
-
-
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">std::thread m_threadHttpServer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (FLAG_HTTP_SERVER_RUNNING != (g_iFlag&amp;FLAG_HTTP_SERVER_RUNNING))</span><br><span class="line">&#123;</span><br><span class="line">  m_threadHttpServer = std::<span class="built_in">thread</span>(threadHttpServer, (<span class="keyword">this</span>), <span class="number">2</span>,<span class="string">&quot;other param&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">g_iFlag |= FLAG_EXIT_HTTP_SERVER;</span><br><span class="line"><span class="keyword">while</span> (FLAG_HTTP_SERVER_RUNNING == (g_iFlag&amp;FLAG_HTTP_SERVER_RUNNING))</span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">Sleep</span>(<span class="number">200</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (m_threadHttpServer.<span class="built_in">joinable</span>())</span><br><span class="line">&#123;</span><br><span class="line">  m_threadHttpServer.<span class="built_in">join</span>();</span><br><span class="line">&#125;</span><br><span class="line">g_iFlag &amp;= (~FLAG_EXIT_HTTP_SERVER);</span><br></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="https://hackernoon.com/learn-c-multi-threading-in-5-minutes-8b881c92941f">ref.</a></p>
-<p>A thread can be created in several ways:</p>
-<ol>
-<li>Using a function pointer</li>
-<li>Using a functor</li>
-<li>Using a lambda function</li>
-</ol>
-<p>对于判断线程是否执行完毕,可以通过自己设置 flag 来判断.</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// thread example</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span>       <span class="comment">// std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span>         <span class="comment">// std::thread</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		str.<span class="built_in">Format</span>(<span class="string">L&quot;foo %d\n&quot;</span>, i);</span><br><span class="line">		<span class="built_in">OutputDebugString</span>(str);</span><br><span class="line">		<span class="built_in">Sleep</span>(<span class="number">1000</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bar</span><span class="params">(<span class="keyword">int</span>&amp; x, <span class="keyword">int</span>&amp; out)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> m = <span class="number">0</span>;</span><br><span class="line">	CString str;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		m += x;</span><br><span class="line">		str.<span class="built_in">Format</span>(<span class="string">L&quot;bar %d\n&quot;</span>, i);</span><br><span class="line">		<span class="built_in">OutputDebugString</span>(str);</span><br><span class="line">		<span class="built_in">Sleep</span>(<span class="number">1000</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	out = m;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  CString str;</span><br><span class="line"></span><br><span class="line">	<span class="function">std::thread <span class="title">first</span><span class="params">(foo)</span></span>;     <span class="comment">// spawn new thread that calls foo()</span></span><br><span class="line">	<span class="keyword">int</span> out = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> in = <span class="number">10</span>;</span><br><span class="line">	<span class="function">std::thread <span class="title">second</span><span class="params">(bar, ref(in),ref(out))</span></span>;  <span class="comment">// spawn new thread that calls bar(0)</span></span><br><span class="line"></span><br><span class="line">	<span class="built_in">OutputDebugString</span>(<span class="string">L&quot;main, foo and bar now execute concurrently...\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// synchronize threads:</span></span><br><span class="line">	first.<span class="built_in">join</span>();                <span class="comment">// pauses until first finishes</span></span><br><span class="line">	second.<span class="built_in">join</span>();               <span class="comment">// pauses until second finishes</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	str.<span class="built_in">Format</span>(<span class="string">L&quot;foo and bar completed. out:%d\n&quot;</span>, out);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">OutputDebugString</span>(str);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>std::ref<br>主要是考虑函数式编程（如std::bind）在使用时，是对参数直接拷贝，而不是引用。</p>
-<p>warning: all parameters is passing default by value unless you wrap them in std::ref.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/02/19/%E5%BC%80%E6%BA%90%E5%BA%93/Qt/qt-QPlainTextEdit/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/02/19/%E5%BC%80%E6%BA%90%E5%BA%93/Qt/qt-QPlainTextEdit/" class="post-title-link" itemprop="url">qt-QPlainTextEdit</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-02-19 09:52:56 / 修改时间：10:01:36" itemprop="dateCreated datePublished" datetime="2020-02-19T09:52:56+08:00">2020-02-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%BC%80%E6%BA%90%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%BC%80%E6%BA%90%E5%BA%93/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>57</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><a target="_blank" rel="noopener" href="https://doc.qt.io/qt-5/qplaintextedit.html#details">doc</a></p>
-<h2 id="追加文档"><a href="#追加文档" class="headerlink" title="追加文档"></a>追加文档</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">ui.plainTextEdit_out-&gt;<span class="built_in">appendPlainText</span>(strRead);</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/02/18/%E9%9A%8F%E7%AC%94/2020%E5%B9%B4%E5%AF%84%E8%AF%AD/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/02/18/%E9%9A%8F%E7%AC%94/2020%E5%B9%B4%E5%AF%84%E8%AF%AD/" class="post-title-link" itemprop="url">2020年寄语</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-02-18 12:32:28" itemprop="dateCreated datePublished" datetime="2020-02-18T12:32:28+08:00">2020-02-18</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-02-19 12:22:34" itemprop="dateModified" datetime="2020-02-19T12:22:34+08:00">2020-02-19</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>211</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>2019 年过去了，这是一个特殊的年，因为非冠状流行病毒疫情，全国上下几乎都很宅。商场，饭店，电影院，各种场所都关了，直到今天，商场里面也没有几个人。</p>
-<p>年前被动换了工作，新找的工作在奉贤，已经出了上海市区了。</p>
-<p>2020 年我的计划是，先拿到本科毕业证，5月份答辩。<br>然后全力看股票，作为我下半生的养老项目。</p>
-<p>工作上是机械测量相关的业务，对我来说难度不大。应该可以轻松应对。</p>
-<p>以下是我在 2020 年要完成的任务</p>
-<ol>
-<li>本科毕业证</li>
-<li>重点发展股票事业</li>
-<li>健身</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/02/18/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/%E6%B5%8B%E9%87%8F/%E4%B8%B2%E5%8F%A3%E9%80%9A%E8%AE%AF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/02/18/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/%E6%B5%8B%E9%87%8F/%E4%B8%B2%E5%8F%A3%E9%80%9A%E8%AE%AF/" class="post-title-link" itemprop="url">串口通讯</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-02-18 12:31:14" itemprop="dateCreated datePublished" datetime="2020-02-18T12:31:14+08:00">2020-02-18</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-05-21 17:28:34" itemprop="dateModified" datetime="2020-05-21T17:28:34+08:00">2020-05-21</time>
-      </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>11k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>10 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/previous-versions/ff802693(v=msdn.10)?redirectedfrom=MSDN">msdn 串口总体描述</a><br>book: C Programmer’s Guide to Serial Communications</p>
-<p>Nonoverlapped I/O vs Overlapped I/O<br>Overlapped I/O 是异步的，Nonoverlapped I/O 是同步的，<br>同步操作，调用线程会被阻塞，通常使用多个线程来操作，但是如果一个线程中 readFile 阻塞，那么另一个线程的 writeFile 也会被阻塞。<br>异步，同步接口的选择依据主要是可移植性。</p>
-<p>Overlapped I/O<br>更具有灵活性和效率，允许多线程在阻塞等待时同时处理不同的I/O操作，允许单线程在阻塞时在后台执行多个请求</p>
-<p>等待有两种方式：</p>
-<ol>
-<li>等待 hEvent member of the OVERLAPPED structure 使用 WaitForSingleObject</li>
-<li>wait for the call to the GetOverlappedResult function</li>
-</ol>
-<h2 id="Serial-Status"><a href="#Serial-Status" class="headerlink" title="Serial Status"></a>Serial Status</h2><p>两种方式：</p>
-<ol>
-<li>使用事件 mask</li>
-<li>使用 polling （低效，不推荐）</li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/02/18/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/%E6%B5%8B%E9%87%8F/%E4%B8%B2%E5%8F%A3%E9%80%9A%E8%AE%AF/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/02/18/%E5%BC%80%E6%BA%90%E5%BA%93/Qt/qt-QtSerialPort/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/02/18/%E5%BC%80%E6%BA%90%E5%BA%93/Qt/qt-QtSerialPort/" class="post-title-link" itemprop="url">qt-QtSerialPort</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-02-18 10:57:05 / 修改时间：12:41:12" itemprop="dateCreated datePublished" datetime="2020-02-18T10:57:05+08:00">2020-02-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%BC%80%E6%BA%90%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%BC%80%E6%BA%90%E5%BA%93/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>12</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><a target="_blank" rel="noopener" href="https://doc.qt.io/qt-5/qtserialport-index.html">Qt Serial Port</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/02/17/%E5%BC%80%E6%BA%90%E5%BA%93/Qt/qt-QPushButton/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/02/17/%E5%BC%80%E6%BA%90%E5%BA%93/Qt/qt-QPushButton/" class="post-title-link" itemprop="url">qt-QPushButton</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-02-17 17:34:15 / 修改时间：17:36:10" itemprop="dateCreated datePublished" datetime="2020-02-17T17:34:15+08:00">2020-02-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%BC%80%E6%BA%90%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%BC%80%E6%BA%90%E5%BA%93/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>319</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>使用 qt designer 创建信号槽关联。</p>
-<p>或者使用代码关联</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Connect button signal to appropriate slot</span></span><br><span class="line"><span class="built_in">connect</span>(m_button, <span class="built_in">SIGNAL</span> (<span class="built_in">released</span>()), <span class="keyword">this</span>, <span class="built_in">SLOT</span> (<span class="built_in">handleButton</span>()));</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> slots:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">onBtn_driver_config</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">QtGuiApplication1::onBtn_driver_config</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	QMessageBox::<span class="built_in">information</span>(<span class="literal">NULL</span>, <span class="string">&quot;info&quot;</span>, <span class="string">&quot;onBtn_driver_config&quot;</span>, QMessageBox::Ok);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
 
     
 
@@ -1213,8 +599,582 @@
 
 
 
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/02/15/%E5%BC%80%E6%BA%90%E5%BA%93/SOUI/soui-SMessageBox/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/02/15/%E5%BC%80%E6%BA%90%E5%BA%93/SOUI/soui-SMessageBox/" class="post-title-link" itemprop="url">soui-SMessageBox</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-02-15 13:44:28 / 修改时间：13:55:50" itemprop="dateCreated datePublished" datetime="2020-02-15T13:44:28+08:00">2020-02-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/windows/UI/" itemprop="url" rel="index"><span itemprop="name">UI</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>328</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h2><p>(MessageBox MSDN)[<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-messagebox]">https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-messagebox]</a></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 这里面的 uType 使用 windows 的 MessageBox 的定义</span></span><br><span class="line"><span class="function">INT_PTR SOUI_EXP <span class="title">SMessageBox</span><span class="params">(HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, UINT uType, <span class="keyword">int</span> nScale=<span class="number">100</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 只有一个确定按钮，点击按钮返回1，点击右上角X返回 2</span></span><br><span class="line"><span class="keyword">int</span> iRet = <span class="built_in">SMessageBox</span>(<span class="literal">nullptr</span>, <span class="string">L&quot;显示信息 tips&quot;</span>, <span class="string">L&quot;caption&quot;</span>, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/02/15/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/cpp-%E7%95%8C%E9%9D%A2%E5%BA%93%E8%B0%83%E7%A0%94/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/02/15/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/cpp-%E7%95%8C%E9%9D%A2%E5%BA%93%E8%B0%83%E7%A0%94/" class="post-title-link" itemprop="url">cpp_界面库调研</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-02-15 09:44:51 / 修改时间：10:27:24" itemprop="dateCreated datePublished" datetime="2020-02-15T09:44:51+08:00">2020-02-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>52</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>无窗口界面<br><a target="_blank" rel="noopener" href="http://www.viksoe.dk/code/windowless1.htm">http://www.viksoe.dk/code/windowless1.htm</a></p>
+<p>DuiLib</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/02/13/Web%E5%BC%80%E5%8F%91/electron/electron-0001-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%8C%E7%AC%AC%E4%B8%80%E4%B8%AA%E7%A8%8B%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/02/13/Web%E5%BC%80%E5%8F%91/electron/electron-0001-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%8C%E7%AC%AC%E4%B8%80%E4%B8%AA%E7%A8%8B%E5%BA%8F/" class="post-title-link" itemprop="url">electron-0001 环境搭建，第一个程序</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-02-13 09:28:59 / 修改时间：13:01:18" itemprop="dateCreated datePublished" datetime="2020-02-13T09:28:59+08:00">2020-02-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%B7%A8%E5%B9%B3%E5%8F%B0/" itemprop="url" rel="index"><span itemprop="name">跨平台</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>825</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h2><img alt="20200213_100240.png" src="/2020/02/13/Web%E5%BC%80%E5%8F%91/electron/electron-0001-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%8C%E7%AC%AC%E4%B8%80%E4%B8%AA%E7%A8%8B%E5%BA%8F/20200213_100240.png" width="500" height>
+
+<h3 id="主进程和渲染器进程"><a href="#主进程和渲染器进程" class="headerlink" title="主进程和渲染器进程"></a>主进程和渲染器进程</h3><p>Electron 运行 package.json 的 main 脚本的进程被称为主进程。 在主进程中运行的脚本通过创建web页面来展示用户界面。 一个 Electron 应用总是有且只有一个主进程。<br>由于 Electron 使用了 Chromium 来展示 web 页面，所以 Chromium 的多进程架构也被使用到。 每个 Electron 中的 web 页面运行在它自己的渲染进程中。</p>
+<p>在普通的浏览器中，web页面通常在沙盒环境中运行，并且无法访问操作系统的原生资源。 然而 Electron 的用户在 Node.js 的 API 支持下可以在页面中和操作系统进行一些底层交互。</p>
+<h4 id="题外话：进程间通讯"><a href="#题外话：进程间通讯" class="headerlink" title="题外话：进程间通讯"></a>题外话：进程间通讯</h4><p>Electron为主进程（ main process）和渲染器进程（renderer processes）通信提供了多种实现方式，如可以使用ipcRenderer 和 ipcMain模块发送消息，使用 remote模块进行RPC方式通信。 这里也有一个常见问题解答：web页面间如何共享数据。</p>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git config --global http.proxy http://127.0.0.1:1080</span><br><span class="line">git config --global https.proxy https://127.0.0.1:1080</span><br><span class="line">git config --global http.proxy socks5://127.0.0.1:1080</span><br><span class="line">git config --global https.proxy socks5://127.0.0.1:1080</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装-node-js"><a href="#安装-node-js" class="headerlink" title="安装 node.js"></a>安装 node.js</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 下面这行的命令会打印出Node.js的版本信息</span></span><br><span class="line">node -v</span><br><span class="line"><span class="meta">#</span><span class="bash"> 下面这行的命令会打印出npm的版本信息</span></span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装-electron"><a href="#安装-electron" class="headerlink" title="安装 electron"></a>安装 electron</h3><p>使用 save-dev 可以为每个项目单独指定 electron<br>cnpm 是使用国内的源</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install cnpm -g --registry=http://registry.npm.taobao.org</span><br><span class="line">cnpm install --save-dev electron</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/02/04/%E8%AF%BB%E8%BF%87%E7%9A%84%E4%B9%A6/%E5%A4%A7%E9%81%93%E7%90%86%E9%83%BD%E6%87%82%EF%BC%8C%E5%B0%8F%E6%83%85%E7%BB%AA%E9%9A%BE%E6%8E%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/02/04/%E8%AF%BB%E8%BF%87%E7%9A%84%E4%B9%A6/%E5%A4%A7%E9%81%93%E7%90%86%E9%83%BD%E6%87%82%EF%BC%8C%E5%B0%8F%E6%83%85%E7%BB%AA%E9%9A%BE%E6%8E%A7/" class="post-title-link" itemprop="url">大道理都懂，小情绪难控</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-02-04 10:00:40" itemprop="dateCreated datePublished" datetime="2020-02-04T10:00:40+08:00">2020-02-04</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-02-06 09:50:03" itemprop="dateModified" datetime="2020-02-06T09:50:03+08:00">2020-02-06</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AF%BB%E4%B9%A6/" itemprop="url" rel="index"><span itemprop="name">读书</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>190</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>推荐阅读</p>
+<p>作者：[日]和田秀树<br>出版社：四川科学技术出版社<br>出版时间：2019-06<br>ISBN：9787536494626</p>
+<img alt="20200204_100714.png" src="/2020/02/04/%E8%AF%BB%E8%BF%87%E7%9A%84%E4%B9%A6/%E5%A4%A7%E9%81%93%E7%90%86%E9%83%BD%E6%87%82%EF%BC%8C%E5%B0%8F%E6%83%85%E7%BB%AA%E9%9A%BE%E6%8E%A7/20200204_100714.png" width="600" height>
+
+<p>大脑里负责掌控情绪的是额叶</p>
+<p>随着医学进步，我们了解到所有的喜怒哀乐情绪，都是大脑的变化引起的。因此，情绪由大脑产生，也受大脑主宰。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/02/04/%E8%AF%BB%E8%BF%87%E7%9A%84%E4%B9%A6/%E5%A4%A7%E9%81%93%E7%90%86%E9%83%BD%E6%87%82%EF%BC%8C%E5%B0%8F%E6%83%85%E7%BB%AA%E9%9A%BE%E6%8E%A7/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/01/30/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/python-tuple/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/01/30/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/python-tuple/" class="post-title-link" itemprop="url">python-tuple</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-01-30 19:52:36" itemprop="dateCreated datePublished" datetime="2020-01-30T19:52:36+08:00">2020-01-30</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-09-25 15:31:24" itemprop="dateModified" datetime="2020-09-25T15:31:24+08:00">2020-09-25</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>323</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>A tuple is a collection which is ordered and unchangeable. In Python tuples are written with round brackets.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">thistuple = (<span class="string">&quot;apple&quot;</span>, <span class="string">&quot;banana&quot;</span>, <span class="string">&quot;cherry&quot;</span>, <span class="string">&quot;orange&quot;</span>, <span class="string">&quot;kiwi&quot;</span>, <span class="string">&quot;melon&quot;</span>, <span class="string">&quot;mango&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(thistuple)</span><br><span class="line"><span class="built_in">print</span>(thistuple[<span class="number">1</span>])</span><br><span class="line"><span class="built_in">print</span>(thistuple[-<span class="number">1</span>])</span><br><span class="line"><span class="built_in">print</span>(thistuple[<span class="number">2</span>:<span class="number">5</span>])</span><br></pre></td></tr></table></figure>
+
+<h2 id="clear"><a href="#clear" class="headerlink" title="clear"></a>clear</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">thistuple = ()</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/01/30/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/pyqt5/pyqt5-static/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/01/30/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/pyqt5/pyqt5-static/" class="post-title-link" itemprop="url">pyqt5-static</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-01-30 09:16:57 / 修改时间：09:18:01" itemprop="dateCreated datePublished" datetime="2020-01-30T09:16:57+08:00">2020-01-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>100</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>静态方法</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DaoService</span>(<span class="params">QObject</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">create_index</span>():</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/27/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><span class="page-number current">28</span><a class="page-number" href="/page/29/">29</a><span class="space">&hellip;</span><a class="page-number" href="/page/126/">126</a><a class="extend next" rel="next" href="/page/29/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/27/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><span class="page-number current">28</span><a class="page-number" href="/page/29/">29</a><span class="space">&hellip;</span><a class="page-number" href="/page/125/">125</a><a class="extend next" rel="next" href="/page/29/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>
@@ -1292,8 +1252,6 @@
 
 
 
-
-  <script type="text/javascript" src="/js/fold_action.js"></script>
 
 </body>
 </html>

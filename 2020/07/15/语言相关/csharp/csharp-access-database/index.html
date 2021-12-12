@@ -33,7 +33,7 @@
 <meta property="og:description" content="While we can use OLE DB if we’re using the .NET Framework, Microsoft has stated that OLE DB won’t be supported for .NET Core. .net core使用 ODBC 来实现。 .net frameworkusing System;using System.Collections.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-15T09:36:04.000Z">
-<meta property="article:modified_time" content="2020-11-03T07:57:22.240Z">
+<meta property="article:modified_time" content="2021-12-11T14:21:28.798Z">
 <meta property="article:author" content="郑  君">
 <meta property="article:tag" content="csharp">
 <meta name="twitter:card" content="summary">
@@ -99,7 +99,7 @@
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1245</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -171,7 +171,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-count">1245</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -265,7 +265,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-03 15:57:22" itemprop="dateModified" datetime="2020-11-03T15:57:22+08:00">2020-11-03</time>
+        <time title="修改时间：2021-12-11 22:21:28" itemprop="dateModified" datetime="2021-12-11T22:21:28+08:00">2021-12-11</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -312,7 +312,7 @@
         <p>While we can use OLE DB if we’re using the .NET Framework, Microsoft has stated that OLE DB won’t be supported for .NET Core.</p>
 <h2 id="net-core"><a href="#net-core" class="headerlink" title=".net core"></a>.net core</h2><p>使用 ODBC 来实现。</p>
 <h2 id="net-framework"><a href="#net-framework" class="headerlink" title=".net framework"></a>.net framework</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Data;</span><br><span class="line">using System.Data.OleDb;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Text;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line">namespace SPCAssist</span><br><span class="line">&#123;</span><br><span class="line">    /*</span><br><span class="line">     * Oledb.4.0在64位系统上不支持，需要使用 x86 目标平台</span><br><span class="line">     */</span><br><span class="line">    public class AccessHelper</span><br><span class="line">    &#123;</span><br><span class="line">        OleDbConnection conn;</span><br><span class="line">        DataTable dt;</span><br><span class="line"></span><br><span class="line">        /*</span><br><span class="line">         * dbPath 完整路径 d:/ddd/dd.mdb</span><br><span class="line">         */</span><br><span class="line">        public int Open(string dbPath)</span><br><span class="line">        &#123;</span><br><span class="line">            if (conn==null)</span><br><span class="line">            &#123;</span><br><span class="line">                conn = new OleDbConnection();</span><br><span class="line">            &#125;</span><br><span class="line">            conn.ConnectionString = &quot;Provider=Microsoft.Jet.Oledb.4.0; Data Source=&quot; + dbPath;</span><br><span class="line"></span><br><span class="line">            return 0;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public void Close()</span><br><span class="line">        &#123;</span><br><span class="line">            conn.Close();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public DataTable Query(string sql)</span><br><span class="line">        &#123;</span><br><span class="line">            OleDbCommand cmd = new OleDbCommand();</span><br><span class="line">            if (conn.State != ConnectionState.Open)</span><br><span class="line">                conn.Open();</span><br><span class="line">            cmd.Connection = conn;</span><br><span class="line">            cmd.CommandText = sql;</span><br><span class="line">            OleDbDataAdapter da = new OleDbDataAdapter(cmd);</span><br><span class="line">            dt = new DataTable();</span><br><span class="line">            da.Fill(dt);</span><br><span class="line">            </span><br><span class="line">            return dt;</span><br><span class="line">        &#125;</span><br><span class="line">        public int Exec(string sql)</span><br><span class="line">        &#123;</span><br><span class="line">            OleDbCommand cmd = new OleDbCommand();</span><br><span class="line">            if (conn.State != ConnectionState.Open)</span><br><span class="line">                conn.Open();</span><br><span class="line">            cmd.Connection = conn;</span><br><span class="line">            cmd.CommandText = sql;</span><br><span class="line">            int iRet = cmd.ExecuteNonQuery();</span><br><span class="line"></span><br><span class="line">            return iRet;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
+<span id="more"></span>
 <h2 id="query"><a href="#query" class="headerlink" title="query"></a>query</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">sql</span> <span class="operator">=</span> &quot;select * from tblCharacteristic&quot;;</span><br><span class="line">var dt <span class="operator">=</span> access.Query(<span class="keyword">sql</span>);</span><br><span class="line">foreach (DataRow <span class="type">row</span> <span class="keyword">in</span> dt.Rows)</span><br><span class="line">&#123;</span><br><span class="line">    var ss <span class="operator">=</span> <span class="type">row</span>[&quot;CharacteristicID&quot;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">string mdfFile <span class="operator">=</span> @&quot;csharpexamples.mdb&quot;;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">using</span> (OleDbConnection connection <span class="operator">=</span> <span class="keyword">new</span> OleDbConnection(string.Format(&quot;Provider=Microsoft.Jet.OLEDB.4.0;Data Source=&#123;0&#125;&quot;, mdfFile)))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">using</span> (OleDbCommand selectCommand <span class="operator">=</span> <span class="keyword">new</span> OleDbCommand(&quot;SELECT TOP 10 * FROM TABLE1&quot;, connection))</span><br><span class="line">    &#123;</span><br><span class="line">        connection.Open();</span><br><span class="line"> </span><br><span class="line">        DataTable <span class="keyword">table</span> <span class="operator">=</span> <span class="keyword">new</span> DataTable();</span><br><span class="line">        OleDbDataAdapter adapter <span class="operator">=</span> <span class="keyword">new</span> OleDbDataAdapter();</span><br><span class="line">        adapter.SelectCommand <span class="operator">=</span> selectCommand;</span><br><span class="line">        adapter.Fill(<span class="keyword">table</span>);</span><br><span class="line"> </span><br><span class="line">        foreach (DataRow <span class="type">row</span> <span class="keyword">in</span> table.Rows)</span><br><span class="line">        &#123;</span><br><span class="line">            object nameValue <span class="operator">=</span> <span class="type">row</span>[&quot;NAME&quot;];</span><br><span class="line">            object surnameValue <span class="operator">=</span> <span class="type">row</span>[&quot;SURNAME&quot;];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="insert"><a href="#insert" class="headerlink" title="insert"></a>insert</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">string mdfFile = @&quot;csharpexamples.mdb&quot;;</span><br><span class="line"> </span><br><span class="line">using (OleDbConnection connection = new OleDbConnection(string.Format(&quot;Provider=Microsoft.Jet.OLEDB.4.0;Data Source=&#123;0&#125;&quot;, mdfFile)))</span><br><span class="line">&#123;</span><br><span class="line">    using (OleDbCommand insertCommand = new OleDbCommand(&quot;INSERT INTO TABLE1 ([NAME],[SURNAME]) VALUES (?,?)&quot;, connection))</span><br><span class="line">    &#123;</span><br><span class="line">        connection.Open();</span><br><span class="line"> </span><br><span class="line">        insertCommand.Parameters.AddWithValue(&quot;@NAME&quot;, &quot;Brad&quot;);</span><br><span class="line">        insertCommand.Parameters.AddWithValue(&quot;@SURNAME&quot;, &quot;Pitt&quot;);</span><br><span class="line"> </span><br><span class="line">        insertCommand.ExecuteNonQuery();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -447,8 +447,6 @@
 
 
 
-
-  <script type="text/javascript" src="/js/fold_action.js"></script>
 
 </body>
 </html>

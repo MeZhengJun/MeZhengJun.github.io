@@ -96,7 +96,7 @@
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1245</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -167,7 +167,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-count">1245</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -220,614 +220,6 @@
 
 
     <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/17/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/PLC/PLC-%E8%A5%BF%E9%97%A8%E5%AD%90S7Comm%E4%BB%A5%E5%A4%AA%E7%BD%91%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/03/17/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/PLC/PLC-%E8%A5%BF%E9%97%A8%E5%AD%90S7Comm%E4%BB%A5%E5%A4%AA%E7%BD%91%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/" class="post-title-link" itemprop="url">PLC-西门子S7Comm以太网通讯协议</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-03-17 17:44:27" itemprop="dateCreated datePublished" datetime="2020-03-17T17:44:27+08:00">2020-03-17</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-12-07 21:36:02" itemprop="dateModified" datetime="2021-12-07T21:36:02+08:00">2021-12-07</time>
-      </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>7.4k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>7 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/powersun1981/article/details/54289776">ref.1</a></p>
-<p>正常项目，一般都是网线tcp通讯的那种，官方叫 iso on tcp 这种方式<br>西门子的做法和 现在的大众软件方法类似，开放一个默认端口，是102，可以同时连接多个客户端；<br>tcp 客户端连上西门子的102端口后，必须做一个特定报文的交互，然后才能做正常的读取操作；</p>
-<p>可能由于西门子的102端口是1对多的，所以它比较拽，一旦发现通讯数据格式或内容不正确，不但不回复，而且直接跟你把通讯通道断开，<br>    不理你了； 三菱遇到异常报文时，通讯不会断的，只是回复你异常数据，并且有异常代码；</p>
-<p>解析的是以 0x32 开始的报文结构</p>
-<p>借助WireShark抓包，可以看到，S7Comm 以太网协议基于OSI模型：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/17/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/PLC/PLC-%E8%A5%BF%E9%97%A8%E5%AD%90S7Comm%E4%BB%A5%E5%A4%AA%E7%BD%91%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/17/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/windows/MFC/MFC-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A7%E4%BB%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/03/17/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/windows/MFC/MFC-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A7%E4%BB%B6/" class="post-title-link" itemprop="url">MFC-自定义控件</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-03-17 14:28:40 / 修改时间：14:40:50" itemprop="dateCreated datePublished" datetime="2020-03-17T14:28:40+08:00">2020-03-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>在对话框程序中使用。</p>
-<p><a target="_blank" rel="noopener" href="https://www.codeproject.com/Articles/5032/Creating-and-Using-custom-controls-in-VC">ref.1</a></p>
-<ol>
-<li>资源管理其中，拖拽自定义控件到对话框中</li>
-<li>右键菜单创建 class，继承至 CWnd</li>
-<li>比较重要的一步，需要注册自定义的控件，并且必须在构造函数里面注册</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> WNDCLASS_NAME (<span class="meta-string">L&quot;CCanvas&quot;</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="function">BOOL <span class="title">CCanvas::RegisterWndClass</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	WNDCLASS windowclass;</span><br><span class="line">	HINSTANCE hInst = <span class="built_in">AfxGetInstanceHandle</span>();</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Check weather the class is registerd already</span></span><br><span class="line">	<span class="keyword">if</span> (!(::<span class="built_in">GetClassInfo</span>(hInst, WNDCLASS_NAME, &amp;windowclass)))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//If not then we have to register the new class</span></span><br><span class="line">		windowclass.style = CS_DBLCLKS;<span class="comment">// | CS_HREDRAW | CS_VREDRAW;</span></span><br><span class="line">		windowclass.lpfnWndProc = ::DefWindowProc;</span><br><span class="line">		windowclass.cbClsExtra = windowclass.cbWndExtra = <span class="number">0</span>;</span><br><span class="line">		windowclass.hInstance = hInst;</span><br><span class="line">		windowclass.hIcon = <span class="literal">NULL</span>;</span><br><span class="line">		windowclass.hCursor = <span class="built_in">AfxGetApp</span>()-&gt;<span class="built_in">LoadStandardCursor</span>(IDC_ARROW);</span><br><span class="line">		windowclass.hbrBackground = ::<span class="built_in">GetSysColorBrush</span>(COLOR_WINDOW);</span><br><span class="line">		windowclass.lpszMenuName = <span class="literal">NULL</span>;</span><br><span class="line">		windowclass.lpszClassName = WNDCLASS_NAME;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (!<span class="built_in">AfxRegisterClass</span>(&amp;windowclass))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">AfxThrowResourceException</span>();</span><br><span class="line">			<span class="keyword">return</span> FALSE;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> TRUE;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CCanvas::<span class="built_in">CCanvas</span>()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">RegisterWndClass</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>绑定类和自定义控件。右键单击-属性-class 里面填写类定义里面的 “CCanvas”</li>
-<li>数据绑定，在对话框主程序中添加</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">CCanvas m_canvas;<span class="comment">//This is our custom control</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CdrawDemoDlg::DoDataExchange</span><span class="params">(CDataExchange* pDX)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	CDialogEx::<span class="built_in">DoDataExchange</span>(pDX);</span><br><span class="line">	<span class="built_in">DDX_Control</span>(pDX, IDC_STATIC_FRAME, m_ctrl_draw);</span><br><span class="line">	<span class="built_in">DDX_Control</span>(pDX, IDOK, m_btn_ok);</span><br><span class="line">	<span class="built_in">DDX_Control</span>(pDX, IDC_CUSTOM1, m_canvas);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/17/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/MFC/MFC-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A7%E4%BB%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/03/17/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/MFC/MFC-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A7%E4%BB%B6/" class="post-title-link" itemprop="url">MFC-自定义控件</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-03-17 14:28:40 / 修改时间：14:40:50" itemprop="dateCreated datePublished" datetime="2020-03-17T14:28:40+08:00">2020-03-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>在对话框程序中使用。</p>
-<p><a target="_blank" rel="noopener" href="https://www.codeproject.com/Articles/5032/Creating-and-Using-custom-controls-in-VC">ref.1</a></p>
-<ol>
-<li>资源管理其中，拖拽自定义控件到对话框中</li>
-<li>右键菜单创建 class，继承至 CWnd</li>
-<li>比较重要的一步，需要注册自定义的控件，并且必须在构造函数里面注册</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> WNDCLASS_NAME (<span class="meta-string">L&quot;CCanvas&quot;</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="function">BOOL <span class="title">CCanvas::RegisterWndClass</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	WNDCLASS windowclass;</span><br><span class="line">	HINSTANCE hInst = <span class="built_in">AfxGetInstanceHandle</span>();</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Check weather the class is registerd already</span></span><br><span class="line">	<span class="keyword">if</span> (!(::<span class="built_in">GetClassInfo</span>(hInst, WNDCLASS_NAME, &amp;windowclass)))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//If not then we have to register the new class</span></span><br><span class="line">		windowclass.style = CS_DBLCLKS;<span class="comment">// | CS_HREDRAW | CS_VREDRAW;</span></span><br><span class="line">		windowclass.lpfnWndProc = ::DefWindowProc;</span><br><span class="line">		windowclass.cbClsExtra = windowclass.cbWndExtra = <span class="number">0</span>;</span><br><span class="line">		windowclass.hInstance = hInst;</span><br><span class="line">		windowclass.hIcon = <span class="literal">NULL</span>;</span><br><span class="line">		windowclass.hCursor = <span class="built_in">AfxGetApp</span>()-&gt;<span class="built_in">LoadStandardCursor</span>(IDC_ARROW);</span><br><span class="line">		windowclass.hbrBackground = ::<span class="built_in">GetSysColorBrush</span>(COLOR_WINDOW);</span><br><span class="line">		windowclass.lpszMenuName = <span class="literal">NULL</span>;</span><br><span class="line">		windowclass.lpszClassName = WNDCLASS_NAME;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (!<span class="built_in">AfxRegisterClass</span>(&amp;windowclass))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">AfxThrowResourceException</span>();</span><br><span class="line">			<span class="keyword">return</span> FALSE;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> TRUE;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CCanvas::<span class="built_in">CCanvas</span>()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">RegisterWndClass</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>绑定类和自定义控件。右键单击-属性-class 里面填写类定义里面的 “CCanvas”</li>
-<li>数据绑定，在对话框主程序中添加</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">CCanvas m_canvas;<span class="comment">//This is our custom control</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CdrawDemoDlg::DoDataExchange</span><span class="params">(CDataExchange* pDX)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	CDialogEx::<span class="built_in">DoDataExchange</span>(pDX);</span><br><span class="line">	<span class="built_in">DDX_Control</span>(pDX, IDC_STATIC_FRAME, m_ctrl_draw);</span><br><span class="line">	<span class="built_in">DDX_Control</span>(pDX, IDOK, m_btn_ok);</span><br><span class="line">	<span class="built_in">DDX_Control</span>(pDX, IDC_CUSTOM1, m_canvas);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/17/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/%E6%95%B0%E5%AD%A6-%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0-%E6%AD%A3%E5%BC%A6%E7%AD%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/03/17/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/%E6%95%B0%E5%AD%A6-%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0-%E6%AD%A3%E5%BC%A6%E7%AD%89/" class="post-title-link" itemprop="url">数学-三角函数-正弦等</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-03-17 10:09:20" itemprop="dateCreated datePublished" datetime="2020-03-17T10:09:20+08:00">2020-03-17</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-08-18 11:17:53" itemprop="dateModified" datetime="2020-08-18T11:17:53+08:00">2020-08-18</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%95%B0%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">数学</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>684</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>初三学三角函数：正弦，余弦和正切都是研究三角形边角关系的。等你学的时候会要求你知道角会求边，知道边会求角，比如说求船的航行路程，仰角俯角求建筑物高度，还有，有时还会和勾股定理一起用</p>
-<h2 id="名称来源"><a href="#名称来源" class="headerlink" title="名称来源"></a>名称来源</h2><p>来源是文言文。把词语拆成字逐个分析。“弦”代表长，也就是斜边，从“勾三股四弦五”中迁移过来。“正”就是正对，表示直角三角形中角的对边。“余”代表相邻，表示直角三角形中与角相邻的直角边。“切”有垂直之意，在圆的切线中有体现。这样一来，正弦就是对边比斜边，余弦就是邻边比斜边，正切就是对边比（与对边垂直的）邻边。我们常说切割，在数学里，切和割是相差很远的，比如切线和割线。所以在三角函数里，切割相反。</p>
-<h2 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h2><p>从已知两边求角度</p>
-<p>例子<br>梯子搁在墙上，如图。梯子与墙之间的 角度 是多少？</p>
-<img alt="20200317_124139.png" src="/2020/03/17/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/%E6%95%B0%E5%AD%A6-%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0-%E6%AD%A3%E5%BC%A6%E7%AD%89/20200317_124139.png" width="500" height>
-
-<p>例子：在这个梯子的例子，我们知道：<br>角 “x” 的 对边的长度：2.5<br>最长的边（斜边）的长度：5</p>
-<p>$Sin (x) = 对边 / 斜边 = 2.5 / 5 = 0.5$</p>
-<p>解方程！</p>
-<p>$sin(x) = 0.5$</p>
-<p>我们可以重写为：</p>
-<p>$x = sin^{-1}(0.5)$</p>
-<p>我们用计算器来做：输入 0.5，按 $sin^{-1}$ 键，答案便出来了：</p>
-<p>$x = 30°$</p>
-<p>但…… $sin^{-1}$ 的意思是什么？<br>正弦函数 “sin” 以角度为输入来计算 “对边/斜边” 的比，</p>
-<img alt="20200317_134548.png" src="/2020/03/17/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/%E6%95%B0%E5%AD%A6-%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0-%E6%AD%A3%E5%BC%A6%E7%AD%89/20200317_134548.png" width="500" height>
-
-<p>$sin^{-1}$（叫 “反正弦”）是正弦的相反……<br>……它以 “对边/斜边” 的比为输入来计算角度。</p>
-<p>例子：<br>正弦函数：sin(30°) = 0.5<br>反正弦函数：sin-1(0.5) = 30°</p>
-<h2 id="正弦、余弦和正切"><a href="#正弦、余弦和正切" class="headerlink" title="正弦、余弦和正切"></a>正弦、余弦和正切</h2><p>正弦 （sine）, 余弦 （cosine） 和 正切 （tangent） （英语符号简写为 sin, cos 和 tan) 是 直角三角形 边长的比：</p>
-<img alt="20200818_111751.png" src="/2020/03/17/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/%E6%95%B0%E5%AD%A6-%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0-%E6%AD%A3%E5%BC%A6%E7%AD%89/20200818_111751.png" width="500" height>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/16/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/windows/MFC/MFC-%E8%B0%83%E7%94%A8%E6%8E%A7%E5%88%B6%E5%8F%B0%E8%B0%83%E8%AF%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/03/16/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/windows/MFC/MFC-%E8%B0%83%E7%94%A8%E6%8E%A7%E5%88%B6%E5%8F%B0%E8%B0%83%E8%AF%95/" class="post-title-link" itemprop="url">MFC-调用控制台调试</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-03-16 11:31:40 / 修改时间：11:33:42" itemprop="dateCreated datePublished" datetime="2020-03-16T11:31:40+08:00">2020-03-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>329</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>AllocConsole 为调用进程分配一个新的控制台</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _DEBUG  </span></span><br><span class="line">	<span class="built_in">AllocConsole</span>();</span><br><span class="line">	_cprintf(<span class="string">&quot;Debuging....\r\n&quot;</span>);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> </span></span><br><span class="line"></span><br><span class="line">HANDLE　hOutputHandle=<span class="built_in">GetStdHandle</span>(STD_OUTPUT_HANDLE);<span class="comment">//获得控制台输出句柄</span></span><br><span class="line">DWORD　nRet=<span class="number">0</span>;</span><br><span class="line">TCHAR　buf[<span class="number">100</span>]=&#123;<span class="number">0</span>&#125;;<span class="comment">//用来输出字符的缓冲区</span></span><br><span class="line"><span class="built_in">lstrcpy</span>(buf,_T(<span class="string">&quot;Hello&quot;</span>));</span><br><span class="line"><span class="built_in">WriteConsole</span>(hOutputHandle,buf,<span class="built_in">lstrlen</span>(buf),&amp;nRet,<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 退出时释放</span></span><br><span class="line"><span class="built_in">FreeConsole</span>();</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/16/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/MFC/MFC-%E8%B0%83%E7%94%A8%E6%8E%A7%E5%88%B6%E5%8F%B0%E8%B0%83%E8%AF%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/03/16/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/MFC/MFC-%E8%B0%83%E7%94%A8%E6%8E%A7%E5%88%B6%E5%8F%B0%E8%B0%83%E8%AF%95/" class="post-title-link" itemprop="url">MFC-调用控制台调试</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-03-16 11:31:40 / 修改时间：11:33:42" itemprop="dateCreated datePublished" datetime="2020-03-16T11:31:40+08:00">2020-03-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/MFC/" itemprop="url" rel="index"><span itemprop="name">MFC</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/MFC/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>329</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>AllocConsole 为调用进程分配一个新的控制台</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _DEBUG  </span></span><br><span class="line">	<span class="built_in">AllocConsole</span>();</span><br><span class="line">	_cprintf(<span class="string">&quot;Debuging....\r\n&quot;</span>);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> </span></span><br><span class="line"></span><br><span class="line">HANDLE　hOutputHandle=<span class="built_in">GetStdHandle</span>(STD_OUTPUT_HANDLE);<span class="comment">//获得控制台输出句柄</span></span><br><span class="line">DWORD　nRet=<span class="number">0</span>;</span><br><span class="line">TCHAR　buf[<span class="number">100</span>]=&#123;<span class="number">0</span>&#125;;<span class="comment">//用来输出字符的缓冲区</span></span><br><span class="line"><span class="built_in">lstrcpy</span>(buf,_T(<span class="string">&quot;Hello&quot;</span>));</span><br><span class="line"><span class="built_in">WriteConsole</span>(hOutputHandle,buf,<span class="built_in">lstrlen</span>(buf),&amp;nRet,<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 退出时释放</span></span><br><span class="line"><span class="built_in">FreeConsole</span>();</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
 
     
 
@@ -1271,8 +663,584 @@
 
 
 
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/06/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/pandas/python-numpy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/03/06/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/pandas/python-numpy/" class="post-title-link" itemprop="url">python-numpy</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-03-06 11:06:27" itemprop="dateCreated datePublished" datetime="2020-03-06T11:06:27+08:00">2020-03-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-12-07 21:33:44" itemprop="dateModified" datetime="2021-12-07T21:33:44+08:00">2021-12-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E6%BA%90%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>numpy是C实现的</p>
+<p>blas+lapack、intel MKL、OpenBlas、ATLAS</p>
+<p>numpy底层使用BLAS做向量，矩阵运算</p>
+<p>NumPy doesn’t depend on any other Python packages, however, it does depend on an accelerated linear algebra library - typically Intel MKL or OpenBLAS. </p>
+<h2 id="blas-vs-openblas"><a href="#blas-vs-openblas" class="headerlink" title="blas vs openblas"></a>blas vs openblas</h2><p>下面安装的是 openblas，这个大小要比 blas 小很多。不过速度可能会慢些</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">conda install -c conda-forge numpy</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/03/06/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/pandas/python-numpy/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/02/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/python-%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90-%E5%BD%92%E4%B8%80%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/03/02/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/python-%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90-%E5%BD%92%E4%B8%80%E5%8C%96/" class="post-title-link" itemprop="url">python-数值分析-归一化</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-03-02 09:36:23 / 修改时间：09:43:52" itemprop="dateCreated datePublished" datetime="2020-03-02T09:36:23+08:00">2020-03-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>归一化和标准化的本质都是缩放和平移，他们的区别直观的说就是归一化的缩放是 “拍扁” 统一到区间（0-1），而标准化的缩放是更加 “弹性” 和 “动态” 的，和整体样本的分布有很大的关系。<br>从输出范围角度来看， 归一化的输出结果必须在 0-1 间。而标准化的输出范围不受限制，通常情况下比归一化更广。</p>
+<img alt="20200302_094105.png" src="/2020/03/02/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/python-%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90-%E5%BD%92%E4%B8%80%E5%8C%96/20200302_094105.png" width="500" height>
+
+<h2 id="线性函数归一化-Min-Max-scaling"><a href="#线性函数归一化-Min-Max-scaling" class="headerlink" title="线性函数归一化(Min-Max scaling)"></a>线性函数归一化(Min-Max scaling)</h2><p>线性函数将原始数据线性化的方法转换到[0 1]的范围，归一化公式如下：</p>
+<img alt="20200302_093804.png" src="/2020/03/02/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/python-%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90-%E5%BD%92%E4%B8%80%E5%8C%96/20200302_093804.png" width="500" height>
+
+<p>该方法实现对原始数据的等比例缩放，其中Xnorm为归一化后的数据，X为原始数据，Xmax、Xmin分别为原始数据集的最大值和最小值。</p>
+<h3 id="归一化"><a href="#归一化" class="headerlink" title="归一化"></a>归一化</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> preprocessing</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> MinMaxScaler</span><br><span class="line"></span><br><span class="line">scaler_mm = MinMaxScaler(feature_range=(<span class="number">0</span>, <span class="number">1</span>))  <span class="comment"># 自动将dtype转换成float64</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 需要二维数组，不改变数值</span></span><br><span class="line">angle_standard = angle_standard.reshape(-<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">value_standard = value_standard.reshape(-<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">angle_standard_scale = scaler_mm.fit_transform(angle_standard)</span><br><span class="line">value_standard_scale = scaler_mm.fit_transform(value_standard)</span><br></pre></td></tr></table></figure>
+
+<h2 id="0均值标准化-Z-score-standardization"><a href="#0均值标准化-Z-score-standardization" class="headerlink" title="0均值标准化(Z-score standardization)"></a>0均值标准化(Z-score standardization)</h2><p>叫 z-score 标准化(也就是统计学中的标准分，或者叫Z分)<br>0均值归一化方法将原始数据集归一化为均值为0、方差1的数据集，归一化公式如下：<br>(输入数据-均值)/标准差</p>
+<img alt="20200302_093837.png" src="/2020/03/02/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/python-%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90-%E5%BD%92%E4%B8%80%E5%8C%96/20200302_093837.png" width="500" height>
+
+<p>其中，μ、σ分别为原始数据集的均值和方法。该种归一化方式要求原始数据的分布可以近似为高斯分布，否则归一化的效果会变得很糟糕。</p>
+<ol>
+<li>标准化是通过特征的平均值和标准差，将特征缩放成一个标准的正态分布，缩放后均值为0，方差为1。但即使数据不服从正态分布，也可以用此法。特别适用于数据的最大值和最小值未知，或存在孤立点。</li>
+<li>标准化是为了方便数据的下一步处理，而进行的数据缩放等变换，不同于归一化，并不是为了方便与其他数据一同处理或比较。</li>
+</ol>
+<h2 id="方法的选择"><a href="#方法的选择" class="headerlink" title="方法的选择"></a>方法的选择</h2><ol>
+<li>在分类、聚类算法中，需要使用距离来度量相似性的时候、或者使用PCA技术进行降维的时候，第二种方法(Z-score standardization)表现更好。</li>
+<li>在不涉及距离度量、协方差计算、数据不符合正太分布的时候，可以使用第一种方法或其他归一化方法。比如图像处理中，将RGB图像转换为灰度图像后将其值限定在[0 255]的范围。</li>
+<li>如果对输出结果范围有要求，用归一化。</li>
+<li>如果数据较为稳定，不存在极端的最大最小值，用归一化。</li>
+<li>如果数据存在异常值和较多噪音，用标准化，可以间接通过中心化避免异常值和极端值的影响。</li>
+<li>符合正态分布的使用标准化</li>
+</ol>
+<p>总结来说，在算法、后续计算中涉及距离度量(聚类分析)或者协方差分析(PCA、LDA等)的，同时数据分布可以近似为正态分布，应当使用0均值的归一化方法。其他应用中更具需要选用合适的归一化方法。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/01/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/thymeleaf%E5%AD%A6%E4%B9%A0/thymeleaf-%E5%AD%A6%E4%B9%A0001/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/03/01/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/thymeleaf%E5%AD%A6%E4%B9%A0/thymeleaf-%E5%AD%A6%E4%B9%A0001/" class="post-title-link" itemprop="url">thymeleaf-学习001</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-03-01 20:31:11 / 修改时间：20:35:44" itemprop="dateCreated datePublished" datetime="2020-03-01T20:31:11+08:00">2020-03-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/web%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">web开发</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>323</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="应用资源"><a href="#应用资源" class="headerlink" title="应用资源"></a>应用资源</h2><p>配置文件里面设置 server.context-path=/crud 时使用 th:href 会自动添加前缀</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">th:href</span>=<span class="string">&quot;@&#123;/webjars/font-awesome/4.7.0/css/font-awesome.min.css&#125;&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">th:src</span>=<span class="string">&quot;@&#123;/webjars/jquery/3.4.1/jquery.min.js&#125;&quot;</span> <span class="attr">src</span>=<span class="string">&quot;webjars/jquery/3.4.1/jquery.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/01/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/Idea-%E5%BF%AB%E6%8D%B7%E9%94%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/03/01/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Java/springboot%E7%B3%BB%E5%88%97/Idea-%E5%BF%AB%E6%8D%B7%E9%94%AE/" class="post-title-link" itemprop="url">Idea-快捷键</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-03-01 19:53:39 / 修改时间：20:31:52" itemprop="dateCreated datePublished" datetime="2020-03-01T19:53:39+08:00">2020-03-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E5%85%B7%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">工具相关</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>10</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="覆盖函数"><a href="#覆盖函数" class="headerlink" title="覆盖函数"></a>覆盖函数</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ctrl + o</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/03/01/Web%E5%BC%80%E5%8F%91/html/html-dialog/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/03/01/Web%E5%BC%80%E5%8F%91/html/html-dialog/" class="post-title-link" itemprop="url">html-dialog</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-03-01 17:46:54 / 修改时间：17:49:28" itemprop="dateCreated datePublished" datetime="2020-03-01T17:46:54+08:00">2020-03-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="模态对话框"><a href="#模态对话框" class="headerlink" title="模态对话框"></a>模态对话框</h2><p>使用 bootstrap 实现</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">class</span>=<span class="string">&quot;nav-link&quot;</span> <span class="attr">id</span>=<span class="string">&quot;_m_logout&quot;</span> <span class="attr">data-toggle</span>=<span class="string">&quot;modal&quot;</span> <span class="attr">data-target</span>=<span class="string">&quot;#sign-out&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-sign-out text-danger fa-lg&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- modal --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;modal&quot;</span> <span class="attr">id</span>=<span class="string">&quot;sign-out&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;modal-dialog&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;modal-content&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;modal-header&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">h4</span> <span class="attr">class</span>=<span class="string">&quot;modal-title&quot;</span>&gt;</span>Sign out<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">class</span>=<span class="string">&quot;close&quot;</span> <span class="attr">data-dismiss</span>=<span class="string">&quot;modal&quot;</span>&gt;</span></span><br><span class="line">                    <span class="symbol">&amp;times;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;modal-body&quot;</span>&gt;</span></span><br><span class="line">                Press the button</span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;modal-footer&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">class</span>=<span class="string">&quot;btn btn-success&quot;</span> <span class="attr">data-dismiss</span>=<span class="string">&quot;modal&quot;</span>&gt;</span>Leave<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">class</span>=<span class="string">&quot;btn btn-danger&quot;</span> <span class="attr">data-dismiss</span>=<span class="string">&quot;modal&quot;</span>&gt;</span>Cancel<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- end of modal --&gt;</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/02/28/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/python-library/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/02/28/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/python-library/" class="post-title-link" itemprop="url">python-library</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-02-28 10:54:19 / 修改时间：10:55:26" itemprop="dateCreated datePublished" datetime="2020-02-28T10:54:19+08:00">2020-02-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>53</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="反函数库"><a href="#反函数库" class="headerlink" title="反函数库"></a>反函数库</h2><p><a target="_blank" rel="noopener" href="https://pypi.org/project/pynverse/">website</a></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">inv_fun_standard = inversefunc(fun_standard)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/25/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><span class="page-number current">26</span><a class="page-number" href="/page/27/">27</a><span class="space">&hellip;</span><a class="page-number" href="/page/126/">126</a><a class="extend next" rel="next" href="/page/27/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/25/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><span class="page-number current">26</span><a class="page-number" href="/page/27/">27</a><span class="space">&hellip;</span><a class="page-number" href="/page/125/">125</a><a class="extend next" rel="next" href="/page/27/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>
@@ -1350,8 +1318,6 @@
 
 
 
-
-  <script type="text/javascript" src="/js/fold_action.js"></script>
 
 </body>
 </html>

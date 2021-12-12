@@ -96,7 +96,7 @@
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1251</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1245</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -167,7 +167,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">1251</span>
+          <span class="site-state-item-count">1245</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -220,697 +220,6 @@
 
 
     <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/16/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/%E6%95%B0%E6%8D%AE%E5%BA%93/db-CDatabase/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/04/16/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/%E6%95%B0%E6%8D%AE%E5%BA%93/db-CDatabase/" class="post-title-link" itemprop="url">db-CDatabase</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-04-16 18:07:58" itemprop="dateCreated datePublished" datetime="2019-04-16T18:07:58+08:00">2019-04-16</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-04-13 13:07:02" itemprop="dateModified" datetime="2020-04-13T13:07:02+08:00">2020-04-13</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>4.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>use ODBC access database</p>
-<h1 id="dsn-设置"><a href="#dsn-设置" class="headerlink" title="dsn 设置"></a>dsn 设置</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// access database use</span></span><br><span class="line"><span class="function">string <span class="title">getDsnDbPath</span><span class="params">(<span class="keyword">const</span> string&amp; dsnName)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	string strRet = <span class="string">&quot;&quot;</span>;</span><br><span class="line">	HKEY hKey;</span><br><span class="line">	string subKey = <span class="string">&quot;Software\\ODBC\\ODBC.INI\\&quot;</span> + dsnName;</span><br><span class="line">	LONG lResult = <span class="built_in">RegOpenKeyExA</span>(HKEY_CURRENT_USER, (subKey).<span class="built_in">c_str</span>(), <span class="number">0</span>, KEY_WOW64_64KEY | KEY_READ, &amp;hKey);</span><br><span class="line">	<span class="keyword">if</span> (ERROR_SUCCESS == lResult)</span><br><span class="line">	&#123;</span><br><span class="line">		DWORD dwType = REG_SZ;</span><br><span class="line">		CHAR szLocation[MAX_PATH] = &#123; <span class="string">&#x27;\0&#x27;</span> &#125;;</span><br><span class="line">		DWORD dwSize = MAX_PATH;</span><br><span class="line">		<span class="comment">// 获取缓存的长度dwSize及类型dwDataType</span></span><br><span class="line">		lResult = ::<span class="built_in">RegQueryValueEx</span>(hKey, <span class="string">&quot;DBQ&quot;</span>, <span class="number">0</span>, &amp;dwType, (LPBYTE)&amp;szLocation, &amp;dwSize);</span><br><span class="line">		<span class="keyword">if</span> (ERROR_SUCCESS == lResult)</span><br><span class="line">		&#123;</span><br><span class="line">			strRet = &amp;szLocation[<span class="number">0</span>];</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">RegCloseKey</span>(hKey);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">// 不存在,或打开失败</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> strRet;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">BOOL <span class="title">isDsnPresent</span><span class="params">(<span class="keyword">const</span> string&amp; dsnName)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	BOOL bRet = TRUE;</span><br><span class="line">	HKEY hKey;</span><br><span class="line">	string subKey = <span class="string">&quot;Software\\ODBC\\ODBC.INI\\&quot;</span> + dsnName;</span><br><span class="line">	LONG lResult = <span class="built_in">RegOpenKeyExA</span>(HKEY_CURRENT_USER, (subKey).<span class="built_in">c_str</span>(), <span class="number">0</span>, KEY_WOW64_64KEY |KEY_READ, &amp;hKey);</span><br><span class="line">	<span class="keyword">if</span> (ERROR_SUCCESS == lResult)</span><br><span class="line">	&#123;</span><br><span class="line">		bRet = TRUE;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (lResult == ERROR_FILE_NOT_FOUND)</span><br><span class="line">		&#123;</span><br><span class="line">			bRet = FALSE;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			subKey = str::cstr::format(<span class="string">&quot;open registry failed. %d&quot;</span>,lResult);</span><br><span class="line">			<span class="built_in">OutputDebugString</span>(subKey.<span class="built_in">c_str</span>());</span><br><span class="line">		&#125;</span><br><span class="line">		bRet = FALSE;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">RegCloseKey</span>(hKey);</span><br><span class="line">	<span class="keyword">return</span> bRet;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"> <span class="function">BOOL <span class="title">configAddDSN</span><span class="params">(<span class="keyword">const</span> string&amp; driver, <span class="keyword">const</span> vector&lt;string&gt;&amp; attr)</span></span></span><br><span class="line"><span class="function"> </span>&#123;</span><br><span class="line"> 	<span class="keyword">char</span> buf[<span class="number">512</span>] = &#123;<span class="string">&#x27;\0&#x27;</span>&#125;; </span><br><span class="line"> 	<span class="keyword">char</span>* p = buf;</span><br><span class="line"> 	<span class="keyword">for</span> (<span class="keyword">auto</span>&amp;it:attr)</span><br><span class="line"> 	&#123;</span><br><span class="line"> 		<span class="built_in">strcpy</span>(p, it.<span class="built_in">c_str</span>());	p += <span class="built_in">strlen</span>(p) + <span class="number">1</span>;</span><br><span class="line"> 	&#125;</span><br><span class="line"> 	<span class="keyword">return</span> <span class="built_in">SQLConfigDataSource</span>(<span class="literal">NULL</span>, ODBC_ADD_DSN, driver.<span class="built_in">c_str</span>(), buf);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="连接字符串"><a href="#连接字符串" class="headerlink" title="连接字符串"></a>连接字符串</h1><p>注意 Exclusive=0 避免独占打开</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">strDbPath = getDsnDbPath(&quot;dsnReal16Access&quot;);</span><br><span class="line">g_strDsn = &quot;ODBC;DSN=dsnReal16Access;DBQ=&quot; + strDbPath + &quot;;DriverId=25;FIL=&#123;MS Access&#125;;Exclusive=0;MaxBufferSize=2048;PageTimeout=5;UID=admin;&quot;;			</span><br></pre></td></tr></table></figure>
-
-<h1 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">dbString = &quot;SELECT f_no, f_name FROM t_people_purpose_type;&quot;;</span><br><span class="line">CRecordset rs(&amp;db);</span><br><span class="line">if (FALSE == rs.Open(CRecordset::forwardOnly, dbString.c_str(), CRecordset::readOnly))</span><br><span class="line">&#123;</span><br><span class="line">	if (g_bWriteLog)</span><br><span class="line">	&#123;</span><br><span class="line">		string strLog = &quot;1biao6shi: get t_people_purpose_type error: &quot;;</span><br><span class="line">		OutputDebugString(strLog.c_str());</span><br><span class="line">		if (g_logger)</span><br><span class="line">		&#123;</span><br><span class="line">			g_logger-&gt;error(strLog);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;else</span><br><span class="line">&#123;</span><br><span class="line">	CDBVariant varValue;</span><br><span class="line">	int iNo = 0;</span><br><span class="line">	string strName;</span><br><span class="line">	while (!rs.IsEOF())</span><br><span class="line">	&#123;</span><br><span class="line">		rs.GetFieldValue(short(0), varValue);</span><br><span class="line">		iNo = atoi(*varValue.m_pstring);</span><br><span class="line">		rs.GetFieldValue(short(1), varValue);</span><br><span class="line">		if (string::npos != pwnd-&gt;m_strDsn.find(&quot;Access&quot;))</span><br><span class="line">		&#123;</span><br><span class="line">			strName = ((*varValue.m_pstring).GetBuffer());</span><br><span class="line">		&#125;</span><br><span class="line">		else</span><br><span class="line">		&#123;</span><br><span class="line">			strName = str::cstr::utf8ToAscii((*varValue.m_pstring).GetBuffer()).c_str();</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		if (strName.empty())</span><br><span class="line">		&#123;</span><br><span class="line">			ASSERT(FALSE);</span><br><span class="line">		&#125;</span><br><span class="line">		pwnd-&gt;m_mapPersonPurposeType.insert(pair&lt;int, string&gt;(iNo, strName));</span><br><span class="line">		rs.MoveNext();</span><br><span class="line">	&#125;</span><br><span class="line">	rs.Close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="非查询语句"><a href="#非查询语句" class="headerlink" title="非查询语句"></a>非查询语句</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">db-&gt;executeNonQuery(&quot;set names utf8&quot;);</span><br></pre></td></tr></table></figure>
-
-<h1 id="insert"><a href="#insert" class="headerlink" title="insert"></a>insert</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">db.<span class="built_in">BeginTrans</span>();</span><br><span class="line">db.<span class="built_in">ExecuteSQL</span>(sql.<span class="built_in">c_str</span>());</span><br><span class="line">db.<span class="built_in">CommitTrans</span>();</span><br></pre></td></tr></table></figure>
-
-<h1 id="insert-by-CRecordset"><a href="#insert-by-CRecordset" class="headerlink" title="insert by CRecordset"></a>insert by CRecordset</h1><p>插入图片<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_40026797/article/details/83719070">https://blog.csdn.net/weixin_40026797/article/details/83719070</a></p>
-<p>使用class wizard 添加 CRecordset 的继承类,使用 mfc odbc consumer 选择要处理的表.</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">db.<span class="built_in">BeginTrans</span>();</span><br><span class="line"><span class="function">Ct_personRecordset <span class="title">rs</span><span class="params">(&amp;db)</span></span>; <span class="comment">//绑定数据库</span></span><br><span class="line"></span><br><span class="line"><span class="number">1.</span> Call AddNew.</span><br><span class="line"><span class="number">2.</span> Set field appropriately.</span><br><span class="line"><span class="number">3.</span> Call Update</span><br><span class="line"></span><br><span class="line">db.<span class="built_in">CommitTrans</span>();</span><br></pre></td></tr></table></figure>
-
-<p>下面代码一直报错,未成功. Conversion is not supported</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// has picture need to store</span><br><span class="line">rs.m_f_pic.m_dwDataLength = vOut.size();</span><br><span class="line">HGLOBAL hGlobal = GlobalAlloc(GPTR, rs.m_f_pic.m_dwDataLength);</span><br><span class="line">rs.m_f_pic.m_hData = GlobalLock(hGlobal);</span><br><span class="line">memcpy_s(rs.m_f_pic.m_hData, rs.m_f_pic.m_dwDataLength, &amp;vOut[0], vOut.size());</span><br><span class="line"></span><br><span class="line">rs.SetFieldDirty(&amp;rs.m_f_pic, true);</span><br><span class="line">rs.SetFieldNull(&amp;rs.m_f_pic, false);</span><br><span class="line"></span><br><span class="line">while (!rs.CanUpdate())</span><br><span class="line">    Sleep(200);</span><br><span class="line">GlobalUnlock(rs.m_f_pic.m_hData);</span><br></pre></td></tr></table></figure>
-
-<h1 id="modify-by-CRecordset"><a href="#modify-by-CRecordset" class="headerlink" title="modify by CRecordset"></a>modify by CRecordset</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">rs.<span class="built_in">Edit</span>();</span><br><span class="line">rs.m_field1 = ...;<span class="comment">//字段1</span></span><br><span class="line">rs.m_field2 = ...;<span class="comment">//字段2</span></span><br><span class="line">.....</span><br><span class="line">rs.<span class="built_in">Update</span>();</span><br></pre></td></tr></table></figure>
-
-<h1 id="CRecordset-相关说明"><a href="#CRecordset-相关说明" class="headerlink" title="CRecordset 相关说明"></a>CRecordset 相关说明</h1><p>Snapshots and Dynasets</p>
-<p>Snapshots 是静态数据,反应获取时的那一点的数据<br>Dynasets 是动态数据,如果有其他人修改了,会动态反应出来,需要调用 requery </p>
-<p>class view 窗口右键项目-菜单选择 add class- mfc - mfc odbc consumer 然后选择数据源,生成类</p>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><h2 id="CRecordset-的坑"><a href="#CRecordset-的坑" class="headerlink" title="CRecordset 的坑"></a>CRecordset 的坑</h2><p>手动修改了生成类的字段似乎不生效,需要重新生成.</p>
-<p>RFX_TEXT  nMaxLength  默认 255 不够用,需要手动修改</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">RFX_Text</span>(pFX, _T(<span class="string">&quot;[f_gis]&quot;</span>), m_f_gis, <span class="number">1024</span>);</span><br><span class="line"><span class="built_in">RFX_Text</span>(pFX, _T(<span class="string">&quot;[f_gisArea]&quot;</span>), m_f_gisArea, <span class="number">1024</span>);</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="blob-error-Conversion-is-not-supported"><a href="#blob-error-Conversion-is-not-supported" class="headerlink" title="blob error: Conversion is not supported"></a>blob error: Conversion is not supported</h3><p>insert image to blob field error.</p>
-<h2 id="Lock-wait-timeout-exceeded-try-restarting-transaction"><a href="#Lock-wait-timeout-exceeded-try-restarting-transaction" class="headerlink" title="Lock wait timeout exceeded; try restarting transaction"></a>Lock wait timeout exceeded; try restarting transaction</h2><p>Enter MySQL</p>
-<p><code>mysql -u your_user -p</code></p>
-<ol start="2">
-<li>Let’s see the list of locked tables</li>
-</ol>
-<p><code>mysql&gt; show open tables where in_use&gt;0;</code></p>
-<ol start="3">
-<li>Let’s see the list of the current processes, one of them is locking your table(s)</li>
-</ol>
-<p><code>mysql&gt; show processlist;</code></p>
-<ol start="4">
-<li>Kill one of these processes</li>
-</ol>
-<p><code>mysql&gt; kill &lt;put_process_id_here&gt;;</code></p>
-<h1 id="Conversion-is-not-supported"><a href="#Conversion-is-not-supported" class="headerlink" title="Conversion is not supported"></a>Conversion is not supported</h1><p>State:07006,Native:0,Origin:[MySQL][ODBC 8.0(a) Driver][mysqld-5.5.62-log]</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/16/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/cpp-function/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/04/16/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/cpp-function/" class="post-title-link" itemprop="url">cpp-function</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-04-16 13:51:04" itemprop="dateCreated datePublished" datetime="2019-04-16T13:51:04+08:00">2019-04-16</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2019-07-22 19:22:32" itemprop="dateModified" datetime="2019-07-22T19:22:32+08:00">2019-07-22</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;functional&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std::placeholders;</span><br><span class="line"></span><br><span class="line">vector&lt;function&lt;<span class="keyword">const</span> tuple&lt;string, string&gt;()&gt;&gt; vFunc;</span><br><span class="line">vFunc.<span class="built_in">emplace_back</span>(<span class="built_in">bind</span>(&amp;CProtocol::getGisType, &amp;g_protocol));</span><br></pre></td></tr></table></figure>
-
-<h2 id="成员变量使用"><a href="#成员变量使用" class="headerlink" title="成员变量使用"></a>成员变量使用</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//头文件声明</span></span><br><span class="line">std::function&lt;<span class="built_in"><span class="keyword">int</span></span>(MQTTClient*, <span class="keyword">const</span> <span class="keyword">char</span>*, <span class="keyword">const</span> <span class="keyword">char</span>*, <span class="keyword">int</span>, <span class="keyword">void</span>*)&gt; m_pMQTTClient_create;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 源文件赋值</span></span><br><span class="line">m_pMQTTClient_create = g_dllMqtt.getDllFunc&lt;<span class="built_in"><span class="keyword">int</span></span>(MQTTClient*, <span class="keyword">const</span> <span class="keyword">char</span>*, <span class="keyword">const</span> <span class="keyword">char</span>*, <span class="keyword">int</span>, <span class="keyword">void</span>*)&gt;(<span class="string">&quot;MQTTClient_create&quot;</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>类模版std::function是一种通用、多态的函数封装。std::function的实例可以对任何可以调用的目标实体进行存储、复制、和调用操作，这些目标实体包括普通函数、Lambda表达式、函数指针、以及其它函数对象等。std::function对象是对C++中现有的可调用实体的一种类型安全的包裹（我们知道像函数指针这类可调用实体，是类型不安全的）。</p>
-<p>通过std::function对C++中各种可调用实体（普通函数、Lambda表达式、函数指针、以及其它函数对象等）的封装，形成一个新的可调用的std::function对象；让我们不再纠结那么多的可调用实体。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/04/16/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/CPP/cpp-function/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/16/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/%E6%95%B0%E6%8D%AE%E5%BA%93/SQL/%E5%B8%B8%E7%94%A8sql%E8%AF%AD%E5%8F%A5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/04/16/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/%E6%95%B0%E6%8D%AE%E5%BA%93/SQL/%E5%B8%B8%E7%94%A8sql%E8%AF%AD%E5%8F%A5/" class="post-title-link" itemprop="url">常用sql语句</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-04-16 10:12:07" itemprop="dateCreated datePublished" datetime="2019-04-16T10:12:07+08:00">2019-04-16</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2019-10-03 17:29:30" itemprop="dateModified" datetime="2019-10-03T17:29:30+08:00">2019-10-03</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>463</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">select t.column_name from user_col_comments t where t.table_name = <span class="string">&#x27;LATELYGPSINFO&#x27;</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h1 id="存在更新，不存在插入"><a href="#存在更新，不存在插入" class="headerlink" title="存在更新，不存在插入"></a>存在更新，不存在插入</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// mysql 已验证</span></span><br><span class="line">sql = str::cstr::format(<span class="string">&quot;replace into %s (f_no,f_name) values (%I64d,&#x27;%s&#x27;)&quot;</span>,</span><br><span class="line">            it.tableName.<span class="built_in">c_str</span>(), itJson[paramKey.<span class="built_in">c_str</span>()].<span class="built_in">asInt64</span>(),</span><br><span class="line">            itJson[<span class="string">&quot;name&quot;</span>].<span class="built_in">asString</span>().<span class="built_in">c_str</span>());</span><br></pre></td></tr></table></figure>
-
-<h1 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">string sql = <span class="string">&quot;insert into t_province (f_no,f_name) values (?,?)&quot;</span>;</span><br></pre></td></tr></table></figure>
-
-<h1 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h1><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">UPDATE table_name</span><br><span class="line"><span class="keyword">SET</span> column1 <span class="operator">=</span> value1, column2 <span class="operator">=</span> value2, ...</span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">condition</span>;</span><br></pre></td></tr></table></figure>
-
-<h1 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h1><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> 表名称 <span class="keyword">WHERE</span> 列名称 <span class="operator">=</span> 值</span><br></pre></td></tr></table></figure>
-
-<h1 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h1><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/14/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E9%87%91%E8%9E%8D%E6%8A%95%E8%B5%84/%E5%BA%B7%E6%B3%A2%E5%91%A8%E6%9C%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/04/14/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E9%87%91%E8%9E%8D%E6%8A%95%E8%B5%84/%E5%BA%B7%E6%B3%A2%E5%91%A8%E6%9C%9F/" class="post-title-link" itemprop="url">康波周期</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-04-14 21:40:14" itemprop="dateCreated datePublished" datetime="2019-04-14T21:40:14+08:00">2019-04-14</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2019-04-22 08:50:34" itemprop="dateModified" datetime="2019-04-22T08:50:34+08:00">2019-04-22</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%95%E8%B5%84/" itemprop="url" rel="index"><span itemprop="name">投资</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.4k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>康波周期大约50-60年分为：<br>回升（20年）：孕育着新技术的创新，经济回暖<br>繁荣（20年）：新技术不断被开发利用，经济快速发展<br>衰退（10年）：经历牛市末期，经济的回落<br>萧条（10年）：经济发展进入严重低迷期</p>
-<p>2019年处于萧条末期</p>
-<p>1975-1982年是上一次康波的萧条阶段<br>1991-1994美国信息技术泡沫是康波繁荣的标志，2008年之前是世界经济的本次康波繁荣阶段<br>2004-2015康波衰退期</p>
-<p>40岁以上的人，有三次发财机会，分别是2008年，2019年，2030年，85后一定要把握2019年的机会。</p>
-<p>人的一生理论上有三次机会</p>
-<p>康波由前苏联经济学家康德拉季耶夫于1926年正式提出，他在研究英、法、美、德以及世界经济发展史后认为，发达商品经济处于50年到60年为一个周期的循环波段之中。</p>
-<p>同时，一个康波周期嵌套着多个库兹涅茨周期和朱格拉周期：</p>
-<img alt="127ad14d.png" src="/2019/04/14/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E9%87%91%E8%9E%8D%E6%8A%95%E8%B5%84/%E5%BA%B7%E6%B3%A2%E5%91%A8%E6%9C%9F/127ad14d.png" width height>
-
-<p>另外，康波还可以分为四个小波：</p>
-<p>1）  繁荣期（10年）：新技术不断采用，经济快速发展；<br>2）  衰退期（10年）：经历商品的牛市以及对经济的救赎；<br>3）  萧条期（10年）：经济发展进入严重低迷期；<br>4）  回升期（20年）：孕育着新技术的创新。</p>
-<p>1、大宗商品</p>
-<p>2017年后将再次下探。<br>大宗商品最暴利，牛市几十年出现一次。<br>从2011年至少到2030年，商品的走势都是熊市，所以不可能依靠商品取得暴利。<br>2017年至2019年商品将二次探底，二次探底的价格会在2015年的低点附近。</p>
-<p>2、房地产</p>
-<p>到2019年再买房。<br>房地产周期20年轮回一次。<br>中国本轮房地产周期1999年开启，2014年是中国房地产周期的高点。<br>2016年一线城市房价暴涨只是房地产周期的B浪反弹，2017年上半年这次反弹就会结束。<br>2017、2018年房价会回落，2019年会迎来一个低点。</p>
-<p>3、股票<br>2017年依然没有机会。<br>2017年很难做出绝对收益，A股依然没有机会，主要还是等风险释放后的超跌反弹。<br>但股票不是长周期问题，随时波动，所以康波周期没法明确定义。</p>
-<p>4、艺术品市场<br>不要持有。<br>艺术品投资是房地产周期的附属物，这类资产过去涨很快，后来由于反腐跌了。<br>未来五年是资产的下降期，这个时候大家尽量持有流动性好的资产，不要持有流动性不好的资产。</p>
-<p>5、人生规划建议<br>2019年再回来。<br>对于个人来讲，2016至2017年卖掉投资性房地产，买进黄金，锻炼身体，2019年回来。</p>
-<p>他留下的20个预言：</p>
-<p>1、每个人的财富积累一定不要以为是你多有本事，财富积累完全来源于经济周期运动的时间给你的机会。</p>
-<p>2、人生的财富轨迹就是康德拉季耶夫周期。康德拉季耶夫周期一个循环是60年，一个人的自然寿命是60年。</p>
-<p>3、人的一生中所能获得的机会，理论来讲只有三次，如果每一个机会都没抓到，一生的财富就没有了。如果抓住其中一个机会，至少是个中产阶级。</p>
-<p>4、一个康德拉季耶夫周期分为回升、繁荣、衰退、箫条。现在这次经历的康德拉季耶夫周期，是从衰退向箫条的转换点，未来十年注定在箫条中度过。</p>
-<p>5、2015年是全球经济及资产价格的重要拐点，意味着未来四到五年的总体的资产收益率不仅不赚钱，甚至可能要亏损。2016年到2017年是一次滞胀，流动性差的资产可能就没人要了。未来在2017年到2019年可能发生流动性危机。</p>
-<p>6、2017年中期、三季度之后，将看到中国和美国的资产价格全线回落，2019年出现最终低点，那个低点可能远比大家想像的低。</p>
-<p>7、我奉劝大家，如果想发债最好发五年的，2018年之后就能够感到我说的话的意义。</p>
-<p>8、一直到2025年，都是第五次康波箫条阶段。</p>
-<p>9、40岁以上的人，人生第一次机会在2008年，如果那时候买股票、房子，你的人生是很成功的。2008年之前的，上一次人生机会1999年，40岁的人抓住那次机会的人不多，所以2008年是第一次机会。</p>
-<p>10、第二次机会在2019年，最后一次在2030年附近，能够抓住一次，你就能够成为中产阶级。</p>
-<p>11、1985年之后出生、现在30岁以下的人，第一次人生机会只能在2019年出现。所以现在25岁到30岁的人，未来的5年，只能好好工作。因为买房什么都不行，这个就是由人生的财富命运所决定的。</p>
-<p>12、大宗商品牛市是几十年出现一次， 2011年至少到2030年，商品的走势都是熊市，不可能在商品方面取得大的收益的。</p>
-<p>13、房地产周期20年轮回一次，中国本轮房地产周期1999年开启， 2017年上半年附近，中国的这次反弹会结束。2019年房价会是一个低点。</p>
-<p>14、2010年之后美国出现房子的牛市，2017年是第一波的高点，如果到美国买房，也可以再等等。</p>
-<p>15、未来五年是资产的下降期，大家尽量持有流动性好的资产，而不要持有流动性不好的资产。高位的房子就是流动性不好的资产，一级市场的股权也是流动性不好的资产。</p>
-<p>16、四季度到2017年上半年，有可能是中国资产最差的时间。2016年四季度，中国的第三库存周期可能渐渐接近周期高点，从2017年初开始，中国的库存周</p>
-<p>期开始回落。而此时，美国的库存周期仍处于上升阶段，这样的组合对中国的资产是不利的。由于一线城市房地产库存下降，而开工跟不上，不能排除房价再次拉升</p>
-<p>的可能性。如果汇率先跌，房价可能就会受到抑制。如果房价先涨，房价和汇率的关系就有点复杂，应该是房价先涨后跌，随后触发一定的系统风险。</p>
-<p>17、对2017年全年而言，目前我仍然没有找到类似于2016年商品这样的机会。全球2009以来的中周期，2017年结束是大概率事件。</p>
-<p>18、2017年到2019年是中美房地产周期共振下行期。这个问题当然不一定在2017年表现得非常严重，但有可能能够出现趋势性特征。</p>
-<p>19、2017年至2019年商品将二次探底。2017年之后，商品将再次下探，其二次探底的价格当在2015年的低点附近。</p>
-<p>20、2017年很难做出绝对收益，A股依然没有机会，主要还是等待风险释放后的超跌反弹。而相对收益方面，黄金一定是首要选择，黄金的配置时点大致判断在2017年二季度。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/14/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/%E6%95%B0%E6%8D%AE%E5%BA%93/ODBC-usage/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/04/14/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/%E6%95%B0%E6%8D%AE%E5%BA%93/ODBC-usage/" class="post-title-link" itemprop="url">ODBC usage</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2019-04-14 20:47:05 / 修改时间：21:00:14" itemprop="dateCreated datePublished" datetime="2019-04-14T20:47:05+08:00">2019-04-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>950</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="use-ODBC-by-MFC"><a href="#use-ODBC-by-MFC" class="headerlink" title="use ODBC by MFC"></a>use ODBC by MFC</h1><p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/cpp/data/odbc/data-source-odbc?view=vs-2019">website</a></p>
-<p>work with class CDatabase,the data source must be one that you have configured through Open Database Connectivity (ODBC) Administrator.</p>
-<p>use ODBC connect MySql.<br><a target="_blank" rel="noopener" href="https://dev.mysql.com/downloads/file/?id=484650">MySql ODBC driver</a><br>for now mysql-connector-odbc-8.0.15-winx64.msi</p>
-<p>Configuring a Connector/ODBC DSN on Windows with the ODBC Data Source Administrator GUI</p>
-<p>Open the ODBC Data Source Administrator.<br><img alt="9240a845.png" src="/2019/04/14/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/%E6%95%B0%E6%8D%AE%E5%BA%93/ODBC-usage/9240a845.png" width height></p>
-<p>To create a System DSN (which will be available to all users), select the System DSN tab. To create a User DSN, which will be available only to the current user, click the Add… button to open the “Create New Data Source” dialog.</p>
-<p>From the “Create New Data Source” dialog, select the MySQL ODBC 5.x ANSI or Unicode Driver, then click Finish to open its connection parameters dialog.</p>
-<img alt="9e83225a.png" src="/2019/04/14/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/%E6%95%B0%E6%8D%AE%E5%BA%93/ODBC-usage/9e83225a.png" width height>
-
-<p>You now need to configure the specific fields for the DSN you are creating through the Connection Parameters dialog.</p>
-<img alt="4bc71c97.png" src="/2019/04/14/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/%E6%95%B0%E6%8D%AE%E5%BA%93/ODBC-usage/4bc71c97.png" width height>
-
-<p>To verify the connection using the parameters you have entered, click the Test button. If the connection can be made successfully, you will be notified with a Connection Successful dialog; otherwise, you will be notified with a Connection Failed dialog.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/12/%E5%B7%A5%E5%85%B7%E7%9B%B8%E5%85%B3/visual%20studio/vs2015-%E7%9B%B8%E5%85%B3%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/04/12/%E5%B7%A5%E5%85%B7%E7%9B%B8%E5%85%B3/visual%20studio/vs2015-%E7%9B%B8%E5%85%B3%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">vs2015 相关使用</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-04-12 18:21:14" itemprop="dateCreated datePublished" datetime="2019-04-12T18:21:14+08:00">2019-04-12</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-12-07 20:58:52" itemprop="dateModified" datetime="2021-12-07T20:58:52+08:00">2021-12-07</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B7%A5%E5%85%B7%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">工具相关</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.7k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="post-event"><a href="#post-event" class="headerlink" title="post event"></a>post event</h1><p>复制 release 文件到bin目录</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">copy $(OutDir)$(TargetFileName) $(SolutionDir)bin</span><br><span class="line">copy $(OutDir)$(TargetName).pdb $(SolutionDir)bin</span><br></pre></td></tr></table></figure>
-
-<h1 id="查看-utf8-变量"><a href="#查看-utf8-变量" class="headerlink" title="查看 utf8 变量"></a>查看 utf8 变量</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">默认的, VC调试器只能正常显示ANSI字符串及UNICODE字符串, 而UTF<span class="number">-8</span>字符串及其他格式则无法显示</span><br><span class="line">这里无需编写插件及修改配置文件,只需要将要显示的字符串拉到Watch中,并在变量后面添加,s8即可显示</span><br><span class="line"></span><br><span class="line">同样类型的功能也应该很熟悉</span><br><span class="line"></span><br><span class="line">,数字  将变量拆分为数组显示, 数字是要显示多少位, 此法对<span class="keyword">const</span> <span class="keyword">char</span>*这类原始字符串非常有用</span><br><span class="line">,x <span class="number">16</span>进制查看</span><br><span class="line">,hr  查看Windows HRESULT解释</span><br><span class="line">,wm Windows消息,例如<span class="number">0x0010</span>, wm 显示 WM_CLOSE</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/04/12/%E5%B7%A5%E5%85%B7%E7%9B%B8%E5%85%B3/visual%20studio/vs2015-%E7%9B%B8%E5%85%B3%E4%BD%BF%E7%94%A8/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
 
     
 
@@ -1343,8 +652,605 @@ Access Database method with VC++，按时间顺序排列目前最后的技术是
 
 
 
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/11/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/debug/debug-Detected-memory-leaks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/04/11/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/debug/debug-Detected-memory-leaks/" class="post-title-link" itemprop="url">debug-Detected memory leaks</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-04-11 11:15:44" itemprop="dateCreated datePublished" datetime="2019-04-11T11:15:44+08:00">2019-04-11</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2019-10-18 17:14:58" itemprop="dateModified" datetime="2019-10-18T17:14:58+08:00">2019-10-18</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>284</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>常见的程序退出时，IDE显示的错误</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Detected memory leaks!</span><br><span class="line">Dumping objects -&gt;</span><br><span class="line">&#123;98500&#125; normal block at 0x05785AD0, 152 bytes long.</span><br><span class="line">Data: &lt;&lt; N       N x 7 &gt; 3C AC 4E 10 00 00 00 00 BC A4 4E 10 78 B6 37 00</span><br><span class="line">Object dump complete.</span><br></pre></td></tr></table></figure>
+
+<p>在程序开始启动的地方(足够前的地方,只要在泄漏的内存分配的前面)使用代码:</p>
+<p>_CrtSetBreakAlloc(1953); //98500为上面内存泄漏的块号,然后在stack窗口从上到下可定位内存泄漏代码</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/10/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/process_thread/multi-thread/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/04/10/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/process_thread/multi-thread/" class="post-title-link" itemprop="url">multi-thread</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-04-10 15:59:53" itemprop="dateCreated datePublished" datetime="2019-04-10T15:59:53+08:00">2019-04-10</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-04-08 10:04:58" itemprop="dateModified" datetime="2020-04-08T10:04:58+08:00">2020-04-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="win32-方式"><a href="#win32-方式" class="headerlink" title="win32 方式"></a>win32 方式</h1><h1 id="c-方式"><a href="#c-方式" class="headerlink" title="c++ 方式"></a>c++ 方式</h1><p>CPP RunTime Library</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">_beginthreadex, _endthreadex</span><br><span class="line">_endthreadex need calling the Win32 CloseHandle API</span><br></pre></td></tr></table></figure>
+
+<p>注意：在使用了MFC的程序中不能够使用该函数创建线程，而应该使用MFC提供的线程函数<br>MFC relies on some thread - local variables and state.AfxBeginThread<br>initializes those, then calls <code>_beginthreadex</code> for you.Just part of the<br>preconditions for using the library.If you don’t use <code>AfxBeginThread</code>  some<br>of your calls to MFC functions could encounter uninitialized pointers.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/04/10/%E5%8A%9F%E8%83%BD%E5%88%86%E7%B1%BB/process_thread/multi-thread/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/05/%E5%BC%80%E6%BA%90%E5%BA%93/MQTT/MQTT/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/04/05/%E5%BC%80%E6%BA%90%E5%BA%93/MQTT/MQTT/" class="post-title-link" itemprop="url">MQTT</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-04-05 22:05:24" itemprop="dateCreated datePublished" datetime="2019-04-05T22:05:24+08:00">2019-04-05</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2019-06-02 20:44:44" itemprop="dateModified" datetime="2019-06-02T20:44:44+08:00">2019-06-02</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E6%BA%90%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">开源库</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E6%BA%90%E5%BA%93/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>It is a very light weight and binary protocol<br><em>MQTT excels when transferring data over the wire in comparison to protocols like HTTP</em></p>
+<p>“MQTT is a Client Server publish/subscribe messaging transport protocol. It is light weight, open, simple, and designed so as to be easy to implement. These characteristics make it ideal for use in many situations, including constrained environments such as for communication in Machine to Machine (M2M) and Internet of Things (IoT) contexts where a small code footprint is required and/or network bandwidth is at a premium.”</p>
+<p>Citation from the official MQTT 3.1.1 specification</p>
+<p>The MQTT protocol was invented in 1999 by Andy Stanford-Clark (IBM) and Arlen Nipper (Arcom, now Cirrus Link).<br>The two inventors specified several requirements for the future protocol:</p>
+<ul>
+<li>Simple implementation</li>
+<li>Quality of Service data delivery</li>
+<li>Lightweight and bandwidth efficient</li>
+<li>Data agnostic</li>
+<li>Continuous session awareness</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/04/05/%E5%BC%80%E6%BA%90%E5%BA%93/MQTT/MQTT/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/05/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Rust/rust-ide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/04/05/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Rust/rust-ide/" class="post-title-link" itemprop="url">rust-ide</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-04-05 09:27:50" itemprop="dateCreated datePublished" datetime="2019-04-05T09:27:50+08:00">2019-04-05</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2019-04-14 20:43:24" itemprop="dateModified" datetime="2019-04-14T20:43:24+08:00">2019-04-14</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>15</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>use vscode as ide.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/05/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Rust/rust-library/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/04/05/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/Rust/rust-library/" class="post-title-link" itemprop="url">rust-library</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2019-04-05 07:28:05 / 修改时间：07:30:54" itemprop="dateCreated datePublished" datetime="2019-04-05T07:28:05+08:00">2019-04-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>475</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>create static or dynamic library for other languages or platforms.</p>
+<p>add to your project’s cargo.toml<br>and then compile with cargo build –lib (if you have bin together with your lib, I had it so so I could test it right away, there may be better ways though) or just cargo build if you have only lib. Your dll will be in target/(debug or release) folder.</p>
+<p>The cargo build should just build everything, including a library.<br>Try using the same compiler options that produce a .so file on Linux and see what happens.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[lib]</span><br><span class="line">name = &quot;mylib&quot;</span><br><span class="line">crate-type = [&quot;dylib&quot;]</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2019/04/03/%E5%BC%80%E6%BA%90%E5%BA%93/libcurl/libcurl%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/04/03/%E5%BC%80%E6%BA%90%E5%BA%93/libcurl/libcurl%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">libcurl使用</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2019-04-03 16:06:11 / 修改时间：17:31:20" itemprop="dateCreated datePublished" datetime="2019-04-03T16:06:11+08:00">2019-04-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>static build need define macro CURL_STATICLIB in use project</p>
+<p>libcurl.lib ws2_32.lib winmm.lib wldap32.lib</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MemoryStruct</span> &#123;</span></span><br><span class="line">	<span class="keyword">char</span> *memory;</span><br><span class="line">	<span class="keyword">size_t</span> size;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">size_t</span> <span class="title">WriteMemoryCallback</span><span class="params">(<span class="keyword">void</span> *contents, <span class="keyword">size_t</span> size, <span class="keyword">size_t</span> nmemb, <span class="keyword">void</span> *userp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">size_t</span> realsize = size * nmemb;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">MemoryStruct</span> *<span class="title">mem</span> =</span> (struct MemoryStruct *)userp;</span><br><span class="line"></span><br><span class="line">	mem-&gt;memory = (<span class="keyword">char</span>*)<span class="built_in">realloc</span>(mem-&gt;memory, mem-&gt;size + realsize + <span class="number">1</span>);</span><br><span class="line">	<span class="keyword">if</span>(mem-&gt;memory == <span class="literal">NULL</span>) &#123;</span><br><span class="line">		<span class="comment">/* out of memory! */</span> </span><br><span class="line">		<span class="built_in">OutputDebugString</span>(_T(<span class="string">&quot;yGPC:not enough memory (realloc returned NULL)\n&quot;</span>));</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">memcpy</span>(&amp;(mem-&gt;memory[mem-&gt;size]), contents, realsize);</span><br><span class="line">	mem-&gt;size += realsize;</span><br><span class="line">	mem-&gt;memory[mem-&gt;size] = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> realsize;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">HTTP/1.1 200 OK</span></span><br><span class="line"><span class="comment">Server: Apache-Coyote/1.1</span></span><br><span class="line"><span class="comment">Content-Type: application/json;charset=UTF-8</span></span><br><span class="line"><span class="comment">Transfer-Encoding: chunked</span></span><br><span class="line"><span class="comment">Date: Fri, 30 Sep 2016 07:34:51 GMT</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">&#123;&quot;head&quot;:&#123;&quot;errorCode&quot;:&quot;000000&quot;,&quot;errorMsg&quot;:&quot;success&quot;&#125;,&quot;body&quot;:&#123;&quot;commands&quot;:null&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">CMainDlg::httpPost</span><span class="params">(<span class="keyword">const</span> std::string &amp; strUrl, <span class="keyword">const</span> std::string &amp; strPostField, std::string &amp; strRet)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">	std::wstring str = _T(<span class="string">&quot;yGPC: CMainDlg::httpPost strUrl:&quot;</span>);</span><br><span class="line">	str += m_ut.<span class="built_in">s2w</span>(strUrl) + _T(<span class="string">&quot; postField: &quot;</span>);</span><br><span class="line">	str += m_ut.<span class="built_in">s2w</span>(strPostField);</span><br><span class="line">	m_ut.<span class="built_in">strRemoveByParam</span>(str, _T(<span class="string">&quot;\r\n&quot;</span>));</span><br><span class="line">	<span class="built_in">OutputDebugString</span>(str.<span class="built_in">c_str</span>());</span><br><span class="line"></span><br><span class="line">	CURL *curl; </span><br><span class="line">	CURLcode res; </span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">curl_slist</span> *<span class="title">http_header</span> =</span> <span class="literal">NULL</span>; </span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">MemoryStruct</span> <span class="title">chunk</span>;</span></span><br><span class="line">	chunk.memory = (<span class="keyword">char</span>*)<span class="built_in">malloc</span>(<span class="number">1</span>);  <span class="comment">/* will be grown as needed by realloc above */</span> </span><br><span class="line">	chunk.size = <span class="number">0</span>;    <span class="comment">/* no data at this point */</span> </span><br><span class="line"></span><br><span class="line">	<span class="built_in">curl_global_init</span>(CURL_GLOBAL_ALL);</span><br><span class="line">	curl = <span class="built_in">curl_easy_init</span>(); </span><br><span class="line">	<span class="keyword">if</span> (!curl) </span><br><span class="line">	&#123; </span><br><span class="line">		<span class="built_in">OutputDebugString</span>(_T(<span class="string">&quot;yGPC:curl init failed\n&quot;</span>));</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>; </span><br><span class="line">	&#125; </span><br><span class="line"></span><br><span class="line">std::string  strUrlEncode = boost::locale::conv::to_utf&lt;<span class="keyword">char</span>&gt;(strUrl,<span class="string">&quot;GBK&quot;</span>);</span><br><span class="line">	<span class="built_in">curl_easy_setopt</span>(curl,CURLOPT_URL,strUrlEncode.<span class="built_in">c_str</span>()); <span class="comment">//url地址</span></span><br><span class="line">	<span class="built_in">curl_easy_setopt</span>(curl,CURLOPT_POSTFIELDS,strPostField.<span class="built_in">c_str</span>()); <span class="comment">//post参数</span></span><br><span class="line">	<span class="built_in">curl_easy_setopt</span>(curl,CURLOPT_WRITEFUNCTION,WriteMemoryCallback); <span class="comment">//对返回的数据进行操作的函数地址</span></span><br><span class="line">	<span class="built_in">curl_easy_setopt</span>(curl,CURLOPT_WRITEDATA,(<span class="keyword">void</span> *)&amp;chunk); <span class="comment">//这是write_data的第四个参数值</span></span><br><span class="line">	<span class="built_in">curl_easy_setopt</span>(curl,CURLOPT_POST,<span class="number">1</span>); <span class="comment">//设置问非表示本次操作为post </span></span><br><span class="line">	<span class="built_in">curl_easy_setopt</span>(curl,CURLOPT_VERBOSE,<span class="number">1</span>); <span class="comment">//打印调试信息</span></span><br><span class="line"><span class="comment">//	curl_easy_setopt(curl,CURLOPT_HEADER,1); //将响应头信息和相应体一起传给write_data </span></span><br><span class="line">	<span class="built_in">curl_easy_setopt</span>(curl,CURLOPT_FOLLOWLOCATION,<span class="number">1</span>); <span class="comment">//设置为非,响应头信息location </span></span><br><span class="line">	<span class="built_in">curl_easy_setopt</span>(curl,CURLOPT_COOKIEFILE,<span class="string">&quot;/curlposttest.cookie&quot;</span>); </span><br><span class="line">	<span class="built_in">curl_easy_setopt</span>(curl,CURLOPT_TIMEOUT,<span class="number">10</span>); </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	res = <span class="built_in">curl_easy_perform</span>(curl); </span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (res != CURLE_OK) </span><br><span class="line">	&#123; </span><br><span class="line">		<span class="built_in"><span class="keyword">switch</span></span>(res) </span><br><span class="line">		&#123; </span><br><span class="line">		<span class="keyword">case</span> CURLE_UNSUPPORTED_PROTOCOL: </span><br><span class="line">			<span class="built_in">OutputDebugString</span>(_T(<span class="string">&quot;yGPC:CURLE_UNSUPPORTED_PROTOCOL\n&quot;</span>));</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> CURLE_COULDNT_CONNECT: </span><br><span class="line">			<span class="built_in">OutputDebugString</span>(_T(<span class="string">&quot;yGPC:CURLE_COULDNT_CONNECT\n&quot;</span>));</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> CURLE_HTTP_RETURNED_ERROR: </span><br><span class="line">			<span class="built_in">OutputDebugString</span>(_T(<span class="string">&quot;yGPC:CURLE_HTTP_RETURNED_ERROR\n&quot;</span>));</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> CURLE_READ_ERROR: </span><br><span class="line">			<span class="built_in">OutputDebugString</span>(_T(<span class="string">&quot;yGPC:CURLE_READ_ERROR\n&quot;</span>));</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">default</span>: </span><br><span class="line">			&#123;</span><br><span class="line">				std::string str = (<span class="string">&quot;yGPC:&quot;</span>);</span><br><span class="line">				str += (<span class="string">&quot;return code:&quot;</span>);</span><br><span class="line">				str += m_ut.<span class="built_in">w2s</span>(m_ut.<span class="built_in">number2str</span>(res,_T(<span class="string">&quot;%x&quot;</span>)));</span><br><span class="line">				<span class="built_in">OutputDebugString</span>(_T(<span class="string">&quot;yGPC:CURLE_READ_ERROR\n&quot;</span>));</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125; </span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>; </span><br><span class="line">	&#125; <span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		strRet = chunk.memory;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">curl_easy_cleanup</span>(curl); </span><br><span class="line">	<span class="built_in">free</span>(chunk.memory);</span><br><span class="line">	<span class="comment">/* we&#x27;re done with libcurl, so clean it up */</span> </span><br><span class="line">	<span class="built_in">curl_global_cleanup</span>();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">jo[<span class="string">&quot;signature&quot;</span>] = <span class="built_in">genSignature</span>(strTimestamp,strRandom).<span class="built_in">c_str</span>();</span><br><span class="line">		jo[<span class="string">&quot;timestamp&quot;</span>] = strTimestamp.<span class="built_in">c_str</span>();</span><br><span class="line">		jo[<span class="string">&quot;requestTime&quot;</span>] = strTimestamp.<span class="built_in">c_str</span>();</span><br><span class="line">		jo[<span class="string">&quot;nonce&quot;</span>] = strRandom.<span class="built_in">c_str</span>();</span><br><span class="line">		jsonRoot[<span class="string">&quot;head&quot;</span>] = jo;</span><br><span class="line"></span><br><span class="line">		std::string param = <span class="string">&quot;msg=&quot;</span>;</span><br><span class="line">		param += jsonRoot.<span class="built_in">toStyledString</span>();</span><br><span class="line">		std::string  strUrlEncode = boost::locale::conv::to_utf&lt;<span class="keyword">char</span>&gt;(param,<span class="string">&quot;GBK&quot;</span>);</span><br><span class="line">		std::string strRet;</span><br><span class="line">		pwnd-&gt;<span class="built_in">httpPost</span>(url,strUrlEncode,strRet);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/49/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/49/">49</a><span class="page-number current">50</span><a class="page-number" href="/page/51/">51</a><span class="space">&hellip;</span><a class="page-number" href="/page/126/">126</a><a class="extend next" rel="next" href="/page/51/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/49/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/49/">49</a><span class="page-number current">50</span><a class="page-number" href="/page/51/">51</a><span class="space">&hellip;</span><a class="page-number" href="/page/125/">125</a><a class="extend next" rel="next" href="/page/51/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>
@@ -1422,8 +1328,6 @@ Access Database method with VC++，按时间顺序排列目前最后的技术是
 
 
 
-
-  <script type="text/javascript" src="/js/fold_action.js"></script>
 
 </body>
 </html>
