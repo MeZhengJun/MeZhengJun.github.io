@@ -25,23 +25,27 @@
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"zhengjun.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="驱动调试首先确认 Configuration Strapping Pins 这个是配置硬件接口方式的地方。是芯片上电&#x2F;复位后的默认配置过程，使得PHY芯片在上电&#x2F;复位结束后能进入期望的工作状态，比如芯片的PHY地址，传输线路速率，是否速率自动协商，双工模式等。 ping 命令数据流向是 cpu 处理命令，通过 CPU 的 GMAC 口发出去，可以看 PHY 端 RGMII 口 MIB 的 ifOu">
+<meta name="description" content="Ethernet网口通常由CPU、MAC和PHY三部分组成，通常用DMA控制器参与网口数据传输，以减轻CPU的负担。有的CPU内部集成MAC控制器，有的则采用外置的MAC芯片。 MII(Media Independent Interface 媒体独立接口)是IEEE 802.3标准定义的以太网行业标准。它包括一个数据接口，以及一个MAC和PHY之间的管理接口。MII数据接口包括分别用于发送器和接收">
 <meta property="og:type" content="article">
 <meta property="og:title" content="embedded-phy">
 <meta property="og:url" content="http://zhengjun.top/2021/12/03/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B5%8C%E5%85%A5%E5%BC%8F/embedded-phy/index.html">
 <meta property="og:site_name" content="郑君的学习笔记">
-<meta property="og:description" content="驱动调试首先确认 Configuration Strapping Pins 这个是配置硬件接口方式的地方。是芯片上电&#x2F;复位后的默认配置过程，使得PHY芯片在上电&#x2F;复位结束后能进入期望的工作状态，比如芯片的PHY地址，传输线路速率，是否速率自动协商，双工模式等。 ping 命令数据流向是 cpu 处理命令，通过 CPU 的 GMAC 口发出去，可以看 PHY 端 RGMII 口 MIB 的 ifOu">
+<meta property="og:description" content="Ethernet网口通常由CPU、MAC和PHY三部分组成，通常用DMA控制器参与网口数据传输，以减轻CPU的负担。有的CPU内部集成MAC控制器，有的则采用外置的MAC芯片。 MII(Media Independent Interface 媒体独立接口)是IEEE 802.3标准定义的以太网行业标准。它包括一个数据接口，以及一个MAC和PHY之间的管理接口。MII数据接口包括分别用于发送器和接收">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhengjun.top/2021/12/03/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B5%8C%E5%85%A5%E5%BC%8F/embedded-phy/20211208_134157.png">
+<meta property="og:image" content="http://zhengjun.top/2021/12/03/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B5%8C%E5%85%A5%E5%BC%8F/embedded-phy/20211208_134254.png">
+<meta property="og:image" content="http://zhengjun.top/2021/12/03/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B5%8C%E5%85%A5%E5%BC%8F/embedded-phy/20211208_134438.png">
+<meta property="og:image" content="http://zhengjun.top/2021/12/03/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B5%8C%E5%85%A5%E5%BC%8F/embedded-phy/20211208_134544.png">
 <meta property="og:image" content="http://zhengjun.top/2021/12/03/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B5%8C%E5%85%A5%E5%BC%8F/embedded-phy/20211206_141918.png">
 <meta property="og:image" content="http://zhengjun.top/2021/12/03/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B5%8C%E5%85%A5%E5%BC%8F/embedded-phy/20211206_142353.png">
 <meta property="og:image" content="http://zhengjun.top/2021/12/03/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B5%8C%E5%85%A5%E5%BC%8F/embedded-phy/20211206_142413.png">
 <meta property="og:image" content="http://zhengjun.top/2021/12/03/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B5%8C%E5%85%A5%E5%BC%8F/embedded-phy/20211206_142446.png">
 <meta property="og:image" content="http://zhengjun.top/2021/12/03/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B5%8C%E5%85%A5%E5%BC%8F/embedded-phy/20211206_142525.png">
 <meta property="article:published_time" content="2021-12-03T03:01:29.000Z">
-<meta property="article:modified_time" content="2021-12-06T06:28:05.614Z">
+<meta property="article:modified_time" content="2021-12-28T03:05:20.590Z">
 <meta property="article:author" content="郑  君">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://zhengjun.top/2021/12/03/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B5%8C%E5%85%A5%E5%BC%8F/embedded-phy/20211206_141918.png">
+<meta name="twitter:image" content="http://zhengjun.top/2021/12/03/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B5%8C%E5%85%A5%E5%BC%8F/embedded-phy/20211208_134157.png">
 
 
 <link rel="canonical" href="http://zhengjun.top/2021/12/03/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B5%8C%E5%85%A5%E5%BC%8F/embedded-phy/">
@@ -102,9 +106,9 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">213</span></a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">79</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1245</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">214</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">80</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1272</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -161,7 +165,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MDIO%E9%A9%B1%E5%8A%A8"><span class="nav-number">1.</span> <span class="nav-text">MDIO驱动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MIB%E4%BF%A1%E6%81%AF"><span class="nav-number">2.</span> <span class="nav-text">MIB信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#loopback-%E7%8E%AF%E5%9B%9E%E6%B5%8B%E8%AF%95"><span class="nav-number">3.</span> <span class="nav-text">loopback 环回测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8C%96PHY%E7%89%87%E7%9A%84%E5%8E%9F%E7%90%86%E6%A1%86%E5%9B%BE"><span class="nav-number">4.</span> <span class="nav-text">简化PHY片的原理框图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8%E8%AF%BB%E5%86%99"><span class="nav-number">5.</span> <span class="nav-text">寄存器读写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Phy%E9%A9%B1%E5%8A%A8"><span class="nav-number">6.</span> <span class="nav-text">Phy驱动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RTL8211F-CG%EF%BC%8CRTL8211E"><span class="nav-number">6.1.</span> <span class="nav-text">RTL8211F-CG，RTL8211E</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q-amp-A"><span class="nav-number">7.</span> <span class="nav-text">Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AA%E8%83%BD%E6%94%B6%E5%8C%85-%E5%8D%B4%E5%8F%91%E4%B8%8D%E5%87%BA%E5%8E%BB%E5%8C%85-%E7%8E%AF%E5%9B%9E%E6%B5%8B%E8%AF%95%E6%94%B6%E4%B8%8D%E5%88%B0"><span class="nav-number">7.1.</span> <span class="nav-text">只能收包,却发不出去包,环回测试收不到</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MDIO"><span class="nav-number">1.</span> <span class="nav-text">MDIO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux-%E4%B8%8Bphy%E7%89%A9%E7%90%86%E5%9C%B0%E5%9D%80%E5%AE%9A%E4%B9%89"><span class="nav-number">2.</span> <span class="nav-text">linux 下phy物理地址定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%B7%E6%80%9D%E8%8A%AF%E7%89%87-3531"><span class="nav-number">3.</span> <span class="nav-text">海思芯片 3531</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9-phy-%E5%9C%B0%E5%9D%80%EF%BC%8Cuboot%E5%92%8Ckernel%E4%B8%8B"><span class="nav-number">4.</span> <span class="nav-text">修改 phy 地址，uboot和kernel下</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MDIO%E9%A9%B1%E5%8A%A8"><span class="nav-number">5.</span> <span class="nav-text">MDIO驱动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MIB%E4%BF%A1%E6%81%AF"><span class="nav-number">6.</span> <span class="nav-text">MIB信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#loopback-%E7%8E%AF%E5%9B%9E%E6%B5%8B%E8%AF%95"><span class="nav-number">7.</span> <span class="nav-text">loopback 环回测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8C%96PHY%E7%89%87%E7%9A%84%E5%8E%9F%E7%90%86%E6%A1%86%E5%9B%BE"><span class="nav-number">8.</span> <span class="nav-text">简化PHY片的原理框图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8%E8%AF%BB%E5%86%99"><span class="nav-number">9.</span> <span class="nav-text">寄存器读写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Phy%E9%A9%B1%E5%8A%A8"><span class="nav-number">10.</span> <span class="nav-text">Phy驱动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RTL8211F-CG%EF%BC%8CRTL8211E"><span class="nav-number">10.1.</span> <span class="nav-text">RTL8211F-CG，RTL8211E</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q-amp-A"><span class="nav-number">11.</span> <span class="nav-text">Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AA%E8%83%BD%E6%94%B6%E5%8C%85-%E5%8D%B4%E5%8F%91%E4%B8%8D%E5%87%BA%E5%8E%BB%E5%8C%85-%E7%8E%AF%E5%9B%9E%E6%B5%8B%E8%AF%95%E6%94%B6%E4%B8%8D%E5%88%B0"><span class="nav-number">11.1.</span> <span class="nav-text">只能收包,却发不出去包,环回测试收不到</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -176,18 +180,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">1245</span>
+          <span class="site-state-item-count">1272</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-count">80</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">213</span>
+        <span class="site-state-item-count">214</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -270,7 +274,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-12-06 14:28:05" itemprop="dateModified" datetime="2021-12-06T14:28:05+08:00">2021-12-06</time>
+        <time title="修改时间：2021-12-28 11:05:20" itemprop="dateModified" datetime="2021-12-28T11:05:20+08:00">2021-12-28</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -296,14 +300,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>14k</span>
+      <span>16k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>13 分钟</span>
+      <span>14 分钟</span>
     </span>
 </div>
 
@@ -314,12 +318,35 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>驱动调试<br>首先确认 Configuration Strapping Pins 这个是配置硬件接口方式的地方。<br>是芯片上电/复位后的默认配置过程，使得PHY芯片在上电/复位结束后能进入期望的工作状态，比如芯片的PHY地址，传输线路速率，是否速率自动协商，双工模式等。</p>
+        <p>Ethernet网口通常由CPU、MAC和PHY三部分组成，通常用DMA控制器参与网口数据传输，以减轻CPU的负担。有的CPU内部集成MAC控制器，有的则采用外置的MAC芯片。</p>
+<p>MII(Media Independent Interface 媒体独立接口)是IEEE 802.3标准定义的以太网行业标准。它包括一个数据接口，以及一个MAC和PHY之间的管理接口。MII数据接口包括分别用于发送器和接收器的两条独立信道，每条信道拥有数据、时钟和控制信号，共16条信号线。MII管理接口即MDIO接口包含一个时钟信号(MDC)和一个数据信号(MDIO)，通过管理接口，上层能监视和控制PHY。根据IEEE802.3标准定义，MII管理接口最多支持同时管理32个PHY。</p>
+<p>CPU/MAC通过MDIO接口（类似于I2C接口，因此PHY拥有PHY ADDR）管理PHY芯片。</p>
+<p>MAC和PHY之间的数据传输接口类型有MII/RMII(Reduced MII)/SMII(Stream MII)/GMII几种，根据传输速率(10M/100M/1000M)又有不同细分，比如千兆GMII/RGMII/SGMII。</p>
+<p>GMII是千兆网的MII接口，这个也有相应的RGMII接口，表示简化了的GMII接口。</p>
+<img alt="20211208_134157.png" src="/2021/12/03/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B5%8C%E5%85%A5%E5%BC%8F/embedded-phy/20211208_134157.png" width="500" height>
+<span id="more"></span>
+
+<h2 id="MDIO"><a href="#MDIO" class="headerlink" title="MDIO"></a>MDIO</h2><p>针对linux设备-总线-驱动模型而言，其提供了device_register/driver_register、device_unregister/driver_unregister方法，用于进行设备与驱动绑定与解绑操作，从而实现设备的探测与移除操作。</p>
+<img alt="20211208_134254.png" src="/2021/12/03/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B5%8C%E5%85%A5%E5%BC%8F/embedded-phy/20211208_134254.png" width="500" height>
+
+<p>按照OSI七层协议，MAC工作在数据链路层，PHY工作在物理层。在Linux网络子系统中，IP层、TCP/UDP层及其上的应用层均为软件实现，由内核协议栈和用户态socket代码实现。</p>
+<img alt="20211208_134438.png" src="/2021/12/03/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B5%8C%E5%85%A5%E5%BC%8F/embedded-phy/20211208_134438.png" width="500" height>
+
+<p>网卡驱动的初始化流程可以归纳为：<br>1）为网络数据收发分配内存（或者更进一步配置DMA直接内存存取）<br>2）初始化MDIO控制器和MAC控制器<br>3）通过MDIO接口初始化PHY控制器<br>4）注册内核网络协议栈接口<br>5）启动收发</p>
+<img alt="20211208_134544.png" src="/2021/12/03/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B5%8C%E5%85%A5%E5%BC%8F/embedded-phy/20211208_134544.png" width="500" height>
+
+
+
+
+<h2 id="linux-下phy物理地址定义"><a href="#linux-下phy物理地址定义" class="headerlink" title="linux 下phy物理地址定义"></a>linux 下phy物理地址定义</h2><p>Kernel下面的phy驱动<br>kernel/linux-3.0.y/drivers/net/stmmac/stmmac_mdio.c</p>
+<p>3531有个stmmac.ko 驱动，默认是自适应模式，放在文件系统的<br>/hitoe/stmmac.ko<br>phy addr 物理地址是在 drivers/net/stmmac/Kconfig 文件里面定义的</p>
+<p>查看kernel 配置找配置 phy address的地方，看到网络的kconfig有配置<br>又发现godnet 的kconfig也有配置，最后在kernel的配置菜单里面配置了，然后更新stmmac.ko模块就可以了</p>
+<p>驱动调试<br>首先确认 Configuration Strapping Pins 这个是配置硬件接口方式的地方。<br>是芯片上电/复位后的默认配置过程，使得PHY芯片在上电/复位结束后能进入期望的工作状态，比如芯片的PHY地址，传输线路速率，是否速率自动协商，双工模式等。</p>
 <p>ping 命令数据流向是 cpu 处理命令，通过 CPU 的 GMAC 口发出去，可以看 PHY 端 RGMII 口 MIB 的 ifOutOctets 计数器（发出多少字节），然后在通过 PHY 的 RGMII 接口交给 PHY 通过 PHY 的 UTP 口发出去，可以看 UTP 口MIB 的 ifOutOctets 计数器（发出多少字节）。</p>
 <p>需要注意的地方就是当 ping 不通时，先确认 cpu 端的 GMAC 配置要和 phy 端的 mac 口配置保持一致，比如：都是1000M或者都是100M，然后去掉中间环节，直连电脑和板子，避免因为路由的原因导致不通。</p>
 <img alt="20211206_141918.png" src="/2021/12/03/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B5%8C%E5%85%A5%E5%BC%8F/embedded-phy/20211206_141918.png" width="500" height>
 
-<span id="more"></span>
+<!-- more -->
 
 <p>首先调试检查硬件，再调试软件<br>仔细阅读phy和主芯片datesheet ，尤其着重阅读mii寄存器，它是mac和phy交换信息的媒介。<br>硬件注意：关于phy的芯片需要注意的有几点：</p>
 <ol>
@@ -336,6 +363,11 @@
 <li>rgmii时钟是否正确。</li>
 </ol>
 <p>二、软件确认<br>1、uboot涉及驱动：drivers/net/higmacv300，PHY配置驱动：drivers/net/phy/realtek.c<br>2、先看mdio能否扫描到phy，读出的phy id要和phy datasheet一致；同时，读出phyid的addr需要和上面硬件的phy_add一致<br>3、如果第二步是正确的，那么说明mdio接口和phy已经工作；接下来要检查rgmii接口<br>4、将板子和笔记本直连：GMAC&lt;—&gt;phy&lt;—&gt;pc<br>板子ping PC 以及PC ping板子，然后读GMAC和phy的寄存器（读GMAC要自己写，读phy有个mii命令）<br>可以查看GMAC收发了多少数据，PHY收发了多少数据，从而判断是GMAC发给PHY异常还是PHY发给PC异常，或GMAC接收异常还是PHY接收异常<br>查看 phy 的 0 4 9 寄存器是否正确<br>5、到这一步还是不行，就需要自己写回环测试代码：<br>第一个是GMAC回环：MAC_IF_STAT_CTRL寄存器<br>第二个PHY回环：BMCR寄存器<br>6、uboot遇到时通时不通时，将uboot强制成100M速率试试<br>千兆ping不通时：<br>看一下rgmii的clock出来没有<br>外面发播报进来data上有没有波形<br>如果有波形，再调一下rgmii delay试一下</p>
+<h2 id="海思芯片-3531"><a href="#海思芯片-3531" class="headerlink" title="海思芯片 3531"></a>海思芯片 3531</h2><p>3531有个stmmac.ko 驱动，默认是自适应模式，放在文件系统的<br>/hitoe/stmmac.ko</p>
+<p>phy 的物理地址是在 kernel 的  drivers/net/stmmac/Kconfig 文件里面定义的</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">cp arch/arm/configs/godnet_defconfig .config</span><br><span class="line">make ARCH=arm CROSS_COMPILE=arm-hisiv100nptl-linux- clean </span><br><span class="line">make ARCH=arm CROSS_COMPILE=arm-hisiv100nptl-linux- menuconfig </span><br><span class="line">make ARCH=arm CROSS_COMPILE=arm-hisiv100nptl-linux- uImage </span><br><span class="line">; 生成 ko 驱动模块</span><br><span class="line">make ARCH=arm CROSS_COMPILE=arm-hisiv100nptl-linux- modules</span><br></pre></td></tr></table></figure>
+
+<h2 id="修改-phy-地址，uboot和kernel下"><a href="#修改-phy-地址，uboot和kernel下" class="headerlink" title="修改 phy 地址，uboot和kernel下"></a>修改 phy 地址，uboot和kernel下</h2><p>uboot 在 include/configs/godnet.h STMMAC driver 里面定义的<br>kernel 在配置菜单里面 网络驱动-phy驱动-1000M 里面有定义<br>更新的时候 编译 stmmac.ko 模块就可以了</p>
 <h2 id="MDIO驱动"><a href="#MDIO驱动" class="headerlink" title="MDIO驱动"></a>MDIO驱动</h2><p>使用 RTL8363NB 举例</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 首先定义宏打开 MDIO 配置</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MDC_MDIO_OPERATION</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 实现相关接口</span></span><br><span class="line"><span class="comment">/* MDC/MDIO, redefine/implement the following Macro */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MDC_MDIO_WRITE(preamableLength, phyID, regID, data)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MDC_MDIO_READ(preamableLength, phyID, regID, pData)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">rtlglue_drvMutexLock</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/* It is empty currently. Implement this function if Lock/Unlock function is needed */</span></span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">rtlglue_drvMutexUnlock</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/* It is empty currently. Implement this function if Lock/Unlock function is needed */</span></span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -388,13 +420,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/12/02/%E5%B7%A5%E5%85%B7%E7%9B%B8%E5%85%B3/tool-wireshark/" rel="prev" title="tool-wireshark">
+                <a href="/2021/12/02/%E5%B7%A5%E5%85%B7%E7%B1%BB/%E5%85%B6%E4%BB%96%E5%B7%A5%E5%85%B7/tool-wireshark/" rel="prev" title="tool-wireshark">
                   <i class="fa fa-chevron-left"></i> tool-wireshark
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/12/10/%E5%B7%A5%E5%85%B7%E7%B1%BB/hexo%E7%9A%84%E4%BD%BF%E7%94%A8/" rel="next" title="hexo的使用">
-                  hexo的使用 <i class="fa fa-chevron-right"></i>
+                <a href="/2021/12/06/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B5%8C%E5%85%A5%E5%BC%8F/embedded-boa%E6%94%AF%E6%8C%81https/" rel="next" title="embedded-boa支持https">
+                  embedded-boa支持https <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -416,7 +448,7 @@
 
 <div class="copyright">
   &copy; 2017 – 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -427,13 +459,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">2m</span>
+    <span title="站点总字数">2.1m</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">30:32</span>
+    <span title="站点阅读时长">31:18</span>
   </span>
 </div>
 <div class="busuanzi-count">
