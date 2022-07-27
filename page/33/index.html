@@ -96,7 +96,7 @@
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">215</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">80</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1285</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1286</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -167,7 +167,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">1285</span>
+          <span class="site-state-item-count">1286</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -220,6 +220,188 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/01/29/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/pyqt5/pyqt5-thread/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/01/29/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/pyqt5/pyqt5-thread/" class="post-title-link" itemprop="url">pyqt5-thread</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-01-29 21:56:35 / 修改时间：22:26:29" itemprop="dateCreated datePublished" datetime="2020-01-29T21:56:35+08:00">2020-01-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="QRunnable-and-the-QThreadPool"><a href="#QRunnable-and-the-QThreadPool" class="headerlink" title="QRunnable and the QThreadPool"></a>QRunnable and the QThreadPool</h2><p><a target="_blank" rel="noopener" href="https://www.learnpyqt.com/courses/concurrent-execution/multithreading-pyqt-applications-qthreadpool/">https://www.learnpyqt.com/courses/concurrent-execution/multithreading-pyqt-applications-qthreadpool/</a></p>
+<p>using this method</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> PyQt5.QtGui <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> PyQt5.QtWidgets <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> PyQt5.QtCore <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> traceback, sys</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WorkerSignals</span>(<span class="params">QObject</span>):</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    Defines the signals available from a running worker thread.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Supported signals are:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    finished</span></span><br><span class="line"><span class="string">        No data</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    error</span></span><br><span class="line"><span class="string">        `tuple` (exctype, value, traceback.format_exc() )</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    result</span></span><br><span class="line"><span class="string">        `object` data returned from processing, anything</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    progress</span></span><br><span class="line"><span class="string">        `int` indicating % progress </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    finished = pyqtSignal()</span><br><span class="line">    error = pyqtSignal(<span class="built_in">tuple</span>)</span><br><span class="line">    result = pyqtSignal(<span class="built_in">object</span>)</span><br><span class="line">    progress = pyqtSignal(<span class="built_in">int</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Worker</span>(<span class="params">QRunnable</span>):</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    Worker thread</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Inherits from QRunnable to handler worker thread setup, signals and wrap-up.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param callback: The function callback to run on this worker thread. Supplied args and </span></span><br><span class="line"><span class="string">                     kwargs will be passed through to the runner.</span></span><br><span class="line"><span class="string">    :type callback: function</span></span><br><span class="line"><span class="string">    :param args: Arguments to pass to the callback function</span></span><br><span class="line"><span class="string">    :param kwargs: Keywords to pass to the callback function</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, fn, *args, **kwargs</span>):</span></span><br><span class="line">        <span class="built_in">super</span>(Worker, self).__init__()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Store constructor arguments (re-used for processing)</span></span><br><span class="line">        self.fn = fn</span><br><span class="line">        self.args = args</span><br><span class="line">        self.kwargs = kwargs</span><br><span class="line">        self.signals = WorkerSignals()    </span><br><span class="line"></span><br><span class="line">        <span class="comment"># Add the callback to our kwargs</span></span><br><span class="line">        self.kwargs[<span class="string">&#x27;progress_callback&#x27;</span>] = self.signals.progress        </span><br><span class="line"></span><br><span class="line"><span class="meta">    @pyqtSlot()</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">        Initialise the runner function with passed args, kwargs.</span></span><br><span class="line"><span class="string">        &#x27;&#x27;&#x27;</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Retrieve args/kwargs here; and fire processing using them</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            result = self.fn(*self.args, **self.kwargs)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            traceback.print_exc()</span><br><span class="line">            exctype, value = sys.exc_info()[:<span class="number">2</span>]</span><br><span class="line">            self.signals.error.emit((exctype, value, traceback.format_exc()))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.signals.result.emit(result)  <span class="comment"># Return the result of the processing</span></span><br><span class="line">        <span class="keyword">finally</span>:</span><br><span class="line">            self.signals.finished.emit()  <span class="comment"># Done</span></span><br><span class="line">        </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainWindow</span>(<span class="params">QMainWindow</span>):</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, *args, **kwargs</span>):</span></span><br><span class="line">        <span class="built_in">super</span>(MainWindow, self).__init__(*args, **kwargs)</span><br><span class="line">    </span><br><span class="line">        self.counter = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">        layout = QVBoxLayout()</span><br><span class="line">        </span><br><span class="line">        self.l = QLabel(<span class="string">&quot;Start&quot;</span>)</span><br><span class="line">        b = QPushButton(<span class="string">&quot;DANGER!&quot;</span>)</span><br><span class="line">        b.pressed.connect(self.oh_no)</span><br><span class="line">    </span><br><span class="line">        layout.addWidget(self.l)</span><br><span class="line">        layout.addWidget(b)</span><br><span class="line">    </span><br><span class="line">        w = QWidget()</span><br><span class="line">        w.setLayout(layout)</span><br><span class="line">    </span><br><span class="line">        self.setCentralWidget(w)</span><br><span class="line">    </span><br><span class="line">        self.show()</span><br><span class="line"></span><br><span class="line">        self.threadpool = QThreadPool()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Multithreading with maximum %d threads&quot;</span> % self.threadpool.maxThreadCount())</span><br><span class="line"></span><br><span class="line">        self.timer = QTimer()</span><br><span class="line">        self.timer.setInterval(<span class="number">1000</span>)</span><br><span class="line">        self.timer.timeout.connect(self.recurring_timer)</span><br><span class="line">        self.timer.start()</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">progress_fn</span>(<span class="params">self, n</span>):</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;%d%% done&quot;</span> % n)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">execute_this_fn</span>(<span class="params">self, progress_callback</span>):</span></span><br><span class="line">        <span class="keyword">for</span> n <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">5</span>):</span><br><span class="line">            time.sleep(<span class="number">1</span>)</span><br><span class="line">            progress_callback.emit(n*<span class="number">100</span>/<span class="number">4</span>)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Done.&quot;</span></span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">print_output</span>(<span class="params">self, s</span>):</span></span><br><span class="line">        <span class="built_in">print</span>(s)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">thread_complete</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;THREAD COMPLETE!&quot;</span>)</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">oh_no</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="comment"># Pass the function to execute</span></span><br><span class="line">        worker = Worker(self.execute_this_fn) <span class="comment"># Any other args, kwargs are passed to the run function</span></span><br><span class="line">        worker.signals.result.connect(self.print_output)</span><br><span class="line">        worker.signals.finished.connect(self.thread_complete)</span><br><span class="line">        worker.signals.progress.connect(self.progress_fn)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Execute</span></span><br><span class="line">        self.threadpool.start(worker) </span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">recurring_timer</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.counter +=<span class="number">1</span></span><br><span class="line">        self.l.setText(<span class="string">&quot;Counter: %d&quot;</span> % self.counter)</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">app = QApplication([])</span><br><span class="line">window = MainWindow()</span><br><span class="line">app.exec_()</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="QThread"><a href="#QThread" class="headerlink" title="QThread"></a>QThread</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GetStockCode</span>(<span class="params">QThread</span>):</span></span><br><span class="line">    signal_str = pyqtSignal(<span class="built_in">str</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.signal_str.emit(<span class="string">r&#x27;开始获取股票代码...&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(result.inserted_ids) != <span class="built_in">len</span>(data_arr):</span><br><span class="line">            <span class="keyword">assert</span> <span class="literal">False</span></span><br><span class="line">            self.signal_str.emit(<span class="string">r&#x27;插入代码表数据失败.请检查...&#x27;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.signal_str.emit(<span class="string">r&#x27;插入代码表数据成功...&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, parent=<span class="literal">None</span></span>):</span></span><br><span class="line">    self.GetStockCode = GetStockCode()</span><br><span class="line">    self.ui.btn_update_stock_code.clicked.connect(self.on_btn_stock_code)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">on_btn_trade_date</span>(<span class="params">self</span>):</span></span><br><span class="line">    self.GetTradeDate.start()</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/01/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/MacOS/mac-edit-hosts/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="郑  君">
+      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郑君的学习笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/01/29/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/MacOS/mac-edit-hosts/" class="post-title-link" itemprop="url">mac-edit hosts</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-01-29 18:22:49 / 修改时间：18:25:52" itemprop="dateCreated datePublished" datetime="2020-01-29T18:22:49+08:00">2020-01-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>18</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo nano /etc/hosts</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1058,205 +1240,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/01/10/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/python-%E5%A5%BD%E7%94%A8%E7%9A%84%E5%BC%80%E6%BA%90%E5%BA%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/01/10/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/python-%E5%A5%BD%E7%94%A8%E7%9A%84%E5%BC%80%E6%BA%90%E5%BA%93/" class="post-title-link" itemprop="url">python 好用的开源库</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-01-10 19:56:50" itemprop="dateCreated datePublished" datetime="2020-01-10T19:56:50+08:00">2020-01-10</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-03-01 17:20:28" itemprop="dateModified" datetime="2021-03-01T17:20:28+08:00">2021-03-01</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><h3 id="you-get"><a href="#you-get" class="headerlink" title="you-get"></a>you-get</h3><p><a target="_blank" rel="noopener" href="https://you-get.org/">https://you-get.org/</a></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip3 install you-get</span><br><span class="line"></span><br><span class="line"># 更新</span><br><span class="line">pip3 install --upgrade you-get</span><br></pre></td></tr></table></figure>
-
-<p>配置环境变量：xx:\ffmpeg\bin<br>ffmpeg –version</p>
-<p>-s 或 -x ：使用代理必要的参数，后面加上代理的地址和接口，http代理是用-x，socks代理-s。例如shadowsocks是：-s 127.0.0.1:1080</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 查看视频信息</span><br><span class="line">you-get -x 127.0.0.1:1080 -i &quot;https://www.youtube.com/watch?v=gRD-MY3S5zY&quot;</span><br><span class="line">you-get -s 127.0.0.1:1080 -i &quot;https://www.youtube.com/watch?v=gRD-MY3S5zY&quot;</span><br><span class="line">记录下 itag</span><br><span class="line">you-get --itag=136 -s 127.0.0.1:1080  &quot;https://www.youtube.com/watch?v=gRD-MY3S5zY&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="youtube-dl"><a href="#youtube-dl" class="headerlink" title="youtube_dl"></a>youtube_dl</h3><p><a target="_blank" rel="noopener" href="https://github.com/ytdl-org/youtube-dl">https://github.com/ytdl-org/youtube-dl</a></p>
-<p>pip3 install –upgrade youtube_dl</p>
-<p>youtube-dl –proxy 127.0.0.1:1080 ‘<a target="_blank" rel="noopener" href="https://www.youtube.com/watch/?v%5C=_fc_TLg3eQ4&#39;">https://www.youtube.com/watch\?v\=_fc_TLg3eQ4&#39;</a></p>
-<p>只下载（视频中的）音频<br>youtube-dl -x <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=iJvr0VPsn-s">https://www.youtube.com/watch?v=iJvr0VPsn-s</a></p>
-<p>默认情况下，Youtube-dl 将以 Ogg（opus）格式保存音频，如果想以任何其他格式下载音频，例如 mp3 请运行<br>youtube-dl -x –audio-format mp3 <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=iJvr0VPsn-s">https://www.youtube.com/watch?v=iJvr0VPsn-s</a></p>
-<p>列出所有可用的音/视频格式<br>youtube-dl –proxy 127.0.0.1:1080 -F “<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=gRD-MY3S5zY&quot;">https://www.youtube.com/watch?v=gRD-MY3S5zY&quot;</a></p>
-<p>自动选择并下载最佳质量格式（音频和视频）<br>youtube-dl –proxy 127.0.0.1:1080 -f best  “<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=gRD-MY3S5zY&quot;">https://www.youtube.com/watch?v=gRD-MY3S5zY&quot;</a></p>
-<p>分别下载最高质量的仅视频和最高质量的纯音频格式，再用 ffmpeg 或 avconv 合并成一个最佳质量的 mkv 文件；<br>youtube-dl -f bestvideo+bestaudio <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=iJvr0VPsn-s">https://www.youtube.com/watch?v=iJvr0VPsn-s</a></p>
-<p>以最佳质量仅下载音频<br>youtube-dl –proxy 127.0.0.1:1080 -f bestaudio <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=iJvr0VPsn-s">https://www.youtube.com/watch?v=iJvr0VPsn-s</a></p>
-<h2 id="自动引入模块的库"><a href="#自动引入模块的库" class="headerlink" title="自动引入模块的库"></a>自动引入模块的库</h2><p><a target="_blank" rel="noopener" href="https://pypi.org/project/pyforest/">pyforest</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://zhengjun.top/2020/01/09/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/pyqt5/pyqt5-qtablewidget/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="郑  君">
-      <meta itemprop="description" content="C++，golang，Java，Python，Kotlin，区块链，全栈">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郑君的学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/01/09/%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/python/pyqt5/pyqt5-qtablewidget/" class="post-title-link" itemprop="url">pyqt5-qtablewidget</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-01-09 20:57:07 / 修改时间：20:58:16" itemprop="dateCreated datePublished" datetime="2020-01-09T20:57:07+08:00">2020-01-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>289</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="add-row"><a href="#add-row" class="headerlink" title="add row"></a>add row</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">rowPosition = self.table.rowCount()</span><br><span class="line">table.insertRow(rowPosition)</span><br><span class="line"></span><br><span class="line"><span class="comment"># set item text</span></span><br><span class="line">table.setItem(rowPosition , <span class="number">0</span>, QtGui.QTableWidgetItem(<span class="string">&quot;text1&quot;</span>))</span><br><span class="line">table.setItem(rowPosition , <span class="number">1</span>, QtGui.QTableWidgetItem(<span class="string">&quot;text2&quot;</span>))</span><br><span class="line">table.setItem(rowPosition , <span class="number">2</span>, QtGui.QTableWidgetItem(<span class="string">&quot;text3&quot;</span>))</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/32/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><span class="page-number current">33</span><a class="page-number" href="/page/34/">34</a><span class="space">&hellip;</span><a class="page-number" href="/page/129/">129</a><a class="extend next" rel="next" href="/page/34/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
@@ -1267,6 +1250,9 @@
   <footer class="footer">
     <div class="footer-inner">
 
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备18010120号-1 </a>
+      <img src="/images/%E5%A4%87%E6%A1%88%E5%9B%BE%E6%A0%87.png" alt=""><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011202010521" rel="noopener" target="_blank">沪公安备案31011202010521号 </a>
+  </div>
 
 <div class="copyright">
   &copy; 2017 – 
@@ -1287,7 +1273,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">31:19</span>
+    <span title="站点阅读时长">31:20</span>
   </span>
 </div>
 <div class="busuanzi-count">
