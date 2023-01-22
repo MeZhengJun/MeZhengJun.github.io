@@ -34,7 +34,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://zhengjun.top/2021/12/09/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/linux/linux-network-tools/20211209_092553.png">
 <meta property="article:published_time" content="2021-12-09T01:02:01.000Z">
-<meta property="article:modified_time" content="2021-12-09T01:44:34.324Z">
+<meta property="article:modified_time" content="2022-07-01T03:15:46.910Z">
 <meta property="article:author" content="郑  君">
 <meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary">
@@ -99,9 +99,9 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">215</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">219</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">80</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1286</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">1328</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -173,7 +173,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">1286</span>
+          <span class="site-state-item-count">1328</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -184,7 +184,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">215</span>
+        <span class="site-state-item-count">219</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -259,10 +259,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2021-12-09 09:02:01 / 修改时间：09:44:34" itemprop="dateCreated datePublished" datetime="2021-12-09T09:02:01+08:00">2021-12-09</time>
+      <time title="创建时间：2021-12-09 09:02:01" itemprop="dateCreated datePublished" datetime="2021-12-09T09:02:01+08:00">2021-12-09</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-07-01 11:15:46" itemprop="dateModified" datetime="2022-07-01T11:15:46+08:00">2022-07-01</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -287,14 +293,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.7k</span>
+      <span>2.8k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
@@ -314,7 +320,7 @@
 
 <p>Bridge设备br0绑定了实际设备eth0与虚拟设备tap0/tap1,此时，对于Hypervisor的网络协议栈上层来说，只看得到br0，并不会关心网桥的细节。当这些从设备接收到数据包时，会将其提交给br0决定数据包的去向，br0会根据MAC地址与端口的映射关系进行转发。因为Bridge工作在第二层，所以绑定在br0上的从设备eth0、tap0、tap1均不需要再设置IP，对上层路由器来说，它们都位于同一子网，因此只需为br0设置IP，比如10.0.1.0/24，此时，eth0、tap0、tap1均通过br0出入10.0.1.0/24网段。<br>因为具有自己的IP,br0可以被加入到路由表，并利用它来发送数据，而最终实际的发送过程则是由某个从设备来完成。<br>如果eth0本身具有自己的IP，比如192.168.4.5，在绑定br0之后，它的IP会失效，用户程序不能接收到发送到这个IP的地址，只有目的地址为br0 IP的数据包才会被Linux接收。</p>
 <p>brctl 工具</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 网桥的每个物理网卡作为一个端口，运行于混杂模式，而且是在链路层工作，所以就不需要IP了</span></span><br><span class="line">ifconfig eth0 0.0.0.0 up</span><br><span class="line">ifconfig eth1 0.0.0.0 up</span><br><span class="line"></span><br><span class="line">brctl addbr br0</span><br><span class="line">brctl addif br0 eth0</span><br><span class="line">brctl addif br0 eth1</span><br><span class="line">brctl stp br0 0</span><br><span class="line">brctl setfd br0 3</span><br><span class="line">brctl sethello br0 2</span><br><span class="line">brctl setageing br0 2</span><br><span class="line">brctl stp br0  1</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 网桥的每个物理网卡作为一个端口，运行于混杂模式，而且是在链路层工作，所以就不需要IP了</span></span><br><span class="line">ifconfig eth0 0.0.0.0 up</span><br><span class="line">ifconfig eth1 0.0.0.0 up</span><br><span class="line"></span><br><span class="line">ifconfig br0 192.168.0.11 netmask 255.255.255.0 up</span><br><span class="line"></span><br><span class="line">brctl addbr br0</span><br><span class="line">brctl addif br0 eth0</span><br><span class="line">brctl addif br0 eth1</span><br><span class="line">brctl stp br0 0</span><br><span class="line">brctl setfd br0 3</span><br><span class="line">brctl sethello br0 2</span><br><span class="line">brctl setageing br0 2</span><br><span class="line">brctl stp br0  1</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 增加网桥</span></span><br><span class="line">brctl addbr br0</span><br><span class="line"><span class="meta">#</span><span class="bash"> 停止网桥</span></span><br><span class="line">ifconfig br0 down</span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除网桥</span></span><br><span class="line">brctl delbr br0</span><br><span class="line">删除eth0端口</span><br><span class="line">brctl delif br0 eth0</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查询网桥信息</span></span><br><span class="line">brctl show</span><br><span class="line"></span><br><span class="line">addbr           &lt;bridge&gt;                add bridge</span><br><span class="line">delbr           &lt;bridge&gt;                delete bridge</span><br><span class="line">addif           &lt;bridge&gt; &lt;device&gt;       add interface to bridge</span><br><span class="line">delif           &lt;bridge&gt; &lt;device&gt;       delete interface from bridge</span><br><span class="line">setageing       &lt;bridge&gt; &lt;time&gt;         set ageing time</span><br><span class="line">setbridgeprio   &lt;bridge&gt; &lt;prio&gt;         set bridge priority</span><br><span class="line">setfd           &lt;bridge&gt; &lt;time&gt;         set bridge forward delay</span><br><span class="line">sethello        &lt;bridge&gt; &lt;time&gt;         set hello time</span><br><span class="line">setmaxage       &lt;bridge&gt; &lt;time&gt;         set max message age</span><br><span class="line">sethashel       &lt;bridge&gt; &lt;int&gt;          set hash elasticity</span><br><span class="line">sethashmax      &lt;bridge&gt; &lt;int&gt;          set hash max</span><br><span class="line">setmclmc        &lt;bridge&gt; &lt;int&gt;          set multicast last member count</span><br><span class="line">setmcrouter     &lt;bridge&gt; &lt;int&gt;          set multicast router</span><br><span class="line">setmcsnoop      &lt;bridge&gt; &lt;int&gt;          set multicast snooping</span><br><span class="line">setmcsqc        &lt;bridge&gt; &lt;int&gt;          set multicast startup query count</span><br><span class="line">setmclmi        &lt;bridge&gt; &lt;time&gt;         set multicast last member interval</span><br><span class="line">setmcmi         &lt;bridge&gt; &lt;time&gt;         set multicast membership interval</span><br><span class="line">setmcqpi        &lt;bridge&gt; &lt;time&gt;         set multicast querier interval</span><br><span class="line">setmcqi         &lt;bridge&gt; &lt;time&gt;         set multicast query interval</span><br><span class="line">setmcqri        &lt;bridge&gt; &lt;time&gt;         set multicast query response interval</span><br><span class="line">setmcqri        &lt;bridge&gt; &lt;time&gt;         set multicast startup query interval</span><br><span class="line">setpathcost     &lt;bridge&gt; &lt;port&gt; &lt;cost&gt;  set path cost</span><br><span class="line">setportprio     &lt;bridge&gt; &lt;port&gt; &lt;prio&gt;  set port priority</span><br><span class="line">setportmcrouter &lt;bridge&gt; &lt;port&gt; &lt;int&gt;   set port multicast router</span><br><span class="line">show            [ &lt;bridge&gt; ]            show a list of bridges</span><br><span class="line">showmacs        &lt;bridge&gt;                show a list of mac addrs</span><br><span class="line">showstp         &lt;bridge&gt;                show bridge stp info</span><br><span class="line">stp             &lt;bridge&gt; &#123;on|off&#125;       turn stp on/off</span><br></pre></td></tr></table></figure>
 
@@ -384,7 +390,7 @@
 
 <div class="copyright">
   &copy; 2017 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -401,7 +407,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">31:20</span>
+    <span title="站点阅读时长">32:07</span>
   </span>
 </div>
 <div class="busuanzi-count">
